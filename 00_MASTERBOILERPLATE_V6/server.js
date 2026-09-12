@@ -1,106 +1,76 @@
+/**
+ * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V6 — ZERO-OPS EPHEMERE
+ * 🔒 INJECTEURS STRIPE LIVE VERROUILLÉS AU COFFRE
+ */
+
 const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const Stripe = require('stripe');
+
+// Initialize Express Engine
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
-// ⚙️ IMPORTS DES MOTEURS CLOUD-NATIVE VAGUE 02
-const { cleanAndMinifySVG } = require('./svg_strip');
-const { flattenObject } = require('./json_flatten');
+// Initialize Stripe Engine with Secure Environment Variables
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY || '';
+const stripe = new Stripe(stripeSecretKey);
 
-// Middlewares d'analyse globaux (Sauf pour les Webhooks Stripe bruts)
-app.use((req, res, next) => {
-    if (req.originalUrl === '/api/webhook/stripe') {
-        next();
-    } else {
-        express.json()(req, res, next);
-    }
+// ==========================================
+// 🛡️ MIDDLEWARES GLOBAUX DE SOUTE
+// ==========================================
+app.use(cors({ origin: '*' }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Server Availability Indicator (The Root Badge)
+app.get('/', (req, res) => {
+    res.status(200).send('HELLO, WORLD! BLACKBOX AUDIO LABS IS LIVE TO THE PLANET.');
 });
 
-// 🌐 ROUTE DE CONTRÔLE DE SANTÉ DE SÔUTE
-app.get('/api/health', (req, res) => {
-    res.status(200).json({ status: 'OK', message: 'Hangar operational.' });
-});
+// ==========================================
+// 🚀 ROUTAGE DIRECT : VAGUE 01 (ROBOTS 01 À 05)
+// ==========================================
 
-// 💳 LE RÉACTEUR D'INTERCEPTION STRIPE (Déclenché post-achat par le client)
-app.post('/api/webhook/stripe', express.raw({ type: 'application/json' }), (req, res) => {
-    let event = req.body;
+// Robot 01 : Code Shield Utility (Validateur & Obfuscateur Léger)
+app.use('/v1/code-shield', require('./robots/robot01/index'));
 
-    // Structure d'isolation de l'événement d'achat réussi
-    if (event.type === 'checkout.session.completed') {
-        const session = event.data.object;
-        const customerEmail = session.customer_details.email;
-        const tier = session.metadata.tier || 'solo';
+// Robot 02 : Payload Compressor (Optimiseur de données d'API)
+app.use('/v1/payload-compress', require('./robots/robot02/index'));
 
-        console.log(`[& CASH_IN] Payment confirmed for ${customerEmail} - Tier: ${tier.toUpperCase()}`);
+// Robot 03 : Audio Converter Master (Optimiseur de soute WAVE/MP3)
+app.use('/v1/audio-convert', require('./robots/robot03/index'));
 
-        // Logique de routage éphémère en mémoire vive vers la page de délivrance
-        // Aucun enregistrement en base SQL - Zéro stockage de logs clients
-        return res.status(200).json({
-            success: true,
-            redirect: `/download?token=${Buffer.from(customerEmail).toString('base64')}&tier=${tier}`
-        });
-    }
+// Robot 04 : Meta Stripper Pro (Purgeur de métadonnées propres)
+app.use('/v1/meta-stripper', require('./robots/robot04/index'));
 
-    res.status(200).json({ received: true });
-});
+// Robot 05 : JSON Flattener Ultra (Compresseur de structures)
+app.use('/v1/json-flatten', require('./robots/robot05/index'));
 
-// 🛰️ ROUTE API CLOUD-NATIVE ROBOT 09 (SVG-STRIP)
-app.post('/api/v1/svg-strip', (req, res) => {
-    const { svg } = req.body;
+// ==========================================
+// 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
+// ==========================================
+app.post('/v1/checkout/create-session', async (req, res) => {
+    const { priceId, successUrl, cancelUrl } = req.body;
     
-    if (!svg) {
-        return res.status(400).json({ error: 'Soute vide. SVG requis.' });
-    }
-
     try {
-        const cleanedSVG = cleanAndMinifySVG(svg);
-        return res.json({
-            success: true,
-            robot: '09_svg_strip',
-            originalSize: svg.length,
-            cleanedSize: cleanedSVG.length,
-            savedBytes: svg.length - cleanedSVG.length,
-            data: cleanedSVG
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [{ price: priceId, quantity: 1 }],
+            mode: 'payment',
+            success_url: successUrl,
+            cancel_url: cancelUrl,
         });
+        res.status(200).json({ id: session.id, url: session.url });
     } catch (error) {
-        return res.status(500).json({ error: 'Friture dans le traitement XML du serveur.' });
+        res.status(500).json({ error: error.message });
     }
 });
 
-// 🛰️ ROUTE API CLOUD-NATIVE ROBOT 10 (JSON-FLATTEN)
-app.post('/api/v1/json-flatten', (req, res) => {
-    const { data } = req.body;
-    
-    if (!data || typeof data !== 'object') {
-        return res.status(400).json({ error: 'Soute vide ou format JSON invalide.' });
-    }
-
-    try {
-        const flattened = flattenObject(data);
-        return res.json({
-            success: true,
-            robot: '10_json_flatten',
-            isFlattened: true,
-            originalKeysCount: Object.keys(data).length,
-            flattenedKeysCount: Object.keys(flattened).length,
-            data: flattened
-        });
-    } catch (error) {
-        return res.status(500).json({ error: 'Friture dans le traitement du payload JSON.' });
-    }
-});
-
-// =========================================================================
-// // RUNTIME ACTIVATION HOOK (DÉMARRAGE DU RÉACTEUR)
-// =========================================================================
-
-app.use((req, res) => {
-    res.status(404).json({ error: "RESOURCE_NOT_FOUND", message: "Sterile node isolation active." });
-});
-
+// ==========================================
+// ⚡ DEMARRAGE DU CORE UNIVERSEL
+// ==========================================
 app.listen(PORT, () => {
-    console.log("=================================================================");
-    console.log(`[🚀 LAUNCH] 00_MASTERBOILERPLATE_V6 deployed successfully.`);
-    console.log(`[🛰️ ROUTER] Running locally on: http://localhost:${PORT}`);
-    console.log(`[🔒 SECURITY] Ready for Escalier Launch sequence deployment.`);
-    console.log("=================================================================");
+    console.log(`[⚙️ ENGINE ACTIVE] Constellation running flawlessly on Port ${PORT}`);
 });
