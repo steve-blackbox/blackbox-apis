@@ -30,23 +30,23 @@ app.get('/', (req, res) => {
 });
 
 // ==========================================
-// 🚀 ROUTAGE DIRECT RE-ALIGNE SUR L'ÉCRAN DE STEVE
+// 🚀 ROUTAGE DIRECT CORRIGE (REMONTEE AU DOSSIER PARENT)
 // ==========================================
 
 // Robot 01 : Asset Shrink Pro
-app.use('/v1/asset-shrink', require('./asset_shrink'));
+app.use('/v1/asset-shrink', require('../asset_shrink'));
 
 // Robot 02 : Exif Cloak Utility
-app.use('/v1/exif-cloak', require('./exif_cloak'));
+app.use('/v1/exif-cloak', require('../exif_cloak'));
 
 // Robot 03 : Link Purge Master
-app.use('/v1/link-purge', require('./link-purge'));
+app.use('/v1/link-purge', require('../link-purge'));
 
 // Robot 04 : JSON Flatten Ultra
-app.use('/v1/json-flatten', require('./json_flatten'));
+app.use('/v1/json-flatten', require('../json_flatten'));
 
 // Robot 05 : SVG Strip Core
-app.use('/v1/svg-strip', require('./svg_strip'));
+app.use('/v1/svg-strip', require('../svg_strip'));
 
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
