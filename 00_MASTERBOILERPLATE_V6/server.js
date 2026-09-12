@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 });
 
 // ==========================================
-// 🚀 ROUTAGE DIRECT ALIGNÉ À LA RACINE DU SERVICE
+// 🚀 ROUTAGE DIRECT ALIGNÉ À LA RACINE (AVEC PARADE DE SÉCURITÉ DES NOMS)
 // ==========================================
 
 // Robot 01 : Asset Shrink Pro
@@ -39,14 +39,26 @@ app.use('/v1/asset-shrink', require('./asset_shrink'));
 // Robot 02 : Exif Cloak Utility
 app.use('/v1/exif-cloak', require('./exif_cloak'));
 
-// Robot 03 : Link Purge Master
-app.use('/v1/link-purge', require('./link-purge'));
+// Robot 03 : Link Purge Master (Tolérance tiret du bas)
+try {
+    app.use('/v1/link-purge', require('./link_purge'));
+} catch (e) {
+    app.use('/v1/link-purge', require('./link-purge'));
+}
 
-// Robot 04 : JSON Flatten Ultra
-app.use('/v1/json-flatten', require('./json_flatten'));
+// Robot 04 : JSON Flatten Ultra (Tolérance tiret du bas)
+try {
+    app.use('/v1/json-flatten', require('./json_flatten'));
+} catch (e) {
+    app.use('/v1/json-flatten', require('./json-flatten'));
+}
 
-// Robot 05 : SVG Strip Core
-app.use('/v1/svg-strip', require('./svg_strip'));
+// Robot 05 : SVG Strip Core (Tolérance tiret du bas)
+try {
+    app.use('/v1/svg-strip', require('./svg_strip'));
+} catch (e) {
+    app.use('/v1/svg-strip', require('./svg-strip'));
+}
 
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
