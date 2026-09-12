@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECURE-FILE-LINK™ | Secure B2B Media Distribution Vault</title>
+    <style>
+        :root {
+            --bg: #030712;
+            --surface: #0b1329;
+            --border: #1f293d;
+            --text: #f3f4f6;
+            --muted: #9ca3af;
+            --vault-orange: #f97316;
+            --vault-orange-alt: #ea580c;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            max-width: 650px;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff 0%, var(--vault-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bento-grid {
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .bento-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 35px;
+            box-sizing: border-box;
+        }
+        .card-hero {
+            grid-column: span 3;
+            text-align: center;
+            background: linear-gradient(180deg, #0b1329 0%, rgba(249, 115, 22, 0.02) 100%);
+            border: 1px solid rgba(249, 115, 22, 0.15);
+        }
+        .card-feature { grid-column: span 1; }
+        .card-pricing {
+            grid-column: span 3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid rgba(249, 115, 22, 0.1);
+        }
+        .price-box {
+            background: #111827;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            min-width: 180px;
+        }
+        h3 { font-size: 1.3rem; margin-top: 0; color: #fff; }
+        .price { font-size: 2.2rem; font-weight: 900; color: var(--vault-orange); margin: 10px 0; }
+        .btn {
+            background-color: var(--vault-orange);
+            color: #000;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .btn:hover { background-color: var(--vault-orange-alt); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📦 SECURE-FILE-LINK™</h1>
+        <p>Protect your digital assets behind a password-gated vault link before delivering to clients. Simple, automated, and secure.</p>
+    </div>
+
+    <div class="bento-grid">
+        <div class="bento-card card-hero">
+            <div style="font-size: 2.5rem; margin-bottom: 15px;">🔒</div>
+            <h3>Military-Grade Asset Isolation for Studios</h3>
+            <p style="color: var(--muted); max-width: 650px; margin: 0 auto; line-height: 1.6;">
+                Stop sending open, unprotected links to clients. SECURE-FILE-LINK™ lets digital professionals and agencies upload photography, tracks, and contracts into an isolated vault that only clients with your dynamic credentials can open.
+            </p>
+        </div>
+
+        <div class="bento-card card-feature">
+            <h3>🛡️ Pure Isolation</h3>
+            <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.5;">Accountless download for clients. No signup forms, no friction.</p>
+        </div>
+
+        <div class="bento-card card-feature">
+            <h3>📉 0€ Cloud Overhead</h3>
+            <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.5;">Operates purely through local framework allocations. Infinite scaling.</p>
+        </div>
+
+        <div class="bento-card card-feature">
+            <h3>⏱️ Volatile Cleanup</h3>
+            <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.5;">Automated trash pruning script triggers once files are safely downloaded.</p>
+        </div>
+
+        <div class="card-pricing bento-card">
+            <div style="max-width: 450px;">
+                <h3>Choose your asset delivery armory</h3>
+                <p style="color: var(--muted); margin: 5px 0 0 0;">One-time investment. Subscription-less, high-yield pipeline.</p>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <div class="price-box">
+                    <h4 style="margin: 0; color: var(--muted); font-size: 0.9rem;">Studio Solo</h4>
+                    <div class="price">39 €</div>
+                    <button class="btn" onclick="buyLicence('solo')">Activate</button>
+                </div>
+                <div class="price-box">
+                    <h4 style="margin: 0; color: var(--muted); font-size: 0.9rem;">Agency Premium</h4>
+                    <div class="price">149 €</div>
+                    <button class="btn" onclick="buyLicence('agence')">Activate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 73)) e.preventDefault();
+        });
+
+        function buyLicence(type) {
+            const email = prompt("Enter your email address to receive your SECURE-FILE-LINK™ dynamic key:");
+            if (!email) return;
+
+            fetch('/api/checkout/create-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customerEmail: email, type: type })
+            })
+            .then(res => res.json())
+            .then(data => { window.location.href = data.url; })
+            .catch(() => alert("Stripe checkout bypass failure."));
+        }
+    </script>
+</body>
+</html>

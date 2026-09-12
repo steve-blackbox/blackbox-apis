@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBHOOK-RETRY-SHIELD™ | Redondance et Protection de Webhooks E-commerce</title>
+    <style>
+        :root {
+            --bg: #05070f;
+            --surface: #0b1120;
+            --border: #1e293b;
+            --text: #f8fafc;
+            --muted: #64748b;
+            --shield-cyan: #06b6d4;
+            --shield-cyan-alt: #0891b2;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            max-width: 650px;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 15px;
+            color: #fff;
+            background: linear-gradient(135deg, #fff 0%, var(--shield-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bento-grid {
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .bento-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 35px;
+            box-sizing: border-box;
+        }
+        .card-hero {
+            grid-column: span 3;
+            text-align: center;
+            background: linear-gradient(180deg, #0b1120 0%, rgba(6, 182, 212, 0.02) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+        }
+        .card-feature {
+            grid-column: span 1;
+        }
+        .card-pricing {
+            grid-column: span 3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid rgba(6, 182, 212, 0.1);
+        }
+        .price-box {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            min-width: 180px;
+        }
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 0;
+            color: #fff;
+            letter-spacing: -0.03em;
+        }
+        .price {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--shield-cyan);
+            margin: 10px 0;
+        }
+        .btn {
+            background-color: var(--shield-cyan);
+            color: #000;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: var(--shield-cyan-alt);
+        }
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🛡️ WEBHOOK-RETRY-SHIELD™</h1>
+        <p>Ne perdez plus jamais une seule commande e-commerce à cause d'un serveur en panne. Interceptez et sécurisez vos webhooks Stripe & PayPal instantanément.</p>
+    </div>
+
+    <div class="bento-grid">
+        <div class="bento-card card-hero">
+            <div class="icon">🔄</div>
+            <h3>Tampon de Redondance Automatique pour Marchands</h3>
+            <p style="color: var(--muted); max-width: 650px; margin: 0 auto; line-height: 1.6;">
+                Quand votre serveur crash sous la charge, les signaux de paiement Stripe échouent. Vos clients sont débités mais non livrés. WEBHOOK-RETRY-SHIELD™ sert d'amortisseur binaire : il intercepte le signal, le stocke et réessaie l'injection toutes les minutes jusqu'à la réouverture de votre soute.
+            </p>
+        </div>
+
+        <div class="bento-card card-feature">
+            <h3>🛡️ Isolation Pure</h3>
+            <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.5;">Stockage tampon temporaire en mémoire volatile. Zéro fuite de données et sécurité maximale.</p>
+        </div>
+
+        <div class="bento-card card-feature">
+            <h3>📉 0€ Frais Tiers</h3>
+            <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.5;">Aucune API IA payante. Notre script utilise exclusivement la puissance brute de votre Node.js local [23context].</p>
+        </div>
+
+        <div class="bento-card card-feature">
+            <h3>📦 Zéro SAV</h3>
+            <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.5;">Conçu de manière stérile. Une fois l'URL Stripe redirigée, l'outil fonctionne de manière 100% autonome [23context].</p>
+        </div>
+
+        <div class="card-pricing bento-card">
+            <div style="max-width: 450px;">
+                <h3>Sécurisez l'infrastructure de votre boutique</h3>
+                <p style="color: var(--muted); margin: 5px 0 0 0;">Choisissez votre licence d'armure réseau. Installation clinique en 2 minutes d'un seul jet.</p>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <div class="price-box">
+                    <h4 style="margin: 0; color: var(--muted); font-size: 0.9rem;">Pack Single</h4>
+                    <div class="price">79 €</div>
+                    <button class="btn" onclick="buyLicence('solo')">Activer</button>
+                </div>
+                <div class="price-box">
+                    <h4 style="margin: 0; color: var(--muted); font-size: 0.9rem;">Pack Unlimited</h4>
+                    <div class="price">199 €</div>
+                    <button class="btn" onclick="buyLicence('agence')">Activer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 73)) e.preventDefault();
+        });
+
+        function buyLicence(type) {
+            const email = prompt("Entrez votre adresse e-mail pour recevoir votre clé d'armure WEBHOOK-RETRY-SHIELD™ :");
+            if (!email) return;
+
+            fetch('/api/checkout/create-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customerEmail: email, type: type })
+            })
+            .then(res => res.json())
+            .then(data => { window.location.href = data.url; })
+            .catch(() => alert("Erreur de soute financière."));
+        }
+    </script>
+</body>
+</html>
