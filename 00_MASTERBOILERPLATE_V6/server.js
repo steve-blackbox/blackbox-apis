@@ -30,23 +30,23 @@ app.get('/', (req, res) => {
 });
 
 // ==========================================
-// 🚀 ROUTAGE DIRECT : VAGUE 01 (ROBOTS 01 À 05)
+// 🚀 ROUTAGE DIRECT RE-ALIGNE SUR L'ÉCRAN DE STEVE
 // ==========================================
 
-// Robot 01 : Code Shield Utility (Validateur & Obfuscateur Léger)
-app.use('/v1/code-shield', require('./robots/robot01/index'));
+// Robot 01 : Asset Shrink Pro
+app.use('/v1/asset-shrink', require('./asset_shrink'));
 
-// Robot 02 : Payload Compressor (Optimiseur de données d'API)
-app.use('/v1/payload-compress', require('./robots/robot02/index'));
+// Robot 02 : Exif Cloak Utility
+app.use('/v1/exif-cloak', require('./exif_cloak'));
 
-// Robot 03 : Audio Converter Master (Optimiseur de soute WAVE/MP3)
-app.use('/v1/audio-convert', require('./robots/robot03/index'));
+// Robot 03 : Link Purge Master
+app.use('/v1/link-purge', require('./link-purge'));
 
-// Robot 04 : Meta Stripper Pro (Purgeur de métadonnées propres)
-app.use('/v1/meta-stripper', require('./robots/robot04/index'));
+// Robot 04 : JSON Flatten Ultra
+app.use('/v1/json-flatten', require('./json_flatten'));
 
-// Robot 05 : JSON Flattener Ultra (Compresseur de structures)
-app.use('/v1/json-flatten', require('./robots/robot05/index'));
+// Robot 05 : SVG Strip Core
+app.use('/v1/svg-strip', require('./svg_strip'));
 
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
