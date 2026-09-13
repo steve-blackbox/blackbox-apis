@@ -1,10 +1,13 @@
 /**
  * 🤖 BLACKBOX ROBOT AUTOMATE — CORE ENGINE 01
  * 🛡️ SERVICE : FORM-SHIELD INTERCEPTOR
- * 💎 MOULE INDUSTRIEL D'ÉLITE V1 — 100% APPARENT
+ * 💎 MOULE INDUSTRIEL D'ÉLITE V1 — 100% APPARENT & LOGGÉ
  */
 const express = require('express');
 const router = express.Router();
+
+// 📢 INJECTEUR SUPRÊME POUR APPARAÎTRE DANS LES LOGS DE RENDER AVEC LES AUTRES ROBOTS
+console.log("[⚙️ ENGINE] Robot 01 Form-Shield local worker loaded.");
 
 router.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
