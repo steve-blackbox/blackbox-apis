@@ -293,8 +293,8 @@ function executeStripeRouting(planType) {
 
     console.log(`[🚀 COMMUTATION STRIPE] Lancement du tunnel de capture pour : ${targetPriceId}`);
 
-    // Frappe chirurgicale directe sur ton API en production Render
-    fetch('https://blackbox-apis.com', {
+    // 🔥 FETCH EN CHEMIN RELATIF POUR COURT-CIRCUITER LES ALERTES CORS DU NAVIGATEUR
+    fetch('/v1/checkout/create-session', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
