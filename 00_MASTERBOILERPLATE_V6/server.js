@@ -1,6 +1,6 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V6 — ZERO-OPS EPHEMERE
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V7 — ZERO-OPS EPHEMERE
  * 🔒 INJECTEURS STRIPE LIVE VERROUILLÉS AU COFFRE
  */
 
@@ -24,8 +24,11 @@ app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Server Availability Indicator (The Root Badge)
-app.get('/', (req, res) => {
+// 📦 LIAISON DYNAMIQUE DE LA CARROSSERIE VISUELLE (DOSSIER PUBLIC)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Server Availability Indicator (Bypassed by static frontend if index.html exists)
+app.get('/health', (req, res) => {
     res.status(200).send('HELLO, WORLD! BLACKBOX AUDIO LABS IS LIVE TO THE PLANET.');
 });
 
@@ -58,8 +61,8 @@ app.post('/v1/checkout/create-session', async (req, res) => {
             payment_method_types: ['card'],
             line_items: [{ price: priceId, quantity: 1 }],
             mode: 'payment',
-            success_url: successUrl,
-            cancel_url: cancelUrl,
+            success_url: successUrl || 'https://blackbox-apis.com',
+            cancel_url: cancelUrl || 'https://blackbox-apis.com',
         });
         res.status(200).json({ id: session.id, url: session.url });
     } catch (error) {
