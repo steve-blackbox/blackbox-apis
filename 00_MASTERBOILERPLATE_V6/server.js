@@ -102,7 +102,7 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        from: 'BlackBox Control <onboarding@resend.dev>',
+                        from: 'BlackBox Control <control@blackbox-apis.com>',
                         to: customerEmail,
                         subject: '🔴 BlackBox Infrastructure Access Granted — API Ecosystem',
                         html: `
