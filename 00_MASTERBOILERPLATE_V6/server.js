@@ -1,7 +1,7 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V7 — ZERO-OPS EPHEMERE
- * 🔒 INJECTEURS STRIPE LIVE VERROUILLÉS AU COFFRE
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V8 — ZERO-OPS EPHEMERE
+ * 🔒 INJECTEURS STRIPE LIVE VERROUILLÉS DYNAMIQUEMENT AU CLIC
  */
 
 const express = require('express');
@@ -13,10 +13,6 @@ const Stripe = require('stripe');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Initialize Stripe Engine with Secure Environment Variables
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY || '';
-const stripe = new Stripe(stripeSecretKey);
-
 // ==========================================
 // 🛡️ MIDDLEWARES GLOBAUX DE SOUTE
 // ==========================================
@@ -27,9 +23,9 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // 📦 LIAISON DYNAMIQUE DE LA CARROSSERIE VISUELLE (DOSSIER PUBLIC)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Server Availability Indicator (Bypassed by static frontend if index.html exists)
+// Server Availability Indicator
 app.get('/health', (req, res) => {
-    res.status(200).send('HELLO, WORLD! BLACKBOX AUDIO LABS IS LIVE TO THE PLANET.');
+    res.status(200).send('HELLO, WORLD! BLACKBOX AUDIO LABS IS LIVE.');
 });
 
 // ==========================================
@@ -51,12 +47,19 @@ app.use('/v3/yaml-json-converter', require('./yaml_json_converter'));
 app.use('/v3/mock-generator', require('./mock_generator'));
 
 // ==========================================
-// 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
+// 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE (DYNAMIC INITIALIZATION)
 // ==========================================
 app.post('/v1/checkout/create-session', async (req, res) => {
     const { priceId, successUrl, cancelUrl } = req.body;
     
     try {
+        // 🔒 Extraction de la clé secrète en direct de la soute Render à la milliseconde
+        const secureKey = process.env.STRIPE_SECRET_KEY || '';
+        if (!secureKey) throw new Error("Stripe Private Key is empty in Render Dashboard Environment.");
+        
+        // Initialisation à chaud
+        const stripe = new Stripe(secureKey);
+        
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [{ price: priceId, quantity: 1 }],
@@ -64,8 +67,10 @@ app.post('/v1/checkout/create-session', async (req, res) => {
             success_url: successUrl || 'https://blackbox-apis.com',
             cancel_url: cancelUrl || 'https://blackbox-apis.com',
         });
+        
         res.status(200).json({ id: session.id, url: session.url });
     } catch (error) {
+        console.error("[🚨 STRIPE CRASH]", error.message);
         res.status(500).json({ error: error.message });
     }
 });
