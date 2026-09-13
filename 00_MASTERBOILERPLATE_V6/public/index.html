@@ -204,59 +204,51 @@
 <body>
 
 <div class="container">
-    <!-- TOP HEADER -->
     <div class="header-section">
         <div>
-            <div class="subtitle">Asset Fleet Ecosystem</div>
+            <div class="subtitle">Secure API Ecosystem</div>
             <div class="title">BLACKBOX AUTOMATED CONTROL</div>
         </div>
         <div class="status-badge">● All Systems Sterile</div>
     </div>
 
-    <!-- HORIZONTAL ROBOTS NAV -->
     <div class="nav-grid">
-        <div class="nav-btn active" onclick="switchRobot('robot01', this)">Robot 01: Form Shield</div>
-        <div class="nav-btn" onclick="switchRobot('robot02', this)">Robot 02: Audio Convert</div>
-        <div class="nav-btn" onclick="switchRobot('robot03', this)">Robot 03: Studio Vault</div>
-        <div class="nav-btn" onclick="switchRobot('robot04', this)">Robot 04: Link Cloak</div>
-        <div class="nav-btn" onclick="switchRobot('robot05', this)">Robot 05: Webhook Shield</div>
+        <div class="nav-btn active" onclick="switchRobot('robot01', this)">Form Shield</div>
+        <div class="nav-btn" onclick="switchRobot('robot02', this)">Audio Convert</div>
+        <div class="nav-btn" onclick="switchRobot('robot03', this)">Studio Vault</div>
+        <div class="nav-btn" onclick="switchRobot('robot04', this)">Link Cloak</div>
+        <div class="nav-btn" onclick="switchRobot('robot05', this)">Webhook Shield</div>
     </div>
 
-    <!-- BENTO BLOCKS ARSENAL -->
     <main class="bento-grid">
-        <!-- HERO MAIN CARD -->
         <div class="bento-card col-span-2">
-            <div class="engine-tag" id="robot-engine">[ CORE ENGINE 01 ]</div>
+            <div class="engine-tag" id="robot-engine">[ SECURITY LAYER ACTIVE ]</div>
             <h1 class="hero-title" id="robot-title">Stop Form Spam Silently.<br>No Captchas. No Friction.</h1>
             <p class="hero-desc" id="robot-desc">A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.</p>
         </div>
 
-        <!-- FEATURE CARD 01 -->
         <div class="bento-card">
             <div class="card-icon" id="feat1-icon">🛡️</div>
             <h2 class="card-title" id="feat1-title">GDPR & CCPA Layer</h2>
             <p class="card-desc" id="feat1-desc">Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.</p>
         </div>
 
-        <!-- FEATURE CARD 02 -->
         <div class="bento-card">
             <div class="card-icon" id="feat2-icon">⚡</div>
             <h2 class="card-title" id="feat2-title">Performance Matrix</h2>
             <p class="card-desc" id="feat2-desc">Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.</p>
         </div>
 
-        <!-- LOWER COMMERCIAL LICENSING GATEWAY -->
         <div class="bento-card col-span-2">
             <div class="pricing-header-flex">
                 <div>
-                    <div class="pricing-section-title" id="pricing-target">[ GATEWAY TARGET: ROBOT 01 ]</div>
-                    <h3 class="pricing-main-title" id="pricing-title">Deploy FORM-SHIELD Commercial License</h3>
+                    <div class="pricing-section-title" id="pricing-target">[ TARGET INFRASTRUCTURE: FORM-SHIELD ]</div>
+                    <h3 class="pricing-main-title" id="pricing-title">Deploy Commercial License</h3>
                 </div>
                 <div class="pricing-tag">One-Time Acquisition</div>
             </div>
 
             <div class="pricing-grid">
-                <!-- ACCÈS PLAN SOLO -->
                 <div class="pricing-btn" onclick="triggerStripeCheckout('solo')">
                     <div class="btn-header">
                         <span class="btn-title">Solo License</span>
@@ -265,7 +257,6 @@
                     <p class="btn-collapse" id="desc-solo-tag">Single target domain execution layer.</p>
                 </div>
 
-                <!-- ACCÈS PLAN AGENCY -->
                 <div class="pricing-btn" onclick="triggerStripeCheckout('agency')">
                     <div class="btn-header">
                         <span class="btn-title">Agency Fleet</span>
@@ -282,63 +273,68 @@
         <p>Verified Centaure Engine v6.7 — USD Compliant</p>
     </footer>
 </div>
-<!-- ⚡ LOGIQUE DYNAMIQUE SPA & ROUTAGE COMMERCIAL STRIPE -->
+<!-- ⚡ LOGIQUE DYNAMIQUE SPA & ROUTAGE COMMERCIAL STRIPE LIVE PRODUCTION -->
 <script>
 const fleetDatabase = {
     robot01: {
-        engine: "[ CORE ENGINE 01 ]",
+        engine: "[ SECURITY LAYER ACTIVE ]",
         title: "Stop Form Spam Silently.<br>No Captchas. No Friction.",
         desc: "A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.",
         feat1_icon: "🛡️", feat1_title: "GDPR & CCPA Layer", feat1_desc: "Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.",
         feat2_icon: "⚡", feat2_title: "Performance Matrix", feat2_desc: "Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.",
-        pricing_target: "[ GATEWAY TARGET: ROBOT 01 ]", pricing_title: "Deploy FORM-SHIELD Commercial License",
+        pricing_target: "[ TARGET INFRASTRUCTURE: FORM-SHIELD ]", pricing_title: "Deploy Commercial License",
         price_solo: "49$", desc_solo: "Single target domain execution layer.",
         price_agency: "149$", desc_agency: "Unlimited client domains deployment.",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        stripe_solo: "price_1UFEcFAQxUv6pdHq1u7dzKdt", // FORM SHIELD SOLO 49$
+        stripe_agency: "price_1UFEcjAQxUv6pdHqqcXxFBzQ" // FORM SHIELD AGENCY 149$
     },
     robot02: {
-        engine: "[ CORE ENGINE 02 ]",
+        engine: "[ TRANSDUCTION CODEC ACTIVE ]",
         title: "High-Fidelity Audio Compression.<br>Zero Quality Loss.",
         desc: "Automated server-side audio transduction codec designed to compress raw studio tracks up to 75% without compromising bit-depth.",
         feat1_icon: "🎛️", feat1_title: "Lossless Bit-Depth", feat1_desc: "Maintains 24-bit studio precision across mass MP3/WAV export operations.",
         feat2_icon: "🚀", feat2_title: "Centaure Speed Matrix", feat2_desc: "Processes multi-gigabyte audio directories natively in parallel threads inside Render.",
-        pricing_target: "[ GATEWAY TARGET: ROBOT 02 ]", pricing_title: "Deploy AUDIO-CONVERT Commercial License",
+        pricing_target: "[ TARGET INFRASTRUCTURE: AUDIO-CONVERT ]", pricing_title: "Deploy Commercial License",
         price_solo: "59$", desc_solo: "Single audio stream pipeline processing.",
         price_agency: "179$", desc_agency: "Unlimited enterprise studio pipelines.",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        stripe_solo: "price_1UFETvAQxUv6pdHqRB5tCUcz", // AUDIO CONVERT SOLO 59$
+        stripe_agency: "price_1UFETvAQxUv6pdHqcoH4Zzze" // AUDIO CONVERT AGENCY 179$
     },
     robot03: {
-        engine: "[ CORE ENGINE 03 ]",
+        engine: "[ AES-256 COLD VAULT LAYER ]",
         title: "Secure Studio Vault Storage.<br>Encrypted Cold Backup.",
         desc: "Military-grade encryption layout engineered to quarantine and archive multi-track sessions with zero threat vector entry points.",
         feat1_icon: "🔒", feat1_title: "AES-256 Vault Layer", feat1_desc: "Every binary block is isolated and double-hashed before leaving your Mac Mini node.",
         feat2_icon: "🛰️", feat2_title: "Instant Retrieval", feat2_desc: "Zero egress fees. Pull your master tracks down to production in less than 4 seconds flat.",
-        pricing_target: "[ GATEWAY TARGET: ROBOT 03 ]", pricing_title: "Deploy STUDIO-VAULT Commercial License",
+        pricing_target: "[ TARGET INFRASTRUCTURE: STUDIO-VAULT ]", pricing_title: "Deploy Commercial License",
         price_solo: "79$", desc_solo: "Up to 500GB encrypted cloud backup.",
         price_agency: "249$", desc_agency: "Unlimited multi-tenant fleet storage blocks.",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        stripe_solo: "price_1UFEdyAQxUv6pdHqXKUkpCZI", // STUDIO VAULT SOLO 79$
+        stripe_agency: "price_1UFEeRAQxUv6pdHqz7VnTcGG" // STUDIO VAULT AGENCY 249$
     },
     robot04: {
-        engine: "[ CORE ENGINE 04 ]",
+        engine: "[ DYNAMIC TRAFFIC CLOAKING ]",
         title: "Invisible Link Cloak Router.<br>Bypass Ad-Blockers Safely.",
         desc: "Dynamic link wrapper layout engineered to obfuscate tracking flags upstream and deliver affiliate assets perfectly.",
         feat1_icon: "🎭", feat1_title: "Polymorphic URLs", feat1_desc: "Changes link fingerprints dynamically on every client view to evade detection blocks.",
         feat2_icon: "📉", feat2_title: "True Native Analytics", feat2_desc: "Captures raw acquisition data transparently without dropping cookies.",
-        pricing_target: "[ GATEWAY TARGET: ROBOT 04 ]", pricing_title: "Deploy LINK-CLOAK Commercial License",
+        pricing_target: "[ TARGET INFRASTRUCTURE: LINK-CLOAK ]", pricing_title: "Deploy Commercial License",
         price_solo: "39$", desc_solo: "Up to 10,000 monthly masked redirects.",
         price_agency: "119$", desc_agency: "Unlimited high-frequency marketing fleets.",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        stripe_solo: "price_1UFEfYAQxUv6pdHqmSgNbcgb", // LINK CLOAK SOLO 39$
+        stripe_agency: "price_1UFEfxAQxUv6pdHqyBlhAVSJ" // LINK CLOAK AGENCY 119$
     },
     robot05: {
-        engine: "[ CORE ENGINE 05 ]",
+        engine: "[ VELOCITY PROXY ACTIVE ]",
         title: "Webhook Shield Proxy Layer.<br>DDoS Automated Interception.",
         desc: "High-velocity proxy buffer engineered to swallow corrupted payloads before they touch your internal web servers.",
         feat1_icon: "🧱", feat1_title: "Burst Rate Limiting", feat1_desc: "Absorbs sudden transaction surges up to 5,000 requests per millisecond natively.",
         feat2_icon: "🧬", feat2_title: "Payload Validation", feat2_desc: "Verifies HMAC signature byte-arrays upstream with zero pipeline overhead.",
-        pricing_target: "[ GATEWAY TARGET: ROBOT 05 ]", pricing_title: "Deploy WEBHOOK-SHIELD Commercial License",
+        pricing_target: "[ TARGET INFRASTRUCTURE: WEBHOOK-SHIELD ]", pricing_title: "Deploy Commercial License",
         price_solo: "69$", desc_solo: "Single gateway protection node layout.",
         price_agency: "199$", desc_agency: "Unlimited client infrastructure proxy meshes.",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        stripe_solo: "price_1UFEh2AQxUv6pdHqmJGYuC96", // WEBHOOK SHIELD SOLO 69$
+        stripe_agency: "price_1UFEhOAQxUv6pdHqVvW2NqVn" // WEBHOOK SHIELD AGENCY 199$
     }
 };
 
@@ -371,14 +367,14 @@ function switchRobot(robotKey, element) {
     document.getElementById('price-agency-tag').innerText = data.price_agency;
     document.getElementById('desc-agency-tag').innerText = data.desc_agency;
 
-    console.log(`[🤖 ENGINE SWITCH] Passage sur l'interface : ${robotKey}`);
+    console.log(`[🚀 CONFIG COMPUTE] Alignement reussi : ${robotKey}`);
 }
 
 function triggerStripeCheckout(planType) {
     const data = fleetDatabase[activeRobotKey];
     const targetPriceId = planType === 'solo' ? data.stripe_solo : data.stripe_agency;
 
-    console.log(`[🚀 COMMUTATION DYNAMIQUE] Tunnel Stripe lancé pour ${activeRobotKey} (${planType}) ➔ ${targetPriceId}`);
+    console.log(`[🚀 TUNNEL] Lancement Stripe Checkout live ➔ ${targetPriceId}`);
 
     fetch('/v1/checkout/create-session', {
         method: 'POST',
@@ -390,15 +386,15 @@ function triggerStripeCheckout(planType) {
         })
     })
     .then(response => {
-        if (!response.ok) throw new Error('Erreur réseau.');
+        if (!response.ok) throw new Error('Erreur de soute.');
         return response.json();
     })
     .then(session => {
         if (session.url) window.location.href = session.url;
-        else alert("Erreur session Stripe.");
+        else alert("Session Stripe indisponible.");
     })
     .catch(error => {
-        alert("Le serveur de soute est en cours de redémarrage. Réessayez dans 10 secondes.");
+        alert("Action indisponible pour le moment.");
     });
 }
 </script>
