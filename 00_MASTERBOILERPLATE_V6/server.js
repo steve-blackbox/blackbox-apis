@@ -30,35 +30,22 @@ app.get('/', (req, res) => {
 });
 
 // ==========================================
-// 🚀 ROUTAGE DIRECT ALIGNÉ À LA RACINE (AVEC PARADE DE SÉCURITÉ DES NOMS)
+// 🚀 ROUTAGE DIRECT : VAGUE 01 (ROBOTS 01 À 05)
 // ==========================================
-
-// Robot 01 : Asset Shrink Pro
 app.use('/v1/asset-shrink', require('./asset_shrink'));
-
-// Robot 02 : Exif Cloak Utility
 app.use('/v1/exif-cloak', require('./exif_cloak'));
+try { app.use('/v1/link-purge', require('./link_purge')); } catch (e) { app.use('/v1/link-purge', require('./link-purge')); }
+try { app.use('/v1/json-flatten', require('./json_flatten')); } catch (e) { app.use('/v1/json-flatten', require('./json-flatten')); }
+try { app.use('/v1/svg-strip', require('./svg_strip')); } catch (e) { app.use('/v1/svg-strip', require('./svg-strip')); }
 
-// Robot 03 : Link Purge Master (Tolérance tiret du bas)
-try {
-    app.use('/v1/link-purge', require('./link_purge'));
-} catch (e) {
-    app.use('/v1/link-purge', require('./link-purge'));
-}
-
-// Robot 04 : JSON Flatten Ultra (Tolérance tiret du bas)
-try {
-    app.use('/v1/json-flatten', require('./json_flatten'));
-} catch (e) {
-    app.use('/v1/json-flatten', require('./json-flatten'));
-}
-
-// Robot 05 : SVG Strip Core (Tolérance tiret du bas)
-try {
-    app.use('/v1/svg-strip', require('./svg_strip'));
-} catch (e) {
-    app.use('/v1/svg-strip', require('./svg-strip'));
-}
+// ==========================================
+// 🚀 ROUTAGE DIRECT : VAGUE 03 (ROBOTS 11 À 15)
+// ==========================================
+app.use('/v3/html-extractor', require('./html_extractor'));
+app.use('/v3/text-tokenizer', require('./text_tokenizer'));
+app.use('/v3/csv-dedupe', require('./csv_dedupe'));
+app.use('/v3/yaml-json-converter', require('./yaml_json_converter'));
+app.use('/v3/mock-generator', require('./mock_generator'));
 
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
