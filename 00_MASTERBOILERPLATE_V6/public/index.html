@@ -204,7 +204,6 @@
 <body>
 
 <div class="container">
-    <!-- TOP HEADER -->
     <div class="header-section">
         <div>
             <div class="subtitle">Secure API Ecosystem</div>
@@ -213,7 +212,6 @@
         <div class="status-badge">● All Systems Sterile</div>
     </div>
 
-    <!-- HORIZONTAL ROBOTS NAV -->
     <div class="nav-grid">
         <div class="nav-btn active" onclick="switchRobot('robot01', this)">Form Shield</div>
         <div class="nav-btn" onclick="switchRobot('robot02', this)">Audio Convert</div>
@@ -222,56 +220,49 @@
         <div class="nav-btn" onclick="switchRobot('robot05', this)">Webhook Shield</div>
     </div>
 
-    <!-- BENTO BLOCKS ARSENAL -->
     <main class="bento-grid">
-        <!-- HERO MAIN CARD -->
         <div class="bento-card col-span-2">
-            <div class="engine-tag" id="robot-engine">[ SÉCURITÉ FORMULAIRES ACTIVE ]</div>
-            <h1 class="hero-title" id="robot-title">Bloquez 100% des Spams de Formulaires.<br>Sans Aucun Captcha. Sans Friction.</h1>
-            <p class="hero-desc" id="robot-desc">Une protection invisible en JavaScript qui intercepte les robots et spameurs avant qu'ils ne polluent votre boîte mail ou votre base de données. Vos vrais clients ne voient rien et n'ont pas besoin de cocher des images de feux de signalisation.</p>
+            <div class="engine-tag" id="robot-engine">[ FORM INTERCEPTION ACTIVE ]</div>
+            <h1 class="hero-title" id="robot-title">Block 100% of Form Spam.<br>Zero Captchas. Zero Friction.</h1>
+            <p class="hero-desc" id="robot-desc">An invisible JavaScript protection layer that intercepts automated bots and malicious spammers before they contaminate your database or inbox. Real users experience zero friction—no annoying traffic lights or crosswalk images to click.</p>
         </div>
 
-        <!-- FEATURE CARD 01 -->
         <div class="bento-card">
             <div class="card-icon" id="feat1-icon">🛡️</div>
             <h2 class="card-title" id="feat1-title">100% Invisible</h2>
-            <p class="card-desc" id="feat1-desc">Aucun impact visuel pour l'utilisateur. Vos conversions augmentent, les spams disparaissent.</p>
+            <p class="card-desc" id="feat1-desc">Zero visual impact for the user. Boost your conversion rates while keeping spambots out.</p>
         </div>
 
-        <!-- FEATURE CARD 02 -->
         <div class="bento-card">
             <div class="card-icon" id="feat2-icon">⚡</div>
-            <h2 class="card-title" id="feat2-title">Performance Maximale</h2>
-            <p class="card-desc" id="feat2-desc">Un script ultra-léger de 1.2 Ko qui ne ralentit pas votre site web (Optimisé Google Core Web Vitals).</p>
+            <h2 class="card-title" id="feat2-title">High Performance</h2>
+            <p class="card-desc" id="feat2-desc">Ultra-lightweight 1.2 KB script with zero pipeline overhead. Engineered for optimal Core Web Vitals.</p>
         </div>
 
-        <!-- LOWER COMMERCIAL LICENSING GATEWAY -->
         <div class="bento-card col-span-2">
             <div class="pricing-header-flex">
                 <div>
-                    <div class="pricing-section-title" id="pricing-target">[ SOLUTION : FORM-SHIELD ]</div>
-                    <h3 class="pricing-main-title" id="pricing-title">Activer la Licence Commerciale</h3>
+                    <div class="pricing-section-title" id="pricing-target">[ CORE ENGINE : FORM-SHIELD ]</div>
+                    <h3 class="pricing-main-title" id="pricing-title">Activate Commercial License</h3>
                 </div>
                 <div class="pricing-tag">One-Time Acquisition</div>
             </div>
 
             <div class="pricing-grid">
-                <!-- ACCÈS PLAN SOLO -->
                 <div class="pricing-btn" onclick="triggerStripeCheckout('solo')">
                     <div class="btn-header">
                         <span class="btn-title">Solo License</span>
                         <span class="btn-price" id="price-solo-tag">49$</span>
                     </div>
-                    <p class="btn-collapse" id="desc-solo-tag">Licence Solo : Pour 1 site internet (Mise à jour à vie).</p>
+                    <p class="btn-collapse" id="desc-solo-tag">Solo License: Valid for 1 production domain (Lifetime updates).</p>
                 </div>
 
-                <!-- ACCÈS PLAN AGENCY -->
                 <div class="pricing-btn" onclick="triggerStripeCheckout('agency')">
                     <div class="btn-header">
                         <span class="btn-title">Agency Fleet</span>
                         <span class="btn-price" id="price-agency-tag">149$</span>
                     </div>
-                    <p class="btn-collapse" id="desc-agency-tag">Licence Agence : Sites illimités (Pour vos clients et réseaux).</p>
+                    <p class="btn-collapse" id="desc-agency-tag">Agency Fleet: Unlimited domains (Perfect for client networks and portfolios).</p>
                 </div>
             </div>
         </div>
@@ -282,62 +273,61 @@
         <p>Verified Centaure Engine v6.7 — USD Compliant</p>
     </footer>
 </div>
-<!-- ⚡ LOGIQUE DYNAMIQUE SPA & ROUTAGE COMMERCIAL STRIPE -->
 <script>
 const fleetDatabase = {
     robot01: {
-        engine: "[ SÉCURITÉ FORMULAIRES ACTIVE ]",
-        title: "Bloquez 100% des Spams de Formulaires.<br>Sans Aucun Captcha. Sans Friction.",
-        desc: "Une protection invisible en JavaScript qui intercepte les robots et spameurs avant qu'ils ne polluent votre boîte mail ou votre base de données. Vos vrais clients ne voient rien et n'ont pas besoin de cocher des images de feux de signalisation.",
-        feat1_icon: "🛡️", feat1_title: "100% Invisible", feat1_desc: "Aucun impact visuel pour l'utilisateur. Vos conversions augmentent, les spams disparaissent.",
-        feat2_icon: "⚡", feat2_title: "Performance Maximale", feat2_desc: "Un script ultra-léger de 1.2 Ko qui ne ralentit pas votre site web (Optimisé Google Core Web Vitals).",
-        pricing_target: "[ SOLUTION : FORM-SHIELD ]", pricing_title: "Activer la Licence Commerciale",
-        price_solo: "49$", desc_solo: "Licence Solo : Pour 1 site internet (Mise à jour à vie).",
-        price_agency: "149$", desc_agency: "Licence Agence : Sites illimités (Pour vos clients et réseaux).",
+        engine: "[ FORM INTERCEPTION ACTIVE ]",
+        title: "Block 100% of Form Spam.<br>Zero Captchas. Zero Friction.",
+        desc: "An invisible JavaScript protection layer that intercepts automated bots and malicious spammers before they contaminate your database or inbox. Real users experience zero friction—no annoying traffic lights or crosswalk images to click.",
+        feat1_icon: "🛡️", feat1_title: "100% Invisible", feat1_desc: "Zero visual impact for the user. Boost your conversion rates while keeping spambots out.",
+        feat2_icon: "⚡", feat2_title: "High Performance", feat2_desc: "Ultra-lightweight 1.2 KB script with zero pipeline overhead. Engineered for optimal Core Web Vitals.",
+        pricing_target: "[ CORE ENGINE : FORM-SHIELD ]", pricing_title: "Activate Commercial License",
+        price_solo: "49$", desc_solo: "Solo License: Valid for 1 production domain (Lifetime updates).",
+        price_agency: "149$", desc_agency: "Agency Fleet: Unlimited domains (Perfect for client networks and portfolios).",
         stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
     },
     robot02: {
-        engine: "[ OPTIMISATION AUDIO PRO ]",
-        title: "Compressez vos Fichiers Audio Lourds.<br>Divisez le Poids par 4, Conservez 100% du Son.",
-        desc: "Un algorithme professionnel de compression server-side conçu pour les studios et créateurs. Réduisez le poids de vos fichiers WAV, MP3 ou fichiers bruts jusqu'à 75% tout en maintenant une fidélité 24-bit parfaite pour l'oreille humaine.",
-        feat1_icon: "🎛️", feat1_title: "Qualité Studio Restante", feat1_desc: "Aucune perte de dynamique ni de fréquences. Le rendu reste cristallin.",
-        feat2_icon: "🚀", feat2_title: "Traitement Ultra-Rapide", feat2_desc: "Compressez des répertoires entiers en parallèle sur nos serveurs en quelques secondes.",
-        pricing_target: "[ SOLUTION : AUDIO-CONVERT ]", pricing_title: "Activer la Licence Commerciale",
-        price_solo: "59$", desc_solo: "Licence Solo : Pour 1 poste de travail ou serveur unique.",
-        price_agency: "179$", desc_agency: "Licence Studio : Utilisation illimitée en réseau d'entreprise.",
+        engine: "[ PRO AUDIO OPTIMIZATION ]",
+        title: "Compress Heavy Audio Files.<br>Reduce Size by 75%, Keep 100% Quality.",
+        desc: "A professional server-side compression engine built for studios and creators. Shrink WAV, MP3, or raw audio files up to 75% while maintaining flawless 24-bit dynamic range and absolute frequency fidelity for human hearing.",
+        feat1_icon: "🎛️", feat1_title: "Studio-Grade Output", feat1_desc: "No loss of dynamics, transients, or character. The rendering remains crystal clear.",
+        feat2_icon: "🚀", feat2_title: "Ultra-Fast Processing", feat2_desc: "Batch-process massive audio directories in parallel across our cloud nodes in seconds.",
+        pricing_target: "[ CORE ENGINE : AUDIO-CONVERT ]", pricing_title: "Activate Commercial License",
+        price_solo: "59$", desc_solo: "Solo License: Single workstation or local server integration.",
+        price_agency: "179$", desc_agency: "Studio Pack: Unlimited concurrent processing across enterprise networks.",
         stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
     },
     robot03: {
-        engine: "[ COFFRE-FORT NUMÉRIQUE ]",
-        title: "Stockage Privé Haute Sécurité.<br>Archivez vos Masters à l'Abri des Regards.",
-        desc: "Un espace de stockage cold-storage crypté avec les protocoles de chiffrement militaires les plus stricts (AES-256). Vos fichiers de sessions, documents importants et créations sont fragmentés et protégés contre tout risque de piratage ou perte.",
-        feat1_icon: "🔒", feat1_title: "Chiffrement Total", feat1_desc: "Vos données sont cryptées avant même de quitter votre ordinateur. Vous seul possédez la clé.",
-        feat2_icon: "🛰️", feat2_title: "Zéro Frais Caché", feat2_desc: "Téléchargez et récupérez vos sauvegardes instantanément à tout moment, sans frais de transfert.",
-        pricing_target: "[ SOLUTION : STUDIO-VAULT ]", pricing_title: "Activer la Licence Commerciale",
-        price_solo: "79$", desc_solo: "Espace Coffre : Jusqu'à 500 Go de stockage cloud ultra-sécurisé.",
-        price_agency: "249$", desc_agency: "Espace Entreprise : Stockage Premium de 2 To avec gestion d'équipe.",
+        engine: "[ MILITARY DIGITAL VAULT ]",
+        title: "Secure Private Cloud Storage.<br>Archive Your Masters Away From Threats.",
+        desc: "A state-of-the-art cold storage repository encrypted with military-grade protocols (AES-256). Your critical files, project masters, and sensitive documents are fragmented and heavily secured against data leaks and hardware failure.",
+        feat1_icon: "🔒", feat1_title: "End-to-End Encryption", feat1_desc: "Data is fully encrypted before leaving your machine. You hold the sovereign keys.",
+        feat2_icon: "🛰️", feat2_title: "Zero Hidden Fees", feat2_desc: "Unlimited download bandwidth. Retrieve your secure archives at any time with no egress tax.",
+        pricing_target: "[ CORE ENGINE : STUDIO-VAULT ]", pricing_title: "Activate Commercial License",
+        price_solo: "79$", desc_solo: "Vault Space: Up to 500 GB of secure, high-availability cloud storage.",
+        price_agency: "249$", desc_agency: "Enterprise Tier: 2 TB of premium resilient storage with team management access.",
         stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
     },
     robot04: {
-        engine: "[ PROTECTION DE LIENS & AFFILIATION ]",
-        title: "Masquez vos Liens Stratégiques.<br>Contournez les Bloqueurs de Publicité.",
-        desc: "Protégez vos commissions d'affiliation et vos liens de redirection contre le vol de clics et le blocage automatique. Cet outil transforme et habille dynamiquement vos URLs pour qu'elles restent invisibles aux filtres des ad-blockers du marché.",
-        feat1_icon: "🎭", feat1_title: "Redirection Masquée", feat1_desc: "Modifie la signature des liens à chaque visite pour rester totalement intraçable.",
-        feat2_icon: "📉", feat2_title: "Statistiques Réelles", feat2_desc: "Analysez vos volumes de clics et acquisitions en temps réel, sans utiliser de cookies tiers.",
-        pricing_target: "[ SOLUTION : LINK-CLOAK ]", pricing_title: "Activer la Licence Commerciale",
-        price_solo: "39$", desc_solo: "Pack Solo : Protection jusqu'à 10 000 redirections mensuelles.",
-        price_agency: "119$", desc_agency: "Pack Pro : Redirections illimitées pour campagnes à fort trafic.",
+        engine: "[ AFFILIATION & LINK PROTECTION ]",
+        title: "Cloak Your Strategic URLs.<br>Bypass Ad-Blockers Automatically.",
+        desc: "Protect your affiliate payouts and marketing links from traffic theft and browser suppression. This tool dynamically masks and alters your destination signatures so they remain invisible to common ad-blocking rules.",
+        feat1_icon: "🎭", feat1_title: "Masked Redirection", feat1_desc: "Alters URL footprints on every single visit to ensure absolute untraceability.",
+        feat2_icon: "📉", feat2_title: "Real-Time Metrics", feat2_desc: "Track every single click, source, and acquisition instantly without setting invasive third-party cookies.",
+        pricing_target: "[ CORE ENGINE : LINK-CLOAK ]", pricing_title: "Activate Commercial License",
+        price_solo: "39$", desc_solo: "Solo Pack: Protects up to 10,000 active monthly redirections.",
+        price_agency: "119$", desc_agency: "Pro Tier: Unlimited traffic and unrestricted redirection matrices.",
         stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
     },
     robot05: {
-        engine: "[ BOUCLIER ANTI-CRASH APPLICATIF ]",
-        title: "Proxy Protecteur pour Webhooks.<br>Swokez les Attaques DDoS sans Surcharger.",
-        desc: "Un tampon de sécurité ultra-rapide conçu pour absorber les pics de requêtes et les charges corrompues avant qu'elles ne touchent vos serveurs internes. Si une application tierce bugue ou vous bombarde de requêtes, le bouclier avale le flux pour éviter le crash.",
-        feat1_icon: "🧱", feat1_title: "Limiteur de Trafic", feat1_desc: "Absorbe les surcharges jusqu'à 5 000 requêtes par milliseconde sans broncher.",
-        feat2_icon: "🧬", feat2_title: "Payload Validation", feat2_desc: "Verifies HMAC signature byte-arrays upstream with zero pipeline overhead.",
-        pricing_target: "[ SOLUTION : WEBHOOK-SHIELD ]", pricing_title: "Activer la Licence Commerciale",
-        price_solo: "69$", desc_solo: "Pass Solo : Protection pour 1 passerelle applicative principale.",
-        price_agency: "199$", desc_agency: "Pass Infrastructure : Protection maillée pour tout votre parc de serveurs.",
+        engine: "[ APPLICATIVE CRASH SHIELD ]",
+        title: "Resilient Buffer for Webhooks.<br>Absorb DDoS Spikes With Zero Downtime.",
+        desc: "A high-speed security buffer engineered to absorb extreme request spikes and malformed payloads before they hit your internal infrastructure. If an external API goes haywire, the shield safely handles the traffic surge.",
+        feat1_icon: "🧱", feat1_title: "Rate Limiting Engine", feat1_desc: "Smoothly ingests overhead up to 5,000 requests per millisecond without breaking a sweat.",
+        feat2_icon: "🧬", feat2_title: "Payload Validation", feat2_desc: "Verifies HMAC signature byte-arrays upstream with zero backend latency.",
+        pricing_target: "[ CORE ENGINE : WEBHOOK-SHIELD ]", pricing_title: "Activate Commercial License",
+        price_solo: "69$", desc_solo: "Solo Pass: Hardened protection for 1 main applicative gateway.",
+        price_agency: "199$", desc_agency: "Infrastructure Tier: Full mesh protection for comprehensive multi-server architectures.",
         stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
     }
 };
