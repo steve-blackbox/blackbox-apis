@@ -1,7 +1,7 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V15 — AUTOMATE D'ÉLITE
- * 📥 SYSTEME DE LIVRAISON COMMERCIALE DYNAMIQUE PAR E-MAIL (RESEND INTÉGRÉ)
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V19 — AUTOMATE D'ÉLITE
+ * 📥 SYSTEME DE LIVRAISON COMMERCIALE DYNAMIQUE PAR E-MAIL (DOMAINE PRO VERIFIÉ)
  */
 
 const express = require('express');
@@ -80,7 +80,7 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // Interception magique du paiement réussi
+    // Interception du paiement réussi
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         const customerEmail = session.customer_details ? session.customer_details.email : null;
@@ -88,13 +88,13 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
         console.log(`[🏆 CASH REÇU] Paiement valide pour la session: ${session.id}`);
 
         if (customerEmail) {
-            console.log(`[📧 EMAIL TRIGGER] Lancement du protocole Resend pour : ${customerEmail}`);
+            console.log(`[📧 EMAIL TRIGGER] Lancement du protocole Resend Pro pour : ${customerEmail}`);
             
             // Génération d'une clé API fictive et sécurisée pour le client
             const generatedApiKey = `bb_live_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
 
             try {
-                // Routage natif vers l'API Resend sans librairie lourde externe
+                // Routage natif vers l'API Resend sécurisé via domaine vérifié
                 const response = await fetch('https://resend.com', {
                     method: 'POST',
                     headers: {
@@ -124,7 +124,7 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
                 });
 
                 if (response.ok) {
-                    console.log(`[🚀 EMAIL SUCCESS] Mail de livraison envoye proprement à : ${customerEmail}`);
+                    console.log(`[🚀 EMAIL SUCCESS] Mail de livraison envoye proprement via control@blackbox-apis.com à : ${customerEmail}`);
                 } else {
                     const errorText = await response.text();
                     console.error(`[❌ EMAIL FAILED] Erreur API Resend : ${errorText}`);
@@ -141,5 +141,5 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
 });
 
 app.listen(PORT, () => {
-    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V15 operationnel sur le port ${PORT}`);
+    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V19 operationnel sur le port ${PORT}`);
 });
