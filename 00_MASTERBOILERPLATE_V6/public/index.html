@@ -3,279 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bento Production Grid — BlackBox Audio Labs LLC</title>
+    <title>BlackBox Automated Control — Asset Fleet Ecosystem</title>
     <style>
+        :root {
+            --bg-base: #030712;
+            --bg-card: #0b0f19;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --border-color: #1f2937;
+        }
         body {
-            background-color: #0b0b0b;
-            color: #f5f5f5;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 40px 20px;
-            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-sizing: border-box;
+            justify-content: center;
         }
-        .container { max-width: 1100px; width: 100%; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f1f1f; padding-bottom: 24px; margin-bottom: 30px; }
-        .header-title h1 { font-family: monospace; font-size: 20px; font-weight: bold; margin: 4px 0 0 0; color: #ffffff; }
-        .header-tag { font-family: monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #666666; }
-        .status-container { display: flex; align-items: center; gap: 8px; font-family: monospace; font-size: 11px; color: #10b981; text-transform: uppercase; }
-        .pulse-dot { width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; }
-
-        /* Navigation Onglets - 8 emplacements fluides */
-        .robot-nav { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; border-bottom: 1px solid #1f1f1f; }
-        .nav-tab { background-color: #121212; border: 1px solid #1f1f1f; color: #737373; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: monospace; font-size: 12px; font-weight: bold; transition: all 0.2s ease; white-space: nowrap; }
-        .nav-tab:hover { border-color: #333333; color: #ffffff; }
-        .nav-tab.active { background-color: rgba(59, 130, 246, 0.1); border-color: #3b82f6; color: #3b82f6; }
-
-        /* Bento Grid */
-        .bento-grid { display: grid; grid-template-cols: repeat(3, 1fr); gap: 16px; }
-        .bento-card { background-color: #121212; border: 1px solid #1f1f1f; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
-        .col-span-2 { grid-column: span 2; }
-        .card-label { font-family: monospace; font-size: 11px; text-transform: uppercase; color: #3b82f6; }
-        .card-title { font-size: 28px; font-weight: 800; color: #ffffff; margin: 8px 0 0 0; line-height: 1.2; }
-        .card-desc { color: #a3a3a3; font-size: 14px; margin: 16px 0 0 0; line-height: 1.5; }
-        .card-icon { font-size: 20px; background-color: rgba(59, 130, 246, 0.1); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-        .card-title-sm { font-size: 18px; font-weight: bold; color: #ffffff; margin: 0; }
-        .card-desc-sm { color: #737373; font-size: 12px; margin: 6px 0 0 0; line-height: 1.4; }
-
-        /* Pricing Area Dollars */
-        .pricing-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .pricing-badge { font-family: monospace; font-size: 11px; background-color: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 8px; border-radius: 4px; }
-        .pricing-grid { display: grid; grid-template-cols: 1fr 1fr; gap: 16px; margin-top: 16px; }
-        .pricing-btn { background-color: #161616; border: 1px solid #1f1f1f; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; text-align: left; cursor: pointer; transition: all 0.2s ease; position: relative; }
-        .pricing-btn:hover { border-color: #3b82f6; background-color: #1c1c1c; }
-        .btn-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .btn-title { font-size: 14px; font-weight: bold; color: #ffffff; transition: color 0.2s ease; }
-        .pricing-btn:hover .btn-title { color: #3b82f6; }
-        .btn-price { font-family: monospace; font-size: 18px; font-weight: bold; color: #ffffff; }
-        .btn-collapse { font-size: 11px; color: #525252; margin: 4px 0 0 0; }
-
-        footer { border-top: 1px solid #1f1f1f; margin-top: 40px; padding-top: 24px; display: flex; justify-content: space-between; font-family: monospace; font-size: 11px; color: #404040; }
-        @media (max-width: 768px) { .bento-grid { grid-template-cols: 1fr; } .col-span-2 { grid-column: span 1; } .pricing-grid { grid-template-cols: 1fr; } }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .subtitle {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+        .title {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 5px 0 0 0;
+            letter-spacing: -0.5px;
+        }
+        .status-badge {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .nav-btn {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--accent-blue);
+            padding: 12px;
+            text-align: center;
+            font-size: 13px;
+            font-family: monospace;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .bento-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 8px;
+        }
+        .col-span-2 {
+            grid-column: span 2;
+        }
+        .engine-tag {
+            font-family: monospace;
+            color: var(--accent-blue);
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        .hero-title {
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin: 0 0 20px 0;
+            letter-spacing: -1px;
+        }
+        .hero-desc {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .card-icon {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .pricing-section-title {
+            font-family: monospace;
+            color: var(--accent-blue);
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        .pricing-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+        .pricing-main-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0;
+        }
+        .pricing-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .pricing-btn {
+            background-color: #050811;
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 6px;
+            text-align: left;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .pricing-btn:hover {
+            border-color: var(--accent-blue);
+        }
+        .btn-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-title {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .btn-price {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--text-main);
+        }
+        .btn-collapse {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin: 0;
+            line-height: 1.4;
+        }
+        footer {
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            color: rgba(156, 163, 175, 0.4);
+            font-size: 12px;
+        }
+        footer p { margin: 0; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Header -->
-        <header>
-            <div class="header-title">
-                <span class="header-tag">Asset Fleet Ecosystem</span>
-                <h1>BLACKBOX AUTOMATED CONTROL</h1>
-            </div>
-            <div class="status-container">
-                <div class="pulse-dot"></div>
-                <span>All Systems Sterile</span>
-            </div>
-        </header>
-
-        <!-- Command Tabs (Mise à niveau - 8 Réacteurs Alignés en Dollars) -->
-        <nav class="robot-nav">
-            <div class="nav-tab active" onclick="switchRobot(1)">Robot 01: Form Shield</div>
-            <div class="nav-tab" onclick="switchRobot(2)">Robot 02: Audio Convert</div>
-            <div class="nav-tab" onclick="switchRobot(3)">Robot 03: Studio Vault</div>
-            <div class="nav-tab" onclick="switchRobot(4)">Robot 04: Link Cloak</div>
-            <div class="nav-tab" onclick="switchRobot(5)">Robot 05: Webhook Shield</div>
-            <div class="nav-tab" onclick="switchRobot(6)">Robot 06: Exif Cloak</div>
-            <div class="nav-tab" onclick="switchRobot(7)">Robot 07: Link Purge</div>
-            <div class="nav-tab" onclick="switchRobot(8)">Robot 08: Asset Shrink</div>
-        </nav>
-
-        <!-- Dynamic Bento Grid -->
-        <main class="bento-grid">
-            <div class="bento-card col-span-2" style="height: 220px;">
-                <div>
-                    <span class="card-label" id="card-label">[ Core Engine 01 ]</span>
-                    <h2 class="card-title" id="main-title">Stop Form Spam Silently.<br>No Captchas. No Friction.</h2>
-                </div>
-                <p class="card-desc" id="main-desc">A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.</p>
-            </div>
-
-            <div class="bento-card" style="height: 220px;">
-                <div class="card-icon">🛡️</div>
-                <div>
-                    <h3 class="card-title-sm">GDPR & CCPA Layer</h3>
-                    <p class="card-desc-sm" id="compliance-desc">Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.</p>
-                </div>
-            </div>
-
-            <div class="bento-card" style="height: 220px;">
-                <div class="card-icon" style="background-color: rgba(16, 185, 129, 0.1); color: #10b981;">⚡</div>
-                <div>
-                    <h3 class="card-title-sm">Performance Matrix</h3>
-                    <p class="card-desc-sm" id="performance-desc">Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.</p>
-                </div>
-            </div>
-
-            <!-- Tuile 04: Pricing Selection Restructurée v6.7 (Dollars) -->
-            <div class="bento-card col-span-2" style="height: 220px; border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.05);">
-                <div class="pricing-header">
-                    <div>
-                        <span class="card-label" id="pricing-target-label">[ GATEWAY TARGET: ROBOT 01 ]</span>
-                        <h3 class="card-title-sm" id="pricing-title" style="margin-top: 4px;">Deploy FORM-SHIELD Commercial License</h3>
-                    </div>
-                    <span class="pricing-badge">ONE-TIME ACQUISITION</span>
-                </div>
-                
-                <div class="pricing-grid">
-                    <div class="pricing-btn" onclick="executeStripeRouting('solo')">
-                        <div class="btn-header">
-                            <span class="btn-title" id="btn-solo-title">Solo License</span>
-                            <span class="btn-price" id="btn-solo-price">49$</span>
-                        </div>
-                        <p class="btn-collapse" id="btn-solo-desc">Single target domain execution layer.</p>
-                    </div>
-                    <div class="pricing-btn" onclick="executeStripeRouting('agency')">
-                        <div class="btn-header">
-                            <span class="btn-title" id="btn-agency-title">Agency Fleet</span>
-                            <span class="btn-price" id="btn-agency-price">149$</span>
-                        </div>
-                        <p class="btn-collapse" id="btn-agency-desc">Unlimited client domains deployment.</p>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <footer>
-            <p>© 2026 BlackBox Audio Labs LLC. All rights reserved.</p>
-            <p>Verified Centaure Engine v6.7 — USD Compliant</p>
-        </footer>
+<div class="container">
+    <!-- TOP HEADER -->
+    <div class="header-section">
+        <div>
+            <div class="subtitle">Asset Fleet Ecosystem</div>
+            <div class="title">BLACKBOX AUTOMATED CONTROL</div>
+        </div>
+        <div class="status-badge">● All Systems Sterile</div>
     </div>
-    <script>
-        // Dynamic Variable Storage for Asynchronous Launch routing
-        let currentActiveRobotId = 1;
 
-        const robotData = {
-            1: {
-                label: "[ Core Engine 01 ]",
-                title: "Stop Form Spam Silently.<br>No Captchas. No Friction.",
-                desc: "A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.",
-                compliance: "Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.",
-                performance: "Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.",
-                pTarget: "[ GATEWAY TARGET: ROBOT 01 ]",
-                pTitle: "Deploy FORM-SHIELD Commercial License",
-                sPrice: "49$", aPrice: "149$", sDesc: "Single target domain execution layer.", aDesc: "Unlimited client domains deployment.",
-                stripeSolo: "https://stripe.com",
-                stripeAgency: "https://stripe.com"
-            },
-            2: {
-                label: "[ Audio Engine 02 ]",
-                title: "Convert Massive Audio Files Locally.<br>100% Confidential.",
-                desc: "High-fidelity audio signal conversion and encoding executing inside your browser's native sandbox layers. No cloud server uploads or privacy leaks.",
-                compliance: "100% localized execution. Your media data and corporate assets never touch an external server infrastructure.",
-                performance: "Powered by local binarized client wrappers. Processing velocity is limited strictly by your local CPU core strength.",
-                pTarget: "[ GATEWAY TARGET: ROBOT 02 ]",
-                pTitle: "Deploy AUDIO-CONVERT Pro Desk Token",
-                sPrice: "39$", aPrice: "129$", sDesc: "Single workstation permanent asset.", aDesc: "Full production team fleet deployment.",
-                stripeSolo: "https://stripe.com",
-                stripeAgency: "https://stripe.com"
-            },
-            3: {
-                label: "[ Vault Engine 03 ]",
-                title: "Accountless Client Deliverable Vaults.<br>Built for Digital Studios.",
-                desc: "Generate secure, password-gated storage delivery link gateways for massive raw deliverable packages. Automatic server file scrubbing post-retrieval.",
-                compliance: "True accountless client onboarding. Zero data retention pipelines. Complete digital file lifecycle isolation.",
-                performance: "Instant file gateway load speeds under 1ms. Automated file system pruning loops clear dynamic allocations.",
-                pTarget: "[ GATEWAY TARGET: ROBOT 03 ]",
-                pTitle: "Deploy STUDIO-VAULT Infrastructure Gate",
-                sPrice: "39$", aPrice: "129$", sDesc: "Independent creative solo tier.", aDesc: "Branded creative production house fleet.",
-                stripeSolo: "https://stripe.com",
-                stripeAgency: "https://stripe.com"
-            },
-            4: {
-                label: "[ Shield Engine 04 ]",
-                title: "Hardened 302 Redirection.<br>Prevent Affiliate Link Theft.",
-                desc: "Insulate your publishing commissions from extension-based browser cookie stuffing hacks utilizing secure server-side URL camouflage vectors.",
-                compliance: "Bypasses front-end JavaScript manipulation layers by routing metadata upstream before browser parsing triggers.",
-                performance: "Ultra-fast redirection execution benchmarks under 1ms. Minimizes tracking latency drops completely.",
-                pTarget: "[ GATEWAY TARGET: ROBOT 04 ]",
-                pTitle: "Deploy LINK-CLOAK-SHIELD Funnel Key",
-                sPrice: "49$", aPrice: "149$", sDesc: "Marketer Core deployment up to 5 nodes.", aDesc: "Growth Network unlimited tracking tags.",
-                stripeSolo: "https://stripe.com",
-                stripeAgency: "https://stripe.com"
-            },
-            5: {
-                label: "[ Relay Engine 05 ]",
-                title: "High-Availability Failover Relay<br>For Merchant Webhooks.",
-                desc: "Intercept, cache, and automatically re-inject incoming payment payloads (Stripe/PayPal) to secure transactions during internal server crashes.",
-                compliance: "Ephemeral dynamic memory storage loops cache encrypted JSON strings statelessly during origin downtime.",
-                performance: "High availability concurrent queue buffer capacity engineered to survive massive traffic spikes.",
-                pTarget: "[ GATEWAY TARGET: ROBOT 05 ]",
-                pTitle: "Deploy WEBHOOK-RETRY-SHIELD Protection",
-                sPrice: "59$", aPrice: "149$", sDesc: "Single webstore data insurance gateway.", aDesc: "Enterprise bundle for unlimited storefronts.",
-                stripeSolo: "https://stripe.com",
-                stripeAgency: "https://stripe.com"
-            },
-          6: {
-                label: "[ Security Engine 06 ]",
-                title: "Sanitize Sensitive Asset Metadata.<br>100% Client-Side. Zero Server Logs.",
-                desc: "Instantly strip compromising EXIF tags, GPS coordinates, creation timestamps, and device fingerprints from your corporate images and PDF deliverables before distribution.",
-                compliance: "True digital hygiene layer. Absolute alignment with strict GDPR & CCPA mandates. Sensitive documents never leave the local user sandbox.",
-                performance: "Zero-latency canvas reconstruction loop. Asset cleaning triggers instantly inside the browser without incurring API token costs.",
-                pTarget: "[ GATEWAY TARGET: ROBOT 06 ]",
-                pTitle: "Deploy EXIF-CLOAK Commercial Token",
-                sPrice: "49$", aPrice: "149$", sDesc: "Independent consultant data insurance node.", aDesc: "Full enterprise pipeline for digital agencies.",
-                stripeSolo: "https://stripe.com",
-                stripeAgency: "https://stripe.com"
-            },
-            7: {
-                label: "[ Growth Engine 07 ]",
-                title: "Clean Tracking Parameters Instantly.<br>Stateless URL Pruning.",
-                desc: "Surgically strip intrusive campaign tags, analytics markers, and UTM strings from your shared web targets purely inside the client-side sandbox environment.",
-                compliance: "Flawless compliance baseline. Eliminates downstream data attribution contamination without scraping client workflow parameters.",
-                performance: "High-velocity inline regular expression filtering executing inside native sandbox limits under 0ms.",
-                pTarget: "[ GATEWAY TARGET: ROBOT 07 ]",
-                pTitle: "Deploy LINK-PURGE Enterprise Token",
-                sPrice: "49$", aPrice: "149$", sDesc: "Individual operator tracking insulation nodes.", aDesc: "Full team automation cluster licenses.",
-                stripeSolo: "https://stripe.com",
-                stripeAgency: "https://stripe.com"
-            },
-            8: {
-                label: "[ Graphics Engine 08 ]",
-                title: "High-Velocity Image Compressor.<br>Local Web-to-Raw Vector.",
-                desc: "Surgically compress and transcode JPEG/PNG assets into featherlight WebP components natively inside the client-side sandbox environment. No server overhead.",
-                compliance: "100% confidential processing loop. True stateless execution protects corporate design files from external infrastructure data retention leaks.",
-                performance: "Powered by native canvas.toBlob algorithms in under 1.5KB. Drops payload weight up to 85% with 0ms network latency.",
-                pTarget: "[ GATEWAY TARGET: ROBOT 08 ]",
-                pTitle: "Deploy ASSET-SHRINK Commercial Key",
-                sPrice: "49$", aPrice: "149$", 
-                sDesc: "Single designer local production workspace node.", 
-                aDesc: "Part of the Creative Agency Fleet. Unlock massive cluster access.",
-                stripeSolo: "https://stripe.com",
-                stripeAgency: "https://stripe.com"
-            }
-        };
+    <!-- HORIZONTAL ROBOTS NAV -->
+    <div class="nav-grid">
+        <div class="nav-btn">Robot 01: Form Shield</div>
+        <div class="nav-btn">Robot 02: Audio Convert</div>
+        <div class="nav-btn">Robot 03: Studio Vault</div>
+        <div class="nav-btn">Robot 04: Link Cloak</div>
+        <div class="nav-btn">Robot 05: Webhook Shield</div>
+    </div>
 
-        function switchRobot(id) {
-            currentActiveRobotId = id;
-            document.querySelectorAll('.nav-tab').forEach((tab, index) => {
-                if (index === id - 1) tab.classList.add('active');
-                else tab.classList.remove('active');
-            });
-            const data = robotData[id];
-            document.getElementById('card-label').innerText = data.label;
-            document.getElementById('main-title').innerHTML = data.title;
-            document.getElementById('main-desc').innerText = data.desc;
-            document.getElementById('compliance-desc').innerText = data.compliance;
-            document.getElementById('performance-desc').innerText = data.performance;
-            document.getElementById('pricing-target-label').innerText = data.pTarget;
-            document.getElementById('pricing-title').innerText = data.pTitle;
-            document.getElementById('btn-solo-price').innerText = data.sPrice;
-            document.getElementById('btn-agency-price').innerText = data.aPrice;
-            document.getElementById('btn-solo-desc').innerText = data.sDesc;
-            document.getElementById('btn-agency-desc').innerText = data.aDesc;
+    <!-- BENTO BLOCKS ARSENAL -->
+    <main class="bento-grid">
+        <!-- HERO MAIN CARD -->
+        <div class="bento-card col-span-2">
+            <div class="engine-tag">[ CORE ENGINE 01 ]</div>
+            <h1 class="hero-title">Stop Form Spam Silently.<br>No Captchas. No Friction.</h1>
+            <p class="hero-desc">A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.</p>
+        </div>
+
+        <!-- FEATURE CARD 01 -->
+        <div class="bento-card">
+            <div class="card-icon">🛡️</div>
+            <h2 class="card-title">GDPR & CCPA Layer</h2>
+            <p class="card-desc">Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.</p>
+        </div>
+
+        <!-- FEATURE CARD 02 -->
+        <div class="bento-card">
+            <div class="card-icon">⚡</div>
+            <h2 class="card-title">Performance Matrix</h2>
+            <p class="card-desc">Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.</p>
+        </div>
+
+        <!-- LOWER COMMERCIAL LICENSING GATEWAY -->
+        <div class="bento-card col-span-2">
+            <div class="pricing-header-flex">
+                <div>
+                    <div class="pricing-section-title">[ GATEWAY TARGET: ROBOT 01 ]</div>
+                    <h3 class="pricing-main-title">Deploy FORM-SHIELD Commercial License</h3>
+                </div>
+                <div class="pricing-tag">One-Time Acquisition</div>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- ACCÈS PLAN 49$ CLICK DE CLASSE -->
+                <div class="pricing-btn" onclick="executeStripeRouting('solo')">
+                    <div class="btn-header">
+                        <span class="btn-title" id="btn-solo-title">Solo License</span>
+                        <span class="btn-price" id="btn-solo-price">49$</span>
+                    </div>
+                    <p class="btn-collapse" id="btn-solo-desc">Single target domain execution layer.</p>
+                </div>
+
+                <!-- POWER PLAN 149$ CLICK DE CLASSE -->
+                <div class="pricing-btn" onclick="executeStripeRouting('agency')">
+                    <div class="btn-header">
+                        <span class="btn-title" id="btn-agency-title">Agency Fleet</span>
+                        <span class="btn-price" id="btn-agency-price">149$</span>
+                    </div>
+                    <p class="btn-collapse" id="btn-agency-desc">Unlimited client domains deployment.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER SECURITY PROTOCOL -->
+    <footer>
+        <p>© 2026 BlackBox Audio Labs LLC. All rights reserved.</p>
+        <p>Verified Centaure Engine v6.7 — USD Compliant</p>
+    </footer>
+</div>
+<!-- ⚡ MODULE INTERCEPTEUR FINANCIER STRIPE LIVE — BLACKBOX APIS LLC -->
+<script>
+function executeStripeRouting(planType) {
+    // 🔒 Nos deux identifiants de tarifs réels créés sur Stripe US
+    const priceMap = {
+        'solo': 'price_1UF8YkAQxUv6pdHqPPiRw8SS',   // Plan Access à 49$
+        'agency': 'price_1UF8ZDAQxUv6pdHqn07yX0oB'  // Plan Power à 149$
+    };
+
+    const targetPriceId = priceMap[planType];
+    if (!targetPriceId) {
+        console.error("Friture de soute : type de plan inconnu.");
+        return;
+    }
+
+    console.log(`[🚀 COMMUTATION STRIPE] Lancement du tunnel de capture pour : ${targetPriceId}`);
+
+    // Frappe chirurgicale directe sur ton API en production Render
+    fetch('https://blackbox-apis.com', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            priceId: targetPriceId,
+            successUrl: 'https://blackbox-apis.com',
+            cancelUrl: 'https://blackbox-apis.com'
+        })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Erreur réseau lors de la génération de session.');
+        return response.json();
+    })
+    .then(session => {
+        if (session.url) {
+            // Téléportation immédiate sur l'interface sécurisée Stripe
+            window.location.href = session.url;
+        } else {
+            alert("Erreur de routage Stripe : Session introuvable.");
         }
+    })
+    .catch(error => {
+        console.error("Friture de paiement :", error);
+        alert("Le serveur de soute est en veille ou inaccessible. Réessayez dans 30 secondes.");
+    });
+}
+</script>
 
-        function executeStripeRouting(tier) {
-            const currentRobot = robotData[currentActiveRobotId];
-            const targetUrl = tier === 'solo' ? currentRobot.stripeSolo : currentRobot.stripeAgency;
-            console.log(`[🛰️ ROUTING] Redirecting to ${tier} tier gateway -> ${targetUrl}`);
-            
-            alert(`[STERILE MODE ACTIVE]\nTarget Gateway: ${currentRobot.pTitle}\nTier Selected: ${tier.toUpperCase()}\nRedirection Endpoint:\n${targetUrl}\n\n(This trigger routes directly to your dynamic Stripe links live pipeline post-EIN activation).`);
-        }
-    </script>
 </body>
-</html>  
+</html>
