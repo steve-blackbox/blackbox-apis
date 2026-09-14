@@ -1,364 +1,225 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackBox Automated Control — 100 Core API Fleet</title>
+    <script src="https://tailwindcss.com"></script>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root {
-            --bg-base: #030712;
-            --bg-card: #0b0f19;
-            --bg-sidebar: #070a13;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --accent-green: #10b981;
-            --accent-blue: #3b82f6;
-            --border-color: #1f2937;
-            --sidebar-width: 280px;
-        }
-        body {
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--bg-sidebar);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .sidebar-header { padding: 25px 20px; border-bottom: 1px solid var(--border-color); }
-        .sidebar-subtitle { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-blue); font-weight: bold; }
-        .sidebar-title { font-size: 16px; font-weight: 800; margin: 5px 0 0 0; letter-spacing: -0.5px; }
-        .sidebar-menu { flex: 1; overflow-y: auto; padding: 15px 10px; }
-        .category-item { display: flex; align-items: center; padding: 10px 12px; color: var(--text-muted); font-size: 13px; font-family: monospace; cursor: pointer; border-radius: 4px; margin-bottom: 4px; transition: all 0.15s; }
-        .category-item:hover { background: rgba(59, 130, 246, 0.05); color: var(--text-main); }
-        .category-item.active { background: rgba(59, 130, 246, 0.12); border-left: 3px solid var(--accent-blue); color: var(--text-main); font-weight: bold; }
-        .sidebar-footer { padding: 15px; border-top: 1px solid var(--border-color); background-color: #05070d; }
-        .fleet-pass-btn { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.2)); border: 1px solid var(--accent-green); color: var(--text-main); width: 100%; padding: 12px; border-radius: 4px; font-family: monospace; font-size: 12px; font-weight: bold; cursor: pointer; text-align: center; box-sizing: border-box; transition: transform 0.2s; }
-        .fleet-pass-btn:hover { transform: scale(1.02); }
-        .main-content { flex: 1; overflow-y: auto; padding: 40px; display: flex; justify-content: center; }
-        .container { max-width: 900px; width: 100%; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .status-badge { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-green); font-weight: bold; }
-        .nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 30px; }
-        .nav-btn { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); color: var(--text-muted); padding: 10px; text-align: center; font-size: 12px; font-family: monospace; cursor: pointer; border-radius: 4px; transition: all 0.2s; }
-        .nav-btn.active { background: rgba(59, 130, 246, 0.15); border: 1px solid var(--accent-blue); color: var(--text-main); font-weight: bold; }
-        .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 40px; }
-        .bento-card { background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 30px; border-radius: 8px; }
-        .col-span-2 { grid-column: span 2; }
-        .engine-tag { font-family: monospace; color: var(--accent-blue); font-size: 12px; margin-bottom: 15px; }
-        .hero-title { font-size: 32px; font-weight: 800; line-height: 1.2; margin: 0 0 20px 0; letter-spacing: -1px; }
-        .hero-desc { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0; }
-        .card-icon { font-size: 22px; margin-bottom: 15px; }
-        .card-title { font-size: 16px; font-weight: 700; margin: 0 0 10px 0; }
-        .card-desc { color: var(--text-muted); font-size: 13px; line-height: 1.5; margin: 0; }
-        .pricing-section-title { font-family: monospace; color: var(--accent-blue); font-size: 12px; margin-bottom: 10px; }
-        .pricing-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
-        .pricing-main-title { font-size: 20px; font-weight: 800; margin: 0; }
-        .pricing-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-green); font-weight: bold; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .pricing-btn { background-color: #050811; border: 1px solid var(--border-color); padding: 25px; border-radius: 6px; text-align: left; cursor: pointer; transition: border-color 0.2s; }
-        .pricing-btn:hover { border-color: var(--accent-blue); }
-        .btn-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .btn-title { font-weight: 700; font-size: 15px; }
-        .btn-price { font-weight: 800; font-size: 18px; color: var(--text-main); }
-        .btn-collapse { color: var(--text-muted); font-size: 12px; margin: 0; line-height: 1.4; }
-        footer { margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 20px; display: flex; justify-content: space-between; color: rgba(156, 163, 175, 0.3); font-size: 11px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .font-code { font-family: 'JetBrains Mono', monospace; }
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .custom-glow { box-shadow: 0 0 40px -10px rgba(59, 130, 246, 0.15); }
+        .api-card:hover { border-color: rgba(59, 130, 246, 0.4); background: rgba(11, 15, 25, 0.6); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
     </style>
 </head>
-<body>
+<body class="text-gray-100 min-h-screen selection:bg-blue-500 selection:text-white antialiased custom-glow">
 
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-subtitle">API Control Hub</div>
-            <div class="sidebar-title">BLACKBOX NETWORK</div>
+    <!-- 🛰️ TOP GATEWAY DE CONTRÔLE NUMÉRIQUE -->
+    <header class="border-b border-gray-800 bg-gray-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-display font-bold text-xl tracking-tighter text-white animate-pulse shadow-lg shadow-blue-500/20">B</div>
+                <div>
+                    <h1 class="text-lg font-bold font-display tracking-tight text-white flex items-center gap-2">
+                        BlackBox Automated Control <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full font-code">100 Core API Fleet</span>
+                    </h1>
+                    <p class="text-xs text-gray-400">API Control Hub &bull; Stateless Microservices Matrix</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-1 flex items-center w-full md:w-80">
+                    <span class="text-gray-500 px-3 font-code text-xs">ENDPOINT</span>
+                    <input type="text" id="targetUrl" value="https://onrender.com" class="bg-transparent border-0 text-white font-code text-xs focus:ring-0 w-full outline-none py-1">
+                </div>
+                <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-3 py-2 rounded-xl text-xs font-semibold">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+                    100 Nodes Sterile
+                </div>
+            </div>
         </div>
-        <div class="sidebar-menu" id="sidebar-categories"></div>
-        <div class="sidebar-footer">
-            <button class="fleet-pass-btn" onclick="triggerStripeCheckout('pass')">🎟️ ALL-ACCESS FLEET PASS</button>
-        </div>
-    </div>
+    </header>
 
-    <div class="main-content">
-        <div class="container">
-            <div class="top-bar">
-                <div class="status-badge" id="current-division-title">DIV-01 : INPUT SECURITY</div>
-                <div class="status-badge">● 100 Nodes Sterile</div>
+    <main class="max-w-7xl mx-auto px-6 py-10 space-y-12">
+        
+        <!-- ⚡ CONSOLE DE TESTS DE SÔUTE EN PARALLÈLE -->
+        <section class="bg-gray-950 border border-gray-800 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+            <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> Terminal de Flux Dynamique
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-4 space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1.5">Route active</label>
+                        <select id="routeSelect" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-white font-code focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+                            <option value="/v1/secure-id-scrambler" selected>[ROBOT 100] /v1/secure-id-scrambler</option>
+                            <option value="/v1/sentence-capitalizer">[ROBOT 96] /v1/sentence-capitalizer</option>
+                            <option value="/v1/space-collapser">[ROBOT 97] /v1/space-collapser</option>
+                            <option value="/v1/special-char-stripper">[ROBOT 98] /v1/special-char-stripper</option>
+                            <option value="/v1/word-inverter">[ROBOT 99] /v1/word-inverter</option>
+                            <option value="/v1/aes-256-encryptor">[ROBOT 86] /v1/aes-256-encryptor</option>
+                            <option value="/v1/gps-distance-calculator">[ROBOT 76] /v1/gps-distance-calculator</option>
+                            <option value="/v1/keyword-density-analyzer">[ROBOT 67] /v1/keyword-density-analyzer</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1.5">Payload d'entrée JSON</label>
+                        <textarea id="payloadInput" class="w-full h-44 bg-gray-900 border border-gray-800 rounded-xl p-3 text-xs font-code text-emerald-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none resize-none">{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}</textarea>
+                    </div>
+                    <button onclick="executePayload()" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold py-3 rounded-xl transition duration-200 shadow-lg shadow-blue-600/20 active:scale-[0.98]">
+                        EXPULSER LE FLUX DANS LA MATRIX
+                    </button>
+                </div>
+                <div class="lg:col-span-8 flex flex-col">
+                    <label class="block text-xs font-medium text-gray-400 mb-1.5">Retour d'infrastructure serveur</label>
+                    <div id="responseOutput" class="w-full flex-1 min-h-[300px] bg-gray-900 border border-gray-800 rounded-xl p-4 font-code text-xs text-gray-300 overflow-y-auto max-h-[310px] whitespace-pre-wrap">[ INITIALIZING ] Waiting for action stream execution layers...</div>
+                </div>
+            </div>
+        </section>
+      <!-- 🛡️ CARTOGRAPHIE DES DIVISIONS DES 100 MODULES SOUVERAINS -->
+        <section class="space-y-8">
+            <div class="border-b border-gray-800 pb-4 flex justify-between items-end">
+                <div>
+                    <h2 class="text-xl font-bold font-display text-white tracking-tight">Cartographie Architecturale de la Soute</h2>
+                    <p class="text-xs text-gray-400">Distribution par pôles spécialisés étanches de l'empire API</p>
+                </div>
+                <span class="text-xs font-code text-blue-400 bg-blue-500/5 border border-blue-500/10 px-3 py-1 rounded-full">Centaure Engine v37.0</span>
             </div>
 
-            <div class="nav-grid" id="robots-subnav"></div>
-
-            <main class="bento-grid">
-                <div class="bento-card col-span-2">
-                    <div class="engine-tag" id="robot-engine">[ INITIALIZING ]</div>
-                    <h1 class="hero-title" id="robot-title">Loading Fleet Engine...</h1>
-                    <p class="hero-desc" id="robot-desc">Connecting to BlackBox sovereign cluster.</p>
-                </div>
-
-                <div class="bento-card">
-                    <div class="card-icon" id="feat1-icon">🛡️</div>
-                    <h2 class="card-title" id="feat1-title">-</h2>
-                    <p class="card-desc" id="feat1-desc">-</p>
-                </div>
-
-                <div class="bento-card">
-                    <div class="card-icon" id="feat2-icon">⚡</div>
-                    <h2 class="card-title" id="feat2-title">-</h2>
-                    <p class="card-desc" id="feat2-desc">-</p>
-                </div>
-
-                <div class="bento-card col-span-2">
-                    <div class="pricing-header-flex">
-                        <div>
-                            <div class="pricing-section-title" id="pricing-target">[ CORE ENGINE ]</div>
-                            <h3 class="pricing-main-title" id="pricing-title">Commercial Licensing</h3>
+            <!-- INDEX DES DIVISIONS BENTO -->
+            <div class="space-y-10">
+                
+                <!-- DIV-01 -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-blue-400 uppercase tracking-widest font-code flex items-center gap-2">
+                        // DIV-01 : INPUT SECURITY & SANITIZATION LAB <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">ACTIVE</span>
+                    </h3>
+                    <div class="bento-grid">
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-01</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/form-shield</h4>
+                            <p class="text-xs text-gray-400 mt-1">Bloqueur d'injections XSS et assainisseur global de formulaires.</p>
                         </div>
-                        <div class="pricing-tag">Sovereign Acquisition</div>
-                    </div>
-
-                    <div class="pricing-grid">
-                        <div class="pricing-btn" onclick="triggerStripeCheckout('solo')">
-                            <div class="btn-header">
-                                <span class="btn-title">Solo License</span>
-                                <span class="btn-price" id="price-solo-tag">-$</span>
-                            </div>
-                            <p class="btn-collapse" id="desc-solo-tag">-</p>
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-02</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/audio-convert</h4>
+                            <p class="text-xs text-gray-400 mt-1">Aiguillage et conversion de soute d'assets audio.</p>
                         </div>
-
-                        <div class="pricing-btn" onclick="triggerStripeCheckout('agency')">
-                            <div class="btn-header">
-                                <span class="btn-title">Agency Fleet</span>
-                                <span class="btn-price" id="price-agency-tag">-$</span>
-                            </div>
-                            <p class="btn-collapse" id="desc-agency-tag">-</p>
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-67</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/keyword-density-analyzer</h4>
+                            <p class="text-xs text-gray-400 mt-1">Analyseur de redondances sémantiques et de fréquences SEO.</p>
                         </div>
                     </div>
                 </div>
-            </main>
 
-            <footer>
-                <p>© 2026 BlackBox Audio Labs LLC. Systems Sterile.</p>
-                <p>Centaure Engine v30.0 — Global SEO Compliant</p>
-            </footer>
-        </div>
-    </div>
+                <!-- DIV-04 -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-purple-400 uppercase tracking-widest font-code flex items-center gap-2">
+                        // DIV-04 : SECURITY, OBFUSCATION & CRYPTO LAB <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">HIGH ENTROPY</span>
+                    </h3>
+                    <div class="bento-grid">
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-71</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/hashids-generator</h4>
+                            <p class="text-xs text-gray-400 mt-1">Masquage cryptique d'identifiants de base de données numériques.</p>
+                        </div>
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-72</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/hashids-decoder</h4>
+                            <p class="text-xs text-gray-400 mt-1">Inverseur et extracteur d'identifiants bruts depuis jeton masqué.</p>
+                        </div>
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-86</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/aes-256-encryptor</h4>
+                            <p class="text-xs text-gray-400 mt-1">Chiffrement symétrique AES-256-CBC hautement sécurisé.</p>
+                        </div>
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200 border-blue-500/30 bg-blue-950/10">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-blue-400 font-bold">Node-100</span><span class="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">MASTER</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/secure-id-scrambler</h4>
+                            <p class="text-xs text-gray-300 mt-1">Générateur de jetons maîtres d'infrastructure à haute entropie.</p>
+                        </div>
+                    </div>
+                </div>
 
-<script>
-   const categoriesDatabase = [
-    { id: "div01", name: "DIV-01: Form Protection" },
-    { id: "div02", name: "DIV-02: Cyber-Defense" },
-    { id: "div03", name: "DIV-03: Proxy & Privacy" },
-    { id: "div04", name: "DIV-04: Audio Lab" },
-    { id: "div05", name: "DIV-05: Asset Shrink" },
-    { id: "div06", name: "DIV-06: Document Process" },
-    { id: "div07", name: "DIV-07: Geolock & Routing" },
-    { id: "div08", name: "DIV-08: Agent Analytics" },
-    { id: "div09", name: "DIV-09: Web Scraping" },
-    { id: "div10", name: "DIV-10: Code Optimizers" },
-    { id: "div11", name: "DIV-11: Cron & Scheduling" },
-    { id: "div13", name: "DIV-13: Link Protection" },
-    { id: "div14", name: "DIV-14: Fintech Utilities" },
-    { id: "div15", name: "DIV-15: Crypto Gateways" },
-    { id: "div18", name: "DIV-18: Health Diagnostics" },
-    { id: "div19", name: "DIV-19: Log Sanitizers" },
-    { id: "div20", name: "DIV-20: Multi-Cloud Flow" }
-];
+                <!-- DIV-10 -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest font-code flex items-center gap-2">
+                        // DIV-10 : HIGH-SPEED CODE OPTIMIZERS & DATA NORMALIZERS <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">STATELESS</span>
+                    </h3>
+                    <div class="bento-grid">
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-93</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/pascal-case-converter</h4>
+                            <p class="text-xs text-gray-400 mt-1">Normalisation et conversion de chaînes textuelles en PascalCase.</p>
+                        </div>
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-96</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/sentence-capitalizer</h4>
+                            <p class="text-xs text-gray-400 mt-1">Mise en majuscule automatique de la première lettre de chaque phrase.</p>
+                        </div>
+                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
+                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-97</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
+                            <h4 class="text-sm font-semibold text-white font-display">/v1/space-collapser</h4>
+                            <p class="text-xs text-gray-400 mt-1">Purge et compactage de soute de tous les espaces blancs multiples.</p>
+                        </div>
+                    </div>
+                </div>
 
-const fleetDatabase = {
-    div01: [
-        { id: "robot01", name: "Form Shield", engine: "[ FORM INTERCEPTION ACTIVE ]", title: "Block 100% of Form Spam.<br>Zero Captchas. Zero Friction.", desc: "An invisible JavaScript protection layer that intercepts automated bots and malicious spammers before they contaminate your database.", feat1_icon: "🛡️", feat1_title: "100% Invisible", feat1_desc: "Zero visual friction for real users.", feat2_icon: "⚡", feat2_title: "High Performance", feat2_desc: "Lightweight script with zero backend bottleneck.", pricing_target: "[ CORE ENGINE : FORM-SHIELD ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot05", name: "Webhook Shield", engine: "[ APPLICATIVE CRASH SHIELD ]", title: "Resilient Buffer for Webhooks.<br>Absorb DDoS Spikes With Zero Downtime.", desc: "A high-speed security buffer engineered to absorb extreme request spikes and malformed payloads.", feat1_icon: "🧱", feat1_title: "Rate Limiting", feat1_desc: "Smoothly ingests overhead traffic spikes up to 5,000 req/ms.", feat2_icon: "🧬", feat2_title: "Payload Check", feat2_desc: "Verifies HMAC signature byte-arrays upstream natively.", pricing_target: "[ CORE ENGINE : WEBHOOK-SHIELD ]", price_solo: "69$", desc_solo: "Solo Pass.", price_agency: "199$", desc_agency: "Infrastructure Pack.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div02: [
-        { id: "robot06", name: "IP Blocker", engine: "[ EDGE CYBER-SHIELD ACTIVE ]", title: "Blacklist Malicious IPs.<br>Neutralize Spammers Upstream.", desc: "A stateless, ultra-fast threat intelligence routing layer that drops hostile connections at the network edge.", feat1_icon: "🏴‍☠️", feat1_title: "Stateless Rejection", feat1_desc: "Terminates bad traffic before it hits backend servers.", feat2_icon: "🔥", feat2_title: "Zero-Day Threat", feat2_desc: "Auto-updates definitions hourly from global analytics.", pricing_target: "[ CORE ENGINE : IP-BLOCKER ]", price_solo: "59$", desc_solo: "Solo License.", price_agency: "179$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot07", name: "Rate Limiter", engine: "[ AUTOMATED TRAFFIC THROTTLING ]", title: "Throttle Bruteforce Attacks.<br>Defend Authentication Paths.", desc: "A lightweight sliding-window rate-limiting engine designed to safeguard login forms and checkout gateways.", feat1_icon: "⏳", feat1_title: "Sliding-Window", feat1_desc: "Maintains accurate traffic matrices at zero-memory overhead.", feat2_icon: "💎", feat2_title: "Botnet Defeat", feat2_desc: "Tracks abuse beyond simple IPs via layered meta-analysis.", pricing_target: "[ CORE ENGINE : RATE-LIMITER ]", price_solo: "49$", desc_solo: "Solo License.", price_agency: "149$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot33", name: "Bot Detector", engine: "[ SCRAPING EVASION SCANNER ]", title: "Annihilate Stealth Scrapers.<br>Expose Headless Frameworks Instantly.", desc: "A stateless request inspection script built to detect headless automation.", feat1_icon: "👁️", feat1_title: "Evasion Bypass", feat1_desc: "Identifies stealth anti-fingerprint plugins natively.", feat2_icon: "🪓", feat2_title: "Edge Dropping", feat2_desc: "Terminates Puppeteer, Playwright and Selenium calls.", pricing_target: "[ CORE ENGINE : BOT-DETECTOR ]", price_solo: "69$", desc_solo: "Solo Pass.", price_agency: "199$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div03: [
-        { id: "robot17", name: "Proxy Wrap", engine: "[ STATELESS OBFUSCATION CORE ]", title: "Stateless Request Wrapper.<br>Automated Header & IP Rotation.", desc: "Middleware designed to wrap outbound micro-service requests and bypass rate-limiting firewalls.", feat1_icon: "🎭", feat1_title: "Header Masking", feat1_desc: "Polymorphic injection shifts application signatures.", feat2_icon: "🛡️", feat2_title: "Privacy Matrix", feat2_desc: "Keeps internal structures sterile and untraceable.", pricing_target: "[ CORE ENGINE : PROXY-WRAP ]", price_solo: "69$", desc_solo: "Solo License.", price_agency: "199$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot34", name: "Cors Proxy", engine: "[ CROSS-ORIGIN BYPASS SYSTEM ]", title: "Bypass CORS Restrictions.<br>Stateless Cross-Origin Request Router.", desc: "A stateless routing proxy built to strip restrictive Access-Control headers.", feat1_icon: "🌐", feat1_title: "Header Stripping", feat1_desc: "Annihilates origin constraints on the fly natively.", feat2_icon: "⚡", feat2_title: "Zero Latency", feat2_desc: "Streamlines front-end models without browser policy locks.", pricing_target: "[ CORE ENGINE : CORS-PROXY ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Tier.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-     div04: [
-        { id: "robot02", name: "Audio Convert", engine: "[ PRO AUDIO OPTIMIZATION ]", title: "Compress Heavy Audio Files.<br>Reduce Size by 75%, Keep 100% Quality.", desc: "A professional server-side compression engine built to shrink WAV or MP3 files while keeping fidelity.", feat1_icon: "🎛️", feat1_title: "Studio Output", feat1_desc: "No loss of dynamics, transients, or frequency weights.", feat2_icon: "🚀", feat2_title: "Parallel Nodes", feat2_desc: "Batch-process massive audio directories across cloud nodes.", pricing_target: "[ CORE ENGINE : AUDIO-CONVERT ]", price_solo: "59$", desc_solo: "Solo License.", price_agency: "179$", desc_agency: "Studio Pack.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div05: [
-        { id: "robot18", name: "SVG Optimizer", engine: "[ VECTOR ASSET SHREDDER ]", title: "Chirurgical Vector Optimizer.<br>Strip Unused DOM Path Metadata.", desc: "An aggressive parsing filter engineered to clean vector graphics and shrink footprint sizes up to 80%.", feat1_icon: "🎨", feat1_title: "Purge Metadata", feat1_desc: "Annihilates bloated data injections left behind by editors.", feat2_icon: "⚡", feat2_title: "DOM Ingestion", feat2_desc: "Prepares raw vector tags for efficient layout rendering.", pricing_target: "[ CORE ENGINE : SVG-OPTIMIZER ]", price_solo: "39$", desc_solo: "Solo License.", price_agency: "119$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div06: [
-        { id: "robot28", name: "PDF Flatten", engine: "[ SECURE PDF COMPRESSION LAYER ]", title: "Flatten Complex PDF Forms.<br>Annihilate Form Scripting Threats.", desc: "A stateless, high-speed document processing API designed to rasterize interactive PDF layers into static maps.", feat1_icon: "📄", feat1_title: "Hardening Forms", feat1_desc: "Converts interactive form vectors into unalterable flat image structures.", feat2_icon: "⚡", feat2_title: "Archival Speed", feat2_desc: "Reduces data payload weights up to 65% for storage.", pricing_target: "[ CORE ENGINE : PDF-FLATTEN ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot29", name: "CSV Parser", engine: "[ ASYNCHRONOUS DATA CONVERTER ]", title: "Parse Massive CSV Datasets.<br>Stream Pure Sterilized JSON Output.", desc: "A lightning-fast, stateless data parsing engine built to ingest massive bulk CSV datasets.", feat1_icon: "📊", feat1_title: "Stream Ingestion", feat1_desc: "Processes multi-gigabyte data sets bit-by-bit cleanly.", feat2_icon: "🧬", feat2_title: "Structure Check", feat2_desc: "Auto-corrects broken delimiters and misaligned column rules.", pricing_target: "[ CORE ENGINE : CSV-PARSER ]", price_solo: "59$", desc_solo: "Solo License.", price_agency: "179$", desc_agency: "Agency Tier.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot35", name: "Base64 Converter", engine: "[ BINARY BUFFER TRANSLATOR ]", title: "Convert Assets to Base64.<br>Stream Pure Static Text Strings.", desc: "An aggressive server-side data converter that structuralizes incoming binary assets into sterile Base64 text weights.", feat1_icon: "🗂️", feat1_title: "Pure Synthesis", feat1_desc: "Outputs flawless, web-compliant data strings without overhead.", feat2_icon: "⚡", feat2_title: "Core Web Max", feat2_desc: "Eliminates multiple dynamic file reading requests instantly.", pricing_target: "[ CORE ENGINE : BASE64-CONVERTER ]", price_solo: "39$", desc_solo: "Solo Pass.", price_agency: "119$", desc_agency: "Agency Pack.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div07: [
-        { id: "robot11", name: "IP Geolock", engine: "[ STATELESS GEOLOCATION CORE ]", title: "High-Speed IP Geolocation.<br>Smart Dynamic Currency Routing.", desc: "A localized lookup matrix capable of converting incoming visitor IPs into country footprints.", feat1_icon: "🌍", feat1_title: "Stateless Nodes", feat1_desc: "Resolves geographical boundaries inline without database lag.", feat2_icon: "🔱", feat2_title: "Currency Map", feat2_desc: "Triggers multi-currency checkout nodes based on origin tags.", pricing_target: "[ CORE ENGINE : IP-GEOLOCK ]", price_solo: "59$", desc_solo: "Solo License.", price_agency: "179$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot38", name: "Redirect Check", engine: "[ REDIRECT TRACKING LAYER ]", title: "Trace HTTP Redirect Chains.<br>Expose Hidden Link Rotations Instantly.", desc: "A stateless network utility built to trace multi-step HTTP redirection paths.", feat1_icon: "🔗", feat1_title: "Chain Tracker", feat1_desc: "Traces status code paths down to final locations in 0.1ms.", feat2_icon: "🛡️", feat2_title: "Link Audits", feat2_desc: "Flags broker leakage, broken domains, and loop variables.", pricing_target: "[ CORE ENGINE : REDIRECT-CHECK ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Tier.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div08: [
-        { id: "robot15", name: "Agent Detect", engine: "[ REAL-TIME DEVICE FINGERPRINTING ]", title: "De-Obfuscate User-Agents.<br>Expose Hardware Footprints Instantly.", desc: "An aggressive real-time browser inspection layer that breaks down raw HTTP Headers.", feat1_icon: "🧬", feat1_title: "De-Obfuscation", feat1_desc: "Instantly parses signatures to segment scraping farms.", feat2_icon: "🛡️", feat2_title: "Anti-Fraud", feat2_desc: "Flags device mismatches before checkout tunnels process loads.", pricing_target: "[ CORE ENGINE : AGENT-DETECT ]", price_solo: "69$", desc_solo: "Solo License.", price_agency: "199$", desc_agency: "Agency Pack.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div09: [
-        { id: "robot23", name: "Metadata Scraper", engine: "[ DOM DATA EXTRACTION ENGINE ]", title: "Scrape OpenGraph Headers.<br>Extract Social Card Metadata.", desc: "A lightning-fast DOM crawler that targets public domain headers to parse structures.", feat1_icon: "🔍", feat1_title: "AST Metadata", feat1_desc: "Isolates clean semantic layouts from target headers.", feat2_icon: "📈", feat2_title: "SEO Analytics", feat2_desc: "Maps target asset social shares straight into corporate endpoints.", pricing_target: "[ CORE ENGINE : METADATA-SCRAPER ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot32", name: "Text Extractor", engine: "[ DOM TEXT HARVESTER ]", title: "Extract Pure Body Text.<br>Scrub Redundant HTML & Script Tags.", desc: "A stateless data extraction utility designed to rip scripts and styles away from web parameters.", feat1_icon: "🧹", feat1_title: "DOM Stripping", feat1_desc: "Annihilates head injections and nested interface markup rules.", feat2_icon: "🤖", feat2_title: "AI Ingestion Max", feat2_desc: "Reduces token usage up to 78% by parsing out layout clutter.", pricing_target: "[ CORE ENGINE : TEXT-EXTRACTOR ]", price_solo: "59$", desc_solo: "Solo Pass.", price_agency: "179$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot37", name: "Sitemap Scraper", engine: "[ XML NETWORK HARVESTER ]", title: "Parse Heavy XML Sitemaps.<br>Extract 100% of Target URL Arrays.", desc: "An aggressive sitemap parser designed to harvest all data structures cleanly.", feat1_icon: "📡", feat1_title: "XML Breakout", feat1_desc: "Shreds heavy XML files upstream with zero server memory overhead.", feat2_icon: "📊", feat2_title: "Tracking Analytics", feat2_desc: "Feeds fresh directory grids into automated reporting metrics.", pricing_target: "[ CORE ENGINE : SITEMAP-SCRAPER ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div10: [
-        { id: "robot12", name: "MD Parser", engine: "[ SEO STRUCTURED AST PARSER ]", title: "Markdown to Clean HTML.<br>Automated Schema & SEO Optimization.", desc: "A lightning-fast compilation module designed to turn raw markdown records into HTML.", feat1_icon: "📝", feat1_title: "Synthesis Node", feat1_desc: "Outputs pure DOM structures with zero style pollution.", feat2_icon: "📈", feat2_title: "JSON-LD Snippet", feat2_desc: "Auto-generates Google Rich Snippets code instantly.", pricing_target: "[ CORE ENGINE : MD-PARSER ]", price_solo: "39$", desc_solo: "Solo License.", price_agency: "119$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot14", name: "CSS Minify", engine: "[ ULTRA-AGGRESSIVE AST MINIFIER ]", title: "Aggressive AST CSS Parser.<br>Purge 100% Unused Rules.", desc: "An active tree-shaking CSS parser that evaluates rendering sheets against live viewports.", feat1_icon: "🪓", feat1_title: "Tree-Shaking CSS", feat1_desc: "Annihilates redundant media queries and dead styling sheets.", feat2_icon: "⚡", feat2_title: "Core Web Vitals", feat2_desc: "Drastically optimizes First Contentful Paint times on mobile.", pricing_target: "[ CORE ENGINE : CSS-MINIFY ]", price_solo: "49$", desc_solo: "Solo License.", price_agency: "149$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot16", name: "JSON Validate", engine: "[ REAL-TIME AST JSON PARSER ]", title: "Validate Heavy JSON Payloads.<br>Enforce Dynamic Integrity Bounds.", desc: "A stateless AST evaluation pipeline engineered to parse and validate incoming structural streams.", feat1_icon: "🗂️", feat1_title: "High-Speed AST", feat1_desc: "Performs absolute syntax map confirmation in less than 0.1ms.", feat2_icon: "⚙️", feat2_title: "Schema Check", feat2_desc: "Flags datatype leaks, structural gaps, or invalid layers.", pricing_target: "[ CORE ENGINE : JSON-VALIDATE ]", price_solo: "49$", desc_solo: "Solo License.", price_agency: "149$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot24", name: "Schema Gen", engine: "[ AUTOMATED JSON-LD SYNTHESIS ]", title: "Automated SEO Schema Generator.<br>Deploy Rich Snippets in 1-Click.", desc: "An AST input model converter that structuralizes web metadata into Google JSON-LD schema.", feat1_icon: "🧱", feat1_title: "JSON-LD Output", feat1_desc: "Outputs pure, error-free search engine data structures ready for head ingestion.", feat2_icon: "📉", feat2_title: "SEO Authority", feat2_desc: "Boosts structured search placement parameters for client B2B assets.", pricing_target: "[ CORE ENGINE : SCHEMA-GENERATOR ]", price_solo: "39$", desc_solo: "Solo Pass.", price_agency: "119$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot31", name: "HTML Minify", engine: "[ COMPACT MARGIN CRUSHER ]", title: "Compress Bleeding HTML sheets.<br>Abolish Whitespaces up to 75%.", desc: "An ultra-aggressive text layout minifier designed to collapse redundant parameters inline.", feat1_icon: "⚡", feat1_title: "Margin Purge", feat1_desc: "Squeezes unused lines out of live production code arrays.", feat2_icon: "🚀", feat2_title: "FCP Acceleration", feat2_desc: "Brings mobile web delivery frameworks straight down below 120ms.", pricing_target: "[ CORE ENGINE : HTML-MINIFY ]", price_solo: "39$", desc_solo: "Solo Pass.", price_agency: "119$", desc_agency: "Agency Tier.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot39", name: "JSON-LD Check", engine: "[ SEO VALIDATION FILTER ]", title: "Validate JSON-LD Nodes.<br>Kill Google Search Console Errors.", desc: "A specialized data checking pipeline that parses and verifies structural Schema.org tags.", feat1_icon: "📉", feat1_title: "Error Cleanout", feat1_desc: "Catches broken data models, missing properties, and comma errors.", feat2_icon: "💎", feat2_title: "Snippets Safe", feat2_desc: "Secures high-ranking structural rich listings across mobile matrices.", pricing_target: "[ CORE ENGINE : JSON-LD-VALIDATOR ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div11: [
-        { id: "robot13", name: "Scheduler Shield", engine: "[ DISTRIBUTED CRON EDGE BUFFER ]", title: "Cron Job Edge Validation.<br>Request Throttling & Queue Buffer.", desc: "A hyper-resilient timing gateway built to buffer and level webhook bursts.", feat1_icon: "⏱️", feat1_title: "Edge Buffer", feat1_desc: "Queues and levels sudden task bursts into steady streams.", feat2_icon: "⚙️", feat2_title: "Race Guard", feat2_desc: "Prevents concurrent race conditions down your processing backend.", pricing_target: "[ CORE ENGINE : SCHEDULER-SHIELD ]", price_solo: "79$", desc_solo: "Solo Pass.", price_agency: "249$", desc_agency: "Infrastructure Pack.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div13: [
-        { id: "robot21", name: "AdBlock Bypass", engine: "[ POLYMORPHIC SCRIPT WRAPPER ]", title: "Obfuscate Marketing Scripts.<br>Defeat 100% of AdBlock Systems.", desc: "A dynamic proxy utility that compiles analytical scripts using polymorphic change vectors.", feat1_icon: "🏴‍☠️", feat1_title: "Polymorphic Scripts", feat1_desc: "Mutes specific analytics name patterns upstream to guarantee execution.", feat2_icon: "📊", feat2_title: "Data Reclaim", feat2_desc: "Recovers up to 35% of lost tracking events across clients.", pricing_target: "[ CORE ENGINE : ADBLOCK-BYPASS ]", price_solo: "79$", desc_solo: "Solo License.", price_agency: "249$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot22", name: "Link Rotator", engine: "[ STATELESS BALANCING VECTOR ]", title: "A/B Traffic Link Splitter.<br>Stateless Affiliate Load Balancer.", desc: "A lightweight dynamic router engineered to split target users through custom weights.", feat1_icon: "🔀", feat1_title: "Weight Allocation", feat1_desc: "Distributes target groups into custom target slots natively.", feat2_icon: "⚙️", feat2_title: "Zero Cookies", feat2_desc: "Performs fast, client-side link execution variables cleanly.", pricing_target: "[ CORE ENGINE : LINK-ROTATOR ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Tier.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div14: [
-        { id: "robot25", name: "UTM Builder", engine: "[ TRACKING ATT_RIBUTION CLEANER ]", title: "Sanitize Marketing Parameters.<br>Enforce Unified Campaign Att_ributions.", desc: "A fast text normalizer that scrubs tracking links and enforces parameters uniformity.", feat1_icon: "🎛️", feat1_title: "Att_ribution Sync", feat1_desc: "Cleans malformed character blocks before storage loops.", feat2_icon: "⚡", feat2_title: "Data Cleanliness", feat2_desc: "Guarantees database consistency across global storefront ad loops.", pricing_target: "[ CORE ENGINE : UTM-BUILDER ]", price_solo: "39$", desc_solo: "Solo License.", price_agency: "119$", desc_agency: "Agency Tier.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot26", name: "Currency Live", engine: "[ REAL-TIME FINTECH CONVERTER ]", title: "Live Foreign Exchange Rates.<br>Convert Global Currencies On-The-Fly.", desc: "A stateless monetary lookup service that syncs with institutional exchange flows instantly.", feat1_icon: "💸", feat1_title: "FX Synthesis", feat1_desc: "Returns dynamic currency translations with zero database pipeline lag.", feat2_icon: "🏦", feat2_title: "Spread Guard", feat2_desc: "Safeguards cross-border pricing margins against lightning volatility.", pricing_target: "[ CORE ENGINE : CURRENCY-LIVE ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot27", name: "Vat Validator", engine: "[ EU B2B TAXES VALIDATION ]", title: "Automated VAT ID Validator.<br>Verify Business Tax Compliance Instantly.", desc: "A structural check engine that evaluates international business VAT registrations syntax.", feat1_icon: "🛡️", feat1_title: "Tax Hardening", feat1_desc: "Performs absolute verification of enterprise tax IDs cleanly.", feat2_icon: "🧾", feat2_title: "Invoice Sync", feat2_desc: "Natively structuralizes company records for clean accounting profiles.", pricing_target: "[ CORE ENGINE : VAT-VALIDATOR ]", price_solo: "39$", desc_solo: "Solo Pass.", price_agency: "119$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot30", name: "Tax Router", engine: "[ CROSS-BORDER DYNAMIC TAXES ]", title: "Cross-Border Customs Engine.<br>Compute International Duties Instantly.", desc: "A mathematical simulator built to process regional localized taxes and state dynamic duties.", feat1_icon: "🛃", feat1_title: "Duties Routing", feat1_desc: "Computes complex regional tariffs and state import taxes without local database load.", feat2_icon: "💰", feat2_title: "Margin Secure", feat2_desc: "Protects international e-commerce networks from unexpected fiscal penalties.", pricing_target: "[ CORE ENGINE : TAX-ROUTER ]", price_solo: "59$", desc_solo: "Solo License.", price_agency: "179$", desc_agency: "Agency Tier.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div15: [
-        { id: "robot36", name: "Crypto Verify", engine: "[ WEB3 REQUISITION FILTER ]", title: "Validate Crypto Addresses.<br>Sovereign Multi-Chain Syntax Audit.", desc: "A localized structural check engine engineered to evaluate cryptographic network parameters.", feat1_icon: "🪙", feat1_title: "Multi-Chain Array", feat1_desc: "Validates string lengths, Base58 checksum variables, and Bech32 codes in 0.05ms.", feat2_icon: "🔒", feat2_title: "Payout Secure", feat2_desc: "Blocks user input typos before dynamic financial nodes execute blocks.", pricing_target: "[ CORE ENGINE : CRYPTO-ADDRESS-VERIFY ]", price_solo: "59$", desc_solo: "Solo Pass.", price_agency: "179$", desc_agency: "Agency Fleet.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" },
-        { id: "robot40", name: "Wei Converter", engine: "[ CRYPTO VALUE COMPILER ]", title: "Precise Wei To Ether Math.<br>Annihilate Floating Point Deflections.", desc: "A high-precision arithmetic engine designed to handle large cryptofinance integers without loss.", feat1_icon: "💎", feat1_title: "Safe Integer", feat1_desc: "Executes calculations outside standard JS floating limits securely.", feat2_icon: "⚡", feat2_title: "Programmatic FX", feat2_desc: "Delivers crystalline unit translations for real-time gas metrics.", pricing_target: "[ CORE ENGINE : WEI-CONVERTER ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Agency Tier.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div20: [
-        { id: "robot41", name: "Cloud Sync", engine: "[ MULTI-CLOUD SYNCHRONIZER ]", title: "Replicate Multi-Cloud Data.<br>Zero-Latency Cross-Border Backup.", desc: "A stateless routing layer designed to broadcast database streams across targets in parallel.", feat1_icon: "📡", feat1_title: "Parallel Sync", feat1_desc: "Pipes payloads simultaneously to AWS and Google Cloud nodes without lag.", feat2_icon: "⚡", feat2_title: "Edge Delivery", feat2_desc: "Secures microsecond confirmation speeds for corporate disaster recovery paths.", pricing_target: "[ CORE ENGINE ]", price_solo: "79$", desc_solo: "Solo License.", price_agency: "249$", desc_agency: "Infrastructure Tier.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div18: [
-        { id: "robot19", name: "Uptime Check", engine: "[ HYPER-FAST DICTIONARY SCANNER ]", title: "High-Performance Ping Engine.<br>Stateless Cluster Diagnostics.", desc: "A specialized network health inspector capable of triggering zero-latency handshake checking vectors.", feat1_icon: "📡", feat1_title: "Stateless Node", feat1_desc: "Evaluates multi-node connection states with zero cache overhead.", feat2_icon: "🚨", feat2_title: "Instant Warning", feat2_desc: "Triggers rapid network exit sequences directly into failover arrays.", pricing_target: "[ CORE ENGINE : UPTIME-CHECK ]", price_solo: "49$", desc_solo: "Solo Pass.", price_agency: "149$", desc_agency: "Infrastructure Pack.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ],
-    div19: [
-        { id: "robot20", name: "Log Sanitizer", engine: "[ DYNAMIC COMPLIANCE BUFFER ]", title: "Automated Log Scrubbing Engine.<br>Purge 100% PII & Sensitive Strings.", desc: "A real-time text-stream data sanitizer designed for strict GDPR/HIPAA compliant operations.", feat1_icon: "🧼", feat1_title: "PII Scrubbing", feat1_desc: "Wipes identification data points inline using fast regex processors.", feat2_icon: "🔒", feat2_title: "Strict Rule", feat2_desc: "Prevents industrial data spills inside public server database indexes.", pricing_target: "[ CORE ENGINE : LOG-SANITIZER ]", price_solo: "59$", desc_solo: "Solo License.", price_agency: "179$", desc_agency: "Enterprise Pack.", stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB" }
-    ]
-};
+            </div>
+        </section>
+    </main>
+      <footer class="border-t border-gray-800 bg-gray-950 py-8 text-center text-xs text-gray-500 font-code">
+        &copy; 2026 BlackBox Audio Labs LLC. Systems Sterile. All Rights Reserved Sovereign Engine.
+    </footer>
 
-const globalPrices = { pass: "price_1UF8ZDAQxUv6pdHqn07yX0oB" };
-let currentDivisionId = "div01";
-let activeRobotIndex = 0;
-
-function initializeApp() {
-    const sidebarContainer = document.getElementById('sidebar-categories');
-    if (!sidebarContainer) return;
-    sidebarContainer.innerHTML = '';
-    
-    categoriesDatabase.forEach((cat) => {
-        const item = document.createElement('div');
-        item.className = `category-item ${cat.id === currentDivisionId ? 'active' : ''}`;
-        item.innerText = cat.name;
-        item.onclick = () => switchDivision(cat.id, item);
-        sidebarContainer.appendChild(item);
-    });
-    renderSubNavigation();
-    loadRobotData();
-}
-
-function switchDivision(divisionId, element) {
-    currentDivisionId = divisionId;
-    activeRobotIndex = 0;
-    document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
-    element.classList.add('active');
-    const divTitle = document.getElementById('current-division-title');
-    if (divTitle) divTitle.innerText = element.innerText;
-    renderSubNavigation();
-    loadRobotData();
-}
-
-function renderSubNavigation() {
-    const subnavContainer = document.getElementById('robots-subnav');
-    if (!subnavContainer) return;
-    subnavContainer.innerHTML = '';
-    const robotsList = fleetDatabase[currentDivisionId] || [];
-    if (robotsList.length === 0) {
-        subnavContainer.innerHTML = `<div class="nav-btn active">[ NO ACTIVE ROBOTS ]</div>`;
-        return;
-    }
-    robotsList.forEach((bot, index) => {
-        const btn = document.createElement('div');
-        btn.className = `nav-btn ${index === activeRobotIndex ? 'active' : ''}`;
-        btn.innerText = bot.name;
-        btn.onclick = () => {
-            activeRobotIndex = index;
-            document.querySelectorAll('.nav-grid .nav-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            loadRobotData();
+    <script>
+        // Mappage dynamique des payloads d'exemple de soute pour faciliter l'audit
+        const payloads = {
+            "/v1/secure-id-scrambler": '{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}',
+            "/v1/sentence-capitalizer": '{\n  "raw_text_stream": "bonjour steve. l\'infrastructure est en ligne mondiale ! plus aucun bug."\n}',
+            "/v1/space-collapser": '{\n  "raw_text_stream": "Texte    avec    trop   d\'espaces    et   tabulations."\n}',
+            "/v1/special-char-stripper": '{\n  "raw_dirty_string": "Hello Steve! 🔥 Élimine les emojis & symboles !!!",\n  "allow_spaces": true\n}',
+            "/v1/word-inverter": '{\n  "raw_text_stream": "BlackBox",\n  "invert_mode": "characters"\n}',
+            "/v1/aes-256-encryptor": '{\n  "text_to_encrypt": "Payload ultra secret d\'agence",\n  "secret_encryption_key": "MaCleSuperSecurisee123"\n}',
+            "/v1/gps-distance-calculator": '{\n  "lat1": 48.8566,\n  "lon1": 2.3522,\n  "lat2": 40.7128,\n  "lon2": -74.0060\n}',
+            "/v1/keyword-density-analyzer": '{\n  "raw_text_corpus": "SEO sémantique de soute. Le SEO est indispensable pour le SEO de production."\n}'
         };
-        subnavContainer.appendChild(btn);
-    });
-}
 
-function loadRobotData() {
-    const robotsList = fleetDatabase[currentDivisionId] || [];
-    if (robotsList.length === 0) {
-        document.getElementById('robot-engine').innerText = "[ PENDING REPLICATION ]";
-        document.getElementById('robot-title').innerHTML = "Deploying Next Algorithms...";
-        document.getElementById('robot-desc').innerText = "This node category is currently awaiting industrial compilation.";
-        document.getElementById('feat1-icon').innerText = "⚙️";
-        document.getElementById('feat1-title').innerText = "Engine Staged";
-        document.getElementById('feat1-desc').innerText = "Modules awaiting allocation.";
-        document.getElementById('feat2-icon').innerText = "📡";
-        document.getElementById('feat2-title').innerText = "Route Locked";
-        document.getElementById('feat2-desc').innerText = "Stripe endpoints mapped for industrial delivery.";
-        document.getElementById('pricing-target').innerText = "[ PENDING ]";
-        document.getElementById('price-solo-tag').innerText = "--$";
-        document.getElementById('desc-solo-tag').innerText = "Awaiting deployment.";
-        document.getElementById('price-agency-tag').innerText = "--$";
-        document.getElementById('desc-agency-tag').innerText = "Awaiting deployment.";
-        return;
-    }
-    const data = robotsList[activeRobotIndex];
-    document.getElementById('robot-engine').innerText = data.engine;
-    document.getElementById('robot-title').innerHTML = data.title;
-    document.getElementById('robot-desc').innerText = data.desc;
-    document.getElementById('feat1-icon').innerText = data.feat1_icon;
-    document.getElementById('feat1-title').innerText = data.feat1_title;
-    document.getElementById('feat1-desc').innerText = data.feat1_desc;
-    document.getElementById('feat2-icon').innerText = data.feat2_icon;
-    document.getElementById('feat2-title').innerText = data.feat2_title;
-    document.getElementById('feat2-desc').innerText = data.feat2_desc;
-    document.getElementById('pricing-target').innerText = data.pricing_target;
-    document.getElementById('price-solo-tag').innerText = data.price_solo;
-    document.getElementById('desc-solo-tag').innerText = data.desc_solo;
-    document.getElementById('price-agency-tag').innerText = data.price_agency;
-    document.getElementById('desc-agency-tag').innerText = data.desc_agency;
-}
+        document.getElementById('routeSelect').addEventListener('change', function(e) {
+            const selectedRoute = e.target.value;
+            if (payloads[selectedRoute]) {
+                document.getElementById('payloadInput').value = payloads[selectedRoute];
+            }
+        });
 
-function triggerStripeCheckout(planType) {
-    let targetPriceId = "";
-    if (planType === 'pass') {
-        targetPriceId = globalPrices.pass;
-    } else {
-        const robotsList = fleetDatabase[currentDivisionId] || [];
-        if (robotsList.length === 0) return;
-        const data = robotsList[activeRobotIndex];
-        targetPriceId = planType === 'solo' ? data.stripe_solo : data.stripe_agency;
-    }
-    fetch('/v1/checkout/create-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            priceId: targetPriceId,
-            successUrl: 'https://blackbox-apis.com',
-            cancelUrl: 'https://blackbox-apis.com'
-        })
-    })
-    .then(res => res.json())
-    .then(session => { if (session.url) window.location.href = session.url; })
-    .catch(err => { alert("Action temporarily unavailable."); });
-}
-window.onload = initializeApp;
-</script>
+        async function executePayload() {
+            const baseUrl = document.getElementById('targetUrl').value.trim();
+            const route = document.getElementById('routeSelect').value;
+            const payloadRaw = document.getElementById('payloadInput').value;
+            const outputBox = document.getElementById('responseOutput');
+
+            outputBox.textContent = "[ LOADING ] Contacting cloud infrastructure layer...";
+            
+            try {
+                const response = await fetch(`${baseUrl}${route}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: payloadRaw
+                });
+
+                const data = await response.json();
+                outputBox.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                outputBox.textContent = `[❌ CRASH LAYER] Impossible de joindre le serveur ou payload invalide.\nErreur : ${error.message}`;
+            }
+        }
+    </script>
 </body>
-</html>
+</html> 
