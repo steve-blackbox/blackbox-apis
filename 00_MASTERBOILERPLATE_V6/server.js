@@ -1,7 +1,7 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V19 — AUTOMATE D'ÉLITE
- * 📥 SYSTEME DE LIVRAISON COMMERCIALE DYNAMIQUE PAR E-MAIL (DOMAINE PRO VERIFIÉ)
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V25 — AUTOMATE D'ÉLITE
+ * 📥 BRANCHEMENT INDUSTRIEL ET ACTIONNEMENT EN LIGNE DES VAGUES 01 & 02 COMPLÈTES
  */
 
 const express = require('express');
@@ -12,7 +12,7 @@ const Stripe = require('stripe');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configuration sécurisée des instances tierces
+// Configuration sécurisée des instances Stripe Live en production
 const getStripeInstance = () => {
     const secureKey = process.env.STRIPE_SECRET_KEY || '';
     if (!secureKey) throw new Error("Missing STRIPE_SECRET_KEY.");
@@ -21,7 +21,7 @@ const getStripeInstance = () => {
 
 app.use(cors({ origin: '*' }));
 
-// Gestion étanche du format brut pour le Webhook
+// Gestion étanche du format brut pour l'intercepteur de Webhooks
 app.use((req, res, next) => {
     if (req.originalUrl === '/v1/webhook') next();
     else express.json({ limit: '50mb' })(req, res, next);
@@ -35,15 +35,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/health', (req, res) => { res.status(200).send('HEALTH: ACTIVE.'); });
 
-// ==========================================
-// 🚀 ROUTAGE APIS APPARENT MONOLITHE V1
-// ==========================================
+// ========================================================
+// 🛡️ BRANCHEMENT DES APIS SOUVERAINS DE LA VAGUE 01 (LIVE)
+// ========================================================
 app.use('/v1/form-shield', require('./form_shield'));
 app.use('/v1/audio-convert', require('./audio_convert'));
 app.use('/v1/link-purge', require('./link_purge'));
 app.use('/v1/json-flatten', require('./json_flatten'));
 app.use('/v1/svg-strip', require('./svg_strip'));
 
+// ========================================================
+// ⚔️ RACCORDEMENT INDUSTRIEL DE LA VAGUE 02 (COMPILATION MAX)
+// ========================================================
+app.use('/v1/ip-geolock', require('./ip_geolock'));       // Robot 11 couplé !
+app.use('/v1/md-parser', require('./md_parser'));         // Robot 12 couplé !
+app.use('/v1/scheduler-shield', require('./scheduler_shield')); // Robot 13 couplé !
+app.use('/v1/css-minify', require('./css_minify'));       // Robot 14 couplé !
+app.use('/v1/agent-detect', require('./agent_detect'));   // Robot 15 couplé !
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
 // ==========================================
@@ -141,5 +149,5 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
 });
 
 app.listen(PORT, () => {
-    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V19 operationnel sur le port ${PORT}`);
+    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V25 operationnel sur le port ${PORT}`);
 });
