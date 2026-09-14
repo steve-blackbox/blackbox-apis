@@ -26,8 +26,6 @@
             height: 100vh;
             overflow: hidden;
         }
-        
-        /* SIDEBAR DE NAVIGATION COMMERCIALE À 20 DIVISIONS */
         .sidebar {
             width: var(--sidebar-width);
             background-color: var(--bg-sidebar);
@@ -103,8 +101,6 @@
         .fleet-pass-btn:hover {
             transform: scale(1.02);
         }
-
-        /* ZONE CENTRALE COCKPIT & GRILLE BENTO */
         .main-content {
             flex: 1;
             overflow-y: auto;
@@ -293,7 +289,7 @@
         </div>
     </div>
 
-    <!-- 🎛️ CONTROLEUR D'AFFICHAGE CENTRAL -->
+    <!-- 🎛️ CONTROLEUR D'AFFICHAGE CENTRAL BENTO -->
     <div class="main-content">
         <div class="container">
             <div class="top-bar">
@@ -306,7 +302,7 @@
                 <!-- Injecté dynamiquement par le script -->
             </div>
 
-            <!-- BLOCS GRAPHIQUES BENTO DE VENTE IMMÉDIATE -->
+            <!-- BLOCS GRAPHIQUES Bento DE VENTE IMMÉDIATE -->
             <main class="bento-grid">
                 <!-- HERO DISPLAY CARD -->
                 <div class="bento-card col-span-2">
@@ -367,9 +363,9 @@
             </footer>
         </div>
     </div>
-    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V30 & ARCHITECTURE 100 ROBOTS -->
+
 <script>
-// Nomenclature officielle des 20 Divisions de la Flotte (100 Robots au total)
+   // Nomenclature complète et officielle des 20 Divisions de calcul (100 Robots au total)
 const categoriesDatabase = [
     { id: "div01", name: "DIV-01: Form Protection" },
     { id: "div02", name: "DIV-02: Cyber-Defense" },
@@ -583,7 +579,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🔍 DIVISION 09 : WEB SCRAPING & DOM CRAWLING (VAGUE 04, 06 & VAGUE 07 LIVE)
+    // 🔍 DIVISION 09 : WEB SCRAPING & DOM CRAWLING (VAGUE 04, 06 & VAGUE 07 COMPILATION)
     div09: [
         {
             id: "robot23", name: "Metadata Scraper", engine: "[ DOM DATA EXTRACTION ENGINE ]",
@@ -599,7 +595,7 @@ const fleetDatabase = {
         {
             id: "robot32", name: "Text Extractor", engine: "[ DOM TEXT HARVESTER ]",
             title: "Extract Pure Body Text.<br>Scrub Redundant HTML & Script Tags.",
-            desc: "A stateless data extraction utility designed to rip raw script elements, active style formats, and structural DOM layers away from raw client records, delivering pure language payloads for LLM workflows.",
+            desc: "A stateless sanitization pipeline engineered to rip raw text scripts, CSS nodes, and interface scaffolding away from public target HTML blocks, outputting crystalline language payloads for LLM workflows.",
             feat1_icon: "🧹", feat1_title: "DOM Stripping", feat1_desc: "Annihilates head injections, active styles, and nested interface markup rules upstream.",
             feat2_icon: "🤖", feat2_title: "AI Ingestion Max", feat2_desc: "Reduces token usage up to 78% by parsing out layout clutter from corpus weights.",
             pricing_target: "[ CORE ENGINE : TEXT-EXTRACTOR ]", pricing_title: "Activate Commercial License",
@@ -619,7 +615,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🚀 DIVISION 10 : CODE OPTIMIZERS (VAGUE 02, 03, 04, 06 & VAGUE 07 EXPULSION COMPLÈTE)
+    // 🚀 DIVISION 10 : CODE OPTIMIZERS (VAGUE 02, 03, 04, 06 & VAGUE 07 LIVE)
     div10: [
         {
             id: "robot12", name: "MD Parser", engine: "[ SEO STRUCTURED AST PARSER ]",
@@ -682,7 +678,7 @@ const fleetDatabase = {
             desc: "A specialized data checking pipeline that parses and verifies structural Schema.org formatting tags. Eliminates layout warnings and nesting gaps before content endpoints get indexed by search engines.",
             feat1_icon: "📉", feat1_title: "Error Cleanout", feat1_desc: "Catches broken data models, missing properties, and comma errors instantly.",
             feat2_icon: "💎", feat2_title: "Snippets Safe", feat2_desc: "Secures high-ranking structural rich listings across global mobile matrices.",
-            pricing_target: "[ CORE ENGINE : JSON-LD-VALIDATOR ]", pricing_title: "Activate Commercial License",
+            pricing_target: "[ CORE ENGINE : JSON-VALIDATE ]", pricing_title: "Activate Commercial License",
             price_solo: "49$", desc_solo: "Solo Pass: 1 main platform structured schema verification pass token.",
             price_agency: "149$", desc_agency: "Agency Fleet: Unrestricted developer array data parsing enforcement.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
@@ -750,9 +746,8 @@ const fleetDatabase = {
             price_solo: "49$", desc_solo: "Solo Pass: Single web app storefront financial exchange pricing matrix.",
             price_agency: "149$", desc_agency: "Agency Fleet: Mesh currency calculation array for multi-client storefront networks.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
-        }
-    ],
-    {
+        },
+        {
             id: "robot27", name: "Vat Validator", engine: "[ EU B2B TAXES VALIDATION ]",
             title: "Automated VAT ID Validator.<br>Verify Business Tax Compliance Instantly.",
             desc: "A structural check engine that evaluates international business VAT registrations against regulatory string structures. Drops malformed or fraudulent fiscal tags before invoice generation pipelines process orders.",
@@ -775,7 +770,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🪙 DIVISION 15 : CRYPTO GATEWAYS (VAGUE 07 LIVE)
+    // 🪙 DIVISION 15 : CRYPTO GATEWAYS (VAGUE 07 ALLUMAGE)
     div15: [
         {
             id: "robot36", name: "Crypto Verify", engine: "[ WEB3 REQUISITION FILTER ]",
@@ -799,16 +794,8 @@ const fleetDatabase = {
             price_agency: "149$", desc_agency: "Agency Tier: Full unhindered crypto exchange calculations framework pack.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
-    ]
-};
-
-const globalPrices = {
-    pass: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
-};
-
-let currentDivisionId = "div01";
-let activeRobotIndex = 0;
- // 🩺 DIVISION 18 : HEALTH DIAGNOSTICS (VAGUE 03 LIVE)
+    ],
+    // 🩺 DIVISION 18 : HEALTH DIAGNOSTICS (VAGUE 03 LIVE)
     div18: [
         {
             id: "robot19", name: "Uptime Check", engine: "[ HYPER-FAST DICTIONARY SCANNER ]",
@@ -838,9 +825,10 @@ let activeRobotIndex = 0;
     ]
 };
 
-// Génération visuelle immédiate de l'interface et gestion de l'état
+// Moteur de rendu comportemental et gestion de l'état asynchrone
 function initializeApp() {
     const sidebarContainer = document.getElementById('sidebar-categories');
+    if (!sidebarContainer) return;
     sidebarContainer.innerHTML = '';
     
     categoriesDatabase.forEach((cat) => {
@@ -862,7 +850,8 @@ function switchDivision(divisionId, element) {
     document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
     element.classList.add('active');
     
-    document.getElementById('current-division-title').innerText = element.innerText;
+    const divTitle = document.getElementById('current-division-title');
+    if (divTitle) divTitle.innerText = element.innerText;
     
     renderSubNavigation();
     loadRobotData();
@@ -870,6 +859,7 @@ function switchDivision(divisionId, element) {
 
 function renderSubNavigation() {
     const subnavContainer = document.getElementById('robots-subnav');
+    if (!subnavContainer) return;
     subnavContainer.innerHTML = '';
     
     const robotsList = fleetDatabase[currentDivisionId] || [];
@@ -975,7 +965,7 @@ function triggerStripeCheckout(planType) {
     });
 }
 
-// Lancement automatique du cockpit au démarrage de la page
+// Allumage automatique du cockpit au chargement complet de l'arbre DOM
 window.onload = initializeApp;
 </script>
 </body>
