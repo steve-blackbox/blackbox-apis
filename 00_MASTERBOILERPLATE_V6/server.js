@@ -1,7 +1,7 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V40 — AUTOMATE SOUVERAIN
- * 📥 ALIGNEMENT EN PRODUCTION DES COMPOSANTS LOGIQUES DES VAGUES 01 À 17 CUMULÉES
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V41 — AUTOMATE SOUVERAIN
+ * 📥 ALIGNEMENT EN PRODUCTION DES COMPOSANTS LOGIQUES DES VAGUES 01 À 18 CUMULÉES
  */
 
 const express = require('express');
@@ -181,13 +181,22 @@ app.use('/v1/standard-deviation-lite', require('./standard_deviation_lite'));
 app.use('/v1/min-max-scaler', require('./min_max_scaler'));
 
 // ========================================================
-// 🔐 RACCORDEMENT CENTRAL DE LA VAGUE 17 (NEW LIVE)
+// 🔐 RACCORDEMENT CENTRAL DE LA VAGUE 17 (LIVE)
 // ========================================================
-app.use('/v1/aes-256-encryptor', require('./aes_256_encryptor'));         // Robot 86 branché !
-app.use('/v1/aes-256-decryptor', require('./aes_256_decryptor'));         // Robot 87 branché !
-app.use('/v1/passphrase-hasher-key', require('./passphrase_hasher_key')); // Robot 88 branché !
-app.use('/v1/base64-url-encoder', require('./base64_url_encoder'));       // Robot 89 branché !
-app.use('/v1/simple-rot13-obfuscator', require('./simple_rot13_obfuscator')); // Robot 90 branché ! Le nonantième !
+app.use('/v1/aes-256-encryptor', require('./aes_256_encryptor'));
+app.use('/v1/aes-256-decryptor', require('./aes_256_decryptor'));
+app.use('/v1/passphrase-hasher-key', require('./passphrase_hasher_key'));
+app.use('/v1/base64-url-encoder', require('./base64_url_encoder'));
+app.use('/v1/simple-rot13-obfuscator', require('./simple_rot13_obfuscator'));
+
+// ========================================================
+// 🧹 RACCORDEMENT CENTRAL DE LA VAGUE 18 (NEW LIVE)
+// ========================================================
+app.use('/v1/name-standardizer', require('./name_standardizer'));           // Robot 91 branché !
+app.use('/v1/text-line-sorter', require('./text_line_sorter'));             // Robot 92 branché !
+app.use('/v1/pascal-case-converter', require('./pascal_case_converter'));   // Robot 93 branché !
+app.use('/v1/camel-case-converter', require('./camel_case_converter'));     // Robot 94 branché !
+app.use('/v1/snake-case-converter', require('./snake_case_converter'));     // Robot 95 branché ! Le nonante-cinquième !
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
 // ==========================================
@@ -285,5 +294,5 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
 
 // Allumage et écoute du port applicatif par défaut sur le serveur
 app.listen(PORT, () => {
-    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V40 operationnel sur le port ${PORT}`);
+    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V41 operationnel sur le port ${PORT}`);
 });
