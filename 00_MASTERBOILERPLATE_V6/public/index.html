@@ -7,340 +7,43 @@
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; margin: 0; padding: 0; }
-        .font-display { font-family: 'Space Grotesk', sans-serif; }
-        .font-code { font-family: 'JetBrains Mono', monospace; }
-        
-        /* Boutons de navigation des themes a gauche */
-        .theme-btn.active { border-color: #2563eb !important; background-color: rgba(37, 99, 235, 0.15) !important; }
-        .theme-btn.active h4 { color: #ffffff !important; }
-        
-        /* Onglets superieurs des robots a droite */
-        .robot-tab.active { border-color: #2563eb !important; background-color: rgba(37, 99, 235, 0.1) !important; color: #ffffff !important; }
-        
-        /* Barres de defilement steriles */
-        .sidebar-scroll::-webkit-scrollbar { width: 4px; }
-        .sidebar-scroll::-webkit-scrollbar-track { background: #030712; }
-        .sidebar-scroll::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 2px; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+        }
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .font-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
     </style>
 </head>
-<body class="text-gray-100 min-h-screen antialiased flex flex-col md:flex-row">
-
-    <!-- 🌌 BARRE LATÉRALE GAUCHE : LES 20 THÈMES DE L'EMPIRE -->
-    <aside class="w-full md:w-80 bg-gray-950 border-r border-gray-900 flex flex-col h-screen sticky top-0 z-40">
-        <div class="p-6 border-b border-gray-900 flex items-center gap-2">
-            <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-            <span class="text-xs font-code font-bold tracking-widest text-blue-400">FLEET THEME CONTROLLER</span>
-        </div>
+<body class="text-gray-100 min-h-screen flex items-center justify-center p-4 antialiased">
+    <!-- 🛡️ BOÎTE DE SÔUTE MONOLITHE HISTORIQUE -->
+    <div class="w-full max-w-2xl bg-gray-950 border-2 border-gray-900 rounded-3xl p-10 text-center shadow-2xl relative overflow-hidden">
+        <div class="absolute -top-24 -left-24 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
         
-        <!-- DÉFILEMENT DYNAMIQUE DES 20 DIVISIONS SANS SATURATION -->
-        <div class="flex-1 overflow-y-auto p-4 space-y-2 sidebar-scroll">
-            <button onclick="switchTheme('div01')" id="btn-theme-div01" class="theme-btn active w-full p-3.5 bg-gray-900/40 border border-gray-900 rounded-xl text-left transition duration-150 outline-none block">
-                <span class="block text-[10px] font-code text-blue-500 font-bold mb-0.5">// DIV-01</span>
-                <h4 class="text-xs font-bold text-white truncate">Input Security & Sanitization</h4>
-            </button>
-            <button onclick="switchTheme('div02')" id="btn-theme-div02" class="theme-btn w-full p-3.5 border border-gray-900 rounded-xl text-left transition duration-150 outline-none block">
-                <span class="block text-[10px] font-code text-gray-500 font-bold mb-0.5">// DIV-02</span>
-                <h4 class="text-xs font-bold text-gray-400 truncate">Audio Ingestion & Conversion</h4>
-            </button>
-            <button onclick="switchTheme('div03')" id="btn-theme-div03" class="theme-btn w-full p-3.5 border border-gray-900 rounded-xl text-left transition duration-150 outline-none block">
-                <span class="block text-[10px] font-code text-gray-500 font-bold mb-0.5">// DIV-03</span>
-                <h4 class="text-xs font-bold text-gray-400 truncate">Cryptographic Storage Vaults</h4>
-            </button>
-            <button onclick="switchTheme('div04')" id="btn-theme-div04" class="theme-btn w-full p-3.5 border border-gray-900 rounded-xl text-left transition duration-150 outline-none block">
-                <span class="block text-[10px] font-code text-gray-500 font-bold mb-0.5">// DIV-04</span>
-                <h4 class="text-xs font-bold text-gray-400 truncate">High-Speed String Optimizers</h4>
-            </button>
-            
-            <!-- Génération de soute des 16 autres slots vides pour lister visuellement les 20 Divisions demandées -->
-            <div class="p-3.5 border border-gray-900/40 rounded-xl opacity-20"><span class="block text-[10px] font-code text-gray-700">// DIV-05 TO DIV-20</span><span class="text-xs font-semibold text-gray-500">Core Nodes Virtualized</span></div>
+        <!-- SIGNATURE D'ARMEMENT -->
+        <div class="font-display font-bold text-gray-700 text-sm tracking-widest uppercase mb-6 flex items-center justify-center gap-2">
+            <span class="w-2 h-2 bg-blue-600 rounded-full"></span> B L A C K B O X
         </div>
-    </aside>
-    <!-- 🌌 SECTION PRINCIPALE : LE COCKPIT SOUVERAIN DYNAMIQUE -->
-    <div class="flex-1 flex flex-col min-h-screen overflow-y-auto">
+
+        <h1 class="text-3xl font-extrabold font-display tracking-tight text-white mb-4">
+            BlackBox Automated Control
+        </h1>
         
-        <!-- HEADER PRINCIPAL DE PRODUCTION -->
-        <header class="bg-gray-950 p-6 border-b border-gray-900 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-                <span class="text-[10px] uppercase tracking-widest text-blue-500 font-bold block mb-1 font-code">ASSET FLEET ECOSYSTEM</span>
-                <h1 class="text-xl font-extrabold tracking-tight text-white uppercase font-display">BLACKBOX AUTOMATED CONTROL</h1>
-            </div>
-            <div class="flex items-center gap-2 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full uppercase tracking-wider font-code">
-                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                All Systems Sterile
-            </div>
-        </header>
+        <p class="text-sm text-gray-400 font-normal leading-relaxed max-w-md mx-auto mb-8">
+            Monolithe d'infrastructure cloud active souveraine. Les serveurs de sôute répondent au bit près.
+        </p>
 
-        <!-- CONTENEUR DU FLUX CLIENT -->
-        <main class="flex-1 p-6 md:p-8 max-w-4xl w-full mx-auto space-y-6">
-            
-            <!-- 🛰️ ONGLETS SUPÉRIEURS DYNAMIQUES DES ROBOTS DU THÈME ACTIF -->
-            <nav id="robotsSubNav" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2.5">
-                <!-- Les boutons de robots d'élite s'injectent ici dynamiquement en soute via l'automate JS -->
-            </nav>
-
-            <!-- CARD PREMIUM PRINCIPALE DU ROBOT ACTIF -->
-            <section class="bg-gray-950 border border-gray-900 rounded-2xl p-8 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-blue-600/5 rounded-full blur-3xl pointer-events-none"></div>
-                <span id="robot-engine-tag" class="text-xs font-code font-bold text-blue-500 uppercase tracking-wider block mb-2">[ CORE ENGINE 01 ]</span>
-                <h2 id="robot-main-title" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-3 leading-snug">
-                    Stop Form Spam Silently.<br>No Captchas. No Friction.
-                </h2>
-                <p id="robot-main-desc" class="text-sm text-gray-300 leading-relaxed font-normal">
-                    A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.
-                </p>
-            </section>
-
-            <!-- GRILLE BENTO METRICS & PERFORMANCE -->
-            <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- CARTE PRIVACY -->
-                <div class="bg-gray-950 border border-gray-900 rounded-2xl p-6 space-y-3">
-                    <div class="w-8 h-8 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-xs" id="feature-icon-1">🛡️</div>
-                    <h3 id="feature-title-1" class="text-sm font-bold text-white tracking-tight">GDPR & CCPA Layer</h3>
-                    <p id="feature-desc-1" class="text-xs text-gray-400 leading-relaxed font-normal">
-                        Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.
-                    </p>
-                </div>
-
-                <!-- CARTE PERFORMANCE -->
-                <div class="bg-gray-950 border border-gray-900 rounded-2xl p-6 space-y-3">
-                    <div class="w-8 h-8 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-xs" id="feature-icon-2">⚡</div>
-                    <h3 id="feature-title-2" class="text-sm font-bold text-white tracking-tight">Performance Matrix</h3>
-                    <p id="feature-desc-2" class="text-xs text-gray-400 leading-relaxed font-normal">
-                        Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.
-                    </p>
-                </div>
-            </section>
-
-            <!-- 💰 SOUTE DE TRANSACTION COMMERCIALE STRIPE CHECKOUT -->
-            <section class="bg-gray-950 border border-gray-900 rounded-2xl p-6 md:p-8 space-y-6">
-                <div class="flex justify-between items-end border-b border-gray-900 pb-4">
-                    <div>
-                        <span id="gateway-target-tag" class="text-[10px] font-code font-bold text-gray-500 block mb-1 uppercase">[ GATEWAY TARGET: ROBOT 01 ]</span>
-                        <h3 id="license-title" class="text-sm font-extrabold tracking-tight text-white uppercase font-code">Deploy FORM-SHIELD Commercial License</h3>
-                    </div>
-                    <span class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded font-code uppercase tracking-widest">ONE-TIME ACQUISITION</span>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- PLAN SOLO -->
-                    <div class="border border-gray-900 bg-gray-950/40 rounded-xl p-5 flex flex-col justify-between gap-4 transition duration-200 hover:border-gray-800">
-                        <div>
-                            <div class="flex justify-between items-center mb-1">
-                                <h4 class="text-xs font-bold text-white uppercase tracking-wider font-code">Solo License</h4>
-                                <span class="text-base font-extrabold text-white">49$</span>
-                            </div>
-                            <p class="text-[11px] text-gray-400">Single target domain execution layer.</p>
-                        </div>
-                        <button onclick="triggerCheckout('solo')" class="w-full bg-white hover:bg-gray-200 text-black text-[11px] font-bold py-2.5 rounded-lg transition duration-150 uppercase tracking-wider font-code outline-none">
-                            Acquire Solo Pack
-                        </button>
-                    </div>
-
-                    <!-- PLAN AGENCY -->
-                    <div class="border border-gray-900 bg-gray-950/40 rounded-xl p-5 flex flex-col justify-between gap-4 transition duration-200 hover:border-gray-800">
-                        <div>
-                            <div class="flex justify-between items-center mb-1">
-                                <h4 class="text-xs font-bold text-white uppercase tracking-wider font-code">Agency Fleet</h4>
-                                <span class="text-base font-extrabold text-white">149$</span>
-                            </div>
-                            <p class="text-[11px] text-gray-400">Unlimited client domains deployment.</p>
-                        </div>
-                        <button onclick="triggerCheckout('agency')" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold py-2.5 rounded-lg transition duration-150 uppercase tracking-wider font-code outline-none shadow-lg shadow-blue-600/10">
-                            Deploy Agency Fleet
-                        </button>
-                    </div>
-                </div>
-            </section>
-        </main>
+        <!-- DISPOSITIF DU COMPTEUR HISTORIQUE DE TOI À 16H45 -->
+        <div class="inline-flex items-center gap-2 bg-emerald-500/10 border-2 border-emerald-500/20 text-emerald-400 px-6 py-3 rounded-full text-xs font-bold font-code tracking-wider uppercase">
+            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+            100 Robots de Feu &bull; Production Live
+        </div>
     </div>
-    <!-- FOOTER STERILE ACCESSIBLE -->
-    <footer class="w-full text-center py-6 text-[10px] text-gray-600 font-code bg-gray-950/20 border-t border-gray-900 sticky bottom-0 z-40">
-        © 2026 BlackBox Audio Labs LLC. Verified Centaure Engine v6.8 — USD Compliant.
-    </footer>
 
-    <script>
-        // 🧠 LA MATIÈRE GRISE DE SOUTE : BASE RELATIONNELLE DES 20 DIVISIONS ET LEURS ROBOTS D'ÉLITE
-        const matrixEcosystem = {
-            "div01": {
-                name: "Input Security & Sanitization",
-                robots: [
-                    {
-                        id: "rb01", name: "Form Shield", rTag: "[ ROBOT 01 ]",
-                        title: "Stop Form Spam Silently.<br>No Captchas. No Friction.",
-                        desc: "A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.",
-                        i1: "🛡️", t1: "GDPR & CCPA Layer", d1: "Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.",
-                        i2: "⚡", t2: "Performance Matrix", d2: "Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.",
-                        gt: "[ GATEWAY TARGET: /v1/form-shield ]", lt: "Deploy FORM-SHIELD Commercial License", endpoint: "/v1/form-shield"
-                    },
-                    {
-                        id: "rb67", name: "SEO Analyzer", rTag: "[ ROBOT 67 ]",
-                        title: "Algorithmic Keyword Density.<br>Surgical Semantic Extraction.",
-                        desc: "Scans corporate copy arrays to map word occurrences and intercept optimization penalties before deployment loops.",
-                        i1: "📊", t1: "Sifting Array", d1: "Processes large corpus text blocks in-memory via stateless regex tokenizer layers.",
-                        i2: "🎯", t2: "Penalty Protection", d2: "Highlights toxic content repetitions instantly to bypass modern search engine keyword stuffing blocks.",
-                        gt: "[ GATEWAY TARGET: /v1/keyword-density-analyzer ]", lt: "Deploy SEO-ANALYZER Commercial License", endpoint: "/v1/keyword-density-analyzer"
-                    }
-                ]
-            },
-            "div02": {
-                name: "Audio Ingestion & Conversion",
-                robots: [
-                    {
-                        id: "rb02", name: "Audio Convert", rTag: "[ ROBOT 02 ]",
-                        title: "High-Fidelity Audio Ingestion.<br>Stateless Pipeline Conversion.",
-                        desc: "Processes and converts raw binary audio assets with strict optimal byte alignment and zero buffer accumulation bloating.",
-                        i1: "🎛️", t1: "Codec Adaptor", d1: "Real-time bitrate adaptations compliant with major international digital broadcast layout requirements.",
-                        i2: "🛰️", t2: "Volatile Buffers", d2: "Manipulates binary voice packets entirely in temporary memory allocation slots for absolute security compliance.",
-                        gt: "[ GATEWAY TARGET: /v1/audio-convert ]", lt: "Deploy AUDIO-CONVERT Commercial License", endpoint: "/v1/audio-convert"
-                    }
-                ]
-            },
-            "div03": {
-                name: "Cryptographic Storage Vaults",
-                robots: [
-                    {
-                        id: "rb86", name: "AES-256 Encryptor", rTag: "[ ROBOT 86 ]",
-                        title: "Symmetric Encryption Node.<br>Military-Grade Encapsulation.",
-                        desc: "Secures sensitive raw text payloads utilizing standard high-entropy AES-256-CBC cypher arrays.",
-                        i1: "🔑", t1: "CBC Chaining Matrix", d1: "Forced dynamic Initialization Vector allocation ensures unique cyphertext generation blocks.",
-                        i2: "🔒", t2: "Zero Local Caching", d2: "Stateless processing pipeline returns safe outputs without writing persistent bits to disk.",
-                        gt: "[ GATEWAY TARGET: /v1/aes-256-encryptor ]", lt: "Deploy AES-ENCRYPTOR Commercial License", endpoint: "/v1/aes-256-encryptor"
-                    }
-                ]
-            },
-            "div04": {
-                name: "High-Speed String Optimizers",
-                robots: [
-                    {
-                        id: "rb99", name: "Word Inverter", rTag: "[ ROBOT 99 ]",
-                        title: "Semantic Word Rotation.<br>Array Reversal Controller.",
-                        desc: "Reverses standard string flows by characters or words utilizing lightning-fast low-level manipulation algorithms.",
-                        i1: "🎭", t1: "Dual Invert Logic", d1: "Supports mirrored mirror-effects or structured token sequence inversions on-demand.",
-                        i2: "🏎️", t2: "0.03ms Latency", d2: "Optimized array splitting mechanisms deliver outputs inside high-speed transactional loops.",
-                        gt: "[ GATEWAY TARGET: /v1/word-inverter ]", lt: "Deploy WORD-INVERTER Commercial License", endpoint: "/v1/word-inverter"
-                    },
-                    {
-                        id: "rb97", name: "Space Collapser", rTag: "[ ROBOT 97 ]",
-                        title: "Whitespace Compactor.<br>String Sanitization Protocol.",
-                        desc: "Locates and crushes multiple layout indentation tabs and duplicate spaces into single clean fragments.",
-                        i1: "🧹", t1: "Tab Stripper", d1: "Erases formatting residue and carriage returns natively from unaligned raw payload inputs.",
-                        i2: "📦", t2: "Data Reduction", d2: "Reduces string payload weights significantly before cloud transfer or execution phases.",
-                        gt: "[ GATEWAY TARGET: /v1/space-collapser ]", lt: "Deploy SPACE-COLLAPSER Commercial License", endpoint: "/v1/space-collapser"
-                    }
-                ]
-            }
-        };
-       let activeThemeId = "div01";
-        let activeRobotData = matrixEcosystem["div01"].robots[0];
-
-        // 🔄 AUTOMATE DE COMMUTATION DES THÈMES DE GAUCHE
-        function switchTheme(themeId) {
-            if (!matrixEcosystem[themeId]) return;
-            activeThemeId = themeId;
-
-            // Réalignement de la classe active sur la barre des thèmes
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.classList.remove('active', 'border-blue-600', 'bg-blue-600/15', 'text-white');
-                const btnH4 = btn.querySelector('h4');
-                if (btnH4) { btnH4.classList.remove('text-white'); btnH4.classList.add('text-gray-400'); }
-            });
-
-            const currentBtn = document.getElementById(`btn-theme-${themeId}`);
-            if (currentBtn) {
-                currentBtn.classList.add('active');
-                const currentH4 = currentBtn.querySelector('h4');
-                if (currentH4) { currentH4.classList.remove('text-gray-400'); currentH4.classList.add('text-white'); }
-            }
-
-            // Ré-injection dynamique des onglets supérieurs des robots correspondants
-            renderRobotTabs(themeId);
-        }
-
-        // 🛰️ AUTOMATE D'INJECTION DES ONGLETS DE ROBOTS EN HAUT À DROITE
-        function renderRobotTabs(themeId) {
-            const container = document.getElementById('robotsSubNav');
-            if (!container) return;
-            container.innerHTML = "";
-            const robotsList = matrixEcosystem[themeId].robots;
-
-            robotsList.forEach((robot, index) => {
-                const btn = document.createElement('button');
-                btn.id = `tab-robot-${robot.id}`;
-                btn.onclick = () => selectRobot(robot);
-                btn.className = `robot-tab border border-gray-900 bg-gray-950/40 hover:border-gray-800 text-gray-400 text-left rounded-xl p-3.5 transition duration-150 outline-none block ${index === 0 ? 'active' : ''}`;
-                btn.innerHTML = `
-                    <span class="block text-[9px] font-code text-blue-500 font-bold mb-0.5">${robot.rTag}</span>
-                    <span class="block text-xs font-bold truncate">${robot.name}</span>
-                `;
-                container.appendChild(btn);
-            });
-
-            // Sélectionner d'office le premier robot de la liste
-            if (robotsList.length > 0) {
-                selectRobot(robotsList[0]);
-            }
-        }
-
-        // 🎯 AFFICHAGE DU CORPS DE LA MAQUETTE PREMIUM SELON LE ROBOT SÉLECTIONNÉ
-        function selectRobot(robot) {
-            activeRobotData = robot;
-
-            // Changement visuel de l'onglet actif
-            document.querySelectorAll('.robot-tab').forEach(tab => {
-                tab.classList.remove('active', 'border-blue-600', 'bg-blue-600/10', 'text-white');
-                tab.classList.add('text-gray-400');
-            });
-            const targetTab = document.getElementById(`tab-robot-${robot.id}`);
-            if (targetTab) {
-                targetTab.classList.remove('text-gray-400');
-                targetTab.classList.add('active');
-            }
-
-            // Mutation atomique du contenu de la maquette (Titres, Textes, Bento Cards)
-            document.getElementById('robot-engine-tag').textContent = robot.rTag;
-            document.getElementById('robot-main-title').innerHTML = robot.title;
-            document.getElementById('robot-main-desc').textContent = robot.desc;
-            
-            document.getElementById('feature-icon-1').textContent = robot.i1;
-            document.getElementById('feature-title-1').textContent = robot.t1;
-            document.getElementById('feature-desc-1').textContent = robot.d1;
-            
-            document.getElementById('feature-icon-2').textContent = robot.i2;
-            document.getElementById('feature-title-2').textContent = robot.t2;
-            document.getElementById('feature-desc-2').textContent = robot.d2;
-
-            document.getElementById('gateway-target-tag').textContent = robot.gt;
-            document.getElementById('license-title').textContent = robot.lt;
-        }
-
-        // 💰 EXPULSION DU CLIENT VERS LES SERVICES DE FACTURATION STRIPE SOUCHÉS AU BACK-END
-        async function triggerCheckout(planType) {
-            console.log(`[🛍️ CHECKOUT] Démarrage du tunnel de prix pour ${activeRobotData.name} - Plan: ${planType}`);
-            try {
-                const response = await fetch('/v1/checkout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        plan: planType,
-                        endpoint_target: activeRobotData.endpoint
-                    })
-                });
-                const session = await response.json();
-                if (session.url) {
-                    window.location.href = session.url; // Routage final vers Stripe
-                } else {
-                    alert(`Stripe Gateway Error: ${session.error}`);
-                }
-            } catch (err) {
-                alert(`Network failure on checking out: ${err.message}`);
-            }
-        }
-
-        // Initialisation de la soute au démarrage de Safari
-        window.onload = () => {
-            renderRobotTabs("div01");
-        };
-    </script>
 </body>
-</html> 
+</html>
