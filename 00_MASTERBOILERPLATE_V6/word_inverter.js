@@ -5,7 +5,7 @@
  */
 
 const express = require('express');
-const router = report = express.Router();
+const router = express.Router();
 
 /**
  * 📥 ROUTE CORE : ROTATION ET INVERSION DE TEXTE DIRECT ET STERILE EN SÔUTE
