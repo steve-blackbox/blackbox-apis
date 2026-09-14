@@ -1,7 +1,7 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V32 — AUTOMATE SOUVERAIN
- * 📥 ALIGNEMENT EN PRODUCTION DES COMPOSANTS LOGIQUES DES VAGUES 01 À 09 CUMULÉES
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V33 — AUTOMATE SOUVERAIN
+ * 📥 ALIGNEMENT EN PRODUCTION DES COMPOSANTS LOGIQUES DES VAGUES 01 À 10 CUMULÉES
  */
 
 const express = require('express');
@@ -109,13 +109,22 @@ app.use('/v1/pii-masker', require('./pii_masker'));
 app.use('/v1/ip-mask-validator', require('./ip_mask_validator'));
 
 // ========================================================
-// 📊 RACCORDEMENT CENTRAL DE LA VAGUE 09 (ROBOTS 46 À 50)
+// 📊 RACCORDEMENT CENTRAL DE LA VAGUE 09 (LIVE)
 // ========================================================
-app.use('/v1/mock-generator', require('./mock_generator'));       // Robot 46 branché !
-app.use('/v1/yaml-json-converter', require('./yaml_json_converter')); // Robot 47 branché !
-app.use('/v1/html-extractor', require('./html_extractor'));       // Robot 48 branché !
-app.use('/v1/exif-cloak', require('./exif_cloak'));               // Robot 49 branché !
-app.use('/v1/header-inspector', require('./header_inspector'));   // Robot 50 branché ! Le cinquantenaire !
+app.use('/v1/mock-generator', require('./mock_generator'));
+app.use('/v1/yaml-json-converter', require('./yaml_json_converter'));
+app.use('/v1/html-extractor', require('./html_extractor'));
+app.use('/v1/exif-cloak', require('./exif_cloak'));
+app.use('/v1/header-inspector', require('./header_inspector'));
+
+// ========================================================
+// 🔀 RACCORDEMENT CENTRAL DE LA VAGUE 10 (NEW LIVE)
+// ========================================================
+app.use('/v1/event-dispatcher', require('./event_dispatcher'));   // Robot 51 branché !
+app.use('/v1/event-filter', require('./event_filter'));           // Robot 52 branché !
+app.use('/v1/event-transformer', require('./event_transformer')); // Robot 53 branché !
+app.use('/v1/link-signer', require('./link_signer'));             // Robot 54 branché !
+app.use('/v1/link-validator', require('./link_validator'));       // Robot 55 branché !
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
 // ==========================================
@@ -213,5 +222,5 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
 
 // Allumage et écoute du port applicatif par défaut sur le serveur
 app.listen(PORT, () => {
-    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V32 operationnel sur le port ${PORT}`);
+    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V33 operationnel sur le port ${PORT}`);
 });
