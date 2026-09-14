@@ -3,61 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackBox Automated Control — 100 Core API Fleet</title>
-    <script src="https://tailwindcss.com"></script>
-    <link href="https://googleapis.com" rel="stylesheet">
+    <title>BlackBox Automated Control — 100 API Master Gateway</title>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; }
-        .font-display { font-family: 'Space Grotesk', sans-serif; }
-        .font-code { font-family: 'JetBrains Mono', monospace; }
-        .bento-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-        .custom-glow { box-shadow: 0 0 40px -10px rgba(59, 130, 246, 0.15); }
-        .api-card:hover { border-color: rgba(59, 130, 246, 0.4); background: rgba(11, 15, 25, 0.6); }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #030712; }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+        /* CSS PUR SANS DEPENDANCE EXTERNE — CONTRASTE CYBER ET VISIBILITE FINALE */
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #0b0f19;
+            border-bottom: 2px solid #1f2937;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .header-title h1 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+            font-weight: 700;
+        }
+        .header-title p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        .endpoint-container {
+            display: flex;
+            align-items: center;
+            background-color: #030712;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 5px 10px;
+        }
+        .endpoint-label {
+            font-family: monospace;
+            font-size: 11px;
+            color: #3b82f6;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .endpoint-input {
+            background: transparent;
+            border: none;
+            color: #10b981;
+            font-family: monospace;
+            font-size: 13px;
+            width: 320px;
+            outline: none;
+        }
+        main {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .terminal-section {
+            background-color: #0b0f19;
+            border: 2px solid #1f2937;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+        .terminal-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 1024px) {
+            .terminal-grid {
+                grid-template-columns: 4fr 8fr;
+                gap: 30px;
+            }
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        /* SELECT ET TEXTAREA FORCÉS AVEC LES COULEURS HISTORIQUES ACCESSIBLES */
+        .cyber-select {
+            width: 100%;
+            background-color: #ffffff;
+            color: #000000;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+            font-family: monospace;
+            font-weight: bold;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .cyber-textarea {
+            width: 100%;
+            height: 180px;
+            background-color: #030712;
+            color: #10b981;
+            border: 2px solid #4b5563;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+            font-family: monospace;
+            outline: none;
+            resize: none;
+            box-sizing: border-box;
+        }
+        .cyber-button {
+            width: 100%;
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        .cyber-button:hover {
+            background-color: #2563eb;
+        }
+        .output-box {
+            background-color: #030712;
+            border: 2px solid #1f2937;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #f3f4f6;
+            min-height: 250px;
+            max-height: 280px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+        }
+        .division-title {
+            font-size: 13px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 35px;
+            border-bottom: 1px solid #1f2937;
+            padding-bottom: 8px;
+        }
+        .division-title.purple { color: #c084fc; }
+        .division-title.emerald { color: #34d399; }
+        .api-card {
+            background-color: #0b0f19;
+            border: 2px solid #1f2937;
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+        }
+        .api-card h4 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .api-card p {
+            margin: 0;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+        .node-tag {
+            font-family: monospace;
+            font-size: 10px;
+            color: #4b5563;
+            float: left;
+        }
+        .live-tag {
+            font-family: monospace;
+            font-size: 10px;
+            font-weight: bold;
+            color: #34d399;
+            float: right;
+            background-color: rgba(52, 211, 153, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .clear { clear: both; margin-bottom: 10px; }
     </style>
 </head>
-<body class="min-h-screen selection:bg-blue-500 selection:text-white antialiased custom-glow">
+<body>
 
-    <!-- 🛰️ TOP GATEWAY DE CONTRÔLE NUMÉRIQUE -->
-    <header class="border-b border-gray-800 bg-gray-950/90 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-display font-bold text-xl tracking-tighter text-white shadow-lg shadow-blue-500/20">B</div>
-                <div>
-                    <h1 class="text-lg font-bold font-display tracking-tight text-white flex items-center gap-2">
-                        BlackBox Automated Control <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full font-code">100 Core API Fleet</span>
-                    </h1>
-                    <p class="text-xs text-gray-400">API Control Hub &bull; Stateless Microservices Matrix</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-4 w-full md:w-auto">
-                <div class="bg-gray-900 border border-gray-700 rounded-xl p-2 flex items-center w-full md:w-96 shadow-inner">
-                    <span class="text-blue-400 font-code text-xs px-2 font-bold uppercase tracking-wider">ENDPOINT:</span>
-                    <input type="text" id="targetUrl" value="https://onrender.com" class="bg-gray-950 border border-gray-700 text-emerald-400 font-code text-xs rounded px-2 py-1 outline-none w-full focus:border-blue-500">
-                </div>
-                <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                    100 Nodes Sterile
-                </div>
-            </div>
-        </div>
-    </header>
-    <main class="max-w-7xl mx-auto px-6 py-10 space-y-12">
-        
-        <!-- ⚡ TERMINAL DE CONTRÔLE AVEC TRONCATURE ET FORTS CONTRASTES VISUELS -->
-        <section class="bg-gray-950 border border-gray-800 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
-            <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> Terminal de Flux Dynamique
-            </h2>
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-5 space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1.5 uppercase tracking-wider">Sélectionner un Robot</label>
-                        <!-- Forçage de styles à haut contraste text-black et bg-white pour contrer la friture Safari -->
-                        <select id="routeSelect" class="w-full bg-white text-black border-2 border-blue-600 rounded-xl px-3 py-3 text-xs font-code font-bold outline-none focus:ring-2 focus:ring-blue-500">
+    <main>
+        <!-- ⚡ INTERFACE DU TERMINAL CORE RE-SOUDÉ -->
+        <section class="terminal-section">
+            <div class="terminal-grid">
+                <div class="form-group" style="padding-right: 10px;">
+                    <div class="form-group">
+                        <label>Sélectionner un Robot</label>
+                        <select id="routeSelect" class="cyber-select">
                             <option value="/v1/secure-id-scrambler" selected>[ROBOT 100] /v1/secure-id-scrambler (Master Token)</option>
                             <option value="/v1/sentence-capitalizer">[ROBOT 96] /v1/sentence-capitalizer</option>
                             <option value="/v1/space-collapser">[ROBOT 97] /v1/space-collapser</option>
@@ -68,106 +227,83 @@
                             <option value="/v1/keyword-density-analyzer">[ROBOT 67] /v1/keyword-density-analyzer</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1.5 uppercase tracking-wider">Payload d'entrée JSON</label>
-                        <!-- Textarea configuré avec fond sombre et texte vert fluo à fort contraste -->
-                        <textarea id="payloadInput" class="w-full h-44 bg-gray-900 border-2 border-gray-700 rounded-xl p-3 text-xs font-code text-emerald-400 focus:border-blue-500 outline-none resize-none shadow-inner">{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}</textarea>
+                    <div class="form-group">
+                        <label>Payload d'entrée JSON</label>
+                        <textarea id="payloadInput" class="cyber-textarea">{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}</textarea>
                     </div>
-                    <button onclick="executePayload()" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold py-3.5 rounded-xl transition duration-200 shadow-lg shadow-blue-600/20 active:scale-[0.98] tracking-widest uppercase">
-                        EXPULSER LE FLUX DANS LA MATRIX
-                    </button>
+                    <button onclick="executePayload()" class="cyber-button">EXPULSER LE FLUX DANS LA MATRIX</button>
                 </div>
-                <div class="lg:col-span-7 flex flex-col">
-                    <label class="block text-xs font-semibold text-gray-300 mb-1.5 uppercase tracking-wider">Retour d'infrastructure serveur</label>
-                    <div id="responseOutput" class="w-full flex-1 min-h-[300px] bg-gray-950 border border-gray-800 rounded-xl p-4 font-code text-xs text-gray-200 overflow-y-auto max-h-[310px] whitespace-pre-wrap border-2 border-gray-800 shadow-inner">[ INITIALIZING ] Waiting for action stream execution layers...</div>
+                <div>
+                    <div class="form-group">
+                        <label>Retour d'infrastructure serveur</label>
+                        <div id="responseOutput" class="output-box">[ INITIALIZING ] Waiting for action stream execution layers...</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 🛡️ CARTOGRAPHIE GRAPHIQUE DES BENTO DIVISIONS -->
-        <section class="space-y-8">
-            <div class="border-b border-gray-800 pb-4 flex justify-between items-end">
-                <div>
-                    <h2 class="text-xl font-bold font-display text-white tracking-tight">Cartographie Architecturale de la Soute</h2>
-                    <p class="text-xs text-gray-400">Distribution par pôles spécialisés étanches de l'empire API</p>
+        <!-- 🛡️ EMBARCATION DE LA VITRINE DES DIRECTIVES -->
+        <section>
+            <div class="division-title">// DIV-01 : INPUT SECURITY & SANITIZATION LAB // ACTIVE</div>
+            <div class="bento-grid">
+                <div class="api-card">
+                    <div class="node-tag">Node-01</div><div class="live-tag">LIVE</div><div class="clear"></div>
+                    <h4>/v1/form-shield</h4>
+                    <p>Bloqueur d'injections XSS et assainisseur global de formulaires.</p>
                 </div>
-                <span class="text-xs font-code text-blue-400 bg-blue-500/5 border border-blue-500/10 px-3 py-1 rounded-full">Centaure Engine v37.0</span>
+                <div class="api-card">
+                    <div class="node-tag">Node-02</div><div class="live-tag">LIVE</div><div class="clear"></div>
+                    <h4>/v1/audio-convert</h4>
+                    <p>Aiguillage et conversion de soute d'assets audio.</p>
+                </div>
+                <div class="api-card">
+                    <div class="node-tag">Node-67</div><div class="live-tag">LIVE</div><div class="clear"></div>
+                    <h4>/v1/keyword-density-analyzer</h4>
+                    <p>Analyseur de redondances sémantiques et de fréquences SEO.</p>
+                </div>
             </div>
-
-            <div class="space-y-10">
-                <!-- DIV-01 -->
-                <div class="space-y-4">
-                    <h3 class="text-xs font-bold text-blue-400 uppercase tracking-widest font-code flex items-center gap-2">
-                        // DIV-01 : INPUT SECURITY & SANITIZATION LAB <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">ACTIVE</span>
-                    </h3>
-                    <div class="bento-grid">
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-01</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/form-shield</h4>
-                            <p class="text-xs text-gray-400 mt-1">Bloqueur d'injections XSS et assainisseur global de formulaires.</p>
-                        </div>
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-02</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/audio-convert</h4>
-                            <p class="text-xs text-gray-400 mt-1">Aiguillage et conversion de soute d'assets audio.</p>
-                        </div>
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-67</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/keyword-density-analyzer</h4>
-                            <p class="text-xs text-gray-400 mt-1">Analyseur de redondances sémantiques et de fréquences SEO.</p>
-                        </div>
+              <!-- DIV-04 -->
+                <div class="division-title purple">// DIV-04 : SECURITY, OBFUSCATION & CRYPTO LAB // HIGH ENTROPY</div>
+                <div class="bento-grid">
+                    <div class="api-card">
+                        <div class="node-tag">Node-71</div><div class="live-tag">LIVE</div><div class="clear"></div>
+                        <h4>/v1/hashids-generator</h4>
+                        <p>Masquage cryptique d'identifiants de base de données numériques.</p>
                     </div>
-                </div>
-     <!-- DIV-04 -->
-                <div class="space-y-4 mt-6">
-                    <h3 class="text-xs font-bold text-purple-400 uppercase tracking-widest font-code flex items-center gap-2">
-                        // DIV-04 : SECURITY, OBFUSCATION & CRYPTO LAB <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">HIGH ENTROPY</span>
-                    </h3>
-                    <div class="bento-grid">
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-71</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/hashids-generator</h4>
-                            <p class="text-xs text-gray-400 mt-1">Masquage cryptique d'identifiants de base de données numériques.</p>
-                        </div>
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-72</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/hashids-decoder</h4>
-                            <p class="text-xs text-gray-400 mt-1">Inverseur et extracteur d'identifiants bruts depuis jeton masqué.</p>
-                        </div>
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-86</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/aes-256-encryptor</h4>
-                            <p class="text-xs text-gray-400 mt-1">Chiffrement symétrique AES-256-CBC hautement sécurisé.</p>
-                        </div>
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200 border-blue-500/30 bg-blue-950/10">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-blue-400 font-bold">Node-100</span><span class="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">MASTER</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/secure-id-scrambler</h4>
-                            <p class="text-xs text-gray-300 mt-1">Générateur de jetons maîtres d'infrastructure à haute entropie.</p>
-                        </div>
+                    <div class="api-card">
+                        <div class="node-tag">Node-72</div><div class="live-tag">LIVE</div><div class="clear"></div>
+                        <h4>/v1/hashids-decoder</h4>
+                        <p>Inverseur et extracteur d'identifiants bruts depuis jeton masqué.</p>
+                    </div>
+                    <div class="api-card">
+                        <div class="node-tag">Node-86</div><div class="live-tag">LIVE</div><div class="clear"></div>
+                        <h4>/v1/aes-256-encryptor</h4>
+                        <p>Chiffrement symétrique AES-256-CBC hautement sécurisé.</p>
+                    </div>
+                    <div class="api-card" style="border-color: #3b82f6;">
+                        <div class="node-tag" style="color: #3b82f6; font-weight: bold;">Node-100</div><div class="live-tag" style="color: #3b82f6; bg-color: rgba(59,130,246,0.1);">MASTER</div><div class="clear"></div>
+                        <h4>/v1/secure-id-scrambler</h4>
+                        <p>Générateur de jetons maîtres d'infrastructure à haute entropie.</p>
                     </div>
                 </div>
 
                 <!-- DIV-10 -->
-                <div class="space-y-4 mt-6">
-                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest font-code flex items-center gap-2">
-                        // DIV-10 : HIGH-SPEED CODE OPTIMIZERS & DATA NORMALIZERS <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">STATELESS</span>
-                    </h3>
-                    <div class="bento-grid">
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-93</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/pascal-case-converter</h4>
-                            <p class="text-xs text-gray-400 mt-1">Normalisation et conversion de chaînes textuelles en PascalCase.</p>
-                        </div>
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-96</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/sentence-capitalizer</h4>
-                            <p class="text-xs text-gray-400 mt-1">Mise en majuscule automatique de la première lettre de chaque phrase.</p>
-                        </div>
-                        <div class="bg-gray-950 border border-gray-900 rounded-xl p-4 api-card transition duration-200">
-                            <div class="flex justify-between items-start mb-2"><span class="font-code text-xs text-gray-500">Node-97</span><span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">LIVE</span></div>
-                            <h4 class="text-sm font-semibold text-white font-display">/v1/space-collapser</h4>
-                            <p class="text-xs text-gray-400 mt-1">Purge et compactage de soute de tous les espaces blancs multiples.</p>
-                        </div>
+                <div class="division-title emerald">// DIV-10 : HIGH-SPEED CODE OPTIMIZERS & DATA NORMALIZERS // STATELESS</div>
+                <div class="bento-grid">
+                    <div class="api-card">
+                        <div class="node-tag">Node-93</div><div class="live-tag">LIVE</div><div class="clear"></div>
+                        <h4>/v1/pascal-case-converter</h4>
+                        <p>Normalisation et conversion de chaînes textuelles en PascalCase.</p>
+                    </div>
+                    <div class="api-card">
+                        <div class="node-tag">Node-96</div><div class="live-tag">LIVE</div><div class="clear"></div>
+                        <h4>/v1/sentence-capitalizer</h4>
+                        <p>Mise en majuscule automatique de la première lettre de chaque phrase.</p>
+                    </div>
+                    <div class="api-card">
+                        <div class="node-tag">Node-97</div><div class="live-tag">LIVE</div><div class="clear"></div>
+                        <h4>/v1/space-collapser</h4>
+                        <p>Purge et compactage de soute de tous les espaces blancs multiples.</p>
                     </div>
                 </div>
 
@@ -175,20 +311,21 @@
         </section>
     </main>
 
-    <footer class="border-t border-gray-800 bg-gray-950 py-8 text-center text-xs text-gray-500 font-code mt-12">
+    <footer style="border-t: 1px solid #1f2937; background-color: #0b0f19; padding: 20px; text-align: center; font-family: monospace; font-size: 11px; color: #4b5563; margin-top: 60px;">
         &copy; 2026 BlackBox Audio Labs LLC. Systems Sterile. All Rights Reserved Sovereign Engine.
     </footer>
 
+    <!-- MOTEUR D'INJECTION DYNAMIQUE DES REQUÊTES -->
     <script>
         const payloads = {
-            "/v1/secure-id-scrambler": '{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}',
-            "/v1/sentence-capitalizer": '{\n  "raw_text_stream": "bonjour steve. l\'infrastructure est en ligne mondiale ! plus aucun bug."\n}',
-            "/v1/space-collapser": '{\n  "raw_text_stream": "Texte    avec    trop   d\'espaces    et   tabulations."\n}',
-            "/v1/special-char-stripper": '{\n  "raw_dirty_string": "Hello Steve! 🔥 Élimine les emojis & symboles !!!",\n  "allow_spaces": true\n}',
-            "/v1/word-inverter": '{\n  "raw_text_stream": "BlackBox",\n  "invert_mode": "characters"\n}',
-            "/v1/aes-256-encryptor": '{\n  "text_to_encrypt": "Payload ultra secret d\'agence",\n  "secret_encryption_key": "MaCleSuperSecurisee123"\n}',
-            "/v1/gps-distance-calculator": '{\n  "lat1": 48.8566,\n  "lon1": 2.3522,\n  "lat2": 40.7128,\n  "lon2": -74.0060\n}',
-            "/v1/keyword-density-analyzer": '{\n  "raw_text_corpus": "SEO sémantique de soute. Le SEO est indispensable pour le SEO de production."\n}'
+            "/v1/secure-id-scrambler": JSON.stringify({ "seed_prefix": "BB_MASTER", "internal_identifier": "100" }, null, 2),
+            "/v1/sentence-capitalizer": JSON.stringify({ "raw_text_stream": "bonjour steve. l'infrastructure est en ligne mondiale ! plus aucun bug." }, null, 2),
+            "/v1/space-collapser": JSON.stringify({ "raw_text_stream": "Texte    avec    trop   d'espaces    et   tabulations." }, null, 2),
+            "/v1/special-char-stripper": JSON.stringify({ "raw_dirty_string": "Hello Steve! 🔥 Élimine les emojis & symboles !!!", "allow_spaces": true }, null, 2),
+            "/v1/word-inverter": JSON.stringify({ "raw_text_stream": "BlackBox", "invert_mode": "characters" }, null, 2),
+            "/v1/aes-256-encryptor": JSON.stringify({ "text_to_encrypt": "Payload ultra secret d'agence", "secret_encryption_key": "MaCleSuperSecurisee123" }, null, 2),
+            "/v1/gps-distance-calculator": JSON.stringify({ "lat1": 48.8566, "lon1": 2.3522, "lat2": 40.7128, "lon2": -74.0060 }, null, 2),
+            "/v1/keyword-density-analyzer": JSON.stringify({ "raw_text_corpus": "SEO sémantique de soute. Le SEO est indispensable pour le SEO de production." }, null, 2)
         };
 
         document.getElementById('routeSelect').addEventListener('change', function(e) {
@@ -216,12 +353,12 @@
 
                 const data = await response.json();
                 outputBox.textContent = JSON.stringify(data, null, 2);
-                outputBox.style.color = "#10b981"; // Passage au vert fluo en cas de succès
+                outputBox.style.color = "#10b981"; // Succès : Vert éclatant
             } catch (error) {
-                outputBox.textContent = `[❌ CRASH LAYER] Impossible de joindre le serveur ou payload invalide.\nErreur : ${error.message}`;
-                outputBox.style.color = "#ef4444"; // Passage au rouge en cas d'erreur
+                outputBox.textContent = `[❌ CRASH LAYER] Impossible de joindre le serveur ou payload invalide.\\nErreur : ${error.message}`;
+                outputBox.style.color = "#ef4444"; // Échec : Rouge vif
             }
         }
     </script>
 </body>
-</html>           
+</html>
