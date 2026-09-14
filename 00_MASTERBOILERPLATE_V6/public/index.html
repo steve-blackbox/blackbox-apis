@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackBox Automated Control — 100 API Master Gateway</title>
     <style>
-        /* CSS PUR HAUT CONTRASTE — ZÉRO CONFLIT GRAPHIC — ALLUMAGE SANS FAILLE */
         body {
             background-color: #030712;
             color: #f3f4f6;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             margin: 0;
             padding: 0;
         }
@@ -107,6 +106,7 @@
             <input type="text" id="targetUrl" value="https://onrender.com" class="endpoint-input">
         </div>
     </header>
+
     <main>
         <section class="terminal-section">
             <div class="terminal-grid">
@@ -129,17 +129,12 @@
                             <option value="/v1/passphrase-hasher-key">[Node-88] /v1/passphrase-hasher-key</option>
                             <option value="/v1/aes-256-decryptor">[Node-87] /v1/aes-256-decryptor</option>
                             <option value="/v1/aes-256-encryptor">[Node-86] /v1/aes-256-encryptor</option>
-                            <option value="/v1/min-max-scaler">[Node-85] /v1/min-max-scaler</option>
-                            <option value="/v1/standard-deviation-lite">[Node-84] /v1/standard-deviation-lite</option>
-                            <option value="/v1/financial-rounder">[Node-83] /v1/financial-rounder</option>
-                            <option value="/v1/stripe-cent-converter">[Node-82] /v1/stripe-cent-converter</option>
-                            <option value="/v1/percentage-growth">[Node-81] /v1/percentage-growth</option>
                             <option value="/v1/form-shield">[Node-01] /v1/form-shield</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Payload JSON de sôute</label>
-                        <textarea id="payloadInput" class="cyber-textarea">{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}</textarea>
+                        <textarea id="payloadInput" class="cyber-textarea">{"seed_prefix": "BB_MASTER", "internal_identifier": "100"}</textarea>
                     </div>
                     <button onclick="executePayload()" class="cyber-button">EXPULSER LE FLUX DANS LA MATRIX</button>
                 </div>
@@ -156,8 +151,8 @@
         const payloads = {
             "/v1/secure-id-scrambler": '{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}',
             "/v1/word-inverter": '{\n  "raw_text_stream": "BlackBox Sovereign Engine",\n  "invert_mode": "characters"\n}',
-            "/v1/special-char-stripper": '{\n  "raw_dirty_string": "Hello Steve! 🔥 Purge 100% des emojis !!!",\n  "allow_spaces": true\n}',
-            "/v1/space-collapser": '{\n  "raw_text_stream": "Texte     compresse    sans    espaces     multiples."\n}',
+            "/v1/special-char-stripper": '{\n  "raw_dirty_string": "Hello Steve! Purge 100% des emojis !!!",\n  "allow_spaces": true\n}',
+            "/v1/space-collapser": '{\n  "raw_text_stream": "Texte compresse sans espaces multiples."\n}',
             "/v1/sentence-capitalizer": '{\n  "raw_text_stream": "bonjour steve. le code v42 est en ligne."\n}',
             "/v1/snake-case-converter": '{\n  "raw_input_string": "Total Price Cents USD"\n}',
             "/v1/camel-case-converter": '{\n  "raw_input_string": "user authentication web token"\n}',
@@ -169,12 +164,7 @@
             "/v1/passphrase-hasher-key": '{\n  "raw_passphrase": "CléSouveraine99!",\n  "custom_salt": "salt_88"\n}',
             "/v1/aes-256-decryptor": '{\n  "encrypted_payload": "7ba4f3e12c",\n  "secret_encryption_key": "secret",\n  "initialization_vector_hex": "000102030405060708090a0b0c0d0e0f"\n}',
             "/v1/aes-256-encryptor": '{\n  "text_to_encrypt": "Secret d\'infrastructure",\n  "secret_encryption_key": "MaCleSec_ure"\n}',
-            "/v1/min-max-scaler": '{\n  "raw_data_array": [10, 20, 30, 40, 50]\n}',
-            "/v1/standard-deviation-lite": '{\n  "metrics_array": [12, 15, 22, 17, 30]\n}',
-            "/v1/financial-rounder": '{\n  "raw_amount": 1452.8764,\n  "precision_decimals": 2\n}',
-            "/v1/stripe-cent-converter": '{\n  "amount_in_dollars": 49.99\n}',
-            "/v1/percentage-growth": '{\n  "initial_value": 1500,\n  "final_value": 3750\n}',
-            "/v1/form-shield": '{\n  "raw_input_string": "<script>alert(\'hack\')</script>Hello Steve!"\n}'
+            "/v1/form-shield": '{\n  "raw_input_string": "Hello Steve!"\n}'
         };
 
         document.getElementById('routeSelect').addEventListener('change', function(e) {
