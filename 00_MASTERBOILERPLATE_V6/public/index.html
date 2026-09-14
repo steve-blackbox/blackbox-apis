@@ -27,7 +27,7 @@
             overflow: hidden;
         }
         
-        /* SIDEBAR DE NAVIGATION 20 DIVISIONS */
+        /* SIDEBAR DE NAVIGATION COMMERCIALE A 20 DIVISIONS */
         .sidebar {
             width: var(--sidebar-width);
             background-color: var(--bg-sidebar);
@@ -104,7 +104,7 @@
             transform: scale(1.02);
         }
 
-        /* ZONE CENTRALE COCKPIT & BENTO */
+        /* ZONE CENTRALE COCKPIT & GRILLE BENTO MULTI-ROBOTS */
         .main-content {
             flex: 1;
             overflow-y: auto;
@@ -279,21 +279,21 @@
 </head>
 <body>
 
-    <!-- 🧭 SIDEBAR 20 DIVISIONS -->
+    <!-- 🧭 SIDEBAR DE NAVIGATION COMMERCIALE À 20 DIVISIONS -->
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-subtitle">API Control Hub</div>
             <div class="sidebar-title">BLACKBOX NETWORK</div>
         </div>
         <div class="sidebar-menu" id="sidebar-categories">
-            <!-- Injecté dynamiquement par la logique JS -->
+            <!-- Injecté dynamiquement par la logique JavaScript -->
         </div>
         <div class="sidebar-footer">
             <button class="fleet-pass-btn" onclick="triggerStripeCheckout('pass')">🎟️ ALL-ACCESS FLEET PASS</button>
         </div>
     </div>
 
-    <!-- 🎛️ AREA CONTROLLER -->
+    <!-- 🎛️ CONTROLEUR CENTRAL DES MODULES -->
     <div class="main-content">
         <div class="container">
             <div class="top-bar">
@@ -301,35 +301,35 @@
                 <div class="status-badge">● 100 Nodes Sterile</div>
             </div>
 
-            <!-- SUB-NAV 5 ROBOTS INTERNES -->
+            <!-- SUB-NAV MULTI-ROBOTS INTERNES -->
             <div class="nav-grid" id="robots-subnav">
                 <!-- Injecté dynamiquement par le script -->
             </div>
 
-            <!-- BENTO DISPLAY ARSENAL -->
+            <!-- BLOCS GRAPHIQUES BENTO DE VENTE -->
             <main class="bento-grid">
-                <!-- HERO DISPLAY CARD -->
+                <!-- ACCORDION HERO CARD -->
                 <div class="bento-card col-span-2">
                     <div class="engine-tag" id="robot-engine">[ INITIALIZING ]</div>
                     <h1 class="hero-title" id="robot-title">Loading Fleet Engine...</h1>
                     <p class="hero-desc" id="robot-desc">Connecting to BlackBox sovereign cluster.</p>
                 </div>
 
-                <!-- FEATURE CARD 01 -->
+                <!-- CARACTÉRISTIQUE APPLICATIVE 01 -->
                 <div class="bento-card">
                     <div class="card-icon" id="feat1-icon">🛡️</div>
                     <h2 class="card-title" id="feat1-title">-</h2>
                     <p class="card-desc" id="feat1-desc">-</p>
                 </div>
 
-                <!-- FEATURE CARD 02 -->
+                <!-- CARACTÉRISTIQUE APPLICATIVE 02 -->
                 <div class="bento-card">
                     <div class="card-icon" id="feat2-icon">⚡</div>
                     <h2 class="card-title" id="feat2-title">-</h2>
                     <p class="card-desc" id="feat2-desc">-</p>
                 </div>
 
-                <!-- LOWER LICENSING GATEWAY -->
+                <!-- CAPTURE MONÉTAIRE STRIPE COMPLÈTE -->
                 <div class="bento-card col-span-2">
                     <div class="pricing-header-flex">
                         <div>
@@ -340,7 +340,7 @@
                     </div>
 
                     <div class="pricing-grid">
-                        <!-- PLAN SOLO -->
+                        <!-- ENCAISSEMENT SOLO -->
                         <div class="pricing-btn" onclick="triggerStripeCheckout('solo')">
                             <div class="btn-header">
                                 <span class="btn-title">Solo License</span>
@@ -349,7 +349,7 @@
                             <p class="btn-collapse" id="desc-solo-tag">-</p>
                         </div>
 
-                        <!-- PLAN AGENCY -->
+                        <!-- ENCAISSEMENT AGENCY -->
                         <div class="pricing-btn" onclick="triggerStripeCheckout('agency')">
                             <div class="btn-header">
                                 <span class="btn-title">Agency Fleet</span>
@@ -363,13 +363,13 @@
 
             <footer>
                 <p>© 2026 BlackBox Audio Labs LLC. Systems Sterile.</p>
-                <p>Centaure Engine v21.0 — Global SEO Compliant</p>
+                <p>Centaure Engine v22.0 — Global SEO Compliant</p>
             </footer>
         </div>
     </div>
-    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V21 & ARCHITECTURE 100 ROBOTS -->
+    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V22 & ARCHITECTURE 100 ROBOTS -->
 <script>
-// Nomenclature officielle des Divisions et Robots
+// Nomenclature complète et officielle des 20 Divisions Industrielles (20 x 5 = 100 Robots)
 const categoriesDatabase = [
     { id: "div01", name: "DIV-01: Form Protection" },
     { id: "div02", name: "DIV-02: Cyber-Defense" },
@@ -380,7 +380,17 @@ const categoriesDatabase = [
     { id: "div07", name: "DIV-07: Geolock & Routing" },
     { id: "div08", name: "DIV-08: Agent Analytics" },
     { id: "div09", name: "DIV-09: Web Scraping" },
-    { id: "div10", name: "DIV-10: Code Optimizers" }
+    { id: "div10", name: "DIV-10: Code Optimizers" },
+    { id: "div11", name: "DIV-11: Cron & Scheduling" },
+    { id: "div12", name: "DIV-12: Event Routers" },
+    { id: "div13", name: "DIV-13: Link Protection" },
+    { id: "div14", name: "DIV-14: Fintech Utilities" },
+    { id: "div15", name: "DIV-15: Crypto Gateways" },
+    { id: "div16", name: "DIV-16: Heavy Regex Lab" },
+    { id: "div17", name: "DIV-17: Edge Buffers" },
+    { id: "div18", name: "DIV-18: Health Diagnostics" },
+    { id: "div19", name: "DIV-19: Log Sanitizers" },
+    { id: "div20", name: "DIV-20: Multi-Cloud Flow" }
 ];
 
 const fleetDatabase = {
@@ -406,6 +416,31 @@ const fleetDatabase = {
             pricing_target: "[ CORE ENGINE : WEBHOOK-SHIELD ]", pricing_title: "Activate Commercial License",
             price_solo: "69$", desc_solo: "Solo Pass: Hardened protection for 1 main applicative gateway.",
             price_agency: "199$", desc_agency: "Infrastructure Tier: Full mesh protection for comprehensive multi-server architectures.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ],
+    // ⚔️ DIVISION 02 : CYBER-DEFENSE (VAGUE 02 ALLUMAGE)
+    div02: [
+        {
+            id: "robot06", name: "IP Blocker", engine: "[ EDGE CYBER-SHIELD ACTIVE ]",
+            title: "Blacklist Malicious IPs.<br>Neutralize Spammers Upstream.",
+            desc: "A stateless, ultra-fast threat intelligence routing layer that cross-references incoming clients against a global list of known hosting scrapers, compromised proxies, and malicious servers before they can hit your web backend.",
+            feat1_icon: "🏴‍☠️", feat1_title: "Stateless Rejection", feat1_desc: "Drops hostile connections at the network edge in less than 0.4ms.",
+            feat2_icon: "🔥", feat2_title: "Dynamic Sync", feat2_desc: "Auto-updates threat definitions hourly from aggregated zero-day threat intelligence.",
+            pricing_target: "[ CORE ENGINE : IP-BLOCKER ]", pricing_title: "Activate Commercial License",
+            price_solo: "59$", desc_solo: "Solo License: 1 application proxy setup (Updates for life).",
+            price_agency: "179$", desc_agency: "Agency Fleet: Mesh defense for client architectures and multi-tenant nodes.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        },
+        {
+            id: "robot07", name: "Rate Limiter", engine: "[ AUTOMATED TRAFFIC THROTTLING ]",
+            title: "Throttle Bruteforce Attacks.<br>Defend Authentication Paths.",
+            desc: "A lightweight sliding-window rate-limiting engine designed to safeguard login forms, checkout gateways, and data endpoints. Throttles aggressive users based on unique hardware signatures, ensuring total availability for authentic traffic.",
+            feat1_icon: "⏳", feat1_title: "Sliding-Window Cache", feat1_desc: "Maintains traffic matrices at zero-memory overhead with intelligent cleanup cycles.",
+            feat2_icon: "💎", feat2_title: "Signature Hardening", feat2_desc: "Tracks abuse beyond simple IPs, blocking complex botnets through layered meta-analysis.",
+            pricing_target: "[ CORE ENGINE : RATE-LIMITER ]", pricing_title: "Activate Commercial License",
+            price_solo: "49$", desc_solo: "Solo License: Complete integration for 1 primary gateway route.",
+            price_agency: "149$", desc_agency: "Agency Fleet: Unlimited deployment across corporate server subnets.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
