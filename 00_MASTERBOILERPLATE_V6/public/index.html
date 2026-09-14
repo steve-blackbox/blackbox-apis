@@ -3,48 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackBox Automated Control — API Production Fleet</title>
-    <script src="https://tailwindcss.com"></script>
-    <link href="https://googleapis.com" rel="stylesheet">
+    <title>BlackBox Automated Control — 100 API Master Gateway</title>
     <style>
+        /* CSS PUR ACCESSIBLE ET ASSAINI — ZÉRO CONFLIT GRAPHIQUE */
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #030712;
+            color: #f3f4f6;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
         }
-        .font-display {
-            font-family: 'Space Grotesk', sans-serif;
+        header {
+            background-color: #0b0f19;
+            border-bottom: 2px solid #1f2937;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .font-code {
-            font-family: 'JetBrains Mono', monospace;
+        .header-title h1 { margin: 0; font-size: 20px; font-weight: 700; }
+        .header-title p { margin: 5px 0 0 0; font-size: 12px; color: #9ca3af; }
+        .endpoint-container {
+            display: flex;
+            align-items: center;
+            background-color: #030712;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 5px 12px;
+        }
+        .endpoint-label { font-family: monospace; font-size: 11px; color: #3b82f6; font-weight: bold; margin-right: 10px; }
+        .endpoint-input { background: transparent; border: none; color: #10b981; font-family: monospace; font-size: 13px; width: 300px; outline: none; }
+        main { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .terminal-section { background-color: #0b0f19; border: 2px solid #1f2937; border-radius: 12px; padding: 25px; }
+        .terminal-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 1024px) { .terminal-grid { grid-template-columns: 5fr 7fr; gap: 30px; } }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 11px; font-weight: bold; color: #9ca3af; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .cyber-select {
+            width: 100%;
+            background-color: #ffffff;
+            color: #000000;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+            font-family: monospace;
+            font-weight: bold;
+            outline: none;
+        }
+        .cyber-textarea {
+            width: 100%;
+            height: 140px;
+            background-color: #030712;
+            color: #10b981;
+            border: 2px solid #4b5563;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+            font-family: monospace;
+            outline: none;
+            resize: none;
+            box-sizing: border-box;
+        }
+        .cyber-button {
+            width: 100%;
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .cyber-button:hover { background-color: #2563eb; }
+        .output-box {
+            background-color: #030712;
+            border: 2px solid #1f2937;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #f3f4f6;
+            min-height: 330px;
+            max-height: 350px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            box-sizing: border-box;
         }
     </style>
 </head>
-<body class="text-gray-100 min-h-screen flex items-center justify-center p-4 antialiased">
+<body>
 
-    <!-- 🛡️ BOÎTE DE SÔUTE MONOLITHE HISTORIQUE -->
-    <div class="w-full max-w-2xl bg-gray-950 border-2 border-gray-900 rounded-3xl p-10 text-center shadow-2xl relative overflow-hidden">
-        <div class="absolute -top-24 -left-24 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        
-        <!-- SIGNATURE D'ARMEMENT -->
-        <div class="font-display font-bold text-gray-700 text-sm tracking-widest uppercase mb-6 flex items-center justify-center gap-2">
-            <span class="w-2 h-2 bg-blue-600 rounded-full"></span> B L A C K B O X
+    <header>
+        <div class="header-title">
+            <h1>BlackBox Automated Control</h1>
+            <p>100 Core API Fleet Monolithe &bull; All Systems Sterile</p>
         </div>
-
-        <h1 class="text-3xl font-extrabold font-display tracking-tight text-white mb-4">
-            BlackBox Automated Control
-        </h1>
-        
-        <p class="text-sm text-gray-400 font-normal leading-relaxed max-w-md mx-auto mb-8">
-            Monolithe d'infrastructure cloud active souveraine. Les serveurs de sôute répondent au bit près.
-        </p>
-
-        <!-- DISPOSITIF DU COMPTEUR -->
-        <div class="inline-flex items-center gap-2 bg-emerald-500/10 border-2 border-emerald-500/20 text-emerald-400 px-6 py-3 rounded-full text-xs font-bold font-code tracking-wider uppercase">
-            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-            100 Robots de Feu &bull; Production Live
+        <div class="endpoint-container">
+            <span class="endpoint-label">GATEWAY URL:</span>
+            <input type="text" id="targetUrl" value="https://onrender.com" class="endpoint-input">
         </div>
-    </div>
+    </header>
+    <main>
+        <section class="terminal-section">
+            <div class="terminal-grid">
+                <div>
+                    <div class="form-group">
+                        <label>Sélectionner la route du Robot</label>
+                        <!-- Ingestion propre et épurée des liaisons de soute stratégiques -->
+                        <select id="routeSelect" class="cyber-select">
+                            <option value="/v1/secure-id-scrambler" selected>[Node-100] /v1/secure-id-scrambler</option>
+                            <option value="/v1/word-inverter">[Node-99] /v1/word-inverter</option>
+                            <option value="/v1/special-char-stripper">[Node-98] /v1/special-char-stripper</option>
+                            <option value="/v1/space-collapser">[Node-97] /v1/space-collapser</option>
+                            <option value="/v1/sentence-capitalizer">[Node-96] /v1/sentence-capitalizer</option>
+                            <option value="/v1/snake-case-converter">[Node-95] /v1/snake-case-converter</option>
+                            <option value="/v1/camel-case-converter">[Node-94] /v1/camel-case-converter</option>
+                            <option value="/v1/pascal-case-converter">[Node-93] /v1/pascal-case-converter</option>
+                            <option value="/v1/text-line-sorter">[Node-92] /v1/text-line-sorter</option>
+                            <option value="/v1/name-standardizer">[Node-91] /v1/name-standardizer</option>
+                            <option value="/v1/simple-rot13-obfuscator">[Node-90] /v1/simple-rot13-obfuscator</option>
+                            <option value="/v1/base64-url-encoder">[Node-89] /v1/base64-url-encoder</option>
+                            <option value="/v1/passphrase-hasher-key">[Node-88] /v1/passphrase-hasher-key</option>
+                            <option value="/v1/aes-256-decryptor">[Node-87] /v1/aes-256-decryptor</option>
+                            <option value="/v1/aes-256-encryptor">[Node-86] /v1/aes-256-encryptor</option>
+                            <option value="/v1/min-max-scaler">[Node-85] /v1/min-max-scaler</option>
+                            <option value="/v1/standard-deviation-lite">[Node-84] /v1/standard-deviation-lite</option>
+                            <option value="/v1/financial-rounder">[Node-83] /v1/financial-rounder</option>
+                            <option value="/v1/stripe-cent-converter">[Node-82] /v1/stripe-cent-converter</option>
+                            <option value="/v1/percentage-growth">[Node-81] /v1/percentage-growth</option>
+                            <option value="/v1/form-shield">[Node-01] /v1/form-shield</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Payload JSON de sôute</label>
+                        <textarea id="payloadInput" class="cyber-textarea">{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}</textarea>
+                    </div>
+                    <button onclick="executePayload()" class="cyber-button">EXPULSER LE FLUX DANS LA MATRIX</button>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label>Retour réseau en production</label>
+                        <div id="responseOutput" class="output-box">[ STERILE STATE ] En attente d'ingestion applicative...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        // Automatisation des structures de donnees exemples pour purger les lignes lourdes HTML
+        const payloads = {
+            "/v1/secure-id-scrambler": '{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}',
+            "/v1/word-inverter": '{\n  "raw_text_stream": "BlackBox Sovereign Engine",\n  "invert_mode": "characters"\n}',
+            "/v1/special-char-stripper": '{\n  "raw_dirty_string": "Hello Steve! 🔥 Purge 100% des emojis !!!",\n  "allow_spaces": true\n}',
+            "/v1/space-collapser": '{\n  "raw_text_stream": "Texte     compresse    sans    espaces     multiples."\n}',
+            "/v1/sentence-capitalizer": '{\n  "raw_text_stream": "bonjour steve. le code v42 est en ligne."\n}',
+            "/v1/snake-case-converter": '{\n  "raw_input_string": "Total Price Cents USD"\n}',
+            "/v1/camel-case-converter": '{\n  "raw_input_string": "user authentication web token"\n}',
+            "/v1/pascal-case-converter": '{\n  "raw_input_string": "api router gate controller"\n}',
+            "/v1/text-line-sorter": '{\n  "raw_multi_line_text": "Zeta\\nAlpha\\nGamma\\nBeta",\n  "sort_direction": "asc"\n}',
+            "/v1/name-standardizer": '{\n  "raw_name_string": "sTeVe nOlAn"\n}',
+            "/v1/simple-rot13-obfuscator": '{\n  "raw_text_to_obfuscate": "control@blackbox-apis.com"\n}',
+            "/v1/base64-url-encoder": '{\n  "raw_string_input": "Secure Token Key 2026"\n}',
+            "/v1/passphrase-hasher-key": '{\n  "raw_passphrase": "CléSouveraine99!",\n  "custom_salt": "salt_88"\n}',
+            "/v1/aes-256-decryptor": '{\n  "encrypted_payload": "7ba4f3e12c",\n  "secret_encryption_key": "secret",\n  "initialization_vector_hex": "000102030405060708090a0b0c0d0e0f"\n}',
+            "/v1/aes-256-encryptor": '{\n  "text_to_encrypt": "Secret d\'infrastructure",\n  "secret_encryption_key": "MaCleSec_ure"\n}',
+            "/v1/min-max-scaler": '{\n  "raw_data_array": [10, 20, 30, 40, 50]\n}',
+            "/v1/standard-deviation-lite": '{\n  "metrics_array": [12, 15, 22, 17, 30]\n}',
+            "/v1/financial-rounder": '{\n  "raw_amount": 1452.8764,\n  "precision_decimals": 2\n}',
+            "/v1/stripe-cent-converter": '{\n  "amount_in_dollars": 49.99\n}',
+            "/v1/percentage-growth": '{\n  "initial_value": 1500,\n  "final_value": 3750\n}',
+            "/v1/form-shield": '{\n  "raw_input_string": "<script>alert(\'hack\')</script>Hello Steve!"\n}'
+        };
 
+        document.getElementById('routeSelect').addEventListener('change', function(e) {
+            const r = e.target.value;
+            if (payloads[r]) document.getElementById('payloadInput').value = payloads[r];
+        });
+
+        async function executePayload() {
+            const baseUrl = document.getElementById('targetUrl').value.trim();
+            const route = document.getElementById('routeSelect').value;
+            const raw = document.getElementById('payloadInput').value;
+            const box = document.getElementById('responseOutput');
+
+            box.textContent = "[ LOADING ] Expulsion du flux vers les serveurs US...";
+            box.style.color = "#3b82f6";
+            
+            try {
+                const response = await fetch(`${baseUrl}${route}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: raw
+                });
+
+                const data = await response.json();
+                box.textContent = JSON.stringify(data, null, 2);
+                box.style.color = response.ok ? "#10b981" : "#ef4444";
+            } catch (err) {
+                box.textContent = `[❌ CRASH NET] Impossible d'atteindre l'infrastructure cloud.\\nErreur : ${err.message}`;
+                box.style.color = "#ef4444";
+            }
+        }
+    </script>
 </body>
 </html>
