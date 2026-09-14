@@ -1,7 +1,7 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V33 — AUTOMATE SOUVERAIN
- * 📥 ALIGNEMENT EN PRODUCTION DES COMPOSANTS LOGIQUES DES VAGUES 01 À 10 CUMULÉES
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V35 — AUTOMATE SOUVERAIN
+ * 📥 ALIGNEMENT EN PRODUCTION DES COMPOSANTS LOGIQUES DES VAGUES 01 À 12 CUMULÉES
  */
 
 const express = require('express');
@@ -118,13 +118,31 @@ app.use('/v1/exif-cloak', require('./exif_cloak'));
 app.use('/v1/header-inspector', require('./header_inspector'));
 
 // ========================================================
-// 🔀 RACCORDEMENT CENTRAL DE LA VAGUE 10 (NEW LIVE)
+// 🔀 RACCORDEMENT CENTRAL DE LA VAGUE 10 (LIVE)
 // ========================================================
-app.use('/v1/event-dispatcher', require('./event_dispatcher'));   // Robot 51 branché !
-app.use('/v1/event-filter', require('./event_filter'));           // Robot 52 branché !
-app.use('/v1/event-transformer', require('./event_transformer')); // Robot 53 branché !
-app.use('/v1/link-signer', require('./link_signer'));             // Robot 54 branché !
-app.use('/v1/link-validator', require('./link_validator'));       // Robot 55 branché !
+app.use('/v1/event-dispatcher', require('./event_dispatcher'));
+app.use('/v1/event-filter', require('./event_filter'));
+app.use('/v1/event-transformer', require('./event_transformer'));
+app.use('/v1/link-signer', require('./link_signer'));
+app.use('/v1/link-validator', require('./link_validator'));
+
+// ========================================================
+// 🎭 RACCORDEMENT CENTRAL DE LA VAGUE 11 (LIVE)
+// ========================================================
+app.use('/v1/server-masker', require('./server_masker'));
+app.use('/v1/cookie-signer', require('./cookie_signer'));
+app.use('/v1/frame-guard', require('./frame_guard'));
+app.use('/v1/content-type-enforcer', require('./content_type_enforcer'));
+app.use('/v1/referrer-policy-cleaner', require('./referrer_policy_cleaner'));
+
+// ========================================================
+// ⏱️ RACCORDEMENT CENTRAL DE LA VAGUE 12 (NEW LIVE)
+// ========================================================
+app.use('/v1/time-diff-calculator', require('./time_diff_calculator'));     // Robot 61 branché !
+app.use('/v1/cron-expression-validator', require('./cron_expression_validator')); // Robot 62 branché !
+app.use('/v1/business-days-filter', require('./business_days_filter'));     // Robot 63 branché !
+app.use('/v1/timezone-converter', require('./timezone_converter'));         // Robot 64 branché !
+app.use('/v1/age-gate-validator', require('./age_gate_validator'));         // Robot 65 branché ! Le soixante-cinquième !
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
 // ==========================================
@@ -222,5 +240,5 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
 
 // Allumage et écoute du port applicatif par défaut sur le serveur
 app.listen(PORT, () => {
-    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V33 operationnel sur le port ${PORT}`);
+    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V35 operationnel sur le port ${PORT}`);
 });
