@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackBox Automated Control — 100 API Master Gateway</title>
     <style>
-        /* CSS PUR ACCESSIBLE ET ASSAINI — ZÉRO CONFLIT GRAPHIQUE */
+        /* CSS PUR HAUT CONTRASTE — ZÉRO CONFLIT GRAPHIC — ALLUMAGE SANS FAILLE */
         body {
             background-color: #030712;
             color: #f3f4f6;
@@ -113,7 +113,6 @@
                 <div>
                     <div class="form-group">
                         <label>Sélectionner la route du Robot</label>
-                        <!-- Ingestion propre et épurée des liaisons de soute stratégiques -->
                         <select id="routeSelect" class="cyber-select">
                             <option value="/v1/secure-id-scrambler" selected>[Node-100] /v1/secure-id-scrambler</option>
                             <option value="/v1/word-inverter">[Node-99] /v1/word-inverter</option>
@@ -154,7 +153,6 @@
         </section>
     </main>
     <script>
-        // Automatisation des structures de donnees exemples pour purger les lignes lourdes HTML
         const payloads = {
             "/v1/secure-id-scrambler": '{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}',
             "/v1/word-inverter": '{\n  "raw_text_stream": "BlackBox Sovereign Engine",\n  "invert_mode": "characters"\n}',
@@ -187,7 +185,7 @@
         async function executePayload() {
             const baseUrl = document.getElementById('targetUrl').value.trim();
             const route = document.getElementById('routeSelect').value;
-            const raw = document.getElementById('payloadInput').value;
+            const payloadRaw = document.getElementById('payloadInput').value;
             const box = document.getElementById('responseOutput');
 
             box.textContent = "[ LOADING ] Expulsion du flux vers les serveurs US...";
@@ -197,14 +195,14 @@
                 const response = await fetch(`${baseUrl}${route}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: raw
+                    body: payloadRaw
                 });
 
                 const data = await response.json();
                 box.textContent = JSON.stringify(data, null, 2);
                 box.style.color = response.ok ? "#10b981" : "#ef4444";
             } catch (err) {
-                box.textContent = `[❌ CRASH NET] Impossible d'atteindre l'infrastructure cloud.\\nErreur : ${err.message}`;
+                box.textContent = `[❌ CRASH NET] Impossible d'atteindre l'infrastructure cloud.\nErreur : ${err.message}`;
                 box.style.color = "#ef4444";
             }
         }
