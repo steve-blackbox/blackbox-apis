@@ -65,3 +65,27 @@
 *   **Domain Focus:** Stateless API Payload Structuring & Deep Nesting Flattener
 *   **Status:** CORE ENGINE INITIALIZED LOCAL (`json_flatten.js`) - 100% READY FOR LIVE ESCALIER -> WAVE 2 [23context].
 *   **Commercial Tokens:** $49 (Solo License) / $149 (Agency Fleet)
+### ### Robot 11 - IP-GEOLOCK
+*   **Domain Focus:** Stateless API for High-Speed IP Geolocation & Currency Routing
+*   **Status:** CORE ENGINE READY TO IMPLEMENT IN 'server.js' -> WAVE 2
+*   **Commercial Tokens:** $59 (Solo License) / $179 (Agency Fleet)
+
+### ### Robot 12 - MD-PARSER
+*   **Domain Focus:** Lightning-Fast Markdown to Clean HTML & SEO Structured Data Converter
+*   **Status:** CORE ENGINE READY TO IMPLEMENT IN 'server.js' -> WAVE 2
+*   **Commercial Tokens:** $39 (Solo License) / $119 (Agency Fleet)
+
+### ### Robot 13 - SCHEDULER-SHIELD
+*   **Domain Focus:** Distributed Cron Job Edge Validation & Request Rate Buffer
+*   **Status:** CORE ENGINE READY TO IMPLEMENT IN 'server.js' -> WAVE 2
+*   **Commercial Tokens:** $79 (Solo License) / $249 (Agency Fleet)
+
+### ### Robot 14 - CSS-MINIFY
+*   **Domain Focus:** Ultra-Aggressive AST CSS Parser & Unused Style Purger
+*   **Status:** CORE ENGINE READY TO IMPLEMENT IN 'server.js' -> WAVE 2
+*   **Commercial Tokens:** $49 (Solo License) / $149 (Agency Fleet)
+
+### ### Robot 15 - AGENT-DETECT
+*   **Domain Focus:** Real-Time HTTP User-Agent & Device Footprint De-obfuscator
+*   **Status:** CORE ENGINE READY TO IMPLEMENT IN 'server.js' -> WAVE 2
+*   **Commercial Tokens:** $69 (Solo License) / $199 (Agency Fleet)
