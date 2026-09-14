@@ -3,50 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackBox Automated Control — Secure API Fleet</title>
+    <title>BlackBox Automated Control — 100 Core API Fleet</title>
     <style>
         :root {
             --bg-base: #030712;
             --bg-card: #0b0f19;
+            --bg-sidebar: #070a13;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
             --accent-green: #10b981;
             --accent-blue: #3b82f6;
             --border-color: #1f2937;
+            --sidebar-width: 280px;
         }
         body {
             background-color: var(--bg-base);
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 40px 20px;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* SIDEBAR DE NAVIGATION 20 DIVISIONS */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .sidebar-subtitle {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 800;
+            margin: 5px 0 0 0;
+            letter-spacing: -0.5px;
+        }
+        .sidebar-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 10px;
+        }
+        .category-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-family: monospace;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            transition: all 0.15s;
+        }
+        .category-item:hover {
+            background: rgba(59, 130, 246, 0.05);
+            color: var(--text-main);
+        }
+        .category-item.active {
+            background: rgba(59, 130, 246, 0.12);
+            border-left: 3px solid var(--accent-blue);
+            color: var(--text-main);
+            font-weight: bold;
+        }
+        .sidebar-footer {
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+            background-color: #05070d;
+        }
+        .fleet-pass-btn {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.2));
+            border: 1px solid var(--accent-green);
+            color: var(--text-main);
+            width: 100%;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            box-sizing: border-box;
+            transition: transform 0.2s;
+        }
+        .fleet-pass-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* ZONE CENTRALE COCKPIT & BENTO */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
             display: flex;
             justify-content: center;
         }
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             width: 100%;
         }
-        .header-section {
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
         }
-        .subtitle {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-        }
-        .title {
-            font-size: 24px;
-            font-weight: 800;
-            margin: 5px 0 0 0;
-            letter-spacing: -0.5px;
-        }
         .status-badge {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--accent-green);
@@ -55,16 +132,16 @@
         .nav-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 30px;
         }
         .nav-btn {
-            background: rgba(59, 130, 246, 0.05);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-color);
             color: var(--text-muted);
-            padding: 12px;
+            padding: 10px;
             text-align: center;
-            font-size: 13px;
+            font-size: 12px;
             font-family: monospace;
             cursor: pointer;
             border-radius: 4px;
@@ -98,7 +175,7 @@
             margin-bottom: 15px;
         }
         .hero-title {
-            font-size: 38px;
+            font-size: 32px;
             font-weight: 800;
             line-height: 1.2;
             margin: 0 0 20px 0;
@@ -106,16 +183,16 @@
         }
         .hero-desc {
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.6;
             margin: 0;
         }
         .card-icon {
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 22px;
+            margin-bottom: 15px;
         }
         .card-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             margin: 0 0 10px 0;
         }
@@ -140,7 +217,7 @@
             padding-bottom: 15px;
         }
         .pricing-main-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             margin: 0;
         }
@@ -176,170 +253,267 @@
         }
         .btn-title {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
         }
         .btn-price {
             font-weight: 800;
-            font-size: 20px;
+            font-size: 18px;
             color: var(--text-main);
         }
         .btn-collapse {
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
             margin: 0;
             line-height: 1.4;
         }
         footer {
-            margin-top: 60px;
+            margin-top: 40px;
             border-top: 1px solid var(--border-color);
             padding-top: 20px;
             display: flex;
             justify-content: space-between;
-            color: rgba(156, 163, 175, 0.4);
-            font-size: 12px;
+            color: rgba(156, 163, 175, 0.3);
+            font-size: 11px;
         }
-        footer p { margin: 0; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header-section">
-        <div>
-            <div class="subtitle">Secure API Ecosystem</div>
-            <div class="title">BLACKBOX AUTOMATED CONTROL</div>
+    <!-- 🧭 SIDEBAR 20 DIVISIONS -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-subtitle">API Control Hub</div>
+            <div class="sidebar-title">BLACKBOX NETWORK</div>
         </div>
-        <div class="status-badge">● All Systems Sterile</div>
+        <div class="sidebar-menu" id="sidebar-categories">
+            <!-- Injecté dynamiquement par la logique JS -->
+        </div>
+        <div class="sidebar-footer">
+            <button class="fleet-pass-btn" onclick="triggerStripeCheckout('pass')">🎟️ ALL-ACCESS FLEET PASS</button>
+        </div>
     </div>
 
-    <div class="nav-grid">
-        <div class="nav-btn active" onclick="switchRobot('robot01', this)">Form Shield</div>
-        <div class="nav-btn" onclick="switchRobot('robot02', this)">Audio Convert</div>
-        <div class="nav-btn" onclick="switchRobot('robot03', this)">Studio Vault</div>
-        <div class="nav-btn" onclick="switchRobot('robot04', this)">Link Cloak</div>
-        <div class="nav-btn" onclick="switchRobot('robot05', this)">Webhook Shield</div>
+    <!-- 🎛️ AREA CONTROLLER -->
+    <div class="main-content">
+        <div class="container">
+            <div class="top-bar">
+                <div class="status-badge" id="current-division-title">DIV-01 : INPUT SECURITY</div>
+                <div class="status-badge">● 100 Nodes Sterile</div>
+            </div>
+
+            <!-- SUB-NAV 5 ROBOTS INTERNES -->
+            <div class="nav-grid" id="robots-subnav">
+                <!-- Injecté dynamiquement par le script -->
+            </div>
+
+            <!-- BENTO DISPLAY ARSENAL -->
+            <main class="bento-grid">
+                <!-- HERO DISPLAY CARD -->
+                <div class="bento-card col-span-2">
+                    <div class="engine-tag" id="robot-engine">[ INITIALIZING ]</div>
+                    <h1 class="hero-title" id="robot-title">Loading Fleet Engine...</h1>
+                    <p class="hero-desc" id="robot-desc">Connecting to BlackBox sovereign cluster.</p>
+                </div>
+
+                <!-- FEATURE CARD 01 -->
+                <div class="bento-card">
+                    <div class="card-icon" id="feat1-icon">🛡️</div>
+                    <h2 class="card-title" id="feat1-title">-</h2>
+                    <p class="card-desc" id="feat1-desc">-</p>
+                </div>
+
+                <!-- FEATURE CARD 02 -->
+                <div class="bento-card">
+                    <div class="card-icon" id="feat2-icon">⚡</div>
+                    <h2 class="card-title" id="feat2-title">-</h2>
+                    <p class="card-desc" id="feat2-desc">-</p>
+                </div>
+
+                <!-- LOWER LICENSING GATEWAY -->
+                <div class="bento-card col-span-2">
+                    <div class="pricing-header-flex">
+                        <div>
+                            <div class="pricing-section-title" id="pricing-target">[ CORE ENGINE ]</div>
+                            <h3 class="pricing-main-title" id="pricing-title">Commercial Licensing</h3>
+                        </div>
+                        <div class="pricing-tag">Sovereign Acquisition</div>
+                    </div>
+
+                    <div class="pricing-grid">
+                        <!-- PLAN SOLO -->
+                        <div class="pricing-btn" onclick="triggerStripeCheckout('solo')">
+                            <div class="btn-header">
+                                <span class="btn-title">Solo License</span>
+                                <span class="btn-price" id="price-solo-tag">-$</span>
+                            </div>
+                            <p class="btn-collapse" id="desc-solo-tag">-</p>
+                        </div>
+
+                        <!-- PLAN AGENCY -->
+                        <div class="pricing-btn" onclick="triggerStripeCheckout('agency')">
+                            <div class="btn-header">
+                                <span class="btn-title">Agency Fleet</span>
+                                <span class="btn-price" id="price-agency-tag">-$</span>
+                            </div>
+                            <p class="btn-collapse" id="desc-agency-tag">-</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer>
+                <p>© 2026 BlackBox Audio Labs LLC. Systems Sterile.</p>
+                <p>Centaure Engine v21.0 — Global SEO Compliant</p>
+            </footer>
+        </div>
     </div>
-
-    <main class="bento-grid">
-        <div class="bento-card col-span-2">
-            <div class="engine-tag" id="robot-engine">[ FORM INTERCEPTION ACTIVE ]</div>
-            <h1 class="hero-title" id="robot-title">Block 100% of Form Spam.<br>Zero Captchas. Zero Friction.</h1>
-            <p class="hero-desc" id="robot-desc">An invisible JavaScript protection layer that intercepts automated bots and malicious spammers before they contaminate your database or inbox. Real users experience zero friction—no annoying traffic lights or crosswalk images to click.</p>
-        </div>
-
-        <div class="bento-card">
-            <div class="card-icon" id="feat1-icon">🛡️</div>
-            <h2 class="card-title" id="feat1-title">100% Invisible</h2>
-            <p class="card-desc" id="feat1-desc">Zero visual impact for the user. Boost your conversion rates while keeping spambots out.</p>
-        </div>
-
-        <div class="bento-card">
-            <div class="card-icon" id="feat2-icon">⚡</div>
-            <h2 class="card-title" id="feat2-title">High Performance</h2>
-            <p class="card-desc" id="feat2-desc">Ultra-lightweight 1.2 KB script with zero pipeline overhead. Engineered for optimal Core Web Vitals.</p>
-        </div>
-
-        <div class="bento-card col-span-2">
-            <div class="pricing-header-flex">
-                <div>
-                    <div class="pricing-section-title" id="pricing-target">[ CORE ENGINE : FORM-SHIELD ]</div>
-                    <h3 class="pricing-main-title" id="pricing-title">Activate Commercial License</h3>
-                </div>
-                <div class="pricing-tag">One-Time Acquisition</div>
-            </div>
-
-            <div class="pricing-grid">
-                <div class="pricing-btn" onclick="triggerStripeCheckout('solo')">
-                    <div class="btn-header">
-                        <span class="btn-title">Solo License</span>
-                        <span class="btn-price" id="price-solo-tag">49$</span>
-                    </div>
-                    <p class="btn-collapse" id="desc-solo-tag">Solo License: Valid for 1 production domain (Lifetime updates).</p>
-                </div>
-
-                <div class="pricing-btn" onclick="triggerStripeCheckout('agency')">
-                    <div class="btn-header">
-                        <span class="btn-title">Agency Fleet</span>
-                        <span class="btn-price" id="price-agency-tag">149$</span>
-                    </div>
-                    <p class="btn-collapse" id="desc-agency-tag">Agency Fleet: Unlimited domains (Perfect for client networks and portfolios).</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <p>© 2026 BlackBox Audio Labs LLC. All rights reserved.</p>
-        <p>Verified Centaure Engine v6.7 — USD Compliant</p>
-    </footer>
-</div>
+    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V21 & ARCHITECTURE 100 ROBOTS -->
 <script>
+// Nomenclature officielle des Divisions et Robots
+const categoriesDatabase = [
+    { id: "div01", name: "DIV-01: Form Protection" },
+    { id: "div02", name: "DIV-02: Cyber-Defense" },
+    { id: "div03", name: "DIV-03: Proxy & Privacy" },
+    { id: "div04", name: "DIV-04: Audio Lab" },
+    { id: "div05", name: "DIV-05: Asset Shrink" },
+    { id: "div06", name: "DIV-06: Document Process" },
+    { id: "div07", name: "DIV-07: Geolock & Routing" },
+    { id: "div08", name: "DIV-08: Agent Analytics" },
+    { id: "div09", name: "DIV-09: Web Scraping" },
+    { id: "div10", name: "DIV-10: Code Optimizers" }
+];
+
 const fleetDatabase = {
-    robot01: {
-        engine: "[ FORM INTERCEPTION ACTIVE ]",
-        title: "Block 100% of Form Spam.<br>Zero Captchas. Zero Friction.",
-        desc: "An invisible JavaScript protection layer that intercepts automated bots and malicious spammers before they contaminate your database or inbox. Real users experience zero friction—no annoying traffic lights or crosswalk images to click.",
-        feat1_icon: "🛡️", feat1_title: "100% Invisible", feat1_desc: "Zero visual impact for the user. Boost your conversion rates while keeping spambots out.",
-        feat2_icon: "⚡", feat2_title: "High Performance", feat2_desc: "Ultra-lightweight 1.2 KB script with zero pipeline overhead. Engineered for optimal Core Web Vitals.",
-        pricing_target: "[ CORE ENGINE : FORM-SHIELD ]", pricing_title: "Activate Commercial License",
-        price_solo: "49$", desc_solo: "Solo License: Valid for 1 production domain (Lifetime updates).",
-        price_agency: "149$", desc_agency: "Agency Fleet: Unlimited domains (Perfect for client networks and portfolios).",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
-    },
-    robot02: {
-        engine: "[ PRO AUDIO OPTIMIZATION ]",
-        title: "Compress Heavy Audio Files.<br>Reduce Size by 75%, Keep 100% Quality.",
-        desc: "A professional server-side compression engine built for studios and creators. Shrink WAV, MP3, or raw audio files up to 75% while maintaining flawless 24-bit dynamic range and absolute frequency fidelity for human hearing.",
-        feat1_icon: "🎛️", feat1_title: "Studio-Grade Output", feat1_desc: "No loss of dynamics, transients, or character. The rendering remains crystal clear.",
-        feat2_icon: "🚀", feat2_title: "Ultra-Fast Processing", feat2_desc: "Batch-process massive audio directories in parallel across our cloud nodes in seconds.",
-        pricing_target: "[ CORE ENGINE : AUDIO-CONVERT ]", pricing_title: "Activate Commercial License",
-        price_solo: "59$", desc_solo: "Solo License: Single workstation or local server integration.",
-        price_agency: "179$", desc_agency: "Studio Pack: Unlimited concurrent processing across enterprise networks.",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
-    },
-    robot03: {
-        engine: "[ MILITARY DIGITAL VAULT ]",
-        title: "Secure Private Cloud Storage.<br>Archive Your Masters Away From Threats.",
-        desc: "A state-of-the-art cold storage repository encrypted with military-grade protocols (AES-256). Your critical files, project masters, and sensitive documents are fragmented and heavily secured against data leaks and hardware failure.",
-        feat1_icon: "🔒", feat1_title: "End-to-End Encryption", feat1_desc: "Data is fully encrypted before leaving your machine. You hold the sovereign keys.",
-        feat2_icon: "🛰️", feat2_title: "Zero Hidden Fees", feat2_desc: "Unlimited download bandwidth. Retrieve your secure archives at any time with no egress tax.",
-        pricing_target: "[ CORE ENGINE : STUDIO-VAULT ]", pricing_title: "Activate Commercial License",
-        price_solo: "79$", desc_solo: "Vault Space: Up to 500 GB of secure, high-availability cloud storage.",
-        price_agency: "249$", desc_agency: "Enterprise Tier: 2 TB of premium resilient storage with team management access.",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
-    },
-    robot04: {
-        engine: "[ AFFILIATION & LINK PROTECTION ]",
-        title: "Cloak Your Strategic URLs.<br>Bypass Ad-Blockers Automatically.",
-        desc: "Protect your affiliate payouts and marketing links from traffic theft and browser suppression. This tool dynamically masks and alters your destination signatures so they remain invisible to common ad-blocking rules.",
-        feat1_icon: "🎭", feat1_title: "Masked Redirection", feat1_desc: "Alters URL footprints on every single visit to ensure absolute untraceability.",
-        feat2_icon: "📉", feat2_title: "Real-Time Metrics", feat2_desc: "Track every single click, source, and acquisition instantly without setting invasive third-party cookies.",
-        pricing_target: "[ CORE ENGINE : LINK-CLOAK ]", pricing_title: "Activate Commercial License",
-        price_solo: "39$", desc_solo: "Solo Pack: Protects up to 10,000 active monthly redirections.",
-        price_agency: "119$", desc_agency: "Pro Tier: Unlimited traffic and unrestricted redirection matrices.",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
-    },
-    robot05: {
-        engine: "[ APPLICATIVE CRASH SHIELD ]",
-        title: "Resilient Buffer for Webhooks.<br>Absorb DDoS Spikes With Zero Downtime.",
-        desc: "A high-speed security buffer engineered to absorb extreme request spikes and malformed payloads before they hit your internal infrastructure. If an external API goes haywire, the shield safely handles the traffic surge.",
-        feat1_icon: "🧱", feat1_title: "Rate Limiting Engine", feat1_desc: "Smoothly ingests overhead up to 5,000 requests per millisecond without breaking a sweat.",
-        feat2_icon: "🧬", feat2_title: "Payload Validation", feat2_desc: "Verifies HMAC signature byte-arrays upstream with zero backend latency.",
-        pricing_target: "[ CORE ENGINE : WEBHOOK-SHIELD ]", pricing_title: "Activate Commercial License",
-        price_solo: "69$", desc_solo: "Solo Pass: Hardened protection for 1 main applicative gateway.",
-        price_agency: "199$", desc_agency: "Infrastructure Tier: Full mesh protection for comprehensive multi-server architectures.",
-        stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
-    }
+    // 🛡️ DIVISION 01 : INPUT SECURITY (VAGUE 01 LIVE)
+    div01: [
+        {
+            id: "robot01", name: "Form Shield", engine: "[ FORM INTERCEPTION ACTIVE ]",
+            title: "Block 100% of Form Spam.<br>Zero Captchas. Zero Friction.",
+            desc: "An invisible JavaScript protection layer that intercepts automated bots and malicious spammers before they contaminate your database or inbox. Real users experience zero friction—no annoying traffic lights or crosswalk images to click.",
+            feat1_icon: "🛡️", feat1_title: "100% Invisible", feat1_desc: "Zero visual impact for the user. Boost your conversion rates while keeping spambots out.",
+            feat2_icon: "⚡", feat2_title: "High Performance", feat2_desc: "Ultra-lightweight 1.2 KB script with zero pipeline overhead. Engineered for optimal Core Web Vitals.",
+            pricing_target: "[ CORE ENGINE : FORM-SHIELD ]", pricing_title: "Activate Commercial License",
+            price_solo: "49$", desc_solo: "Solo License: Valid for 1 production domain (Lifetime updates).",
+            price_agency: "149$", desc_agency: "Agency Fleet: Unlimited domains (Perfect for client networks and portfolios).",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        },
+        {
+            id: "robot05", name: "Webhook Shield", engine: "[ APPLICATIVE CRASH SHIELD ]",
+            title: "Resilient Buffer for Webhooks.<br>Absorb DDoS Spikes With Zero Downtime.",
+            desc: "A high-speed security buffer engineered to absorb extreme request spikes and malformed payloads before they hit your internal infrastructure. If an external API goes haywire, the shield safely handles the traffic surge.",
+            feat1_icon: "🧱", feat1_title: "Rate Limiting Engine", feat1_desc: "Smoothly ingests overhead up to 5,000 requests per millisecond without breaking a sweat.",
+            feat2_icon: "🧬", feat2_title: "Payload Validation", feat2_desc: "Verifies HMAC signature byte-arrays upstream with zero backend latency.",
+            pricing_target: "[ CORE ENGINE : WEBHOOK-SHIELD ]", pricing_title: "Activate Commercial License",
+            price_solo: "69$", desc_solo: "Solo Pass: Hardened protection for 1 main applicative gateway.",
+            price_agency: "199$", desc_agency: "Infrastructure Tier: Full mesh protection for comprehensive multi-server architectures.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ],
+    // 🎛️ DIVISION 04 : AUDIO LAB (VAGUE 01 LIVE)
+    div04: [
+        {
+            id: "robot02", name: "Audio Convert", engine: "[ PRO AUDIO OPTIMIZATION ]",
+            title: "Compress Heavy Audio Files.<br>Reduce Size by 75%, Keep 100% Quality.",
+            desc: "A professional server-side compression engine built for studios and creators. Shrink WAV, MP3, or raw audio files up to 75% while maintaining flawless 24-bit dynamic range and absolute frequency fidelity for human hearing.",
+            feat1_icon: "🎛️", feat1_title: "Studio-Grade Output", feat1_desc: "No loss of dynamics, transients, or character. The rendering remains crystal clear.",
+            feat2_icon: "🚀", feat2_title: "Ultra-Fast Processing", feat2_desc: "Batch-process massive audio directories in parallel across our cloud nodes in seconds.",
+            pricing_target: "[ CORE ENGINE : AUDIO-CONVERT ]", pricing_title: "Activate Commercial License",
+            price_solo: "59$", desc_solo: "Solo License: Single workstation or local server integration.",
+            price_agency: "179$", desc_agency: "Studio Pack: Unlimited concurrent processing across enterprise networks.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ]
 };
 
-let activeRobotKey = "robot01";
+// Identifiants Stripe génériques pour le Pass Global à vie
+const globalPrices = {
+    pass: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+};
 
-function switchRobot(robotKey, element) {
-    activeRobotKey = robotKey;
-    const data = fleetDatabase[robotKey];
+let currentDivisionId = "div01";
+let activeRobotIndex = 0;
+// Génération visuelle immédiate de l'interface et gestion de l'état
+function initializeApp() {
+    const sidebarContainer = document.getElementById('sidebar-categories');
+    sidebarContainer.innerHTML = '';
+    
+    categoriesDatabase.forEach((cat) => {
+        const item = document.createElement('div');
+        item.className = `category-item ${cat.id === currentDivisionId ? 'active' : ''}`;
+        item.innerText = cat.name;
+        item.onclick = () => switchDivision(cat.id, item);
+        sidebarContainer.appendChild(item);
+    });
 
-    document.querySelectorAll('.nav-grid .nav-btn').forEach(btn => btn.classList.remove('active'));
+    renderSubNavigation();
+    loadRobotData();
+}
+
+function switchDivision(divisionId, element) {
+    currentDivisionId = divisionId;
+    activeRobotIndex = 0;
+    
+    document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
     element.classList.add('active');
+    
+    document.getElementById('current-division-title').innerText = element.innerText;
+    
+    renderSubNavigation();
+    loadRobotData();
+}
+
+function renderSubNavigation() {
+    const subnavContainer = document.getElementById('robots-subnav');
+    subnavContainer.innerHTML = '';
+    
+    const robotsList = fleetDatabase[currentDivisionId] || [];
+    
+    if (robotsList.length === 0) {
+        subnavContainer.innerHTML = `<div class="nav-btn active">[ NO ACTIVE ROBOTS ]</div>`;
+        return;
+    }
+    
+    robotsList.forEach((bot, index) => {
+        const btn = document.createElement('div');
+        btn.className = `nav-btn ${index === activeRobotIndex ? 'active' : ''}`;
+        btn.innerText = bot.name;
+        btn.onclick = () => {
+            activeRobotIndex = index;
+            document.querySelectorAll('.nav-grid .nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loadRobotData();
+        };
+        subnavContainer.appendChild(btn);
+    });
+}
+
+function loadRobotData() {
+    const robotsList = fleetDatabase[currentDivisionId] || [];
+    
+    if (robotsList.length === 0) {
+        document.getElementById('robot-engine').innerText = "[ PENDING REPLICATION ]";
+        document.getElementById('robot-title').innerHTML = "Deploying Wave 2 Algorithms...";
+        document.getElementById('robot-desc').innerText = "This node category is currently being populated via Mac Mini M4 industrial compilation.";
+        
+        document.getElementById('feat1-icon').innerText = "⚙️";
+        document.getElementById('feat1-title').innerText = "Engine Staged";
+        document.getElementById('feat1-desc').innerText = "Algorithm modules are awaiting binary deployment.";
+        
+        document.getElementById('feat2-icon').innerText = "📡";
+        document.getElementById('feat2-title').innerText = "Route Locked";
+        document.getElementById('feat2-desc').innerText = "Stripe endpoints mapped for industrial payload delivery.";
+
+        document.getElementById('pricing-target').innerText = "[ PENDING ]";
+        document.getElementById('pricing-title').innerText = "Licensing Suspended";
+        
+        document.getElementById('price-solo-tag').innerText = "--$";
+        document.getElementById('desc-solo-tag').innerText = "Awaiting deployment.";
+        document.getElementById('price-agency-tag').innerText = "--$";
+        document.getElementById('desc-agency-tag').innerText = "Awaiting deployment.";
+        return;
+    }
+    
+    const data = robotsList[activeRobotIndex];
 
     document.getElementById('robot-engine').innerText = data.engine;
     document.getElementById('robot-title').innerHTML = data.title;
@@ -360,13 +534,19 @@ function switchRobot(robotKey, element) {
     document.getElementById('desc-solo-tag').innerText = data.desc_solo;
     document.getElementById('price-agency-tag').innerText = data.price_agency;
     document.getElementById('desc-agency-tag').innerText = data.desc_agency;
-
-    console.log(`[🚀 CONFIG DYNAMIQUE] Passage reussi sur : ${robotKey}`);
 }
 
 function triggerStripeCheckout(planType) {
-    const data = fleetDatabase[activeRobotKey];
-    const targetPriceId = planType === 'solo' ? data.stripe_solo : data.stripe_agency;
+    let targetPriceId = "";
+    
+    if (planType === 'pass') {
+        targetPriceId = globalPrices.pass;
+    } else {
+        const robotsList = fleetDatabase[currentDivisionId] || [];
+        if (robotsList.length === 0) return;
+        const data = robotsList[activeRobotIndex];
+        targetPriceId = planType === 'solo' ? data.stripe_solo : data.stripe_agency;
+    }
 
     fetch('/v1/checkout/create-session', {
         method: 'POST',
@@ -378,16 +558,19 @@ function triggerStripeCheckout(planType) {
         })
     })
     .then(response => {
-        if (!response.ok) throw new Error('Erreur.');
+        if (!response.ok) throw new Error('Network error.');
         return response.json();
     })
     .then(session => {
         if (session.url) window.location.href = session.url;
     })
     .catch(error => {
-        alert("Action temporairement indisponible.");
+        alert("Action temporarily unavailable.");
     });
 }
+
+// Lancement automatique du cockpit au démarrage de la page
+window.onload = initializeApp;
 </script>
 </body>
 </html>
