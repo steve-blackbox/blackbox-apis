@@ -3,362 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackBox Automated Control — 100 API Master Gateway</title>
+    <title>BlackBox Automated Control — API Production Fleet</title>
     <style>
-        /* CSS PUR SANS DEPENDANCE EXTERNE — CONTRASTE CYBER ET VISIBILITE FINALE */
         body {
             background-color: #030712;
             color: #f3f4f6;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 40px 20px;
+            text-align: center;
         }
-        header {
-            background-color: #0b0f19;
-            border-bottom: 2px solid #1f2937;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .header-title h1 {
-            margin: 0;
-            font-size: 20px;
-            letter-spacing: -0.5px;
-            font-weight: 700;
-        }
-        .header-title p {
-            margin: 5px 0 0 0;
-            font-size: 12px;
-            color: #9ca3af;
-        }
-        .endpoint-container {
-            display: flex;
-            align-items: center;
-            background-color: #030712;
-            border: 2px solid #3b82f6;
-            border-radius: 8px;
-            padding: 5px 10px;
-        }
-        .endpoint-label {
-            font-family: monospace;
-            font-size: 11px;
-            color: #3b82f6;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        .endpoint-input {
-            background: transparent;
-            border: none;
-            color: #10b981;
-            font-family: monospace;
-            font-size: 13px;
-            width: 320px;
-            outline: none;
-        }
-        main {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        .terminal-section {
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
             background-color: #0b0f19;
             border: 2px solid #1f2937;
             border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 40px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .terminal-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-        }
-        @media (min-width: 1024px) {
-            .terminal-grid {
-                grid-template-columns: 4fr 8fr;
-                gap: 30px;
-            }
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #9ca3af;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-        /* SELECT ET TEXTAREA FORCÉS AVEC LES COULEURS HISTORIQUES ACCESSIBLES */
-        .cyber-select {
-            width: 100%;
-            background-color: #ffffff;
-            color: #000000;
-            border: 2px solid #3b82f6;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 13px;
-            font-family: monospace;
-            font-weight: bold;
-            outline: none;
-            box-sizing: border-box;
-        }
-        .cyber-textarea {
-            width: 100%;
-            height: 180px;
-            background-color: #030712;
-            color: #10b981;
-            border: 2px solid #4b5563;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 13px;
-            font-family: monospace;
-            outline: none;
-            resize: none;
-            box-sizing: border-box;
-        }
-        .cyber-button {
-            width: 100%;
-            background-color: #3b82f6;
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
             color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            padding: 14px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: background 0.2s;
         }
-        .cyber-button:hover {
-            background-color: #2563eb;
-        }
-        .output-box {
-            background-color: #030712;
-            border: 2px solid #1f2937;
-            border-radius: 8px;
-            padding: 15px;
-            font-family: monospace;
-            font-size: 13px;
-            color: #f3f4f6;
-            min-height: 250px;
-            max-height: 280px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-            margin-top: 15px;
-        }
-        .division-title {
-            font-size: 13px;
-            font-family: monospace;
-            font-weight: bold;
-            color: #60a5fa;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 35px;
-            border-bottom: 1px solid #1f2937;
-            padding-bottom: 8px;
-        }
-        .division-title.purple { color: #c084fc; }
-        .division-title.emerald { color: #34d399; }
-        .api-card {
-            background-color: #0b0f19;
-            border: 2px solid #1f2937;
-            border-radius: 10px;
-            padding: 15px;
-            position: relative;
-        }
-        .api-card h4 {
-            margin: 0 0 5px 0;
+        p {
             font-size: 14px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        .api-card p {
-            margin: 0;
-            font-size: 12px;
             color: #9ca3af;
-            line-height: 1.4;
+            margin-bottom: 30px;
         }
-        .node-tag {
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 8px 16px;
+            border-radius: 9999px;
             font-family: monospace;
-            font-size: 10px;
-            color: #4b5563;
-            float: left;
-        }
-        .live-tag {
-            font-family: monospace;
-            font-size: 10px;
+            font-size: 13px;
             font-weight: bold;
-            color: #34d399;
-            float: right;
-            background-color: rgba(52, 211, 153, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
         }
-        .clear { clear: both; margin-bottom: 10px; }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
-
-    <main>
-        <!-- ⚡ INTERFACE DU TERMINAL CORE RE-SOUDÉ -->
-        <section class="terminal-section">
-            <div class="terminal-grid">
-                <div class="form-group" style="padding-right: 10px;">
-                    <div class="form-group">
-                        <label>Sélectionner un Robot</label>
-                        <select id="routeSelect" class="cyber-select">
-                            <option value="/v1/secure-id-scrambler" selected>[ROBOT 100] /v1/secure-id-scrambler (Master Token)</option>
-                            <option value="/v1/sentence-capitalizer">[ROBOT 96] /v1/sentence-capitalizer</option>
-                            <option value="/v1/space-collapser">[ROBOT 97] /v1/space-collapser</option>
-                            <option value="/v1/special-char-stripper">[ROBOT 98] /v1/special-char-stripper</option>
-                            <option value="/v1/word-inverter">[ROBOT 99] /v1/word-inverter</option>
-                            <option value="/v1/aes-256-encryptor">[ROBOT 86] /v1/aes-256-encryptor</option>
-                            <option value="/v1/gps-distance-calculator">[ROBOT 76] /v1/gps-distance-calculator</option>
-                            <option value="/v1/keyword-density-analyzer">[ROBOT 67] /v1/keyword-density-analyzer</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Payload d'entrée JSON</label>
-                        <textarea id="payloadInput" class="cyber-textarea">{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}</textarea>
-                    </div>
-                    <button onclick="executePayload()" class="cyber-button">EXPULSER LE FLUX DANS LA MATRIX</button>
-                </div>
-                <div>
-                    <div class="form-group">
-                        <label>Retour d'infrastructure serveur</label>
-                        <div id="responseOutput" class="output-box">[ INITIALIZING ] Waiting for action stream execution layers...</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 🛡️ EMBARCATION DE LA VITRINE DES DIRECTIVES -->
-        <section>
-            <div class="division-title">// DIV-01 : INPUT SECURITY & SANITIZATION LAB // ACTIVE</div>
-            <div class="bento-grid">
-                <div class="api-card">
-                    <div class="node-tag">Node-01</div><div class="live-tag">LIVE</div><div class="clear"></div>
-                    <h4>/v1/form-shield</h4>
-                    <p>Bloqueur d'injections XSS et assainisseur global de formulaires.</p>
-                </div>
-                <div class="api-card">
-                    <div class="node-tag">Node-02</div><div class="live-tag">LIVE</div><div class="clear"></div>
-                    <h4>/v1/audio-convert</h4>
-                    <p>Aiguillage et conversion de soute d'assets audio.</p>
-                </div>
-                <div class="api-card">
-                    <div class="node-tag">Node-67</div><div class="live-tag">LIVE</div><div class="clear"></div>
-                    <h4>/v1/keyword-density-analyzer</h4>
-                    <p>Analyseur de redondances sémantiques et de fréquences SEO.</p>
-                </div>
-            </div>
-              <!-- DIV-04 -->
-                <div class="division-title purple">// DIV-04 : SECURITY, OBFUSCATION & CRYPTO LAB // HIGH ENTROPY</div>
-                <div class="bento-grid">
-                    <div class="api-card">
-                        <div class="node-tag">Node-71</div><div class="live-tag">LIVE</div><div class="clear"></div>
-                        <h4>/v1/hashids-generator</h4>
-                        <p>Masquage cryptique d'identifiants de base de données numériques.</p>
-                    </div>
-                    <div class="api-card">
-                        <div class="node-tag">Node-72</div><div class="live-tag">LIVE</div><div class="clear"></div>
-                        <h4>/v1/hashids-decoder</h4>
-                        <p>Inverseur et extracteur d'identifiants bruts depuis jeton masqué.</p>
-                    </div>
-                    <div class="api-card">
-                        <div class="node-tag">Node-86</div><div class="live-tag">LIVE</div><div class="clear"></div>
-                        <h4>/v1/aes-256-encryptor</h4>
-                        <p>Chiffrement symétrique AES-256-CBC hautement sécurisé.</p>
-                    </div>
-                    <div class="api-card" style="border-color: #3b82f6;">
-                        <div class="node-tag" style="color: #3b82f6; font-weight: bold;">Node-100</div><div class="live-tag" style="color: #3b82f6; bg-color: rgba(59,130,246,0.1);">MASTER</div><div class="clear"></div>
-                        <h4>/v1/secure-id-scrambler</h4>
-                        <p>Générateur de jetons maîtres d'infrastructure à haute entropie.</p>
-                    </div>
-                </div>
-
-                <!-- DIV-10 -->
-                <div class="division-title emerald">// DIV-10 : HIGH-SPEED CODE OPTIMIZERS & DATA NORMALIZERS // STATELESS</div>
-                <div class="bento-grid">
-                    <div class="api-card">
-                        <div class="node-tag">Node-93</div><div class="live-tag">LIVE</div><div class="clear"></div>
-                        <h4>/v1/pascal-case-converter</h4>
-                        <p>Normalisation et conversion de chaînes textuelles en PascalCase.</p>
-                    </div>
-                    <div class="api-card">
-                        <div class="node-tag">Node-96</div><div class="live-tag">LIVE</div><div class="clear"></div>
-                        <h4>/v1/sentence-capitalizer</h4>
-                        <p>Mise en majuscule automatique de la première lettre de chaque phrase.</p>
-                    </div>
-                    <div class="api-card">
-                        <div class="node-tag">Node-97</div><div class="live-tag">LIVE</div><div class="clear"></div>
-                        <h4>/v1/space-collapser</h4>
-                        <p>Purge et compactage de soute de tous les espaces blancs multiples.</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-    </main>
-
-    <footer style="border-t: 1px solid #1f2937; background-color: #0b0f19; padding: 20px; text-align: center; font-family: monospace; font-size: 11px; color: #4b5563; margin-top: 60px;">
-        &copy; 2026 BlackBox Audio Labs LLC. Systems Sterile. All Rights Reserved Sovereign Engine.
-    </footer>
-
-    <!-- MOTEUR D'INJECTION DYNAMIQUE DES REQUÊTES -->
-    <script>
-        const payloads = {
-            "/v1/secure-id-scrambler": JSON.stringify({ "seed_prefix": "BB_MASTER", "internal_identifier": "100" }, null, 2),
-            "/v1/sentence-capitalizer": JSON.stringify({ "raw_text_stream": "bonjour steve. l'infrastructure est en ligne mondiale ! plus aucun bug." }, null, 2),
-            "/v1/space-collapser": JSON.stringify({ "raw_text_stream": "Texte    avec    trop   d'espaces    et   tabulations." }, null, 2),
-            "/v1/special-char-stripper": JSON.stringify({ "raw_dirty_string": "Hello Steve! 🔥 Élimine les emojis & symboles !!!", "allow_spaces": true }, null, 2),
-            "/v1/word-inverter": JSON.stringify({ "raw_text_stream": "BlackBox", "invert_mode": "characters" }, null, 2),
-            "/v1/aes-256-encryptor": JSON.stringify({ "text_to_encrypt": "Payload ultra secret d'agence", "secret_encryption_key": "MaCleSuperSecurisee123" }, null, 2),
-            "/v1/gps-distance-calculator": JSON.stringify({ "lat1": 48.8566, "lon1": 2.3522, "lat2": 40.7128, "lon2": -74.0060 }, null, 2),
-            "/v1/keyword-density-analyzer": JSON.stringify({ "raw_text_corpus": "SEO sémantique de soute. Le SEO est indispensable pour le SEO de production." }, null, 2)
-        };
-
-        document.getElementById('routeSelect').addEventListener('change', function(e) {
-            const selectedRoute = e.target.value;
-            if (payloads[selectedRoute]) {
-                document.getElementById('payloadInput').value = payloads[selectedRoute];
-            }
-        });
-
-        async function executePayload() {
-            const baseUrl = document.getElementById('targetUrl').value.trim();
-            const route = document.getElementById('routeSelect').value;
-            const payloadRaw = document.getElementById('payloadInput').value;
-            const outputBox = document.getElementById('responseOutput');
-
-            outputBox.textContent = "[ LOADING ] Contacting cloud infrastructure layer...";
-            outputBox.style.color = "#3b82f6";
-            
-            try {
-                const response = await fetch(`${baseUrl}${route}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: payloadRaw
-                });
-
-                const data = await response.json();
-                outputBox.textContent = JSON.stringify(data, null, 2);
-                outputBox.style.color = "#10b981"; // Succès : Vert éclatant
-            } catch (error) {
-                outputBox.textContent = `[❌ CRASH LAYER] Impossible de joindre le serveur ou payload invalide.\\nErreur : ${error.message}`;
-                outputBox.style.color = "#ef4444"; // Échec : Rouge vif
-            }
-        }
-    </script>
+    <div class="container">
+        <h1>BlackBox Automated Control</h1>
+        <p>Monolithe d'infrastructure cloud active souveraine. Les serveurs de sôute répondent au bit près.</p>
+        <div class="status-badge">
+            <span class="status-dot"></span>
+            100 ROBOTS DE FEU • PRODUCTION LIVE
+        </div>
+    </div>
 </body>
 </html>
