@@ -27,7 +27,7 @@
             overflow: hidden;
         }
         
-        /* SIDEBAR DE NAVIGATION COMMERCIALE A 20 DIVISIONS */
+        /* SIDEBAR DE NAVIGATION À 20 DIVISIONS */
         .sidebar {
             width: var(--sidebar-width);
             background-color: var(--bg-sidebar);
@@ -104,7 +104,7 @@
             transform: scale(1.02);
         }
 
-        /* ZONE CENTRALE COCKPIT & GRILLE BENTO MULTI-ROBOTS */
+        /* GRILLE CENTRAL BENTO DYNAMIQUE */
         .main-content {
             flex: 1;
             overflow-y: auto;
@@ -293,7 +293,7 @@
         </div>
     </div>
 
-    <!-- 🎛️ CONTROLEUR CENTRAL DES MODULES -->
+    <!-- 🎛️ CONTROLEUR D'AFFICHAGE CENTRAL -->
     <div class="main-content">
         <div class="container">
             <div class="top-bar">
@@ -301,14 +301,14 @@
                 <div class="status-badge">● 100 Nodes Sterile</div>
             </div>
 
-            <!-- SUB-NAV MULTI-ROBOTS INTERNES -->
+            <!-- SUB-NAV MULTI-ROBOTS INTERNES PAR DIVISION -->
             <div class="nav-grid" id="robots-subnav">
                 <!-- Injecté dynamiquement par le script -->
             </div>
 
-            <!-- BLOCS GRAPHIQUES BENTO DE VENTE -->
+            <!-- BLOCS GRAPHIQUES BENTO DE VENTE IMMÉDIATE -->
             <main class="bento-grid">
-                <!-- ACCORDION HERO CARD -->
+                <!-- HERO DISPLAY CARD -->
                 <div class="bento-card col-span-2">
                     <div class="engine-tag" id="robot-engine">[ INITIALIZING ]</div>
                     <h1 class="hero-title" id="robot-title">Loading Fleet Engine...</h1>
@@ -329,7 +329,7 @@
                     <p class="card-desc" id="feat2-desc">-</p>
                 </div>
 
-                <!-- CAPTURE MONÉTAIRE STRIPE COMPLÈTE -->
+                <!-- LIAISON COMMERCIALE STRIPE SOUVERAINE -->
                 <div class="bento-card col-span-2">
                     <div class="pricing-header-flex">
                         <div>
@@ -363,13 +363,13 @@
 
             <footer>
                 <p>© 2026 BlackBox Audio Labs LLC. Systems Sterile.</p>
-                <p>Centaure Engine v22.0 — Global SEO Compliant</p>
+                <p>Centaure Engine v23.0 — Global SEO Compliant</p>
             </footer>
         </div>
     </div>
-    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V22 & ARCHITECTURE 100 ROBOTS -->
+    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V23 & ARCHITECTURE 100 ROBOTS -->
 <script>
-// Nomenclature complète et officielle des 20 Divisions Industrielles (20 x 5 = 100 Robots)
+// Nomenclature complète des 20 Divisions Industrielles (100 Robots au total)
 const categoriesDatabase = [
     { id: "div01", name: "DIV-01: Form Protection" },
     { id: "div02", name: "DIV-02: Cyber-Defense" },
@@ -394,7 +394,7 @@ const categoriesDatabase = [
 ];
 
 const fleetDatabase = {
-    // 🛡️ DIVISION 01 : INPUT SECURITY (VAGUE 01 LIVE)
+    // 🛡️ DIVISION 01 : INPUT SECURITY (ROBOTS 01 ET 05)
     div01: [
         {
             id: "robot01", name: "Form Shield", engine: "[ FORM INTERCEPTION ACTIVE ]",
@@ -419,7 +419,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // ⚔️ DIVISION 02 : CYBER-DEFENSE (VAGUE 02 ALLUMAGE)
+    // ⚔️ DIVISION 02 : CYBER-DEFENSE (ROBOTS 06 ET 07)
     div02: [
         {
             id: "robot06", name: "IP Blocker", engine: "[ EDGE CYBER-SHIELD ACTIVE ]",
@@ -444,7 +444,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🎛️ DIVISION 04 : AUDIO LAB (VAGUE 01 LIVE)
+    // 🎛️ DIVISION 04 : AUDIO LAB (ROBOT 02 VAGUE 01 LIVE)
     div04: [
         {
             id: "robot02", name: "Audio Convert", engine: "[ PRO AUDIO OPTIMIZATION ]",
@@ -457,10 +457,76 @@ const fleetDatabase = {
             price_agency: "179$", desc_agency: "Studio Pack: Unlimited concurrent processing across enterprise networks.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
+    ],
+    // 🚀 DIVISION 07 : GEOLOCK & ROUTING (ROBOT 11 VAGUE 02)
+    div07: [
+        {
+            id: "robot11", name: "IP Geolock", engine: "[ STATELESS GEOLOCATION CORE ]",
+            title: "High-Speed IP Geolocation.<br>Smart Dynamic Currency Routing.",
+            desc: "A localized lookup matrix capable of converting incoming visitor IPs into precise ISO country footprints in micro-seconds. Automatically adapts storefront currencies and localized routing parameters to eliminate geographic shopping cart leakage.",
+            feat1_icon: "🌍", feat1_title: "Stateless Lookup", feat1_desc: "Resolves geographical coordinates and country codes inline without database lag.",
+            feat2_icon: "💱", feat2_title: "Currency Router", feat2_desc: "Triggers multi-currency Stripe interfaces natively based on physical origin tags.",
+            pricing_target: "[ CORE ENGINE : IP-GEOLOCK ]", pricing_title: "Activate Commercial License",
+            price_solo: "59$", desc_solo: "Solo License: Permanent routing matrix for 1 production application.",
+            price_agency: "179$", desc_agency: "Agency Fleet: Cross-border localization matrix for multi-currency client assets.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ],
+    // 📊 DIVISION 08 : AGENT ANALYTICS (ROBOT 15 VAGUE 02)
+    div08: [
+        {
+            id: "robot15", name: "Agent Detect", engine: "[ REAL-TIME DEVICE FINGERPRINTING ]",
+            title: "De-Obfuscate User-Agents.<br>Expose Hardware Footprints Instantly.",
+            desc: "An aggressive real-time browser inspection layer that breaks down raw HTTP Headers to detect fingerprint evasion, headless bot scraping masquerading as desktop hardware, and transaction spoofing attempts at runtime.",
+            feat1_icon: "🧬", feat1_title: "De-Obfuscation AST", feat1_desc: "Instantly parses device signatures to segment scraping farms from live human targets.",
+            feat2_icon: "🛡️", feat2_title: "Anti-Fraud Layer", feat2_desc: "Flags device mismatches directly before checkout pipelines swallow transaction loads.",
+            pricing_target: "[ CORE ENGINE : AGENT-DETECT ]", pricing_title: "Activate Commercial License",
+            price_solo: "69$", desc_solo: "Solo License: Hardened verification for 1 major authorization loop.",
+            price_agency: "199$", desc_agency: "Agency Pack: Full corporate subnet fraud filtering matrix.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ],
+    // 🚀 DIVISION 10 : CODE OPTIMIZERS (ROBOTS 12 ET 14 VAGUE 02)
+    div10: [
+        {
+            id: "robot12", name: "MD Parser", engine: "[ SEO STRUCTURED AST PARSER ]",
+            title: "Markdown to Clean HTML.<br>Automated Schema & SEO Optimization.",
+            desc: "A lightning-fast compilation module designed to turn raw markdown records into sterile, semantic, search-engine hardened HTML code blocks, natively outputting JSON-LD structured schemas to skyrocket visibility indexes.",
+            feat1_icon: "📝", feat1_title: "Semantic Synthesis", feat1_desc: "Outputs pure DOM structures with zero residual inline style pollution.",
+            feat2_icon: "📈", feat2_title: "Structured JSON-LD", feat2_desc: "Auto-generates Google Rich Snippets code straight from standard article text weights.",
+            pricing_target: "[ CORE ENGINE : MD-PARSER ]", pricing_title: "Activate Commercial License",
+            price_solo: "39$", desc_solo: "Solo License: Single deployment block for content management architectures.",
+            price_agency: "119$", desc_agency: "Agency Fleet: Unlimited headless engines across developer content clusters.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        },
+        {
+            id: "robot14", name: "CSS Minify", engine: "[ ULTRA-AGGRESSIVE AST MINIFIER ]",
+            title: "Aggressive AST CSS Parser.<br>Purge 100% Unused Rules.",
+            desc: "An active tree-shaking CSS parser that evaluates rendering sheets against live viewports to isolate, strip, and annihilate redundant rules, optimizing network payload weight up to 92% for Google performance scores.",
+            feat1_icon: "🪓", feat1_title: "Tree-Shaking CSS", feat1_desc: "Annihilates redundant media queries and dead styling sheets at compiling state.",
+            feat2_icon: "⚡", feat2_title: "Core Web Vitals Max", feat2_desc: "Drastically optimizes First Contentful Paint times across all mobile pipelines.",
+            pricing_target: "[ CORE ENGINE : CSS-MINIFY ]", pricing_title: "Activate Commercial License",
+            price_solo: "49$", desc_solo: "Solo License: Lifetime site speed optimization framework for 1 host domain.",
+            price_agency: "149$", desc_agency: "Agency Fleet: Multi-site optimization engine for high-traffic networks.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ],
+    // 🚀 DIVISION 11 : CRON & SCHEDULER (ROBOT 13 VAGUE 02)
+    div11: [
+        {
+            id: "robot13", name: "Scheduler Shield", engine: "[ DISTRIBUTED CRON EDGE BUFFER ]",
+            title: "Cron Job Edge Validation.<br>Request Throttling & Queue Buffer.",
+            desc: "A hyper-resilient timing gateway built to buffer, schedule, and absorb heavy webhook bursts generated by distributed task schedulers, preventing server overload during dense cron execution windows.",
+            feat1_icon: "⏱️", feat1_title: "Edge Buffer System", feat1_desc: "Queues and levels sudden task bursts into steady, clean backend streams.",
+            feat2_icon: "⚙️", feat2_title: "Distributed Sync", feat2_desc: "Prevents concurrent race conditions down your processing micro-services.",
+            pricing_target: "[ CORE ENGINE : SCHEDULER-SHIELD ]", pricing_title: "Activate Commercial License",
+            price_solo: "79$", desc_solo: "Solo Pass: Valid for 1 primary transaction engine pipeline schedule.",
+            price_agency: "249$", desc_agency: "Infrastructure Pack: Unrestricted queue buffering for enterprise clusters.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
     ]
 };
 
-// Identifiants Stripe génériques pour le Pass Global à vie
 const globalPrices = {
     pass: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
 };
