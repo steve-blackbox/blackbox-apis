@@ -1,7 +1,7 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V30 — AUTOMATE D'ÉLITE
- * 📥 ACTIONNEMENT ET INJECTION EN PRODUCTION DES VAGUES 01 JUSQU'À 07 SOUDÉES
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V31 — AUTOMATE SOUVERAIN
+ * 📥 ALIGNEMENT EN PRODUCTION DES COMPOSANTS LOGIQUES DES VAGUES 01 À 08 CUMULÉES
  */
 
 const express = require('express');
@@ -15,13 +15,14 @@ const PORT = process.env.PORT || 10000;
 // Configuration sécurisée des instances Stripe Live en production
 const getStripeInstance = () => {
     const secureKey = process.env.STRIPE_SECRET_KEY || '';
-    if (!secureKey) throw new Error("Missing STRIPE_SECRET_KEY.");
+    if (!secureKey) throw new Error("Missing STRIPE_SECRET_KEY inside process env execution layers.");
     return new Stripe(secureKey);
 };
 
+// Activation du filtrage Cross-Origin mondial
 app.use(cors({ origin: '*' }));
 
-// Gestion étanche du format brut pour l'intercepteur de Webhooks
+// Gestion étanche du format brut indispensable pour l'intercepteur de Webhooks Stripe
 app.use((req, res, next) => {
     if (req.originalUrl === '/v1/webhook') next();
     else express.json({ limit: '50mb' })(req, res, next);
@@ -31,9 +32,11 @@ app.use((req, res, next) => {
     else next();
 });
 
+// Distribution de la vitrine Bento commerciale statique re-soudée
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/health', (req, res) => { res.status(200).send('HEALTH: ACTIVE.'); });
+// Point de contrôle de vie réseau
+app.get('/health', (req, res) => { res.status(200).send('HEALTH: ACTIVE. SYSTEMS STERILE.'); });
 
 // ========================================================
 // 🛡️ BRANCHEMENT DES APIS SOUVERAINS DE LA VAGUE 01 (LIVE)
@@ -61,7 +64,6 @@ app.use('/v1/proxy-wrap', require('./proxy_wrap'));
 app.use('/v1/svg-optimizer', require('./svg_optimizer'));
 app.use('/v1/uptime-check', require('./uptime_check'));
 app.use('/v1/log-sanitizer', require('./log_sanitizer'));
-
 // ========================================================
 // 📈 ARMEMENT ET EXPULSION DE LA VAGUE 04 MARKETING (LIVE)
 // ========================================================
@@ -90,13 +92,21 @@ app.use('/v1/cors-proxy', require('./cors_proxy'));
 app.use('/v1/base64-converter', require('./base64_converter'));
 
 // ========================================================
-// 🪙 CONST_ELLATION ACTIVE DE LA VAGUE 07 CRYPTO & SEO (NEW)
+// 🪙 CONSTELLATION ACTIVE DE LA VAGUE 07 CRYPTO & SEO (LIVE)
 // ========================================================
-app.use('/v1/crypto-verify', require('./crypto_verify'));       // Robot 36 branché !
-app.use('/v1/sitemap-scraper', require('./sitemap_scraper'));   // Robot 37 branché !
-app.use('/v1/redirect-check', require('./redirect_check'));     // Robot 38 branché !
-app.use('/v1/json-ld-validator', require('./json_ld_validator')); // Robot 39 branché !
-app.use('/v1/wei-converter', require('./wei_converter'));       // Robot 40 branché !
+app.use('/v1/crypto-verify', require('./crypto_verify'));
+app.use('/v1/sitemap-scraper', require('./sitemap_scraper'));
+app.use('/v1/redirect-check', require('./redirect_check'));
+app.use('/v1/json-ld-validator', require('./json_ld_validator'));
+app.use('/v1/wei-converter', require('./wei_converter'));
+
+// ========================================================
+// 🛡️ ARMEMENT DE LA VAGUE 08 HEAVY REGEX LAB (NEW LIVE)
+// ========================================================
+app.use('/v1/email-extractor', require('./email_extractor'));
+app.use('/v1/phone-sanitizer', require('./phone_sanitizer'));
+app.use('/v1/pii-masker', require('./pii_masker'));
+app.use('/v1/ip-mask-validator', require('./ip_mask_validator'));
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
 // ==========================================
@@ -116,7 +126,6 @@ app.post('/v1/checkout/create-session', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
 // ==========================================
 // 📥 INTERCEPTEUR DE WEBHOOKS & EMAIL ENGINE
 // ==========================================
@@ -133,7 +142,7 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // Interception du paiement réussi
+    // Interception chirurgicale du paiement réussi pour délivrer le jeton client
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         const customerEmail = session.customer_details ? session.customer_details.email : null;
@@ -143,11 +152,11 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
         if (customerEmail) {
             console.log(`[📧 EMAIL TRIGGER] Lancement du protocole Resend Pro pour : ${customerEmail}`);
             
-            // Génération d'une clé API fictive et sécurisée pour le client
+            // Génération d'une clé API cryptographique fictive sécurisée pour l'accès client
             const generatedApiKey = `bb_live_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
 
             try {
-                // Routage natif vers l'API Resend sécurisé via domaine vérifié
+                // Routage natif vers l'API d'infrastructure Resend sécurisé
                 const response = await fetch('https://resend.com', {
                     method: 'POST',
                     headers: {
@@ -177,7 +186,7 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
                 });
 
                 if (response.ok) {
-                    console.log(`[🚀 EMAIL SUCCESS] Mail de livraison envoye proprement via control@blackbox-apis.com à : ${customerEmail}`);
+                    console.log(`[🚀 EMAIL SUCCESS] Mail de livraison envoye proprement à : ${customerEmail}`);
                 } else {
                     const errorText = await response.text();
                     console.error(`[❌ EMAIL FAILED] Erreur API Resend : ${errorText}`);
@@ -193,6 +202,7 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
     res.status(200).json({ received: true });
 });
 
+// Allumage et écoute du port applicatif par défaut sur le serveur
 app.listen(PORT, () => {
-    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V30 operationnel sur le port ${PORT}`);
+    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V31 operationnel sur le port ${PORT}`);
 });
