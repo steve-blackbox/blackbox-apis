@@ -3,118 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackBox Automated Control — 100 API Master Gateway</title>
+    <title>BlackBox Automated Control — 100 API Master Fleet</title>
+    <!-- Injection de Tailwind CSS pour un rendu graphique professionnel moderne -->
+    <script src="https://tailwindcss.com"></script>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body {
-            background-color: #030712;
-            color: #f3f4f6;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #0b0f19;
-            border-bottom: 2px solid #1f2937;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header-title h1 { margin: 0; font-size: 20px; font-weight: 700; }
-        .header-title p { margin: 5px 0 0 0; font-size: 12px; color: #9ca3af; }
-        .endpoint-container {
-            display: flex;
-            align-items: center;
-            background-color: #030712;
-            border: 2px solid #3b82f6;
-            border-radius: 8px;
-            padding: 5px 12px;
-        }
-        .endpoint-label { font-family: monospace; font-size: 11px; color: #3b82f6; font-weight: bold; margin-right: 10px; }
-        .endpoint-input { background: transparent; border: none; color: #10b981; font-family: monospace; font-size: 13px; width: 300px; outline: none; }
-        main { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .terminal-section { background-color: #0b0f19; border: 2px solid #1f2937; border-radius: 12px; padding: 25px; }
-        .terminal-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        @media (min-width: 1024px) { .terminal-grid { grid-template-columns: 5fr 7fr; gap: 30px; } }
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-size: 11px; font-weight: bold; color: #9ca3af; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
-        .cyber-select {
-            width: 100%;
-            background-color: #ffffff;
-            color: #000000;
-            border: 2px solid #3b82f6;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 13px;
-            font-family: monospace;
-            font-weight: bold;
-            outline: none;
-        }
-        .cyber-textarea {
-            width: 100%;
-            height: 140px;
-            background-color: #030712;
-            color: #10b981;
-            border: 2px solid #4b5563;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 13px;
-            font-family: monospace;
-            outline: none;
-            resize: none;
-            box-sizing: border-box;
-        }
-        .cyber-button {
-            width: 100%;
-            background-color: #3b82f6;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            padding: 15px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .cyber-button:hover { background-color: #2563eb; }
-        .output-box {
-            background-color: #030712;
-            border: 2px solid #1f2937;
-            border-radius: 8px;
-            padding: 15px;
-            font-family: monospace;
-            font-size: 13px;
-            color: #f3f4f6;
-            min-height: 330px;
-            max-height: 350px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            box-sizing: border-box;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .font-code { font-family: 'JetBrains Mono', monospace; }
+        .bento-card { transition: all 0.2s ease-in-out; }
+        .bento-card:hover { border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.2); }
     </style>
 </head>
-<body>
+<body class="text-gray-100 min-h-screen antialiased bg-radial-gradient">
 
-    <header>
-        <div class="header-title">
-            <h1>BlackBox Automated Control</h1>
-            <p>100 Core API Fleet Monolithe &bull; All Systems Sterile</p>
-        </div>
-        <div class="endpoint-container">
-            <span class="endpoint-label">GATEWAY URL:</span>
-            <input type="text" id="targetUrl" value="https://onrender.com" class="endpoint-input">
+    <!-- HEADER PREMIUM DESIGN -->
+    <header class="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-display font-bold text-white shadow-lg shadow-blue-500/20">B</div>
+                <div>
+                    <h1 class="text-lg font-bold font-display tracking-tight text-white flex items-center gap-2">
+                        BlackBox Automated Control <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-0.5 rounded-full font-code">100 Core APIs</span>
+                    </h1>
+                    <p class="text-xs text-gray-400">Stateless Architecture Matrix &bull; Enterprise Grade</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-1.5 flex items-center w-full md:w-96">
+                    <span class="text-gray-500 px-3 font-code text-xs font-bold uppercase tracking-wider">Gateway:</span>
+                    <input type="text" id="targetUrl" value="https://onrender.com" class="bg-transparent border-0 text-emerald-400 font-code text-xs focus:ring-0 w-full outline-none py-0.5">
+                </div>
+                <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-3 py-2 rounded-xl text-xs font-semibold shadow-sm">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    Production Live
+                </div>
+            </div>
         </div>
     </header>
+     <main class="max-w-7xl mx-auto px-6 py-10 space-y-12">
+        
+        <!-- ⚡ INTERFACE TERMINAL PREMIUM CENTRALISÉE -->
+        <section class="bg-gray-950 border border-gray-800/80 rounded-3xl p-6 shadow-2xl relative overflow-hidden bento-card">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex items-center gap-2 mb-6 border-b border-gray-800 pb-4">
+                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                <span class="text-xs font-code text-gray-400 ml-2">// EXECUTION ENGINE TERMINAL</span>
+            </div>
 
-    <main>
-        <section class="terminal-section">
-            <div class="terminal-grid">
-                <div>
-                    <div class="form-group">
-                        <label>Sélectionner la route du Robot</label>
-                        <select id="routeSelect" class="cyber-select">
-                            <option value="/v1/secure-id-scrambler" selected>[Node-100] /v1/secure-id-scrambler</option>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 space-y-5">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">Sélectionner un Automate</label>
+                        <select id="routeSelect" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-3 text-sm text-white font-medium focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+                            <option value="/v1/secure-id-scrambler" selected>[Node-100] /v1/secure-id-scrambler (Master Token)</option>
                             <option value="/v1/word-inverter">[Node-99] /v1/word-inverter</option>
                             <option value="/v1/special-char-stripper">[Node-98] /v1/special-char-stripper</option>
                             <option value="/v1/space-collapser">[Node-97] /v1/space-collapser</option>
@@ -122,47 +68,81 @@
                             <option value="/v1/snake-case-converter">[Node-95] /v1/snake-case-converter</option>
                             <option value="/v1/camel-case-converter">[Node-94] /v1/camel-case-converter</option>
                             <option value="/v1/pascal-case-converter">[Node-93] /v1/pascal-case-converter</option>
-                            <option value="/v1/text-line-sorter">[Node-92] /v1/text-line-sorter</option>
-                            <option value="/v1/name-standardizer">[Node-91] /v1/name-standardizer</option>
-                            <option value="/v1/simple-rot13-obfuscator">[Node-90] /v1/simple-rot13-obfuscator</option>
-                            <option value="/v1/base64-url-encoder">[Node-89] /v1/base64-url-encoder</option>
-                            <option value="/v1/passphrase-hasher-key">[Node-88] /v1/passphrase-hasher-key</option>
-                            <option value="/v1/aes-256-decryptor">[Node-87] /v1/aes-256-decryptor</option>
                             <option value="/v1/aes-256-encryptor">[Node-86] /v1/aes-256-encryptor</option>
                             <option value="/v1/form-shield">[Node-01] /v1/form-shield</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Payload JSON de sôute</label>
-                        <textarea id="payloadInput" class="cyber-textarea">{"seed_prefix": "BB_MASTER", "internal_identifier": "100"}</textarea>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">Payload d'entrée JSON</label>
+                        <textarea id="payloadInput" class="w-full h-44 bg-gray-900/60 border border-gray-800 rounded-xl p-3 text-xs font-code text-emerald-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none resize-none shadow-inner">{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}</textarea>
                     </div>
-                    <button onclick="executePayload()" class="cyber-button">EXPULSER LE FLUX DANS LA MATRIX</button>
+                    <button onclick="executePayload()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/10 tracking-widest uppercase active:scale-[0.99]">
+                        EXPULSER LE FLUX DANS LA MATRIX
+                    </button>
                 </div>
-                <div>
-                    <div class="form-group">
-                        <label>Retour réseau en production</label>
-                        <div id="responseOutput" class="output-box">[ STERILE STATE ] En attente d'ingestion applicative...</div>
+                
+                <div class="lg:col-span-7 flex flex-col">
+                    <label class="block text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">Retour d'infrastructure serveur</label>
+                    <div id="responseOutput" class="w-full flex-1 min-h-[300px] bg-gray-900/40 border border-gray-800/80 rounded-xl p-4 font-code text-xs text-gray-300 overflow-y-auto max-h-[320px] whitespace-pre-wrap shadow-inner border border-gray-800">[ READY ] En attente d'ingestion applicative sterile...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🛡️ CARTOGRAPHIE GRAPHIQUE DES DIVISION GRIDS -->
+        <section class="space-y-6">
+            <div class="border-b border-gray-800 pb-4">
+                <h2 class="text-xl font-bold font-display text-white tracking-tight">Cartographie des Pôles</h2>
+                <p class="text-xs text-gray-400">Indexation commerciale par blocs étanches souverains [23context]</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- BOX 01 -->
+                <div class="bg-gray-950 border border-gray-900 rounded-2xl p-5 bento-card">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-code text-blue-400 font-bold">// DIV-01</span>
+                        <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-md font-bold">SECURITY LAB</span>
                     </div>
+                    <h4 class="text-sm font-bold font-display text-white mb-2">/v1/form-shield</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">Bloqueur d'injections XSS et assainisseur global de soute pour payloads formulaires.</p>
+                </div>
+
+                <!-- BOX 02 -->
+                <div class="bg-gray-950 border border-gray-900 rounded-2xl p-5 bento-card border-blue-500/20 bg-gradient-to-b from-blue-950/10 to-transparent">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-code text-purple-400 font-bold">// DIV-04</span>
+                        <span class="text-[10px] bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded-md font-bold">CRYPTO ENGINE</span>
+                    </div>
+                    <h4 class="text-sm font-bold font-display text-blue-400 mb-2">/v1/secure-id-scrambler</h4>
+                    <p class="text-xs text-gray-300 leading-relaxed">Le centième robot maître [23context]. Générateur souverain de jetons cryptographiques à haute entropie.</p>
+                </div>
+
+                <!-- BOX 03 -->
+                <div class="bg-gray-950 border border-gray-900 rounded-2xl p-5 bento-card">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-code text-emerald-400 font-bold">// DIV-10</span>
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-bold">OPTIMIZERS</span>
+                    </div>
+                    <h4 class="text-sm font-bold font-display text-white mb-2">/v1/space-collapser</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">Purgeur asynchrone radical des espaces multiples parasites avant indexation.</p>
                 </div>
             </div>
         </section>
     </main>
+    <footer class="border-t border-gray-900 bg-gray-950/40 py-8 text-center text-xs text-gray-500 font-code">
+        &copy; 2026 BlackBox Audio Labs LLC. Systems Sterile. All Rights Reserved Sovereign Engine.
+    </footer>
+
     <script>
+        // Ingestion dynamique des structures JSON exemples pour purger la soute front-end
         const payloads = {
             "/v1/secure-id-scrambler": '{\n  "seed_prefix": "BB_MASTER",\n  "internal_identifier": "100"\n}',
             "/v1/word-inverter": '{\n  "raw_text_stream": "BlackBox Sovereign Engine",\n  "invert_mode": "characters"\n}',
-            "/v1/special-char-stripper": '{\n  "raw_dirty_string": "Hello Steve! Purge 100% des emojis !!!",\n  "allow_spaces": true\n}',
-            "/v1/space-collapser": '{\n  "raw_text_stream": "Texte compresse sans espaces multiples."\n}',
+            "/v1/special-char-stripper": '{\n  "raw_dirty_string": "Hello Steve! 🔥 Purge 100% des emojis !!!",\n  "allow_spaces": true\n}',
+            "/v1/space-collapser": '{\n  "raw_text_stream": "Texte     compresse    sans    espaces     multiples."\n}',
             "/v1/sentence-capitalizer": '{\n  "raw_text_stream": "bonjour steve. le code v42 est en ligne."\n}',
             "/v1/snake-case-converter": '{\n  "raw_input_string": "Total Price Cents USD"\n}',
             "/v1/camel-case-converter": '{\n  "raw_input_string": "user authentication web token"\n}',
             "/v1/pascal-case-converter": '{\n  "raw_input_string": "api router gate controller"\n}',
-            "/v1/text-line-sorter": '{\n  "raw_multi_line_text": "Zeta\\nAlpha\\nGamma\\nBeta",\n  "sort_direction": "asc"\n}',
-            "/v1/name-standardizer": '{\n  "raw_name_string": "sTeVe nOlAn"\n}',
-            "/v1/simple-rot13-obfuscator": '{\n  "raw_text_to_obfuscate": "control@blackbox-apis.com"\n}',
-            "/v1/base64-url-encoder": '{\n  "raw_string_input": "Secure Token Key 2026"\n}',
-            "/v1/passphrase-hasher-key": '{\n  "raw_passphrase": "CléSouveraine99!",\n  "custom_salt": "salt_88"\n}',
-            "/v1/aes-256-decryptor": '{\n  "encrypted_payload": "7ba4f3e12c",\n  "secret_encryption_key": "secret",\n  "initialization_vector_hex": "000102030405060708090a0b0c0d0e0f"\n}',
             "/v1/aes-256-encryptor": '{\n  "text_to_encrypt": "Secret d\'infrastructure",\n  "secret_encryption_key": "MaCleSec_ure"\n}',
             "/v1/form-shield": '{\n  "raw_input_string": "Hello Steve!"\n}'
         };
