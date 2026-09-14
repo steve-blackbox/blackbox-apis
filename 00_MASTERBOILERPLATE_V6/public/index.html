@@ -363,13 +363,13 @@
 
             <footer>
                 <p>© 2026 BlackBox Audio Labs LLC. Systems Sterile.</p>
-                <p>Centaure Engine v29.0 — Global SEO Compliant</p>
+                <p>Centaure Engine v30.0 — Global SEO Compliant</p>
             </footer>
         </div>
     </div>
-    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V29 & ARCHITECTURE 100 ROBOTS -->
+    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V30 & ARCHITECTURE 100 ROBOTS -->
 <script>
-// Nomenclature complète et officielle des 20 Divisions de calcul (100 Robots)
+// Nomenclature officielle des 20 Divisions de la Flotte (100 Robots au total)
 const categoriesDatabase = [
     { id: "div01", name: "DIV-01: Form Protection" },
     { id: "div02", name: "DIV-02: Cyber-Defense" },
@@ -394,7 +394,7 @@ const categoriesDatabase = [
 ];
 
 const fleetDatabase = {
-    // 🛡️ DIVISION 01 : INPUT SECURITY (VAGUE 01)
+    // 🛡️ DIVISION 01 : INPUT SECURITY (VAGUE 01 LIVE)
     div01: [
         {
             id: "robot01", name: "Form Shield", engine: "[ FORM INTERCEPTION ACTIVE ]",
@@ -419,7 +419,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // ⚔️ DIVISION 02 : CYBER-DEFENSE (VAGUE 02 & VAGUE 06 CUMULÉE)
+    // ⚔️ DIVISION 02 : CYBER-DEFENSE (VAGUE 02 & VAGUE 06 LIVE)
     div02: [
         {
             id: "robot06", name: "IP Blocker", engine: "[ EDGE CYBER-SHIELD ACTIVE ]",
@@ -455,8 +455,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-
-    // 🔏 DIVISION 03 : PROXY & PRIVACY GATEWAYS (VAGUE 03 & VAGUE 06 COMPILATION)
+     // 🔏 DIVISION 03 : PROXY & PRIVACY GATEWAYS (VAGUE 03 & VAGUE 06 LIVE)
     div03: [
         {
             id: "robot17", name: "Proxy Wrap", engine: "[ STATELESS OBFUSCATION CORE ]",
@@ -509,7 +508,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 📄 DIVISION 06 : DOCUMENT PROCESS (VAGUE 05 & VAGUE 06 COMPILATION COMPLÈTE)
+    // 📄 DIVISION 06 : DOCUMENT PROCESS (VAGUE 05 & VAGUE 06 LIVE)
     div06: [
         {
             id: "robot28", name: "PDF Flatten", engine: "[ SECURE PDF COMPRESSION LAYER ]",
@@ -545,7 +544,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🚀 DIVISION 07 : GEOLOCK & ROUTING (VAGUE 02 LIVE)
+    // 🚀 DIVISION 07 : GEOLOCK & ROUTING (VAGUE 02 & VAGUE 07 LIVE)
     div07: [
         {
             id: "robot11", name: "IP Geolock", engine: "[ STATELESS GEOLOCATION CORE ]",
@@ -556,6 +555,17 @@ const fleetDatabase = {
             pricing_target: "[ CORE ENGINE : IP-GEOLOCK ]", pricing_title: "Activate Commercial License",
             price_solo: "59$", desc_solo: "Solo License: Permanent routing matrix for 1 production application.",
             price_agency: "179$", desc_agency: "Agency Fleet: Cross-border localization matrix for multi-currency client assets.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        },
+        {
+            id: "robot38", name: "Redirect Check", engine: "[ REDIRECT TRACKING LAYER ]",
+            title: "Trace HTTP Redirect Chains.<br>Expose Hidden Link Rotations Instantly.",
+            desc: "A stateless network utility built to trace multi-step HTTP redirection paths. Exposes response status codes, destination nodes, and routing drops upstream to audit affiliate networks and detect malicious hops.",
+            feat1_icon: "🔗", feat1_title: "Chain Inspection", feat1_desc: "Traces deep status code pathways down to final network locations in 0.1ms.",
+            feat2_icon: "🛡️", feat2_title: "Link Audit", feat2_desc: "Flags broker leakage, broken domains, and dynamic loops before users hit them.",
+            pricing_target: "[ CORE ENGINE : REDIRECT-CHECK ]", pricing_title: "Activate Commercial License",
+            price_solo: "49$", desc_solo: "Solo Pass: 1 platform routing diagnostics tool authorization code.",
+            price_agency: "149$", desc_agency: "Agency Tier: Fleet wide distributed link analysis and destination tracker network.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
@@ -573,7 +583,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🔍 DIVISION 09 : WEB SCRAPING & DOM CRAWLING (VAGUE 04 & VAGUE 06 LIVE)
+    // 🔍 DIVISION 09 : WEB SCRAPING & DOM CRAWLING (VAGUE 04, 06 & VAGUE 07 LIVE)
     div09: [
         {
             id: "robot23", name: "Metadata Scraper", engine: "[ DOM DATA EXTRACTION ENGINE ]",
@@ -589,16 +599,27 @@ const fleetDatabase = {
         {
             id: "robot32", name: "Text Extractor", engine: "[ DOM TEXT HARVESTER ]",
             title: "Extract Pure Body Text.<br>Scrub Redundant HTML & Script Tags.",
-            desc: "A stateless sanitization pipeline engineered to rip raw text scripts, CSS nodes, and interface scaffolding away from public target HTML blocks, outputting crystalline language payloads for LLM workflows.",
+            desc: "A stateless data extraction utility designed to rip raw script elements, active style formats, and structural DOM layers away from raw client records, delivering pure language payloads for LLM workflows.",
             feat1_icon: "🧹", feat1_title: "DOM Stripping", feat1_desc: "Annihilates head injections, active styles, and nested interface markup rules upstream.",
             feat2_icon: "🤖", feat2_title: "AI Ingestion Max", feat2_desc: "Reduces token usage up to 78% by parsing out layout clutter from corpus weights.",
             pricing_target: "[ CORE ENGINE : TEXT-EXTRACTOR ]", pricing_title: "Activate Commercial License",
             price_solo: "59$", desc_solo: "Solo Pass: 1 operational web crawling extraction interface routing token.",
             price_agency: "179$", desc_agency: "Agency Fleet: Distributed enterprise scaling web text harvesting grid.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        },
+        {
+            id: "robot37", name: "Sitemap Scraper", engine: "[ XML NETWORK HARVESTER ]",
+            title: "Parse Heavy XML Sitemaps.<br>Extract 100% of Target URL Arrays.",
+            desc: "An aggressive stateless XML parsing script designed to ingest and break down massive directory sitemaps. Extracts all nested links, priority tags, and update times inline in micro-seconds for fast tracking.",
+            feat1_icon: "📡", feat1_title: "XML Decomposition", feat1_desc: "Shreds heavy structural files upstream with zero backend memory overload.",
+            feat2_icon: "📊", feat2_title: "Competitor Maps", feat2_desc: "Feeds fresh corporate directory structures into automated tracking platforms.",
+            pricing_target: "[ CORE ENGINE : SITEMAP-SCRAPER ]", pricing_title: "Activate Commercial License",
+            price_solo: "49$", desc_solo: "Solo Pass: 1 deployment track validation token (Lifetime updates).",
+            price_agency: "149$", desc_agency: "Agency Fleet: Unrestricted cross-site URL monitoring extraction grid.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-     // 🚀 DIVISION 10 : CODE OPTIMIZERS (VAGUE 02, 03, 04 & VAGUE 06 EXPULSION COMPLÈTE)
+    // 🚀 DIVISION 10 : CODE OPTIMIZERS (VAGUE 02, 03, 04, 06 & VAGUE 07 EXPULSION COMPLÈTE)
     div10: [
         {
             id: "robot12", name: "MD Parser", engine: "[ SEO STRUCTURED AST PARSER ]",
@@ -654,6 +675,17 @@ const fleetDatabase = {
             price_solo: "39$", desc_solo: "Solo Pass: 1 operational content network minification gateway pass.",
             price_agency: "119$", desc_agency: "Agency Tier: High-speed tree shaking minification modules for enterprise arrays.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        },
+        {
+            id: "robot39", name: "JSON-LD Check", engine: "[ SEO VALIDATION FILTER ]",
+            title: "Validate JSON-LD Nodes.<br>Kill Google Search Console Errors.",
+            desc: "A specialized data checking pipeline that parses and verifies structural Schema.org formatting tags. Eliminates layout warnings and nesting gaps before content endpoints get indexed by search engines.",
+            feat1_icon: "📉", feat1_title: "Error Cleanout", feat1_desc: "Catches broken data models, missing properties, and comma errors instantly.",
+            feat2_icon: "💎", feat2_title: "Snippets Safe", feat2_desc: "Secures high-ranking structural rich listings across global mobile matrices.",
+            pricing_target: "[ CORE ENGINE : JSON-LD-VALIDATOR ]", pricing_title: "Activate Commercial License",
+            price_solo: "49$", desc_solo: "Solo Pass: 1 main platform structured schema verification pass token.",
+            price_agency: "149$", desc_agency: "Agency Fleet: Unrestricted developer array data parsing enforcement.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
     // 🚀 DIVISION 11 : CRON & SCHEDULER (VAGUE 02 LIVE)
@@ -695,7 +727,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 📈 DIVISION 14 : FINTECH UTILITIES (VAGUE 04 & VAGUE 05 LIVE)
+    // 📈 DIVISION 14 : FINTECH UTILITIES (VAGUE 04 & 05 LIVE)
     div14: [
         {
             id: "robot25", name: "UTM Builder", engine: "[ TRACKING ATTRIBUTION CLEANER ]",
@@ -718,8 +750,9 @@ const fleetDatabase = {
             price_solo: "49$", desc_solo: "Solo Pass: Single web app storefront financial exchange pricing matrix.",
             price_agency: "149$", desc_agency: "Agency Fleet: Mesh currency calculation array for multi-client storefront networks.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
-        },
-        {
+        }
+    ],
+    {
             id: "robot27", name: "Vat Validator", engine: "[ EU B2B TAXES VALIDATION ]",
             title: "Automated VAT ID Validator.<br>Verify Business Tax Compliance Instantly.",
             desc: "A structural check engine that evaluates international business VAT registrations against regulatory string structures. Drops malformed or fraudulent fiscal tags before invoice generation pipelines process orders.",
@@ -742,7 +775,40 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🩺 DIVISION 18 : HEALTH DIAGNOSTICS (VAGUE 03 LIVE)
+    // 🪙 DIVISION 15 : CRYPTO GATEWAYS (VAGUE 07 LIVE)
+    div15: [
+        {
+            id: "robot36", name: "Crypto Verify", engine: "[ WEB3 REQUISITION FILTER ]",
+            title: "Validate Crypto Addresses.<br>Sovereign Multi-Chain Syntax Audit.",
+            desc: "A localized structural check engine engineered to evaluate cryptographic network addresses. Cross-references BTC, ETH, and SOL public strings inline to prevent malformed ledger payouts inside transactional gateways.",
+            feat1_icon: "🪙", feat1_title: "Multi-Chain Pattern", feat1_desc: "Validates string lengths, Base58 checksum variables, and Bech32 boundaries in 0.05ms.",
+            feat2_icon: "🔒", feat2_title: "Payout Hardening", feat2_desc: "Blocks user input typos before financial routing systems push blocks to the network.",
+            pricing_target: "[ CORE ENGINE : CRYPTO-ADDRESS-VERIFY ]", pricing_title: "Activate Commercial License",
+            price_solo: "59$", desc_solo: "Solo Pass: 1 production checkout cryptographic form validation routine.",
+            price_agency: "179$", desc_agency: "Agency Fleet: Comprehensive multi-tenant Web3 gateway structural audit subnet.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        },
+        {
+            id: "robot40", name: "Wei Converter", engine: "[ CRYPTO VALUE COMPILER ]",
+            title: "Precise Wei To Ether Math.<br>Annihilate Floating Point Deflections.",
+            desc: "A high-precision arithmetic engine designed to handle large cryptofinance integers. Converts structural fractions (Wei / Gwei / Ether) using safe string mathematics to prevent network rounding loss.",
+            feat1_icon: "💎", feat1_title: "Safe Integer Math", feat1_desc: "Executes calculations outside JS dynamic floating limits to secure high ledger totals.",
+            feat2_icon: "⚡", feat2_title: "Programmatic FX", feat2_desc: "Delivers crystalline unit translations for real-time gas calculations.",
+            pricing_target: "[ CORE ENGINE : WEI-CONVERTER ]", pricing_title: "Activate Commercial License",
+            price_solo: "49$", desc_solo: "Solo Pass: 1 programmatic dApp contract ledger transaction bridge.",
+            price_agency: "149$", desc_agency: "Agency Tier: Full unhindered crypto exchange calculations framework pack.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ]
+};
+
+const globalPrices = {
+    pass: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+};
+
+let currentDivisionId = "div01";
+let activeRobotIndex = 0;
+ // 🩺 DIVISION 18 : HEALTH DIAGNOSTICS (VAGUE 03 LIVE)
     div18: [
         {
             id: "robot19", name: "Uptime Check", engine: "[ HYPER-FAST DICTIONARY SCANNER ]",
@@ -771,13 +837,6 @@ const fleetDatabase = {
         }
     ]
 };
-
-const globalPrices = {
-    pass: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
-};
-
-let currentDivisionId = "div01";
-let activeRobotIndex = 0;
 
 // Génération visuelle immédiate de l'interface et gestion de l'état
 function initializeApp() {
@@ -839,7 +898,7 @@ function loadRobotData() {
     
     if (robotsList.length === 0) {
         document.getElementById('robot-engine').innerText = "[ PENDING REPLICATION ]";
-        document.getElementById('robot-title').innerHTML = "Deploying Wave 6 Algorithms...";
+        document.getElementById('robot-title').innerHTML = "Deploying Wave 7 Algorithms...";
         document.getElementById('robot-desc').innerText = "This node category is currently being populated via Mac Mini M4 industrial compilation.";
         
         document.getElementById('feat1-icon').innerText = "⚙️";
