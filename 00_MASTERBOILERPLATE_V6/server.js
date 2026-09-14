@@ -1,7 +1,7 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V27 — AUTOMATE D'ÉLITE
- * 📥 ACTIONNEMENT ET INJECTION EN PRODUCTION DES VAGUES 01, 02, 03 ET 04 SOUDÉES
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V28 — AUTOMATE D'ÉLITE
+ * 📥 ACTIONNEMENT ET INJECTION EN PRODUCTION DES VAGUES 01, 02, 03, 04 ET 05 SOUDÉES
  */
 
 const express = require('express');
@@ -63,13 +63,22 @@ app.use('/v1/uptime-check', require('./uptime_check'));
 app.use('/v1/log-sanitizer', require('./log_sanitizer'));
 
 // ========================================================
-// 📈 ARMEMENT ET EXPULSION DE LA VAGUE 04 MARKETING (NEW)
+// 📈 ARMEMENT ET EXPULSION DE LA VAGUE 04 MARKETING (LIVE)
 // ========================================================
-app.use('/v1/adblock-bypass', require('./adblock_bypass'));   // Robot 21 actif !
-app.use('/v1/link-rotator', require('./link_rotator'));       // Robot 22 actif !
-app.use('/v1/metadata-scraper', require('./metadata_scraper')); // Robot 23 actif !
-app.use('/v1/schema-gen', require('./schema_gen'));           // Robot 24 actif !
-app.use('/v1/utm-builder', require('./utm_builder'));         // Robot 25 actif !
+app.use('/v1/adblock-bypass', require('./adblock_bypass'));
+app.use('/v1/link-rotator', require('./link_rotator'));
+app.use('/v1/metadata-scraper', require('./metadata_scraper'));
+app.use('/v1/schema-gen', require('./schema_gen'));
+app.use('/v1/utm-builder', require('./utm_builder'));
+
+// ========================================================
+// 💳 ACCROCHAGE DE LA VAGUE 05 FINTECH & DOCUMENTS (NEW)
+// ========================================================
+app.use('/v1/currency-live', require('./currency_live'));   // Robot 26 actif !
+app.use('/v1/vat-validator', require('./vat_validator'));   // Robot 27 actif !
+app.use('/v1/pdf-flatten', require('./pdf_flatten'));       // Robot 28 actif !
+app.use('/v1/csv-parser', require('./csv_parser'));         // Robot 29 actif !
+app.use('/v1/tax-router', require('./tax_router'));         // Robot 30 actif !
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
 // ==========================================
@@ -167,5 +176,5 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
 });
 
 app.listen(PORT, () => {
-    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V27 operationnel sur le port ${PORT}`);
+    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V28 operationnel sur le port ${PORT}`);
 });
