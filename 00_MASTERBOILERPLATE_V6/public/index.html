@@ -3,137 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackBox Automated Control — 100 API Master Fleet</title>
+    <title>BLACKBOX AUTOMATED CONTROL — Asset Fleet Ecosystem</title>
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; }
-        .font-display { font-family: 'Space Grotesk', sans-serif; }
         .font-code { font-family: 'JetBrains Mono', monospace; }
-        .bento-card { transition: all 0.2s ease-in-out; }
-        .bento-card:hover { border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.2); }
+        .tab-btn.active { border-color: #2563eb; background-color: rgba(37, 99, 235, 0.1); color: #ffffff; }
     </style>
 </head>
-<body class="text-gray-100 min-h-screen antialiased">
+<body class="text-gray-100 min-h-screen flex flex-col justify-between antialiased selection:bg-blue-600 selection:text-white">
 
-    <!-- HEADER PREMIUM DESIGN -->
-    <header class="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-display font-bold text-white shadow-lg shadow-blue-500/20">B</div>
-                <div>
-                    <h1 class="text-lg font-bold font-display tracking-tight text-white flex items-center gap-2">
-                        BlackBox Automated Control <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-0.5 rounded-full font-code">100 Core APIs</span>
-                    </h1>
-                    <p class="text-xs text-gray-400">Stateless Architecture Matrix &bull; Enterprise Grade</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4 w-full md:w-auto">
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-1.5 flex items-center w-full md:w-96">
-                    <span class="text-gray-500 px-3 font-code text-xs font-bold uppercase tracking-wider">Gateway:</span>
-                    <input type="text" id="targetUrl" value="https://onrender.com" class="bg-transparent border-0 text-emerald-400 font-code text-xs focus:ring-0 w-full outline-none py-0.5 animate-pulse">
-                </div>
-                <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-3 py-2 rounded-xl text-xs font-semibold shadow-sm">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                    Production Live
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-6 py-10 space-y-12">
+    <!-- 🛰️ GATEWAY CONTAINER CENTRAL -->
+    <div class="w-full max-w-5xl mx-auto px-4 py-8 space-y-6">
         
-        <!-- INTERFACE TERMINAL -->
-        <section class="bg-gray-950 border border-gray-800/80 rounded-3xl p-6 shadow-2xl relative overflow-hidden bento-card">
-            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <div class="flex items-center gap-2 mb-6 border-b border-gray-800 pb-4">
-                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
-                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-                <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
-                <span class="text-xs font-code text-gray-400 ml-2">// EXECUTION ENGINE TERMINAL</span>
+        <!-- HEADER ECOSYSTEM -->
+        <header class="flex justify-between items-center border-b border-gray-900 pb-4">
+            <div>
+                <span class="text-[10px] uppercase tracking-widest text-gray-500 font-bold block mb-1">ASSET FLEET ECOSYSTEM</span>
+                <h1 class="text-lg font-extrabold tracking-tight text-white uppercase font-display">BLACKBOX AUTOMATED CONTROL</h1>
             </div>
+            <div class="flex items-center gap-2 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full uppercase tracking-wider">
+                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                All Systems Sterile
+            </div>
+        </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-5 space-y-5">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">Sélectionner un Automate</label>
-                        <select id="routeSelect" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-3 text-sm text-white font-medium focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
-                            <option value="/v1/secure-id-scrambler" selected>[Node-100] /v1/secure-id-scrambler (Master Token)</option>
-                            <option value="/v1/word-inverter">[Node-99] /v1/word-inverter</option>
-                            <option value="/v1/special-char-stripper">[Node-98] /v1/special-char-stripper</option>
-                            <option value="/v1/space-collapser">[Node-97] /v1/space-collapser</option>
-                            <option value="/v1/sentence-capitalizer">[Node-96] /v1/sentence-capitalizer</option>
-                            <option value="/v1/form-shield">[Node-01] /v1/form-shield</option>
-                        </select>
+        <!-- DOCK DE SÉLECTION DES ROBOTS (ONGLETS DU HAUT) -->
+        <nav class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            <button onclick="switchRobot('robot01')" id="btn-robot01" class="tab-btn active border-2 border-gray-900 bg-gray-950/40 hover:border-gray-800 text-gray-400 rounded-xl p-3 text-left transition duration-200 outline-none">
+                <span class="block text-[10px] font-code text-blue-500 font-bold mb-0.5">Robot 01</span>
+                <span class="block text-xs font-bold truncate">Form Shield</span>
+            </button>
+            <button onclick="switchRobot('robot02')" id="btn-robot02" class="tab-btn border-2 border-gray-900 bg-gray-950/40 hover:border-gray-800 text-gray-400 rounded-xl p-3 text-left transition duration-200 outline-none">
+                <span class="block text-[10px] font-code text-blue-500 font-bold mb-0.5">Robot 02</span>
+                <span class="block text-xs font-bold truncate">Audio Convert</span>
+            </button>
+            <button onclick="switchRobot('robot03')" id="btn-robot03" class="tab-btn border-2 border-gray-900 bg-gray-950/40 hover:border-gray-800 text-gray-400 rounded-xl p-3 text-left transition duration-200 outline-none">
+                <span class="block text-[10px] font-code text-blue-500 font-bold mb-0.5">Robot 03</span>
+                <span class="block text-xs font-bold truncate">Studio Vault</span>
+            </button>
+            <button onclick="switchRobot('robot04')" id="btn-robot04" class="tab-btn border-2 border-gray-900 bg-gray-950/40 hover:border-gray-800 text-gray-400 rounded-xl p-3 text-left transition duration-200 outline-none">
+                <span class="block text-[10px] font-code text-blue-500 font-bold mb-0.5">Robot 04</span>
+                <span class="block text-xs font-bold truncate">Link Cloak</span>
+            </button>
+            <button onclick="switchRobot('robot100')" id="btn-robot100" class="tab-btn border-2 border-gray-900 bg-gray-950/40 hover:border-gray-800 text-gray-400 rounded-xl p-3 text-left transition duration-200 outline-none">
+                <span class="block text-[10px] font-code text-purple-400 font-bold mb-0.5">Robot 100</span>
+                <span class="block text-xs font-bold truncate">Master Scrambler</span>
+            </button>
+        </nav>
+         <!-- ⚡ CORPS DYNAMIQUE DU ROBOT SÉLECTIONNÉ -->
+        <main class="space-y-6">
+            
+            <!-- TITRE ET HOOK PRINCIPAL DU MODULE -->
+            <section class="bg-gray-950/20 border border-gray-900 rounded-2xl p-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-80 h-80 bg-blue-600/5 rounded-full blur-3xl pointer-events-none"></div>
+                <span id="robot-engine-tag" class="text-xs font-code font-bold text-blue-500 uppercase tracking-wider block mb-2">[ CORE ENGINE 01 ]</span>
+                <h2 id="robot-main-title" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-3 max-w-xl">
+                    Stop Form Spam Silently.<br>No Captchas. No Friction.
+                </h2>
+                <p id="robot-main-desc" class="text-xs text-gray-400 leading-relaxed max-w-2xl font-normal">
+                    A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.
+                </p>
+            </section>
+
+            <!-- GRILLE DE CARACTÉRISTIQUES (BENTO PRO) -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- CARTE PRIVACY -->
+                <div class="bg-gray-950/40 border border-gray-900/60 rounded-2xl p-6 space-y-3">
+                    <div class="w-8 h-8 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center">
+                        <span id="feature-icon-1" class="text-xs">🛡️</span>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">Payload d'entrée JSON</label>
-                        <textarea id="payloadInput" class="w-full h-36 bg-gray-900/60 border border-gray-800 rounded-xl p-3 text-xs font-code text-emerald-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none shadow-inner">{"seed_prefix": "BB_MASTER", "internal_identifier": "100"}</textarea>
+                    <h3 id="feature-title-1" class="text-sm font-bold text-white tracking-tight">GDPR & CCPA Layer</h3>
+                    <p id="feature-desc-1" class="text-xs text-gray-400 leading-relaxed font-normal">
+                        Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.
+                    </p>
+                </div>
+
+                <!-- CARTE PERFORMANCE -->
+                <div class="bg-gray-950/40 border border-gray-900/60 rounded-2xl p-6 space-y-3">
+                    <div class="w-8 h-8 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center">
+                        <span id="feature-icon-2" class="text-xs">⚡</span>
                     </div>
-                    <button onclick="executePayload()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/10 tracking-widest uppercase active:scale-[0.99]">
-                        EXPULSER LE FLUX DANS LA MATRIX
-                    </button>
+                    <h3 id="feature-title-2" class="text-sm font-bold text-white tracking-tight">Performance Matrix</h3>
+                    <p id="feature-desc-2" class="text-xs text-gray-400 leading-relaxed font-normal">
+                        Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.
+                    </p>
                 </div>
-                
-                <div class="lg:col-span-7 flex flex-col">
-                    <label class="block text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">Retour d'infrastructure serveur</label>
-                    <div id="responseOutput" class="w-full flex-1 min-h-[260px] bg-gray-900/40 border border-gray-800/80 rounded-xl p-4 font-code text-xs text-gray-300 overflow-y-auto max-h-[280px] whitespace-pre-wrap shadow-inner border border-gray-800">[ READY ] En attente d'ingestion applicative sterile...</div>
+            </section>
+
+            <!-- 💰 SOUTE DE CAPTURE FINANCIÈRE STRIPE CHECKOUT -->
+            <section class="bg-gray-950/40 border border-gray-900 rounded-2xl p-6 md:p-8 space-y-6">
+                <div class="flex justify-between items-end border-b border-gray-900 pb-4">
+                    <div>
+                        <span id="gateway-target-tag" class="text-[10px] font-code font-bold text-gray-500 block mb-1 uppercase">[ GATEWAY TARGET: ROBOT 01 ]</span>
+                        <h3 id="license-title" class="text-base font-extrabold tracking-tight text-white uppercase">Deploy FORM-SHIELD Commercial License</h3>
+                    </div>
+                    <span class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded font-code uppercase tracking-widest">ONE-TIME ACQUISITION</span>
                 </div>
-            </div>
-        </section>
-    </main>
-    <footer class="border-t border-gray-900 bg-gray-950/40 py-8 text-center text-xs text-gray-500 font-code">
-        &copy; 2026 BlackBox Audio Labs LLC. Systems Sterile. All Rights Reserved Sovereign Engine.
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- PLAN SOLO -->
+                    <div class="border border-gray-900 bg-gray-950/60 rounded-xl p-5 flex flex-col justify-between gap-4 transition duration-200 hover:border-gray-800">
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <h4 class="text-sm font-bold text-white">Solo License</h4>
+                                <span class="text-lg font-extrabold text-white">49$</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400">Single target domain execution layer.</p>
+                        </div>
+                        <button onclick="triggerCheckout('solo')" class="w-full bg-white hover:bg-gray-200 text-black text-xs font-bold py-2.5 rounded-lg transition duration-150 uppercase tracking-wider font-code outline-none">
+                            Acquire Solo Pack
+                        </button>
+                    </div>
+
+                    <!-- PLAN AGENCY -->
+                    <div class="border border-gray-900 bg-gray-950/60 rounded-xl p-5 flex flex-col justify-between gap-4 transition duration-200 hover:border-gray-800">
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <h4 class="text-sm font-bold text-white">Agency Fleet</h4>
+                                <span class="text-lg font-extrabold text-white">149$</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400">Unlimited client domains deployment.</p>
+                        </div>
+                        <button onclick="triggerCheckout('agency')" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold py-2.5 rounded-lg transition duration-150 uppercase tracking-wider font-code outline-none shadow-lg shadow-blue-600/10">
+                            Deploy Agency Fleet
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <!-- FOOTER STERILE ACCESSIBLE -->
+    <footer class="w-full max-w-5xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-center text-[10px] text-gray-600 font-code border-t border-gray-900 mt-12 gap-2">
+        <div>© 2026 BlackBox Audio Labs LLC. All rights reserved.</div>
+        <div>Verified Centaure Engine v6.7 — USD Compliant</div>
     </footer>
 
     <script>
-        // Ingestion dynamique des structures JSON sous forme d'objets stérile
-        const payloads = {
-            "/v1/secure-id-scrambler": '{"seed_prefix": "BB_MASTER", "internal_identifier": "100"}',
-            "/v1/word-inverter": '{"raw_text_stream": "BlackBox Sovereign Engine", "invert_mode": "characters"}',
-            "/v1/special-char-stripper": '{"raw_dirty_string": "Hello Steve! Purge 100% des emojis !!!", "allow_spaces": true}',
-            "/v1/space-collapser": '{"raw_text_stream": "Texte compresse sans espaces multiples."}',
-            "/v1/sentence-capitalizer": '{"raw_text_stream": "bonjour steve. le code v42 est en ligne."}',
-            "/v1/form-shield": '{"raw_input_string": "Hello Steve!"}'
+        // Matière grise de sôute : Base de données des 5 robots stratégiques de conversion
+        const robotDatabase = {
+            "robot01": {
+                engineTag: "[ CORE ENGINE 01 ]",
+                title: "Stop Form Spam Silently.<br>No Captchas. No Friction.",
+                desc: "A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.",
+                icon1: "🛡️",
+                title1: "GDPR & CCPA Layer",
+                desc1: "Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.",
+                icon2: "⚡",
+                title2: "Performance Matrix",
+                desc2: "Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.",
+                gatewayTag: "[ GATEWAY TARGET: ROBOT 01 ]",
+                licenseTitle: "Deploy FORM-SHIELD Commercial License",
+                endpoint: "/v1/form-shield"
+            },
+            "robot02": {
+                engineTag: "[ AUDIO LAB ENGINE 02 ]",
+                title: "High-Fidelity Audio Ingestion.<br>Stateless Pipeline Conversion.",
+                desc: "A high-performance audio ingestion routing node built to process and convert raw assets with optimal byte alignment and zero buffer bloat.",
+                icon1: "🎛️",
+                title1: "Codec Optimization",
+                desc1: "Real-time bitrate adaptation and clean extraction compliant with major international broadcast layouts.",
+                icon2: "🛰️",
+                title2: "Zero Disk Latency",
+                desc2: "Processes audio entirely in volatile memory slots. Absolute security against persistent leakage.",
+                gatewayTag: "[ GATEWAY TARGET: ROBOT 02 ]",
+                licenseTitle: "Deploy AUDIO-CONVERT Commercial License",
+                endpoint: "/v1/audio-convert"
+            },
+            "robot03": {
+                engineTag: "[ STORAGE ENGINE 03 ]",
+                title: "Isolated Studio Vault.<br>Encapsulated Asset Vault.",
+                desc: "Cryptographically sterile microservice engineered for high-entropy storage virtualization of secure algorithmic metadata bundles.",
+                icon1: "🔒",
+                title1: "Isolation Layer",
+                desc1: "Hardened hyper-isolated namespace framework preventing cross-tenant information breaches natively.",
+                icon2: "💎",
+                title2: "Immutable States",
+                desc2: "Stateless validation checks confirm file integrity upon ingestion layer passage in less than 0.04ms.",
+                gatewayTag: "[ GATEWAY TARGET: ROBOT 03 ]",
+                licenseTitle: "Deploy STUDIO-VAULT Commercial License",
+                endpoint: "/v1/studio-vault"
+            },
+            "robot04": {
+                engineTag: "[ ROUTING ENGINE 04 ]",
+                title: "Stateless Link Purge.<br>Referrer Footprint Stripper.",
+                desc: "Cyber privacy controller designed to scrub identifiable tracking parameters and rewrite referrers to Strict Origin formats on the fly.",
+                icon1: "🧹",
+                title1: "Tracker Purge",
+                desc1: "Surgical extraction of UTM queries, click-ids, and digital tracking fingerprints from outbound links.",
+                icon2: "🎭",
+                title2: "Referrer Masking",
+                desc2: "Enforces strict-origin-when-cross-origin mapping securely at runtime before browser redirection.",
+                gatewayTag: "[ GATEWAY TARGET: ROBOT 04 ]",
+                licenseTitle: "Deploy LINK-CLOAK Commercial License",
+                endpoint: "/v1/link-rotator"
+            },
+            "robot100": {
+                engineTag: "[ MASTER ENGINE 100 ]",
+                title: "High-Entropy Scrambler.<br>Sovereign Access Engine.",
+                desc: "The ultimate core infrastructure automation module. Generates live, cryptographically secure master API keys with absolute zero persistence.",
+                icon1: "👑",
+                title1: "Master Hierarchy",
+                desc1: "Forges top-tier access credentials utilizing cryptographic multi-seeded dynamic random generation arrays.",
+                icon2: "🔥",
+                title2: "Maximum Entropy",
+                desc2: "Outputs zero-log high-entropy live identifiers performing at a clean sub-0.05ms execution latency.",
+                gatewayTag: "[ GATEWAY TARGET: ROBOT 100 ]",
+                licenseTitle: "Deploy MASTER-SCRAMBLER Enterprise License",
+                endpoint: "/v1/secure-id-scrambler"
+            }
         };
 
-        document.getElementById('routeSelect').addEventListener('change', function(e) {
-            const r = e.target.value;
-            if (payloads[r]) {
-                document.getElementById('payloadInput').value = payloads[r];
-            }
-        });
+        let currentActiveRobot = "robot01";
 
-        async function executePayload() {
-            const baseUrl = document.getElementById('targetUrl').value.trim();
-            const route = document.getElementById('routeSelect').value;
-            const payloadRaw = document.getElementById('payloadInput').value.trim();
-            const box = document.getElementById('responseOutput');
+        // Moteur de commutation d'onglets ultra-léger et liquide
+        function switchRobot(robotId) {
+            const data = robotDatabase[robotId];
+            if (!data) return;
 
-            box.textContent = "[ LOADING ] Expulsion du flux vers les serveurs US...";
-            box.style.color = "#3b82f6";
+            currentActiveRobot = robotId;
+
+            // Mutation des classes actives des onglets du haut
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-blue-600', 'bg-blue-600/10', 'text-white');
+                btn.classList.add('border-gray-900', 'text-gray-400');
+            });
+
+            const activeBtn = document.getElementById(`btn-${robotId}`);
+            activeBtn.classList.remove('border-gray-900', 'text-gray-400');
+            activeBtn.classList.add('active', 'border-blue-600', 'bg-blue-600/10', 'text-white');
+
+            // Réalignement chirurgical du corpus textuel commercial
+            document.getElementById('robot-engine-tag').textContent = data.engineTag;
+            document.getElementById('robot-main-title').innerHTML = data.title;
+            document.getElementById('robot-main-desc').textContent = data.desc;
             
-            try {
-                // Parse et stringify immédiat pour garantir l'absence de friture ou d'illégalité de format
-                const parsedJson = JSON.parse(payloadRaw);
+            document.getElementById('feature-icon-1').textContent = data.icon1;
+            document.getElementById('feature-title-1').textContent = data.title1;
+            document.getElementById('feature-desc-1').textContent = data.desc1;
+            
+            document.getElementById('feature-icon-2').textContent = data.icon2;
+            document.getElementById('feature-title-2').textContent = data.title2;
+            document.getElementById('feature-desc-2').textContent = data.desc2;
 
-                const response = await fetch(`${baseUrl}${route}`, {
+            document.getElementById('gateway-target-tag').textContent = data.gatewayTag;
+            document.getElementById('license-title').textContent = data.licenseTitle;
+        }
+
+        // Routage chirurgical des checkouts Stripe reliés au serveur central
+        async function triggerCheckout(planType) {
+            const robotData = robotDatabase[currentActiveRobot];
+            console.log(`[🛍️ CHECKOUT TRIGGER] Initialisation de l'achat pour ${currentActiveRobot} (Plan: ${planType})`);
+
+            // Redirection asynchrone transparente vers la route d'infrastructure checkout Stripe de server.js
+            try {
+                const response = await fetch('/v1/checkout', {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(parsedJson)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        robot_id: currentActiveRobot,
+                        plan: planType,
+                        endpoint_target: robotData.endpoint
+                    })
                 });
 
-                const data = await response.json();
-                box.textContent = JSON.stringify(data, null, 2);
-                box.style.color = response.ok ? "#10b981" : "#ef4444";
+                const session = await response.json();
+                
+                if (session.url) {
+                    console.log(`[🚀 REDIRECT] Tunnel Stripe prêt. Routage vers : ${session.url}`);
+                    window.location.href = session.url; // Expulsion instantanée du client vers Stripe sécurisé
+                } else {
+                    alert(`Erreur de soute Stripe: ${session.error || 'Impossible de forger la session.'}`);
+                }
             } catch (err) {
-                box.textContent = `[❌ CRASH PARSER/NET] Erreur d'analyse ou de transmission.\nDetails : ${err.message}\n\nAssurez-vous que le format entré est un JSON valide sans sauts de ligne texte bruts.`;
-                box.style.color = "#ef4444";
+                alert(`Crash réseau : Impossible de contacter la gateway de paiement. (${err.message})`);
             }
         }
     </script>
