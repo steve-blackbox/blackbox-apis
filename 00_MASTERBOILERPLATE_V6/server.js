@@ -1,7 +1,7 @@
 /**
  * 🛰️ BLACKBOX AUDIO LABS LLC — CENTRAL APIS GATEWAY
- * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V37 — AUTOMATE SOUVERAIN
- * 📥 ALIGNEMENT EN PRODUCTION DES COMPOSANTS LOGIQUES DES VAGUES 01 À 14 CUMULÉES
+ * 🚀 ARCHITECTURE MONOLITHIQUE CLOUD-NATIVE V38 — AUTOMATE SOUVERAIN
+ * 📥 ALIGNEMENT EN PRODUCTION DES COMPOSANTS LOGIQUES DES VAGUES 01 À 15 CUMULÉES
  */
 
 const express = require('express');
@@ -154,13 +154,22 @@ app.use('/v1/word-counter-pro', require('./word_counter_pro'));
 app.use('/v1/leet-spammer-blocker', require('./leet_spammer_blocker'));
 
 // ========================================================
-// 🔐 RACCORDEMENT CENTRAL DE LA VAGUE 14 (NEW LIVE)
+// 🔐 RACCORDEMENT CENTRAL DE LA VAGUE 14 (LIVE)
 // ========================================================
-app.use('/v1/hashids-generator', require('./hashids_generator'));           // Robot 71 branché !
-app.use('/v1/hashids-decoder', require('./hashids_decoder'));               // Robot 72 branché !
-app.use('/v1/md5-checksum-pro', require('./md5_checksum_pro'));             // Robot 73 branché !
-app.use('/v1/secret-token-generator', require('./secret_token_generator')); // Robot 74 branché !
-app.use('/v1/base32-encoder', require('./base32_encoder'));  
+app.use('/v1/hashids-generator', require('./hashids_generator'));
+app.use('/v1/hashids-decoder', require('./hashids_decoder'));
+app.use('/v1/md5-checksum-pro', require('./md5_checksum_pro'));
+app.use('/v1/secret-token-generator', require('./secret_token_generator'));
+app.use('/v1/base32-encoder', require('./base32_encoder'));
+
+// ========================================================
+// 🌍 RACCORDEMENT CENTRAL DE LA VAGUE 15 (NEW LIVE)
+// ========================================================
+app.use('/v1/gps-distance-calculator', require('./gps_distance_calculator')); // Robot 76 branché !
+app.use('/v1/gps-bounding-box', require('./gps_bounding_box'));               // Robot 77 branché !
+app.use('/v1/ip-anonymizer', require('./ip_anonymizer'));                     // Robot 78 branché !
+app.use('/v1/mac-address-sanitizer', require('./mac_address_sanitizer'));     // Robot 79 branché !
+app.use('/v1/user-agent-parser', require('./user_agent_parser'));
 // ==========================================
 // 💸 TUNNEL DE CAPTURE COMMERCIALE STRIPE
 // ==========================================
@@ -258,5 +267,5 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
 
 // Allumage et écoute du port applicatif par défaut sur le serveur
 app.listen(PORT, () => {
-    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V37 operationnel sur le port ${PORT}`);
+    console.log(`[⚙️ ENGINE ACTIVE] Monolithe V38 operationnel sur le port ${PORT}`);
 });
