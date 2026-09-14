@@ -27,7 +27,7 @@
             overflow: hidden;
         }
         
-        /* SIDEBAR DE NAVIGATION À 20 DIVISIONS */
+        /* SIDEBAR DE NAVIGATION COMMERCIALE À 20 DIVISIONS */
         .sidebar {
             width: var(--sidebar-width);
             background-color: var(--bg-sidebar);
@@ -104,7 +104,7 @@
             transform: scale(1.02);
         }
 
-        /* GRILLE CENTRAL BENTO DYNAMIQUE */
+        /* ZONE CENTRALE COCKPIT & GRILLE BENTO */
         .main-content {
             flex: 1;
             overflow-y: auto;
@@ -363,13 +363,13 @@
 
             <footer>
                 <p>© 2026 BlackBox Audio Labs LLC. Systems Sterile.</p>
-                <p>Centaure Engine v23.0 — Global SEO Compliant</p>
+                <p>Centaure Engine v26.0 — Global SEO Compliant</p>
             </footer>
         </div>
     </div>
-    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V23 & ARCHITECTURE 100 ROBOTS -->
+    <!-- ⚡ LOGIQUE DYNAMIQUE MATRIX V26 & ARCHITECTURE 100 ROBOTS -->
 <script>
-// Nomenclature complète des 20 Divisions Industrielles (100 Robots au total)
+// Nomenclature officielle des 20 Divisions Industrielles de l'Empire (100 Robots)
 const categoriesDatabase = [
     { id: "div01", name: "DIV-01: Form Protection" },
     { id: "div02", name: "DIV-02: Cyber-Defense" },
@@ -394,7 +394,7 @@ const categoriesDatabase = [
 ];
 
 const fleetDatabase = {
-    // 🛡️ DIVISION 01 : INPUT SECURITY (ROBOTS 01 ET 05)
+    // 🛡️ DIVISION 01 : INPUT SECURITY (VAGUE 01 LIVE)
     div01: [
         {
             id: "robot01", name: "Form Shield", engine: "[ FORM INTERCEPTION ACTIVE ]",
@@ -419,7 +419,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // ⚔️ DIVISION 02 : CYBER-DEFENSE (ROBOTS 06 ET 07)
+    // ⚔️ DIVISION 02 : CYBER-DEFENSE (VAGUE 02 LIVE)
     div02: [
         {
             id: "robot06", name: "IP Blocker", engine: "[ EDGE CYBER-SHIELD ACTIVE ]",
@@ -444,7 +444,21 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🎛️ DIVISION 04 : AUDIO LAB (ROBOT 02 VAGUE 01 LIVE)
+    // 🔏 DIVISION 03 : PROXY & PRIVACY GATEWAYS (VAGUE 03 LIVE)
+    div03: [
+        {
+            id: "robot17", name: "Proxy Wrap", engine: "[ STATELESS OBFUSCATION CORE ]",
+            title: "Stateless Request Wrapper.<br>Automated Header & IP Rotation.",
+            desc: "An advanced middleware gateway designed to wrap outbound micro-service requests. Dynamically rotates synthetic browser headers, aliases origination tags, and pipes connections through sterile paths to bypass restrictive rate-limiting firewalls.",
+            feat1_icon: "🎭", feat1_title: "Header Masking", feat1_desc: "Polymorphic injection shifts application signatures on every execution cycle.",
+            feat2_icon: "🛡️", feat2_title: "Identity Protection", feat2_desc: "Keeps internal architecture layouts sterile and untraceable from public nodes.",
+            pricing_target: "[ CORE ENGINE : PROXY-WRAP ]", pricing_title: "Activate Commercial License",
+            price_solo: "69$", desc_solo: "Solo License: 1 core bridge installation (Lifetime updates).",
+            price_agency: "199$", desc_agency: "Agency Fleet: Unlimited network wide proxy wrapping vectors.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ],
+    // 🎛️ DIVISION 04 : AUDIO LAB (VAGUE 01 LIVE)
     div04: [
         {
             id: "robot02", name: "Audio Convert", engine: "[ PRO AUDIO OPTIMIZATION ]",
@@ -458,7 +472,21 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🚀 DIVISION 07 : GEOLOCK & ROUTING (ROBOT 11 VAGUE 02)
+    // 🗜️ DIVISION 05 : ASSET SHRINK (VAGUE 03 LIVE)
+    div05: [
+        {
+            id: "robot18", name: "SVG Optimizer", engine: "[ VECTOR ASSET SHREDDER ]",
+            title: "Chirurgical Vector Optimizer.<br>Strip Unused DOM Path Metadata.",
+            desc: "An aggressive parsing filter engineered to clean vector graphics. Scrubs editor metadata, redundant namespaces, and hidden paths inside SVG documents, shrinking network footprint sizes up to 80% without losing display scale properties.",
+            feat1_icon: "🎨", feat1_title: "Metadata Purge", feat1_desc: "Annihilates bloated data injections left behind by Adobe Illustrator or Figma exports.",
+            feat2_icon: "⚡", feat2_title: "DOM Ingestion Max", feat2_desc: "Prepares raw vector tags for hyper-efficient layout rendering inside interactive frontends.",
+            pricing_target: "[ CORE ENGINE : SVG-OPTIMIZER ]", pricing_title: "Activate Commercial License",
+            price_solo: "39$", desc_solo: "Solo License: Single hosting domain speed enhancement tool.",
+            price_agency: "119$", desc_agency: "Agency Fleet: Unrestricted media pipeline vector shredding matrix.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ],
+    // 🚀 DIVISION 07 : GEOLOCK & ROUTING (VAGUE 02 LIVE)
     div07: [
         {
             id: "robot11", name: "IP Geolock", engine: "[ STATELESS GEOLOCATION CORE ]",
@@ -472,7 +500,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 📊 DIVISION 08 : AGENT ANALYTICS (ROBOT 15 VAGUE 02)
+    // 📊 DIVISION 08 : AGENT ANALYTICS (VAGUE 02 LIVE)
     div08: [
         {
             id: "robot15", name: "Agent Detect", engine: "[ REAL-TIME DEVICE FINGERPRINTING ]",
@@ -486,7 +514,7 @@ const fleetDatabase = {
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🚀 DIVISION 10 : CODE OPTIMIZERS (ROBOTS 12 ET 14 VAGUE 02)
+    // 🚀 DIVISION 10 : CODE OPTIMIZERS (VAGUE 02 & VAGUE 03 COMPILATION COMPLÈTE)
     div10: [
         {
             id: "robot12", name: "MD Parser", engine: "[ SEO STRUCTURED AST PARSER ]",
@@ -509,9 +537,20 @@ const fleetDatabase = {
             price_solo: "49$", desc_solo: "Solo License: Lifetime site speed optimization framework for 1 host domain.",
             price_agency: "149$", desc_agency: "Agency Fleet: Multi-site optimization engine for high-traffic networks.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        },
+        {
+            id: "robot16", name: "JSON Validate", engine: "[ REAL-TIME AST JSON PARSER ]",
+            title: "Validate Heavy JSON Payloads.<br>Enforce Dynamic Integrity Bounds.",
+            desc: "A stateless AST evaluation pipeline engineered to parse, structurally validate, and enforce dynamic typing structures on deep nested JSON incoming configurations. Exposes broken brackets and malformed fields instantly.",
+            feat1_icon: "🗂️", feat1_title: "High-Speed AST", feat1_desc: "Performs absolute syntax map confirmation in less than 0.1ms at high throughput rates.",
+            feat2_icon: "⚙️", feat2_title: "Schema Verification", feat2_desc: "Flags datatype leaks, structural gaps, or invalid array arrays instantly.",
+            pricing_target: "[ CORE ENGINE : JSON-VALIDATE ]", pricing_title: "Activate Commercial License",
+            price_solo: "49$", desc_solo: "Solo License: Integration for 1 critical application payload entrance.",
+            price_agency: "149$", desc_agency: "Agency Fleet: Mesh checking deployment for internal microservices fleets.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ],
-    // 🚀 DIVISION 11 : CRON & SCHEDULER (ROBOT 13 VAGUE 02)
+    // 🚀 DIVISION 11 : CRON & SCHEDULER (VAGUE 02 LIVE)
     div11: [
         {
             id: "robot13", name: "Scheduler Shield", engine: "[ DISTRIBUTED CRON EDGE BUFFER ]",
@@ -522,6 +561,34 @@ const fleetDatabase = {
             pricing_target: "[ CORE ENGINE : SCHEDULER-SHIELD ]", pricing_title: "Activate Commercial License",
             price_solo: "79$", desc_solo: "Solo Pass: Valid for 1 primary transaction engine pipeline schedule.",
             price_agency: "249$", desc_agency: "Infrastructure Pack: Unrestricted queue buffering for enterprise clusters.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ],
+    // 🩺 DIVISION 18 : HEALTH DIAGNOSTICS (VAGUE 03 ALLUMAGE)
+    div18: [
+        {
+            id: "robot19", name: "Uptime Check", engine: "[ HYPER-FAST DICTIONARY SCANNER ]",
+            title: "High-Performance Ping Engine.<br>Stateless Cluster Diagnostics.",
+            desc: "A specialized network health inspector capable of triggering zero-latency ICMP requests and asynchronous TCP handshake validation across distributed networks. Isolates endpoint decay before downtime alerts spark.",
+            feat1_icon: "📡", feat1_title: "Stateless Inspection", feat1_desc: "Evaluates multi-node connection states with zero caching or storage overhead.",
+            feat2_icon: "🚨", feat2_title: "Instant Warning", feat2_desc: "Triggers rapid network exit sequences directly into applicative failover arrays.",
+            pricing_target: "[ CORE ENGINE : UPTIME-CHECK ]", pricing_title: "Activate Commercial License",
+            price_solo: "49$", desc_solo: "Solo Pass: Monitored health metrics tracking for 1 main system stack.",
+            price_agency: "149$", desc_agency: "Infrastructure Pack: Complete global subnet cluster scanning capacity.",
+            stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
+        }
+    ],
+    // 🧹 DIVISION 19 : LOG SANITIZERS (VAGUE 03 ALLUMAGE)
+    div19: [
+        {
+            id: "robot20", name: "Log Sanitizer", engine: "[ DYNAMIC COMPLIANCE BUFFER ]",
+            title: "Automated Log Scrubbing Engine.<br>Purge 100% PII & Sensitive Strings.",
+            desc: "A real-time text-stream data sanitizer designed for strict GDPR/HIPAA engineering. Intercepts terminal output arrays to dynamically wipe credit cards, token headers, and private email records before structural log storage.",
+            feat1_icon: "🧼", feat1_title: "PII Annihilation", feat1_desc: "Wipes identification data points inline using fast regex state processors.",
+            feat2_icon: "🔒", feat2_title: "Strict Compliance", feat2_desc: "Prevents industrial data spills inside public database index logs.",
+            pricing_target: "[ CORE ENGINE : LOG-SANITIZER ]", pricing_title: "Activate Commercial License",
+            price_solo: "59$", desc_solo: "Solo License: Complete integration for 1 server logging stream endpoint.",
+            price_agency: "179$", desc_agency: "Enterprise Pack: Comprehensive protection across distributed data centers.",
             stripe_solo: "price_1UF8YkAQxUv6pdHqPPiRw8SS", stripe_agency: "price_1UF8ZDAQxUv6pdHqn07yX0oB"
         }
     ]
@@ -593,7 +660,7 @@ function loadRobotData() {
     
     if (robotsList.length === 0) {
         document.getElementById('robot-engine').innerText = "[ PENDING REPLICATION ]";
-        document.getElementById('robot-title').innerHTML = "Deploying Wave 2 Algorithms...";
+        document.getElementById('robot-title').innerHTML = "Deploying Wave 3 Algorithms...";
         document.getElementById('robot-desc').innerText = "This node category is currently being populated via Mac Mini M4 industrial compilation.";
         
         document.getElementById('feat1-icon').innerText = "⚙️";
