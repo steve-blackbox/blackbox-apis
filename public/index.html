@@ -320,7 +320,7 @@
 
         function switchDivision(divisionId) {
             currentDivisionId = divisionId;
-            activeRobotIndex = 0; // Réinitialise toujours sur le premier robot du thème sélectionné pour éviter le freeze
+            activeRobotIndex = 0; // Réinitialise sur le premier robot du thème sélectionné
             
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-theme-${divisionId}`);
@@ -331,32 +331,9 @@
                 mainHeaderTitle.innerText = activeBtn.innerText;
             }
             
-            // 🚀 THE ULTIMATE REACTIVITY FIX : Force la reconstruction immédiate de la barre horizontale des 5 robots à chaque switch !
+            // 🚀 RE-RENDU BALISTIQUE DES 5 ROBOTS ET DES BENTOS IMMÉDIAT
             renderSubNavigation();
             loadRobotData();
-        }
-
-        function renderSubNavigation() {
-            const subnavContainer = document.getElementById('robots-subnav');
-            if (!subnavContainer) return;
-            subnavContainer.innerHTML = '';
-            
-            const activeGroup = matrixEcosystem[currentDivisionId];
-            const robotsList = activeGroup ? activeGroup.robots : [];
-            
-            robotsList.forEach((robot, index) => {
-                const btn = document.createElement('button');
-                btn.id = `tab-robot-${robot.id}`;
-                btn.className = `robot-tab ${index === activeRobotIndex ? 'active' : ''}`;
-                btn.innerText = robot.name;
-                btn.onclick = () => {
-                    activeRobotIndex = index;
-                    document.querySelectorAll('.robot-tab').forEach(t => t.classList.remove('active'));
-                    btn.classList.add('active');
-                    loadRobotData();
-                };
-                subnavContainer.appendChild(btn);
-            });
         }
 
         function loadRobotData() {
@@ -396,6 +373,23 @@
             } catch (err) {
                 alert(`Network failure: ${err.message}`);
             }
+        }
+
+        function initializeApp() {
+            const sidebarContainer = document.getElementById('sidebar-categories');
+            sidebarContainer.innerHTML = '';
+            categoriesDatabase.forEach((cat, index) => {
+                const btn = document.createElement('button');
+                btn.id = `btn-theme-${cat.id}`;
+                btn.className = `theme-btn ${cat.id === currentDivisionId ? 'active' : ''}`;
+                btn.innerHTML = cat.name;
+                btn.onclick = () => switchDivision(cat.id);
+                sidebarContainer.appendChild(btn);
+            });
+            currentDivisionId = "div01";
+            activeRobotIndex = 0;
+            renderSubNavigation();
+            loadRobotData();
         }
 
         window.onload = initializeApp;
