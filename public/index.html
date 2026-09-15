@@ -290,8 +290,8 @@
             
             robotsList.forEach((robot, index) => {
                 const btn = document.createElement('button');
-                // 🚀 FIXED: Élimine définitivement le freeze en changeant dynamiquement l'index de soute en mémoire
                 btn.id = `tab-robot-${currentDivisionId}-${index}`;
+                // 🚀 FIXED: Assure l'alignement strict de la classe active au re-rendu de la flotte
                 btn.className = `robot-tab ${index === activeRobotIndex ? 'active' : ''}`;
                 btn.innerText = robot.name;
                 btn.onclick = () => {
