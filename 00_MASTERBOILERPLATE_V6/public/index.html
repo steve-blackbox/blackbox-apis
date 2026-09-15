@@ -175,12 +175,27 @@
 
             <!-- 🧠 MEMORY REGISTER AUTOMATION SCRIPT -->
             <script>
-                function verifyLicenseKey() {
+                async function verifyLicenseKey() {
                     const input = document.getElementById('license-input').value.trim();
-                    if(input.toUpperCase().startsWith('BB-') && input.length >= 11) {
-                        alert('» ACCESS GRANTED. Ephemeral infrastructure layers unlocked for this session.');
-                    } else {
-                        alert('» ACCESS DENIED. Invalid security signature context.');
+                    if (!input) return;
+
+                    try {
+                        // 🚀 Appel direct vers la nouvelle route de ton serveur Express Render
+                        const response = await fetch('/api/verify-license', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ key: input })
+                        });
+                        
+                        const data = await response.json();
+
+                        if (response.ok && data.success) {
+                            alert('» ACCESS GRANTED. Ephemeral infrastructure layers unlocked for this session.');
+                        } else {
+                            alert('» ACCESS DENIED. Invalid security signature context.');
+                        }
+                    } catch (error) {
+                        alert('» NETWORK ERROR. Secure gateway handshake failed.');
                     }
                 }
             </script>

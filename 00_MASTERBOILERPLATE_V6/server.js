@@ -13,6 +13,21 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// 🧠 IMMUTABLE IN-MEMORY TOKEN REGISTER
+global.activeLicenseKeys = global.activeLicenseKeys || new Set(["BB-ADMIN-CORE-99"]); 
+
+// 📡 API ENDPOINT: CRYPTOGRAPHIC NODE VALIDATION
+app.post('/api/verify-license', (req, res) => {
+    const { key } = req.body;
+    if (!key) {
+        return res.status(400).json({ success: false, message: "Missing token signature." });
+    }
+    if (global.activeLicenseKeys.has(key.toUpperCase().trim())) {
+        return res.json({ success: true, message: "Access Ingress Authorized." });
+    } else {
+        return res.status(403).json({ success: false, message: "Invalid key context." });
+    }
+});
 app.post('/v1/checkout', async (req, res) => {
     const { plan, endpoint_target } = req.body;
     console.log(`[🛍️ STRIPE FORCE] Mode Bypass activé pour Plan: ${plan}`);
