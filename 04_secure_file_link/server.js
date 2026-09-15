@@ -72,6 +72,10 @@ app.get('/api/download/:filename', (req, res) => {
 });
 
 const PORT = process.env.PORT || 4244;
+// 📡 INTERCEPTION SUPRÊME ET DISTRIBUTION FORCÉE DE LA VITRINE MATRIX
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 app.listen(PORT, () => {
     console.log(`\n==================================================`);
     console.log(`[📦 SECURE-FILE ENGINE] Active and running on port ${PORT}`);
