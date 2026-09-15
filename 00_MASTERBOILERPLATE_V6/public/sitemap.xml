@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://sitemaps.org">
-    <!-- 👑 CORE INGRESS LAYER -->
     <url>
         <loc>https://blackbox-apis.com</loc>
         <lastmod>2026-09-15</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.00</priority>
     </url>
-    <!-- ⚖️ COMPLIANCE ASSETS -->
     <url>
         <loc>https://blackbox-apis.com/terms.html</loc>
         <lastmod>2026-09-15</lastmod>
