@@ -214,7 +214,7 @@
             </section>
         </div>
     </main>
-     <script>
+    <script>
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
@@ -240,47 +240,56 @@
             height = canvas.height = window.innerHeight;
         });
 
+        // 🚀 HORLOGE SOUVERAINE SEO : Point zéro calé sur aujourd'hui le 15 Septembre 2026
+        const LAUNCH_DATE = new Date("2026-09-15T00:00:00");
+
         const categoriesDatabase = [
-            { id: "div01", name: "Form & Data Protection" },
-            { id: "div02", name: "Cyber-Defense Modules" },
-            { id: "div03", name: "Privacy & Cloud Proxy" },
-            { id: "div04", name: "Audio Processing Lab" },
-            { id: "div05", name: "Media & Asset Optimizer" },
-            { id: "div06", name: "Document Automation" },
-            { id: "div07", name: "Geoloc & Smart Routing" },
-            { id: "div08", name: "Agent Web Analytics" },
-            { id: "div09", name: "Web Scraping Matrix" },
-            { id: "div10", name: "Code & Performance Core" },
-            { id: "div11", name: "Automated Task Scheduling" },
-            { id: "div12", name: "SEO Keyword Optimizer" },
-            { id: "div13", name: "Link Protection & Cloaking" },
-            { id: "div14", name: "Fintech & Currency Utilities" },
-            { id: "div15", name: "Crypto Security Gateways" },
-            { id: "div16", name: "Symmetric Encryption Nets" },
-            { id: "div17", name: "Dynamic Case Compilers" },
-            { id: "div18", name: "System Health Diagnostics" },
-            { id: "div19", name: "Log Sanitizers & Privacy" },
-            { id: "div20", name: "Multi-Cloud Traffic Flow" }
+            { id: "div01", name: "Form & Data Protection", wave: 1 },
+            { id: "div02", name: "Cyber-Defense Modules", wave: 1 },
+            { id: "div03", name: "Privacy & Cloud Proxy", wave: 2 },
+            { id: "div04", name: "Audio Processing Lab", wave: 2 },
+            { id: "div05", name: "Media & Asset Optimizer", wave: 3 },
+            { id: "div06", name: "Document Automation", wave: 3 },
+            { id: "div07", name: "Geoloc & Smart Routing", wave: 4 },
+            { id: "div08", name: "Agent Web Analytics", wave: 4 },
+            { id: "div09", name: "Web Scraping Matrix", wave: 5 },
+            { id: "div10", name: "Code & Performance Core", wave: 5 },
+            { id: "div11", name: "Automated Task Scheduling", wave: 6 },
+            { id: "div12", name: "SEO Keyword Optimizer", wave: 6 },
+            { id: "div13", name: "Link Protection & Cloaking", wave: 7 },
+            { id: "div14", name: "Fintech & Currency Utilities", wave: 7 },
+            { id: "div15", name: "Crypto Security Gateways", wave: 8 },
+            { id: "div16", name: "Symmetric Encryption Nets", wave: 8 },
+            { id: "div17", name: "Dynamic Case Compilers", wave: 9 },
+            { id: "div18", name: "System Health Diagnostics", wave: 9 },
+            { id: "div19", name: "Log Sanitizers & Privacy", wave: 10 },
+            { id: "div20", name: "Multi-Cloud Traffic Flow", wave: 10 }
         ];
 
         const matrixEcosystem = {};
-     categoriesDatabase.forEach((cat, catIndex) => {
-            // 🚀 EXTRACTION CHIRURGICALE DU PRÉFIXE : Isole le premier mot du secteur pour forcer la mutation nominale au clic
-            const rawPrefix = cat.name.split(' ')[0];
-            const cleanPrefix = rawPrefix.replace('&', '').trim();
+        
+        categoriesDatabase.forEach((cat, catIndex) => {
+            const rawPrefix = cat.name.split(' ');
+            const cleanPrefix = rawPrefix[0].replace('&', '').trim();
+            
+            // Calcul automatique de la date de release théorique (Vague 1 = Jour 0, Vague 2 = Jour 14, Vague 3 = Jour 28...)
+            const daysDelay = (cat.wave - 1) * 14;
+            const releaseDate = new Date(LAUNCH_DATE.getTime() + daysDelay * 24 * 60 * 60 * 1000);
             
             matrixEcosystem[cat.id] = {
                 name: cat.name,
+                wave: cat.wave,
+                releaseDate: releaseDate,
                 robots: [
-                    { id: `rb_${cat.id}_1`, name: `${cleanPrefix} Shield Alpha`, title: `${cat.name} Ingress.<br>Neutralize Threat Pattern Loops.`, desc: `Hardened automation engine engineered to protect active endpoints under microsecond transaction windows before hydration.`, t1: "SURGICAL SCRUB", d1: "Strips trace elements dynamically inside isolated runtime sandboxes.", t2: "STATELESS FLUX", d2: "Processes text packages natively without creating persistent history trails.", endpoint: `/v1/node-alpha-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_1`, name: `${cleanPrefix} Shield Alpha`, title: `${cat.name} Ingress.<br>Neutralize Threat Pattern Loops.`, desc: `Hardened automation engine engineered to protect active endpoints under microsecond transaction windows.`, t1: "SURGICAL SCRUB", d1: "Strips trace elements dynamically inside isolated runtime sandboxes.", t2: "STATELESS FLUX", d2: "Processes text packages natively without creating persistent history trails.", endpoint: `/v1/node-alpha-${catIndex + 1}` },
                     { id: `rb_${cat.id}_2`, name: `${cleanPrefix} Inspector Beta`, title: `${cat.name} Audit.<br>Deep Protocol Structure Check.`, desc: `Edge validation layer optimized to analyze malformed token signatures at the absolute perimeter limit.`, t1: "PERIMETER SHIELD", d1: "Intercepts buffer structures before data hydrations loops take place.", t2: "HIGH LATENCY DEFENSE", d2: "Operates cleanly under strict production environment constraints.", endpoint: `/v1/node-beta-${catIndex + 1}` },
                     { id: `rb_${cat.id}_3`, name: `${cleanPrefix} Secure Proxy`, title: `${cat.name} Proxy.<br>Encapsulated Content Stream Net.`, desc: `Hardened routing namespace crafted to block track footprint signatures across cloud clusters.`, t1: "DISRUPTION NET", d1: "Obfuscates operational metrics seamlessly during transaction lifecycles.", t2: "STERILE SLOTS", d2: "Enforces total context insulation across tenant communication boundaries.", endpoint: `/v1/node-proxy-${catIndex + 1}` },
                     { id: `rb_${cat.id}_4`, name: `${cleanPrefix} Compactor Core`, title: `${cat.name} Compactor.<br>Whitespace Payload Reduction.`, desc: `Algorithmic compressor designed to crush empty layouts and tabs into uniform data units.`, t1: "WEIGHT MITIGATION", d1: "Reduces raw ingress transaction masses by up to 60% dynamically.", t2: "REGISTER DEFENSE", d2: "Locks internal processing sequences within secure memory boundaries.", endpoint: `/v1/node-compact-${catIndex + 1}` },
                     { id: `rb_${cat.id}_5`, name: `${cleanPrefix} Token Master`, title: `${cat.name} Forge.<br>High-Entropy Key Generator.`, desc: `Cryptographic seed scrambler generating single-use transaction stamps on the edge.`, t1: "ENTROPY MATRIX", d1: "Uses randomize multi-seeded low-level parameters to secure pipelines.", t2: "DESTRUCTION SIGN", d2: "Wipes operational signatures immediately upon ingestion completion.", endpoint: `/v1/node-master-${catIndex + 1}` }
                 ]
             };
-        });   
-        let currentDivisionId = "div01";
+        });
+         let currentDivisionId = "div01";
         let activeRobotIndex = 0;
 
         function renderSubNavigation() {
@@ -289,14 +298,19 @@
             subnavContainer.innerHTML = '';
             
             const activeGroup = matrixEcosystem[currentDivisionId];
-            const robotsList = activeGroup ? activeGroup.robots : [];
             
+            // 🚀 VERROU TEMPOREL HORIZONTALE : Si la division complète est sous clé, on n'affiche aucun sous-onglet
+            const now = new Date();
+            if (activeGroup && now < activeGroup.releaseDate) {
+                return; 
+            }
+            
+            const robotsList = activeGroup ? activeGroup.robots : [];
             robotsList.forEach((robot, index) => {
                 const btn = document.createElement('button');
-                // 🚀 FIXED: ID dynamisé par secteur et par index pour tuer le cache in-memory de Safari
                 btn.id = `tab-robot-${currentDivisionId}-${index}`;
                 btn.className = `robot-tab ${index === activeRobotIndex ? 'active' : ''}`;
-                btn.innerText = robot.name; // 🟢 FORCE l'écriture immédiate du vrai nom unique du robot !
+                btn.innerText = robot.name;
                 btn.onclick = () => {
                     activeRobotIndex = index;
                     document.querySelectorAll('.robot-tab').forEach(t => t.classList.remove('active'));
@@ -309,7 +323,7 @@
 
         function switchDivision(divisionId) {
             currentDivisionId = divisionId;
-            activeRobotIndex = 0; // Réinitialise proprement sur le premier robot du thème
+            activeRobotIndex = 0; 
             
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-theme-${divisionId}`);
@@ -320,14 +334,41 @@
                 mainHeaderTitle.innerText = activeBtn.innerText;
             }
             
-            // 🚀 COUPLAGE DYNAMIQUE ABSOLU : Force le re-calcul horizontal ET l'injection des textes centraux en même temps
             renderSubNavigation();
             loadRobotData();
         }
 
         function loadRobotData() {
             const activeGroup = matrixEcosystem[currentDivisionId];
-            const robotsList = activeGroup ? activeGroup.robots : [];
+            if (!activeGroup) return;
+            
+            const now = new Date();
+            const stripeBlock = document.querySelector('.stripe-section');
+            
+            // 🔒 INTERCEPTION : La catégorie cliquée fait-elle partie d'une vague future ?
+            if (now < activeGroup.releaseDate) {
+                // Calcul précis du nombre de jours restants avant la libération
+                const diffTime = activeGroup.releaseDate - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                // Injection du message cyber-stealth au centre du cockpit
+                document.getElementById('robot-main-title').innerHTML = `SECURE ACCESS RESTRICTED`;
+                document.getElementById('robot-main-desc').innerHTML = `// Ingress payload encrypted. This node network vector will unlock and deploy to the matrix fleet automatically in <span style="color: var(--accent-green); font-weight: bold; text-shadow: 0 0 10px rgba(0,255,136,0.4);">${diffDays} days</span>. Awaiting automated cron sequence activation...`;
+                
+                document.getElementById('feature-title-1').innerHTML = `<span>✦</span> NETWORK ACCESS`;
+                document.getElementById('feature-desc-1').textContent = `STATUS: LOCKED (WAVE ${activeGroup.wave})`;
+                document.getElementById('feature-title-2').innerHTML = `<span>✦</span> DEPLOYMENT VECTOR`;
+                document.getElementById('feature-desc-2').textContent = `Awaiting calendar synchronization...`;
+                
+                // Camouflage tactique de la zone d'achat Stripe pour bloquer les transactions anticipées
+                if (stripeBlock) stripeBlock.style.display = 'none';
+                return;
+            }
+            
+            // 🟢 VAGUE VALIDE : Si la date est passée, on réactive le comportement standard et Stripe
+            if (stripeBlock) stripeBlock.style.display = 'block';
+            
+            const robotsList = activeGroup.robots;
             if (robotsList.length === 0) return;
             const robot = robotsList[activeRobotIndex];
 
@@ -367,14 +408,26 @@
         function initializeApp() {
             const sidebarContainer = document.getElementById('sidebar-categories');
             sidebarContainer.innerHTML = '';
-            categoriesDatabase.forEach((cat, index) => {
+            
+            const now = new Date();
+            
+            categoriesDatabase.forEach((cat) => {
+                const activeGroup = matrixEcosystem[cat.id];
                 const btn = document.createElement('button');
                 btn.id = `btn-theme-${cat.id}`;
                 btn.className = `theme-btn ${cat.id === currentDivisionId ? 'active' : ''}`;
-                btn.innerHTML = cat.name;
+                
+                // 🚀 CADENCEMENT VISUEL SIDEBAR : Ajoute une étiquette [ENCRYPTED] si la vague dort encore
+                if (activeGroup && now < activeGroup.releaseDate) {
+                    btn.innerHTML = `${cat.name} <span style="font-size: 9px; color: #ff3366; opacity: 0.7; font-family: monospace; letter-spacing: 0.5px; margin-top: 2px;">[ENCRYPTED]</span>`;
+                } else {
+                    btn.innerHTML = cat.name;
+                }
+                
                 btn.onclick = () => switchDivision(cat.id);
                 sidebarContainer.appendChild(btn);
             });
+            
             currentDivisionId = "div01";
             activeRobotIndex = 0;
             renderSubNavigation();
