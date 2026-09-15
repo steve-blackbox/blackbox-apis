@@ -266,6 +266,7 @@
         ];
 
         const matrixEcosystem = {};
+        
         categoriesDatabase.forEach((cat, catIndex) => {
             matrixEcosystem[cat.id] = {
                 name: cat.name,
@@ -291,10 +292,10 @@
             
             robotsList.forEach((robot, index) => {
                 const btn = document.createElement('button');
+                // 🚀 LE FIX ULTIME POUR LES NOMS : Génération d'un identifiant dynamique par secteur pour écraser le cache Safari
                 btn.id = `tab-robot-${currentDivisionId}-${index}`;
-                // 🚀 FIXED: Assure l'alignement strict de la classe active au re-rendu de la flotte
                 btn.className = `robot-tab ${index === activeRobotIndex ? 'active' : ''}`;
-                btn.innerText = robot.name;
+                btn.innerText = robot.name; // 🟢 INJECTE instantanément le vrai nom du robot du nouveau secteur !
                 btn.onclick = () => {
                     activeRobotIndex = index;
                     document.querySelectorAll('.robot-tab').forEach(t => t.classList.remove('active'));
@@ -307,7 +308,7 @@
 
         function switchDivision(divisionId) {
             currentDivisionId = divisionId;
-            activeRobotIndex = 0; // 🟢 FORCE le retour au premier robot de la nouvelle liste
+            activeRobotIndex = 0; // Réinitialise proprement sur le premier robot du thème sélectionné
             
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-theme-${divisionId}`);
@@ -318,11 +319,10 @@
                 mainHeaderTitle.innerText = activeBtn.innerText;
             }
             
-            // 🚀 LE FIX MAÎTRE : Force le re-rendu horizontal ET l'injection immédiate des nouveaux textes
+            // 🚀 SYNCHRONISATION ABSOLUE : Force le re-calcul des 5 onglets ET l'hydratation des textes centraux
             renderSubNavigation();
-            loadRobotData(); // 🟢 CE CHARGEMENT MAÎTRE MANQUAIT POUR METTRE À JOUR LES BENTOS !
+            loadRobotData();
         }
-
 
         function loadRobotData() {
             const activeGroup = matrixEcosystem[currentDivisionId];
@@ -330,18 +330,16 @@
             if (robotsList.length === 0) return;
             const robot = robotsList[activeRobotIndex];
 
-            // 🚀 CORRECTION : Protection absolue et injection propre
-            document.getElementById('robot-main-title').innerHTML = robot.title || 'No Title Available';
-            document.getElementById('robot-main-desc').textContent = robot.desc || 'No Description';
+            document.getElementById('robot-main-title').innerHTML = robot.title;
+            document.getElementById('robot-main-desc').textContent = robot.desc;
             
-            // Alignement strict avec les variables d'armures B2B
-            document.getElementById('feature-title-1').innerHTML = `<span>✦</span> ` + (robot.t1 || 'Core Function A');
-            document.getElementById('feature-desc-1').textContent = robot.d1 || 'Awaiting specification...';
-            document.getElementById('feature-title-2').innerHTML = `<span>✦</span> ` + (robot.t2 || 'Core Function B');
-            document.getElementById('feature-desc-2').textContent = robot.d2 || 'Awaiting parameters...';
+            document.getElementById('feature-title-1').innerHTML = `<span>✦</span> ` + robot.t1;
+            document.getElementById('feature-desc-1').textContent = robot.d1;
+            document.getElementById('feature-title-2').innerHTML = `<span>✦</span> ` + robot.t2;
+            document.getElementById('feature-desc-2').textContent = robot.d2;
             
             const targetTag = document.getElementById('gateway-target-tag');
-            if (targetTag) targetTag.textContent = robot.endpoint || '';
+            if (targetTag) targetTag.textContent = robot.endpoint;
             
             document.getElementById('price-solo-tag').textContent = "49$";
             document.getElementById('price-agency-tag').textContent = "149$";
@@ -366,24 +364,18 @@
         }
 
         function initializeApp() {
-            // 🚀 RESET ET SÉCURISATION DES VARIABLES DE SOUTE
+            const sidebarContainer = document.getElementById('sidebar-categories');
+            sidebarContainer.innerHTML = '';
+            categoriesDatabase.forEach((cat, index) => {
+                const btn = document.createElement('button');
+                btn.id = `btn-theme-${cat.id}`;
+                btn.className = `theme-btn ${cat.id === currentDivisionId ? 'active' : ''}`;
+                btn.innerHTML = cat.name;
+                btn.onclick = () => switchDivision(cat.id);
+                sidebarContainer.appendChild(btn);
+            });
             currentDivisionId = "div01";
             activeRobotIndex = 0;
-            
-            const sidebarContainer = document.getElementById('sidebar-categories');
-            if (sidebarContainer) {
-                sidebarContainer.innerHTML = '';
-                categoriesDatabase.forEach((cat, index) => {
-                    const btn = document.createElement('button');
-                    btn.id = `btn-theme-${cat.id}`;
-                    btn.className = `theme-btn ${cat.id === currentDivisionId ? 'active' : ''}`;
-                    btn.innerHTML = cat.name;
-                    btn.onclick = () => switchDivision(cat.id);
-                    sidebarContainer.appendChild(btn);
-                });
-            }
-            
-            // 🟢 FORCE L'HYDRATATION VISUELLE ET COMPORTEMENTALE IMMÉDIATE DES 5 ROBOTS
             renderSubNavigation();
             loadRobotData();
         }
