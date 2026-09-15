@@ -295,8 +295,27 @@
                 btn.onclick = () => switchDivision(cat.id);
                 sidebarContainer.appendChild(btn);
             });
-            renderSubNavigation();
-            loadRobotData();
+            function renderSubNavigation() {
+            const subnavContainer = document.getElementById('robots-subnav');
+            if (!subnavContainer) return;
+            subnavContainer.innerHTML = '';
+            
+            const activeGroup = matrixEcosystem[currentDivisionId];
+            const robotsList = activeGroup ? activeGroup.robots : [];
+            
+            robotsList.forEach((robot, index) => {
+                const btn = document.createElement('button');
+                btn.id = `tab-robot-${currentDivisionId}-${index}`;
+                btn.className = `robot-tab ${index === activeRobotIndex ? 'active' : ''}`;
+                btn.innerText = robot.name;
+                btn.onclick = () => {
+                    activeRobotIndex = index;
+                    document.querySelectorAll('.robot-tab').forEach(t => t.classList.remove('active'));
+                    btn.classList.add('active');
+                    loadRobotData();
+                };
+                subnavContainer.appendChild(btn);
+            });
         }
 
         function switchDivision(divisionId) {
