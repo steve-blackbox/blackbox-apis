@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 // 🚀 INJECTION EN DUR : Force le passage outre la variable d'environnement pour percer le pop-up
-const stripe = require('stripe')('METS_TA_CLE_STRIPE_ICI');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
