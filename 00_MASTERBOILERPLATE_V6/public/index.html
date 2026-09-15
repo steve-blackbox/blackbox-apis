@@ -364,19 +364,27 @@
         }
 
         function initializeApp() {
-            const sidebarContainer = document.getElementById('sidebar-categories');
-            sidebarContainer.innerHTML = '';
-            categoriesDatabase.forEach((cat, index) => {
-                const btn = document.createElement('button');
-                btn.id = `btn-theme-${cat.id}`;
-                btn.className = `theme-btn ${cat.id === currentDivisionId ? 'active' : ''}`;
-                btn.innerHTML = cat.name;
-                btn.onclick = () => switchDivision(cat.id);
-                sidebarContainer.appendChild(btn);
-            });
+            // 🚀 RESET ET SÉCURISATION DES VARIABLES DE SOUTE
             currentDivisionId = "div01";
             activeRobotIndex = 0;
+            
+            const sidebarContainer = document.getElementById('sidebar-categories');
+            if (sidebarContainer) {
+                sidebarContainer.innerHTML = '';
+                categoriesDatabase.forEach((cat, index) => {
+                    const btn = document.createElement('button');
+                    btn.id = `btn-theme-${cat.id}`;
+                    btn.className = `theme-btn ${cat.id === currentDivisionId ? 'active' : ''}`;
+                    btn.innerHTML = cat.name;
+                    btn.onclick = () => switchDivision(cat.id);
+                    sidebarContainer.appendChild(btn);
+                });
             }
+            
+            // 🟢 FORCE L'HYDRATATION VISUELLE ET COMPORTEMENTALE IMMÉDIATE DES 5 ROBOTS
+            renderSubNavigation();
+            loadRobotData();
+        }
 
         window.onload = initializeApp;
     </script>
