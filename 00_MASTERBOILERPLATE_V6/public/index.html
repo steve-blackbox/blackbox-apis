@@ -3,289 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackBox Automated Control — API Production Fleet</title>
-    <script src="https://tailwindcss.com"></script>
-    <link href="https://googleapis.com" rel="stylesheet">
+    <title>BlackBox Automated Control — 100 Core API Fleet</title>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; margin: 0; padding: 0; }
-        .font-display { font-family: 'Space Grotesk', sans-serif; }
-        .font-code { font-family: 'JetBrains Mono', monospace; }
-        
-        /* États actifs fluides et sans cases */
-        .theme-btn.active { color: #ffffff !important; font-weight: 800; }
-        .robot-tab.active { border-color: #2563eb !important; color: #ffffff !important; background-color: rgba(37, 99, 235, 0.1); }
-        
-        .sidebar-scroll::-webkit-scrollbar { width: 3px; }
-        .sidebar-scroll::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 2px; }
-    </style>
-</head>
-<body class="min-h-screen antialiased flex flex-col md:flex-row">
-
-    <!-- 🌌 BARRE LATÉRALE GAUCHE : LES 20 THEMES FLUIDES -->
-    <aside class="w-full md:w-72 bg-transparent border-r border-gray-900/60 flex flex-col h-screen sticky top-0 z-40 p-6">
-        <div class="pb-6 border-b border-gray-900/60 flex items-center gap-2 mb-6">
-            <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-            <span class="text-xs font-code font-bold tracking-widest text-blue-400">FLEET MATRIX</span>
-        </div>
-        
-        <div class="flex-1 overflow-y-auto space-y-4 sidebar-scroll text-left">
-            <button onclick="switchTheme('div01')" id="btn-theme-div01" class="theme-btn active text-sm text-gray-400 hover:text-white transition duration-150 outline-none block w-full text-left">
-                <span class="block text-[10px] font-code text-blue-500 font-bold mb-0.5">// DIV-01</span>
-                Input Security & Sanitization
-            </button>
-            <button onclick="switchTheme('div02')" id="btn-theme-div02" class="theme-btn text-sm text-gray-400 hover:text-white transition duration-150 outline-none block w-full text-left">
-                <span class="block text-[10px] font-code text-gray-600 font-bold mb-0.5">// DIV-02</span>
-                Audio Ingestion & Conversion
-            </button>
-            <button onclick="switchTheme('div03')" id="btn-theme-div03" class="theme-btn text-sm text-gray-400 hover:text-white transition duration-150 outline-none block w-full text-left">
-                <span class="block text-[10px] font-code text-gray-600 font-bold mb-0.5">// DIV-03</span>
-                Cryptographic Storage Vaults
-            </button>
-            <button onclick="switchTheme('div04')" id="btn-theme-div04" class="theme-btn text-sm text-gray-400 hover:text-white transition duration-150 outline-none block w-full text-left">
-                <span class="block text-[10px] font-code text-gray-600 font-bold mb-0.5">// DIV-04</span>
-                High-Speed String Optimizers
-            </button>
-            <div class="pt-2 text-[10px] font-code text-gray-700 select-none opacity-40">// THÈMES 05 À 20 VIRTUALISÉS</div>
-        </div>
-    </aside>
-
-    <!-- 🌌 COCKPIT DE DROITE FLUIDE PLEIN ÉCRAN -->
-    <div class="flex-1 flex flex-col min-h-screen overflow-y-auto">
-        <header class="p-6 border-b border-gray-900/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-                <h1 class="text-xl font-extrabold tracking-tight text-white uppercase font-display">BLACKBOX AUTOMATED CONTROL</h1>
-            </div>
-            <div class="flex items-center gap-2 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full uppercase tracking-wider font-code">
-                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                SYSTEMS STERILE
-            </div>
-        </header>
-
-        <main class="flex-1 p-6 md:p-8 max-w-4xl w-full mx-auto space-y-8 text-left">
-            
-            <!-- ONGLETS SUPÉRIEURS DE SÔUTE DES ROBOTS -->
-            <nav id="robotsSubNav" class="flex flex-wrap gap-2">
-                <!-- Les boutons de robots s'injectent ici dynamiquement via le script -->
-            </nav>
-          </nav>
-
-            <!-- CORPS DES DESCRIPTIFS FLUIDES DU ROBOT ACTIF -->
-            <div class="space-y-6 pt-2">
-                <span id="robot-engine-tag" class="text-xs font-code font-bold text-blue-500 uppercase tracking-wider block">[ CORE ENGINE 01 ]</span>
-                <h2 id="robot-main-title" class="text-3xl font-extrabold tracking-tight text-white leading-snug">
-                    Stop Form Spam Silently.<br>No Captchas. No Friction.
-                </h2>
-                <p id="robot-main-desc" class="text-sm text-gray-400 leading-relaxed max-w-2xl font-normal">
-                    A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.
-                </p>
-            </div>
-
-            <!-- SECTION METRICS SANS ENCADRÉS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-                <div id="feature-card-1" class="space-y-2">
-                    <h3 id="feature-title-1" class="text-sm font-bold text-white uppercase tracking-wider font-code">GDPR & CCPA Layer</h3>
-                    <p id="feature-desc-1" class="text-xs text-gray-400 leading-relaxed font-normal">
-                        Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.
-                    </p>
-                </div>
-                <div id="feature-card-2" class="space-y-2">
-                    <h3 id="feature-title-2" class="text-sm font-bold text-white uppercase tracking-wider font-code">Performance Matrix</h3>
-                    <p id="feature-desc-2" class="text-xs text-gray-400 leading-relaxed font-normal">
-                        Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.
-                    </p>
-                </div>
-            </div>
-
-            <!-- 💰 CONFIGURATION COMMERCIALE STRIPE INTÉGRALEMENT ALIGNÉE -->
-            <div class="border-t border-gray-900/60 pt-6 space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 id="license-title" class="text-xs font-bold text-white uppercase tracking-wider font-code">// Deploy FORM-SHIELD Commercial License</h3>
-                    <span id="gateway-target-tag" class="text-[9px] font-code font-bold text-gray-600 tracking-wider uppercase">[ TARGET: /v1/form-shield ]</span>
-                </div>
-                
-                <div class="flex flex-col sm:flex-row gap-6 text-sm">
-                    <!-- PLAN SOLO -->
-                    <div class="flex items-center gap-4 py-2">
-                        <span class="font-bold text-white">Solo License</span>
-                        <span class="font-extrabold text-gray-400 font-code">49$</span>
-                        <button onclick="triggerCheckout('solo')" class="bg-white hover:bg-gray-200 text-black text-[10px] font-bold px-4 py-1.5 rounded uppercase font-code tracking-wider outline-none">
-                            Acquire
-                        </button>
-                    </div>
-                    <!-- PLAN AGENCY -->
-                    <div class="flex items-center gap-4 py-2">
-                        <span class="font-bold text-white">Agency Fleet</span>
-                        <span class="font-extrabold text-gray-400 font-code">149$</span>
-                        <button onclick="triggerCheckout('agency')" class="bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-bold px-4 py-1.5 rounded uppercase font-code tracking-wider outline-none">
-                            Deploy
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-      <!-- FOOTER STERILE ACCESSIBLE -->
-    <footer class="w-full text-center py-6 text-[10px] text-gray-600 font-code bg-gray-950/20 border-t border-gray-900 sticky bottom-0 z-40">
-        © 2026 BlackBox Audio Labs LLC. Verified Centaure Engine v6.8 — USD Compliant.
-    </footer>
-
-    <script>
-        // 🧠 LA MATIÈRE GRISE DE SOUTE : MATRICE RELATIONNELLE DES THÈMES ET DES ROBOTS D'ÉLITE
-        const matrixEcosystem = {
-            "div01": {
-                name: "Input Security & Sanitization",
-                robots: [
-                    {
-                        id: "rb01", name: "Form Shield", rTag: "[ ROBOT 01 ]",
-                        title: "Stop Form Spam Silently.<br>No Captchas. No Friction.",
-                        desc: "A 100% invisible JavaScript honeypot framework engineered to block automated spambots upstream before they ever touch your transactional database layers.",
-                        t1: "GDPR & CCPA Layer", d1: "Zero tracking cookies. True stateless digital hygiene with absolutely zero logs cached in production.",
-                        t2: "Performance Matrix", d2: "Compressed into a single, self-contained 1.2KB script wrapper layout. Zero Core Web Vitals shift.",
-                        gt: "[ TARGET: /v1/form-shield ]", lt: "// Deploy FORM-SHIELD Commercial License", endpoint: "/v1/form-shield"
-                    },
-                    {
-                        id: "rb67", name: "SEO Analyzer", rTag: "[ ROBOT 67 ]",
-                        title: "Algorithmic Keyword Density.<br>Surgical Semantic Extraction.",
-                        desc: "Scans corporate copy arrays to map word occurrences and intercept optimization penalties before deployment loops.",
-                        t1: "Sifting Array", d1: "Processes large corpus text blocks in-memory via stateless regex tokenizer layers.",
-                        t2: "Penalty Protection", d2: "Highlights toxic content repetitions instantly to bypass modern search engine keyword stuffing blocks.",
-                        gt: "[ TARGET: /v1/keyword-density-analyzer ]", lt: "// Deploy SEO-ANALYZER Commercial License", endpoint: "/v1/keyword-density-analyzer"
-                    }
-                ]
-            },
-            "div02": {
-                name: "Audio Ingestion & Conversion",
-                robots: [
-                    {
-                        id: "rb02", name: "Audio Convert", rTag: "[ ROBOT 02 ]",
-                        title: "High-Fidelity Audio Ingestion.<br>Stateless Pipeline Conversion.",
-                        desc: "Processes and converts raw binary audio assets with strict optimal byte alignment and zero buffer accumulation bloating.",
-                        t1: "Codec Adaptor", d1: "Real-time bitrate adaptations compliant with major international digital broadcast layout requirements.",
-                        t2: "Volatile Buffers", d2: "Manipulates binary voice packets entirely in temporary memory allocation slots for absolute security compliance.",
-                        gt: "[ TARGET: /v1/audio-convert ]", lt: "// Deploy AUDIO-CONVERT Commercial License", endpoint: "/v1/audio-convert"
-                    }
-                ]
-            },
-            "div03": {
-                name: "Cryptographic Storage Vaults",
-                robots: [
-                    {
-                        id: "rb86", name: "AES-256 Encryptor", rTag: "[ ROBOT 86 ]",
-                        title: "Symmetric Encryption Node.<br>Military-Grade Encapsulation.",
-                        desc: "Secures sensitive raw text payloads utilizing standard high-entropy AES-256-CBC cypher arrays.",
-                        t1: "CBC Chaining Matrix", d1: "Forced dynamic Initialization Vector allocation ensures unique cyphertext generation blocks.",
-                        t2: "Zero Local Caching", d2: "Stateless processing pipeline returns safe outputs without writing persistent bits to disk.",
-                        gt: "[ TARGET: /v1/aes-256-encryptor ]", lt: "// Deploy AES-ENCRYPTOR Commercial License", endpoint: "/v1/aes-256-encryptor"
-                    }
-                ]
-            },
-            "div04": {
-                name: "High-Speed String Optimizers",
-                robots: [
-                    {
-                        id: "rb99", name: "Word Inverter", rTag: "[ ROBOT 99 ]",
-                        title: "Semantic Word Rotation.<br>Array Reversal Controller.",
-                        desc: "Reverses standard string flows by characters or words utilizing lightning-fast low-level manipulation algorithms.",
-                        t1: "Dual Invert Logic", d1: "Supports mirrored mirror-effects or structured token sequence inversions on-demand.",
-                        t2: "0.03ms Latency", d2: "Optimized array splitting mechanisms deliver outputs inside high-speed transactional loops.",
-                        gt: "[ TARGET: /v1/word-inverter ]", lt: "// Deploy WORD-INVERTER Commercial License", endpoint: "/v1/word-inverter"
-                    },
-                    {
-                        id: "rb97", name: "Space Collapser", rTag: "[ ROBOT 97 ]",
-                        title: "Whitespace Compactor.<br>String Sanitization Protocol.",
-                        desc: "Locates and crushes multiple layout indentation tabs and duplicate spaces into single clean fragments.",
-                        t1: "Tab Stripper", d1: "Erases formatting residue and carriage returns natively from unaligned raw payload inputs.",
-                        t2: "Data Reduction", d2: "Reduces string payload weights significantly before cloud transfer or execution phases.",
-                        gt: "[ TARGET: /v1/space-collapser ]", lt: "// Deploy SPACE-COLLAPSER Commercial License", endpoint: "/v1/space-collapser"
-                    }
-                ]
-            }
-        };
-
-        let activeThemeId = "div01";
-        let activeRobotData = matrixEcosystem["div01"].robots[0];
-
-        function switchTheme(themeId) {
-            if (!matrixEcosystem[themeId]) return;
-            activeThemeId = themeId;
-
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.classList.remove('active', 'text-white');
-                btn.classList.add('text-gray-400');
-            });
-
-            const currentBtn = document.getElementById(`btn-theme-${themeId}`);
-            if (currentBtn) currentBtn.classList.add('active');
-
-            renderRobotTabs(themeId);
+        :root {
+            --bg-base: #020308;
+            --bg-sidebar: rgba(4, 6, 15, 0.85);
+            --bg-card: rgba(6, 12, 22, 0.65);
+            --border-glow: #14281a;
+            --border-active: #00ff88;
+            --text-main: #e2fbe9; /* Vert menthe glacé ultra-pâle premium */
+            --text-muted: #385340; /* Vert sombre militarisé de soute */
+            --accent-green: #00ff88; /* Vert émeraude laser Matrix */
+            --sidebar-width: 310px;
         }
 
-        function renderRobotTabs(themeId) {
-            const container = document.getElementById('robotsSubNav');
-            if (!container) return;
-            container.innerHTML = "";
-            const robotsList = matrixEcosystem[themeId].robots;
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0; padding: 0; display: flex !important; flex-direction: row !important;
+            height: 100vh; overflow: hidden; box-sizing: border-box;
+        }
 
+        /* 🌌 BACKGROUND MATRIX DYNAMIQUE FLUO */
+        #matrixCanvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; opacity: 0.14; pointer-events: none;
+        }
+
+        /* 📐 SIDEBAR EXECUTIVE SANS COUTURES (STYLE LINEAR NATIVE) */
+        aside {
+            width: var(--sidebar-width) !important; min-width: var(--sidebar-width) !important; max-width: var(--sidebar-width) !important;
+            background-color: var(--bg-sidebar); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-right: 1px solid var(--border-glow); display: flex !important; flex-direction: column !important;
+            height: 100vh !important; box-shadow: 20px 0 60px rgba(0, 0, 0, 0.9); z-index: 50; box-sizing: border-box;
+        }
+
+        .sidebar-header {
+            padding: 32px 24px; border-bottom: 1px solid var(--border-glow);
+            background: linear-gradient(to bottom, rgba(3,8,5,0.4), transparent);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .linear-logo-container {
+            width: 32px; height: 32px; min-width: 32px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .sidebar-title { 
+            font-size: 18px; font-weight: 900; margin: 0; letter-spacing: -0.5px; 
+            color: #ffffff; text-shadow: 0 0 15px rgba(255,255,255,0.1);
+        }
+
+        .theme-list { flex: 1; overflow-y: auto; padding: 24px 12px; }
+        .theme-list::-webkit-scrollbar { width: 3px; }
+        .theme-list::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 2px; }
+
+        .theme-btn {
+            width: 100%; background: transparent; border: none; color: var(--text-muted);
+            padding: 14px 16px; text-align: left; font-size: 14px; cursor: pointer;
+            outline: none; border-radius: 8px; margin-bottom: 4px; display: flex; flex-direction: column;
+            box-sizing: border-box; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .theme-btn:hover { background-color: rgba(0, 255, 136, 0.03); color: var(--text-main); }
+        .theme-btn.active {
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.05) 0%, transparent 100%);
+            color: #ffffff !important; font-weight: 700; border-left: 3px solid var(--accent-green); padding-left: 20px;
+        }
+
+        main {
+            flex: 1 !important; padding: 50px; overflow-y: auto; box-sizing: border-box; z-index: 10;
+            background: radial-gradient(circle at top right, rgba(0,255,136,0.04), transparent 60%);
+        }
+
+        main::-webkit-scrollbar { width: 3px; }
+        main::-webkit-scrollbar-thumb { background: var(--border-glow); }
+        .content-container { max-width: 950px; width: 100%; margin: 0 auto; }
+
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glow); padding-bottom: 24px; margin-bottom: 40px; }
+        h1 {
+            font-size: 24px; font-weight: 900; color: #ffffff; margin: 0; text-transform: uppercase; letter-spacing: -0.5px;
+            background: linear-gradient(to right, #ffffff 50%, var(--text-main)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .status-badge {
+            font-size: 10px; font-weight: 700; color: var(--accent-green); background-color: rgba(0, 255, 136, 0.02);
+            border: 1px solid rgba(0, 255, 136, 0.2); padding: 6px 16px; border-radius: 9999px;
+            text-transform: uppercase; letter-spacing: 1.5px; font-family: monospace; text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .robots-nav { display: flex; gap: 12px; margin-bottom: 40px; border-bottom: 1px solid var(--border-glow); padding-bottom: 20px; overflow-x: auto; }
+        .robot-tab {
+            background: rgba(0, 255, 136, 0.01); border: 1px solid var(--border-glow); color: var(--text-muted);
+            padding: 12px 24px; text-align: center; font-size: 12px; font-family: monospace; cursor: pointer;
+            border-radius: 8px; outline: none; white-space: nowrap; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .robot-tab:hover { border-color: rgba(0, 255, 136, 0.3); color: var(--text-main); background: rgba(0, 255, 136, 0.02); }
+        .robot-tab.active { background: rgba(0, 255, 136, 0.04); border-color: var(--accent-green); color: var(--accent-green); font-weight: 700; box-shadow: 0 0 25px rgba(0, 255, 136, 0.2); }
+
+        .robot-main-title { font-size: 42px; font-weight: 900; color: #ffffff; margin: 0 0 24px 0; line-height: 1.15; letter-spacing: -1.5px; text-shadow: 0 0 20px rgba(255,255,255,0.05); }
+        .robot-main-desc { font-size: 16px; color: #8fa394; line-height: 1.6; margin-bottom: 45px; max-width: 780px; }
+
+        .bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 50px; }
+        .bento-card {
+            background-color: var(--bg-card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow); padding: 30px; border-radius: 14px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .bento-card:hover { border-color: rgba(0, 255, 136, 0.3); box-shadow: 0 0 30px rgba(0, 255, 136, 0.05); transform: translateY(-2px); }
+        .bento-card h3 { font-size: 13px; font-weight: 700; color: #ffffff; margin: 0 0 14px 0; text-transform: uppercase; font-family: monospace; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; }
+        .bento-card h3 span { color: var(--accent-green); text-shadow: 0 0 10px var(--accent-green); }
+        .bento-card p { font-size: 13px; color: #8fa394; margin: 0; line-height: 1.6; }
+        .stripe-section { border-top: 1px solid var(--border-glow); padding-top: 40px; }
+        .stripe-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        
+        .plan-box {
+            background: linear-gradient(135deg, rgba(4,8,6,0.8) 0%, rgba(2,4,3,0.9) 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow); padding: 28px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .plan-box:hover { border-color: rgba(0, 255, 136, 0.4); box-shadow: 0 0 30px rgba(0, 255, 136, 0.08); }
+        .plan-info { display: flex; flex-direction: column; max-width: 65%; }
+        .plan-name { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 4px; text-transform: uppercase; font-family: monospace; letter-spacing: 0.5px; }
+        .plan-desc { font-size: 11px; color: #8fa394; line-height: 1.4; margin-bottom: 4px; font-weight: 500; }
+        .plan-target-audience { font-size: 11px; color: var(--accent-green); font-family: monospace; opacity: 0.8; }
+        .plan-action { display: flex; align-items: center; gap: 24px; }
+        .plan-price-wrapper { display: flex; flex-direction: column; align-items: flex-end; }
+        .plan-price { font-size: 24px; font-weight: 900; color: var(--accent-green); font-family: monospace; text-shadow: 0 0 10px rgba(0,255,136,0.3); }
+        .plan-term { font-size: 9px; color: var(--text-muted); font-family: monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-top: -2px; }
+
+        .buy-btn {
+            background-color: transparent; color: var(--accent-green); border: 1px solid rgba(0, 255, 136, 0.4);
+            padding: 12px 24px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer;
+            text-transform: uppercase; font-family: monospace; outline: none; transition: all 0.2s ease;
+        }
+        .buy-btn:hover { background-color: rgba(0, 255, 136, 0.05); border-color: var(--accent-green); transform: scale(1.02); }
+        .buy-btn.laser-btn {
+            background-color: var(--accent-green); color: #000000; border: none; font-weight: 900;
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.35);
+        }
+        .buy-btn.laser-btn:hover { background-color: #00e676; box-shadow: 0 0 35px rgba(0, 255, 136, 0.5); }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <aside>
+        <div class="sidebar-header">
+            <div class="linear-logo-container">
+                <svg width="28" height="28" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.3));">
+                    <circle cx="50" cy="50" r="46" fill="#020308" stroke="#14281a" stroke-width="4"/>
+                    <path d="M25,75 L75,25 M35,80 L80,35 M20,65 L65,20" stroke="#00ff88" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M45,85 L85,45 M15,50 L50,15" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+                </svg>
+            </div>
+            <div class="sidebar-title">BLACKBOX LABS</div>
+        </div>
+        <div class="theme-list sidebar-scroll" id="sidebar-categories"></div>
+    </aside>
+
+    <main>
+        <div class="content-container">
+            <header>
+                <h1 id="current-division-title">Form & Data Protection</h1>
+                <div class="status-badge">Fleet Active • 100 Nodes Live</div>
+            </header>
+
+            <section class="robot-display-section">
+                <nav class="robots-nav" id="robots-subnav"></nav>
+
+                <h2 class="robot-main-title" id="robot-main-title">Loading Active Node Ingress...</h2>
+                <p class="robot-main-desc" id="robot-main-desc">Awaiting initialization variables...</p>
+
+                <div class="bento-grid">
+                    <div class="bento-card">
+                        <h3 id="feature-title-1"><span>✦</span> Function Core A</h3>
+                        <p id="feature-desc-1">Loading structural specifications loop...</p>
+                    </div>
+                    <div class="bento-card">
+                        <h3 id="feature-title-2"><span>✦</span> Function Core B</h3>
+                        <p id="feature-desc-2">Loading performance benchmarks parameters...</p>
+                    </div>
+                </div>
+
+                <div class="stripe-section">
+                    <div class="stripe-section-header">
+                        <span id="gateway-target-tag" style="display: none;"></span>
+                    </div>
+                    <div class="stripe-grid">
+                        <div class="plan-box">
+                            <div class="plan-info">
+                                <span class="plan-name">CORE ACCESS</span>
+                                <span class="plan-desc">1 Endpoint Actif • Requêtes Illimitées • Intégration Code Directe</span>
+                                <span class="plan-target-audience">// Parfait pour développeurs indés, consultants & micro-projets</span>
+                            </div>
+                            <div class="plan-action">
+                                <div class="plan-price-wrapper">
+                                    <span class="plan-price" id="price-solo-tag">49$</span>
+                                    <span class="plan-term">Paiement unique • À vie</span>
+                                </div>
+                                <button onclick="triggerCheckout('solo')" class="buy-btn">Acquire</button>
+                            </div>
+                        </div>
+                        <div class="plan-box">
+                            <div class="plan-info">
+                                <span class="plan-name">LABS ALL-ACCESS</span>
+                                <span class="plan-desc">100 Endpoints Ouverts • Clé Master Flotte • Support Soute Prioritaire</span>
+                                <span class="plan-target-audience">// Parfait pour agences web, growth hackers & multi-clients</span>
+                            </div>
+                            <div class="plan-action">
+                                <div class="plan-price-wrapper">
+                                    <span class="plan-price" id="price-agency-tag">149$</span>
+                                    <span class="plan-term">Paiement unique • À vie</span>
+                                </div>
+                                <button onclick="triggerCheckout('agency')" class="buy-btn laser-btn">Deploy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        const columns = Math.floor(width / 24);
+        const yPositions = Array(columns).fill(0);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(2, 3, 8, 0.06)';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#00ff88';
+            ctx.font = '11px monospace';
+            yPositions.forEach((y, index) => {
+                const text = String.fromCharCode(33 + Math.random() * 93);
+                ctx.fillText(text, index * 24, y);
+                if (y > 100 + Math.random() * 15000) yPositions[index] = 0;
+                else yPositions[index] = y + 13;
+            });
+        }
+        setInterval(drawMatrix, 33);
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const categoriesDatabase = [
+            { id: "div01", name: "Form & Data Protection" },
+            { id: "div02", name: "Cyber-Defense Modules" },
+            { id: "div03", name: "Privacy & Cloud Proxy" },
+            { id: "div04", name: "Audio Processing Lab" },
+            { id: "div05", name: "Media & Asset Optimizer" },
+            { id: "div06", name: "Document Automation" },
+            { id: "div07", name: "Geoloc & Smart Routing" },
+            { id: "div08", name: "Agent Web Analytics" },
+            { id: "div09", name: "Web Scraping Matrix" },
+            { id: "div10", name: "Code & Performance Core" },
+            { id: "div11", name: "Automated Task Scheduling" },
+            { id: "div12", name: "SEO Keyword Optimizer" },
+            { id: "div13", name: "Link Protection & Cloaking" },
+            { id: "div14", name: "Fintech & Currency Utilities" },
+            { id: "div15", name: "Crypto Security Gateways" },
+            { id: "div16", name: "Symmetric Encryption Nets" },
+            { id: "div17", name: "Dynamic Case Compilers" },
+            { id: "div18", name: "System Health Diagnostics" },
+            { id: "div19", name: "Log Sanitizers & Privacy" },
+            { id: "div20", name: "Multi-Cloud Traffic Flow" }
+        ];
+
+        const matrixEcosystem = {};
+        categoriesDatabase.forEach((cat, catIndex) => {
+            const baseIndex = catIndex * 5;
+            matrixEcosystem[cat.id] = {
+                name: cat.name,
+                robots: [
+                    { id: `rb_${cat.id}_1`, name: "Honeypot Shield", title: `Sanitize System Access Ingress.<br>Block Spam Upstream Silently.`, desc: `Stateless endpoint validation engine engineered to filter automated payload injections and scraping scripts under microsecond transaction windows before variable storage hydration.`, t1: "SURGICAL SCRUB", d1: "Strips toxic script headers and event triggers natively inside volatile runtime slots.", t2: "STATELESS INGESTION", d2: "Processes input tokens cleanly without creating tracking files or system caching footprint loops.", endpoint: `/v1/shield-node-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_2`, name: "Deep Packet Inspector", title: `Real-Time Payload Audit.<br>Deep Structural JSON Validation.`, desc: "Monitors input data validation templates at the perimeter gateway layer to neutralize malformed signatures and object chaining exploits natively.", t1: "SYNTAX PROTECTION", d1: "Scans structured text trees to bypass malicious prototype pollution or hijacking attempts.", t2: "SUB-0.03MS LATENCY", d2: "Designed to run at the perimeter edge under strict enterprise-grade performance benchmarks.", endpoint: `/v1/inspect-core-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_3`, name: "Isolated Traffic Proxy", title: `Ephemeral Network Routing.<br>Encapsulated Content Routing Net.`, desc: "Hardened proxy namespacing layer routing external API callback streams safely across volatile pools to prevent behavioral matching maps.", t1: "PATTERN DISRUPTION", d1: "Blocks system tracking footprints and reverse origin profiling attempts automatically in flight.", t2: "ABSOLUTE HYGIENE", d2: "Enforces total context sandbox isolation to guarantee cross-tenant boundaries remain sterile.", endpoint: `/v1/proxy-slot-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_4`, name: "String Compactor Core", title: `Whitespace Space Compactor.<br>String Sanitization Protocol.`, desc: "Locates and crushes multiple layout indentation tabs, carriage returns and redundant special signs into uniform alphanumeric string blocks.", t1: "DATA REDUCTION", d1: "Reduces raw payload weights significantly up to 60% before heavy database ingestion loops.", t2: "MEMORY DEFENSE", d2: "Operates 100% in local volatile registers, protecting active hardware from memory bloat leaks.", endpoint: `/v1/compactor-core-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_5`, name: "Master Token Forger", title: `Master Cryptographic Token.<br>High-Entropy Seed Scrambler.`, desc: "Generates ephemeral cryptographically secure access keys utilizing randomized multi-seeded parameter loops for top-tier microservice maillage.", t1: "HIGH ENTROPY MATRIX", d1: "Utilizes advanced low-level hardware structures to forge unique authentication signatures on the fly.", t2: "INSTANT INVALIDATION", d2: "Destroys cryptographic tracking flags immediately upon transit processing completion at the gateway edge.", endpoint: `/v1/master-token-${catIndex + 1}` }
+                ]
+            };
+        });
+
+        let currentDivisionId = "div01";
+        let activeRobotIndex = 0;
+
+        function initializeApp() {
+            const sidebarContainer = document.getElementById('sidebar-categories');
+            sidebarContainer.innerHTML = '';
+            categoriesDatabase.forEach((cat, index) => {
+                const btn = document.createElement('button');
+                btn.id = `btn-theme-${cat.id}`;
+                btn.className = `theme-btn ${cat.id === currentDivisionId ? 'active' : ''}`;
+                btn.innerHTML = cat.name;
+                btn.onclick = () => switchDivision(cat.id);
+                sidebarContainer.appendChild(btn);
+            });
+            renderSubNavigation();
+            loadRobotData();
+        }
+
+        function switchDivision(divisionId) {
+            currentDivisionId = divisionId;
+            activeRobotIndex = 0;
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-theme-${divisionId}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            const mainHeaderTitle = document.getElementById('current-division-title');
+            if (mainHeaderTitle && activeBtn) {
+                mainHeaderTitle.innerText = activeBtn.innerText;
+            }
+            renderSubNavigation();
+            loadRobotData();
+        }
+
+        function renderSubNavigation() {
+            const subnavContainer = document.getElementById('robots-subnav');
+            if (!subnavContainer) return;
+            subnavContainer.innerHTML = '';
+            const activeGroup = matrixEcosystem[currentDivisionId];
+            const robotsList = activeGroup ? activeGroup.robots : [];
             robotsList.forEach((robot, index) => {
                 const btn = document.createElement('button');
                 btn.id = `tab-robot-${robot.id}`;
-                btn.onclick = () => selectRobot(robot);
-                btn.className = `robot-tab border border-gray-800 text-gray-400 text-[11px] font-code rounded px-3 py-1.5 transition duration-150 outline-none ${index === 0 ? 'active' : ''}`;
-                btn.textContent = robot.name;
-                container.appendChild(btn);
+                btn.className = `robot-tab ${index === activeRobotIndex ? 'active' : ''}`;
+                btn.innerText = robot.name;
+                btn.onclick = () => {
+                    activeRobotIndex = index;
+                    document.querySelectorAll('.robot-tab').forEach(t => t.classList.remove('active'));
+                    btn.classList.add('active');
+                    loadRobotData();
+                };
+                subnavContainer.appendChild(btn);
             });
-
-            if (robotsList.length > 0) {
-                selectRobot(robotsList[0]);
-            }
         }
 
-        // Mutation atomique du contenu de la maquette (Titres, Textes, Bento Cards) sans boite centrale
-        function selectRobot(robot) {
-            activeRobotData = robot;
+        function loadRobotData() {
+            const activeGroup = matrixEcosystem[currentDivisionId];
+            const robotsList = activeGroup ? activeGroup.robots : [];
+            if (robotsList.length === 0) return;
+            const robot = robotsList[activeRobotIndex];
 
-            document.querySelectorAll('.robot-tab').forEach(tab => {
-                tab.classList.remove('active', 'border-blue-600', 'bg-blue-600/10', 'text-white');
-                tab.classList.add('text-gray-400');
-            });
-            const targetTab = document.getElementById(`tab-robot-${robot.id}`);
-            if (targetTab) {
-                targetTab.classList.remove('text-gray-400');
-                targetTab.classList.add('active');
-            }
-
-            document.getElementById('robot-engine-tag').textContent = robot.rTag;
             document.getElementById('robot-main-title').innerHTML = robot.title;
             document.getElementById('robot-main-desc').textContent = robot.desc;
             
-            document.getElementById('feature-title-1').textContent = robot.t1;
+            // INJECTION DYNAMIQUE PRECISE ET ASSOCIEE DES DESCRIPTIONS BENTO AU CLIC 
+            document.getElementById('feature-title-1').innerHTML = `<span>✦</span> ` + robot.t1;
             document.getElementById('feature-desc-1').textContent = robot.d1;
-            
-            document.getElementById('feature-title-2').textContent = robot.t2;
+            document.getElementById('feature-title-2').innerHTML = `<span>✦</span> ` + robot.t2;
             document.getElementById('feature-desc-2').textContent = robot.d2;
-
-            document.getElementById('gateway-target-tag').textContent = robot.gt;
-            document.getElementById('license-title').textContent = robot.lt;
+            
+            const targetTag = document.getElementById('gateway-target-tag');
+            if (targetTag) targetTag.textContent = robot.endpoint;
+            
+            document.getElementById('price-solo-tag').textContent = "49$";
+            document.getElementById('price-agency-tag').textContent = "149$";
         }
 
         async function triggerCheckout(planType) {
+            const activeGroup = matrixEcosystem[currentDivisionId];
+            const robot = activeGroup ? activeGroup.robots[activeRobotIndex] : null;
+            if (!robot) return;
             try {
                 const response = await fetch('/v1/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ plan: planType, endpoint_target: activeRobotData.endpoint })
+                    body: JSON.stringify({ plan: planType, endpoint_target: robot.endpoint })
                 });
                 const session = await response.json();
                 if (session.url) window.location.href = session.url;
-                else alert(`Stripe Session Error: ${session.error}`);
+                else alert(`Stripe Error: ${session.error}`);
             } catch (err) {
                 alert(`Network failure: ${err.message}`);
             }
         }
 
-        window.onload = () => {
-            renderRobotTabs("div01");
-        };
+        window.onload = initializeApp;
     </script>
 </body>
 </html>
