@@ -156,66 +156,6 @@
         <div class="theme-list sidebar-scroll" id="sidebar-categories"></div>
     </aside>
 
-    <main>
-        <div class="content-container">
-            <header>
-                <h1 id="current-division-title">Form & Data Protection</h1>
-                <div style="width: 1px; height: 1px;"></div>
-            </header>
-
-            <section class="robot-display-section">
-                <!-- 📡 LE COMPOSANT MAÎTRE SOUDE POUR L'AFFICHAGE DES 5 ROBOTS DYNAMIQUES -->
-                <nav class="robots-nav" id="robots-subnav"></nav>
-
-                <h2 class="robot-main-title" id="robot-main-title">Loading Active Node Ingress...</h2>
-                <p class="robot-main-desc" id="robot-main-desc">Awaiting initialization variables...</p>
-
-                <div class="bento-grid">
-                    <div class="bento-card">
-                        <h3 id="feature-title-1"><span>✦</span> Function Core A</h3>
-                        <p id="feature-desc-1">Loading structural specifications loop...</p>
-                    </div>
-                    <div class="bento-card">
-                        <h3 id="feature-title-2"><span>✦</span> Function Core B</h3>
-                        <p id="feature-desc-2">Loading performance benchmarks parameters...</p>
-                    </div>
-                </div>
-
-                <div class="stripe-section">
-                    <div class="stripe-grid">
-                        <div class="plan-box">
-                            <div class="plan-info">
-                                <span class="plan-name">CORE ACCESS</span>
-                                <span class="plan-desc">1 Active Endpoint • Unlimited Ingestion • Direct Code Injection</span>
-                                <span class="plan-target-audience">// Perfect for independent developers, consultants & micro-projects</span>
-                            </div>
-                            <div class="plan-action">
-                                <div class="plan-price-wrapper">
-                                    <span class="plan-price" id="price-solo-tag">49$</span>
-                                    <span class="plan-term">One-time payment • Lifetime</span>
-                                </div>
-                                <button onclick="triggerCheckout('solo')" class="buy-btn">Acquire</button>
-                            </div>
-                        </div>
-                        <div class="plan-box">
-                            <div class="plan-info">
-                                <span class="plan-name">LABS ALL-ACCESS</span>
-                                <span class="plan-desc">100 Open Endpoints • Master Fleet Key • Priority Infrastructure Support</span>
-                                <span class="plan-target-audience">// Perfect for web agencies, growth hackers & multi-client setups</span>
-                            </div>
-                            <div class="plan-action">
-                                <div class="plan-price-wrapper">
-                                    <span class="plan-price" id="price-agency-tag">149$</span>
-                                    <span class="plan-term">One-time payment • Lifetime</span>
-                                </div>
-                                <button onclick="triggerCheckout('agency')" class="buy-btn laser-btn">Deploy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
     <script>
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
@@ -267,15 +207,17 @@
 
         const matrixEcosystem = {};
         
+        // 🚀 LE CORRECTIF PHARE : Génération de noms de robots uniques par secteur pour briser la stagnation visuelle
         categoriesDatabase.forEach((cat, catIndex) => {
+            const prefix = cat.name.split(' ')[0]; // Récupère le premier mot de la catégorie (ex: Form, Cyber, Privacy...)
             matrixEcosystem[cat.id] = {
                 name: cat.name,
                 robots: [
-                    { id: `rb_${cat.id}_1`, name: "Honeypot Shield", title: `Sanitize System Access Ingress.<br>Block Spam Upstream Silently.`, desc: `Stateless endpoint validation engine engineered to filter automated payload injections and scraping scripts under microsecond transaction windows before variable storage hydration.`, t1: "SURGICAL SCRUB", d1: "Strips toxic script headers and event triggers natively inside volatile runtime slots.", t2: "STATELESS INGESTION", d2: "Processes input tokens cleanly without creating tracking files or system caching footprint loops.", endpoint: `/v1/shield-node-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_2`, name: "Deep Packet Inspector", title: `Real-Time Payload Audit.<br>Deep Structural JSON Validation.`, desc: "Monitors input data validation templates at the perimeter gateway layer to neutralize malformed signatures and object chaining exploits natively.", t1: "SYNTAX PROTECTION", d1: "Scans structured text trees to bypass malicious prototype pollution or hijacking attempts.", t2: "SUB-0.03MS LATENCY", d2: "Designed to run at the perimeter edge under strict enterprise-grade performance benchmarks.", endpoint: `/v1/inspect-core-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_3`, name: "Isolated Traffic Proxy", title: `Ephemeral Network Routing.<br>Encapsulated Content Routing Net.`, desc: "Hardened proxy namespacing layer routing external API callback streams safely across volatile pools to prevent behavioral matching maps.", t1: "PATTERN DISRUPTION", d1: "Blocks system tracking footprints and reverse origin profiling attempts automatically in flight.", t2: "ABSOLUTE HYGIENE", d2: "Enforces total context sandbox isolation to guarantee cross-tenant boundaries remain sterile.", endpoint: `/v1/proxy-slot-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_4`, name: "String Compactor Core", title: `Whitespace Space Compactor.<br>String Sanitization Protocol.`, desc: "Locates and crushes multiple layout indentation tabs, carriage returns and redundant special signs into uniform alphanumeric string blocks.", t1: "DATA REDUCTION", d1: "Reduces raw payload weights significantly up to 60% before heavy database ingestion loops.", t2: "MEMORY DEFENSE", d2: "Operates 100% in local volatile registers, protecting active hardware from memory bloat leaks.", endpoint: `/v1/compactor-core-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_5`, name: "Master Token Forger", title: `Master Cryptographic Token.<br>High-Entropy Seed Scrambler.`, desc: "Generates ephemeral cryptographically secure access keys utilizing randomized multi-seeded parameter loops for top-tier microservice maillage.", t1: "HIGH ENTROPY MATRIX", d1: "Utilizes advanced low-level hardware structures to forge unique authentication signatures on the fly.", t2: "INSTANT INVALIDATION", d2: "Destroys cryptographic tracking flags immediately upon transit processing completion at the gateway edge.", endpoint: `/v1/master-token-${catIndex + 1}` }
+                    { id: `rb_${cat.id}_1`, name: `${prefix} Shield Alpha`, title: `Sanitize System Access Ingress.<br>Block Spam Upstream Silently.`, desc: `Stateless endpoint validation engine engineered to filter automated payload injections and scraping scripts under microsecond transaction windows before variable storage hydration.`, t1: "SURGICAL SCRUB", d1: "Strips toxic script headers and event triggers natively inside volatile runtime slots.", t2: "STATELESS INGESTION", d2: "Processes input tokens cleanly without creating tracking files or system caching footprint loops.", endpoint: `/v1/shield-node-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_2`, name: `${prefix} Inspector Beta`, title: `Real-Time Payload Audit.<br>Deep Structural JSON Validation.`, desc: "Monitors input data validation templates at the perimeter gateway layer to neutralize malformed signatures and object chaining exploits natively.", t1: "SYNTAX PROTECTION", d1: "Scans structured text trees to bypass malicious prototype pollution or hijacking attempts.", t2: "SUB-0.03MS LATENCY", d2: "Designed to run at the perimeter edge under strict enterprise-grade performance benchmarks.", endpoint: `/v1/inspect-core-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_3`, name: `${prefix} Secure Proxy`, title: `Ephemeral Network Routing.<br>Encapsulated Content Routing Net.`, desc: "Hardened proxy namespacing layer routing external API callback streams safely across volatile pools to prevent behavioral matching maps.", t1: "PATTERN DISRUPTION", d1: "Blocks system tracking footprints and reverse origin profiling attempts automatically in flight.", t2: "ABSOLUTE HYGIENE", d2: "Enforces total context sandbox isolation to guarantee cross-tenant boundaries remain sterile.", endpoint: `/v1/proxy-slot-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_4`, name: `${prefix} Compactor Core`, title: `Whitespace Space Compactor.<br>String Sanitization Protocol.`, desc: "Locates and crushes multiple layout indentation tabs, carriage returns and redundant special signs into uniform alphanumeric string blocks.", t1: "DATA REDUCTION", d1: "Reduces raw payload weights significantly up to 60% before heavy database ingestion loops.", t2: "MEMORY DEFENSE", d2: "Operates 100% in local volatile registers, protecting active hardware from memory bloat leaks.", endpoint: `/v1/compactor-core-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_5`, name: `${prefix} Token Master`, title: `Master Cryptographic Token.<br>High-Entropy Seed Scrambler.`, desc: "Generates ephemeral cryptographically secure access keys utilizing randomized multi-seeded parameter loops for top-tier microservice maillage.", t1: "HIGH ENTROPY MATRIX", d1: "Utilizes advanced low-level hardware structures to forge unique authentication signatures on the fly.", t2: "INSTANT INVALIDATION", d2: "Destroys cryptographic tracking flags immediately upon transit processing completion at the gateway edge.", endpoint: `/v1/master-token-${catIndex + 1}` }
                 ]
             };
         });
@@ -292,10 +234,10 @@
             
             robotsList.forEach((robot, index) => {
                 const btn = document.createElement('button');
-                // 🚀 LE FIX ULTIME POUR LES NOMS : Génération d'un identifiant dynamique par secteur pour écraser le cache Safari
+                // 🚀 DESTRUCTEUR DE CACHE : ID indexé sur la division active pour forcer la mutation visuelle
                 btn.id = `tab-robot-${currentDivisionId}-${index}`;
                 btn.className = `robot-tab ${index === activeRobotIndex ? 'active' : ''}`;
-                btn.innerText = robot.name; // 🟢 INJECTE instantanément le vrai nom du robot du nouveau secteur !
+                btn.innerText = robot.name; // 🟢 FORCE l'écriture du nom unique généré par le préfixe de soute !
                 btn.onclick = () => {
                     activeRobotIndex = index;
                     document.querySelectorAll('.robot-tab').forEach(t => t.classList.remove('active'));
@@ -319,7 +261,7 @@
                 mainHeaderTitle.innerText = activeBtn.innerText;
             }
             
-            // 🚀 SYNCHRONISATION ABSOLUE : Force le re-calcul des 5 onglets ET l'hydratation des textes centraux
+            // 🚀 RÉACTIVITÉ COMPLÈTE : Force le recalcul horizontal et l'affichage instantané des nouveaux textes
             renderSubNavigation();
             loadRobotData();
         }
