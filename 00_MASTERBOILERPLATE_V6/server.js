@@ -10,16 +10,6 @@ app.use(express.urlencoded({ extended: true }));
 // Distribution des fichiers statiques de ta vitrine Matrix
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Mock database temporaire pour simuler la flotte si form_shield est requis
-try {
-    const formShield = require('./form_shield');
-    if (typeof formShield === 'function') {
-        app.use(formShield);
-    }
-} catch (e) {
-    console.log("[ℹ️ SYSTEM INGRESS] Form shield absent ou chargé différemment. Continuité sécurisée.");
-}
-
 // 📡 INTERCEPTION SUPRÊME ET DISTRIBUTION DE LA VITRINE MATRIX UNIQUE
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -31,7 +21,6 @@ app.post('/v1/checkout', async (req, res) => {
     console.log(`[🛍️ STRIPE INGESTION] Request caught for Plan: ${plan} | Target: ${endpoint_target}`);
     
     try {
-        // Simulation de session en attendant tes vraies clés secrètes Stripe
         res.json({ url: null, error: "Stripe Real-Time Ingress: Clés secrètes en attente d'injection." });
     } catch (err) {
         res.status(500).json({ error: err.message });
