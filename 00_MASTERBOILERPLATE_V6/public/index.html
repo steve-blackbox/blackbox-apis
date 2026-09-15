@@ -306,7 +306,7 @@
 
         function switchDivision(divisionId) {
             currentDivisionId = divisionId;
-            activeRobotIndex = 0; // Réinitialise proprement sur le premier robot du thème sélectionné
+            activeRobotIndex = 0; // 🟢 FORCE le retour au premier robot de la nouvelle liste
             
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-theme-${divisionId}`);
@@ -317,10 +317,11 @@
                 mainHeaderTitle.innerText = activeBtn.innerText;
             }
             
-            // 🚀 THE ULTIMATE REACTIVITY FIX: Force la reconstruction à la microseconde des 5 boutons en haut !
+            // 🚀 LE FIX MAÎTRE : Force le re-rendu horizontal ET l'injection immédiate des nouveaux textes
             renderSubNavigation();
-            loadRobotData();
+            loadRobotData(); // 🟢 CE CHARGEMENT MAÎTRE MANQUAIT POUR METTRE À JOUR LES BENTOS !
         }
+
 
         function loadRobotData() {
             const activeGroup = matrixEcosystem[currentDivisionId];
