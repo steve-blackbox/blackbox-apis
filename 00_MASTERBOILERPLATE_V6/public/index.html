@@ -11,9 +11,9 @@
             --bg-card: rgba(6, 12, 22, 0.65);
             --border-glow: #14281a;
             --border-active: #00ff88;
-            --text-main: #e2fbe9; /* Vert menthe glacé ultra-pâle premium */
-            --text-muted: #385340; /* Vert sombre militarisé de soute */
-            --accent-green: #00ff88; /* Vert émeraude laser Matrix */
+            --text-main: #e2fbe9; 
+            --text-muted: #385340; 
+            --accent-green: #00ff88; 
             --sidebar-width: 310px;
         }
 
@@ -25,13 +25,11 @@
             height: 100vh; overflow: hidden; box-sizing: border-box;
         }
 
-        /* 🌌 BACKGROUND MATRIX DYNAMIQUE FLUO */
         #matrixCanvas {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; opacity: 0.14; pointer-events: none;
         }
 
-        /* 📐 SIDEBAR EXECUTIVE SANS COUTURES (STYLE LINEAR NATIVE) */
         aside {
             width: var(--sidebar-width) !important; min-width: var(--sidebar-width) !important; max-width: var(--sidebar-width) !important;
             background-color: var(--bg-sidebar); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
@@ -44,7 +42,7 @@
             background: linear-gradient(to bottom, rgba(3,8,5,0.4), transparent);
             display: flex; align-items: center; gap: 12px;
         }
-        .linear-logo-container {
+       .linear-logo-container {
             width: 32px; height: 32px; min-width: 32px;
             display: flex; align-items: center; justify-content: center;
         }
@@ -108,7 +106,7 @@
         .bento-card h3 { font-size: 13px; font-weight: 700; color: #ffffff; margin: 0 0 14px 0; text-transform: uppercase; font-family: monospace; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; }
         .bento-card h3 span { color: var(--accent-green); text-shadow: 0 0 10px var(--accent-green); }
         .bento-card p { font-size: 13px; color: #8fa394; margin: 0; line-height: 1.6; }
-.stripe-section { border-top: 1px solid var(--border-glow); padding-top: 40px; }
+        .stripe-section { border-top: 1px solid var(--border-glow); padding-top: 40px; }
         .stripe-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
         
         .plan-box {
@@ -156,7 +154,67 @@
         <div class="theme-list sidebar-scroll" id="sidebar-categories"></div>
     </aside>
 
-    <script>
+    <main>
+        <div class="content-container">
+            <header>
+                <h1 id="current-division-title">Form & Data Protection</h1>
+                <div style="width: 1px; height: 1px;"></div>
+            </header>
+
+            <section class="robot-display-section">
+                <!-- 📡 COMPOSANT HYDRO-RÉACTIF INJECTÉ POUR LA FLOTTE -->
+                <nav class="robots-nav" id="robots-subnav"></nav>
+
+                <h2 class="robot-main-title" id="robot-main-title">Loading Active Node Ingress...</h2>
+                <p class="robot-main-desc" id="robot-main-desc">Awaiting initialization variables...</p>
+
+                <div class="bento-grid">
+                    <div class="bento-card">
+                        <h3 id="feature-title-1"><span>✦</span> Function Core A</h3>
+                        <p id="feature-desc-1">Loading structural specifications loop...</p>
+                    </div>
+                    <div class="bento-card">
+                        <h3 id="feature-title-2"><span>✦</span> Function Core B</h3>
+                        <p id="feature-desc-2">Loading performance benchmarks parameters...</p>
+                    </div>
+                </div>
+
+                <div class="stripe-section">
+                    <div class="stripe-grid">
+                        <div class="plan-box">
+                            <div class="plan-info">
+                                <span class="plan-name">CORE ACCESS</span>
+                                <span class="plan-desc">1 Active Endpoint • Unlimited Ingestion • Direct Code Injection</span>
+                                <span class="plan-target-audience">// Perfect for independent developers, consultants & micro-projects</span>
+                            </div>
+                            <div class="plan-action">
+                                <div class="plan-price-wrapper">
+                                    <span class="plan-price" id="price-solo-tag">49$</span>
+                                    <span class="plan-term">One-time payment • Lifetime</span>
+                                </div>
+                                <button onclick="triggerCheckout('solo')" class="buy-btn">Acquire</button>
+                            </div>
+                        </div>
+                        <div class="plan-box">
+                            <div class="plan-info">
+                                <span class="plan-name">LABS ALL-ACCESS</span>
+                                <span class="plan-desc">100 Open Endpoints • Master Fleet Key • Priority Infrastructure Support</span>
+                                <span class="plan-target-audience">// Perfect for web agencies, growth hackers & multi-client setups</span>
+                            </div>
+                            <div class="plan-action">
+                                <div class="plan-price-wrapper">
+                                    <span class="plan-price" id="price-agency-tag">149$</span>
+                                    <span class="plan-term">One-time payment • Lifetime</span>
+                                </div>
+                                <button onclick="triggerCheckout('agency')" class="buy-btn laser-btn">Deploy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+     <script>
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
@@ -206,21 +264,22 @@
         ];
 
         const matrixEcosystem = {};
-        
-        // 🚀 LE CORRECTIF PHARE : Génération de noms de robots uniques par secteur pour briser la stagnation visuelle
-        categoriesDatabase.forEach((cat, catIndex) => {
-            const prefix = cat.name.split(' ')[0]; // Récupère le premier mot de la catégorie (ex: Form, Cyber, Privacy...)
+     categoriesDatabase.forEach((cat, catIndex) => {
+            // 🚀 EXTRACTION CHIRURGICALE DU PRÉFIXE : Isole le premier mot du secteur pour forcer la mutation nominale au clic
+            const rawPrefix = cat.name.split(' ')[0];
+            const cleanPrefix = rawPrefix.replace('&', '').trim();
+            
             matrixEcosystem[cat.id] = {
                 name: cat.name,
                 robots: [
-                    { id: `rb_${cat.id}_1`, name: `${prefix} Shield Alpha`, title: `Sanitize System Access Ingress.<br>Block Spam Upstream Silently.`, desc: `Stateless endpoint validation engine engineered to filter automated payload injections and scraping scripts under microsecond transaction windows before variable storage hydration.`, t1: "SURGICAL SCRUB", d1: "Strips toxic script headers and event triggers natively inside volatile runtime slots.", t2: "STATELESS INGESTION", d2: "Processes input tokens cleanly without creating tracking files or system caching footprint loops.", endpoint: `/v1/shield-node-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_2`, name: `${prefix} Inspector Beta`, title: `Real-Time Payload Audit.<br>Deep Structural JSON Validation.`, desc: "Monitors input data validation templates at the perimeter gateway layer to neutralize malformed signatures and object chaining exploits natively.", t1: "SYNTAX PROTECTION", d1: "Scans structured text trees to bypass malicious prototype pollution or hijacking attempts.", t2: "SUB-0.03MS LATENCY", d2: "Designed to run at the perimeter edge under strict enterprise-grade performance benchmarks.", endpoint: `/v1/inspect-core-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_3`, name: `${prefix} Secure Proxy`, title: `Ephemeral Network Routing.<br>Encapsulated Content Routing Net.`, desc: "Hardened proxy namespacing layer routing external API callback streams safely across volatile pools to prevent behavioral matching maps.", t1: "PATTERN DISRUPTION", d1: "Blocks system tracking footprints and reverse origin profiling attempts automatically in flight.", t2: "ABSOLUTE HYGIENE", d2: "Enforces total context sandbox isolation to guarantee cross-tenant boundaries remain sterile.", endpoint: `/v1/proxy-slot-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_4`, name: `${prefix} Compactor Core`, title: `Whitespace Space Compactor.<br>String Sanitization Protocol.`, desc: "Locates and crushes multiple layout indentation tabs, carriage returns and redundant special signs into uniform alphanumeric string blocks.", t1: "DATA REDUCTION", d1: "Reduces raw payload weights significantly up to 60% before heavy database ingestion loops.", t2: "MEMORY DEFENSE", d2: "Operates 100% in local volatile registers, protecting active hardware from memory bloat leaks.", endpoint: `/v1/compactor-core-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_5`, name: `${prefix} Token Master`, title: `Master Cryptographic Token.<br>High-Entropy Seed Scrambler.`, desc: "Generates ephemeral cryptographically secure access keys utilizing randomized multi-seeded parameter loops for top-tier microservice maillage.", t1: "HIGH ENTROPY MATRIX", d1: "Utilizes advanced low-level hardware structures to forge unique authentication signatures on the fly.", t2: "INSTANT INVALIDATION", d2: "Destroys cryptographic tracking flags immediately upon transit processing completion at the gateway edge.", endpoint: `/v1/master-token-${catIndex + 1}` }
+                    { id: `rb_${cat.id}_1`, name: `${cleanPrefix} Shield Alpha`, title: `${cat.name} Ingress.<br>Neutralize Threat Pattern Loops.`, desc: `Hardened automation engine engineered to protect active endpoints under microsecond transaction windows before hydration.`, t1: "SURGICAL SCRUB", d1: "Strips trace elements dynamically inside isolated runtime sandboxes.", t2: "STATELESS FLUX", d2: "Processes text packages natively without creating persistent history trails.", endpoint: `/v1/node-alpha-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_2`, name: `${cleanPrefix} Inspector Beta`, title: `${cat.name} Audit.<br>Deep Protocol Structure Check.`, desc: `Edge validation layer optimized to analyze malformed token signatures at the absolute perimeter limit.`, t1: "PERIMETER SHIELD", d1: "Intercepts buffer structures before data hydrations loops take place.", t2: "HIGH LATENCY DEFENSE", d2: "Operates cleanly under strict production environment constraints.", endpoint: `/v1/node-beta-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_3`, name: `${cleanPrefix} Secure Proxy`, title: `${cat.name} Proxy.<br>Encapsulated Content Stream Net.`, desc: `Hardened routing namespace crafted to block track footprint signatures across cloud clusters.`, t1: "DISRUPTION NET", d1: "Obfuscates operational metrics seamlessly during transaction lifecycles.", t2: "STERILE SLOTS", d2: "Enforces total context insulation across tenant communication boundaries.", endpoint: `/v1/node-proxy-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_4`, name: `${cleanPrefix} Compactor Core`, title: `${cat.name} Compactor.<br>Whitespace Payload Reduction.`, desc: `Algorithmic compressor designed to crush empty layouts and tabs into uniform data units.`, t1: "WEIGHT MITIGATION", d1: "Reduces raw ingress transaction masses by up to 60% dynamically.", t2: "REGISTER DEFENSE", d2: "Locks internal processing sequences within secure memory boundaries.", endpoint: `/v1/node-compact-${catIndex + 1}` },
+                    { id: `rb_${cat.id}_5`, name: `${cleanPrefix} Token Master`, title: `${cat.name} Forge.<br>High-Entropy Key Generator.`, desc: `Cryptographic seed scrambler generating single-use transaction stamps on the edge.`, t1: "ENTROPY MATRIX", d1: "Uses randomize multi-seeded low-level parameters to secure pipelines.", t2: "DESTRUCTION SIGN", d2: "Wipes operational signatures immediately upon ingestion completion.", endpoint: `/v1/node-master-${catIndex + 1}` }
                 ]
             };
-        });
+        });   
         let currentDivisionId = "div01";
         let activeRobotIndex = 0;
 
@@ -234,10 +293,10 @@
             
             robotsList.forEach((robot, index) => {
                 const btn = document.createElement('button');
-                // 🚀 DESTRUCTEUR DE CACHE : ID indexé sur la division active pour forcer la mutation visuelle
+                // 🚀 FIXED: ID dynamisé par secteur et par index pour tuer le cache in-memory de Safari
                 btn.id = `tab-robot-${currentDivisionId}-${index}`;
                 btn.className = `robot-tab ${index === activeRobotIndex ? 'active' : ''}`;
-                btn.innerText = robot.name; // 🟢 FORCE l'écriture du nom unique généré par le préfixe de soute !
+                btn.innerText = robot.name; // 🟢 FORCE l'écriture immédiate du vrai nom unique du robot !
                 btn.onclick = () => {
                     activeRobotIndex = index;
                     document.querySelectorAll('.robot-tab').forEach(t => t.classList.remove('active'));
@@ -250,7 +309,7 @@
 
         function switchDivision(divisionId) {
             currentDivisionId = divisionId;
-            activeRobotIndex = 0; // Réinitialise proprement sur le premier robot du thème sélectionné
+            activeRobotIndex = 0; // Réinitialise proprement sur le premier robot du thème
             
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-theme-${divisionId}`);
@@ -261,7 +320,7 @@
                 mainHeaderTitle.innerText = activeBtn.innerText;
             }
             
-            // 🚀 RÉACTIVITÉ COMPLÈTE : Force le recalcul horizontal et l'affichage instantané des nouveaux textes
+            // 🚀 COUPLAGE DYNAMIQUE ABSOLU : Force le re-calcul horizontal ET l'injection des textes centraux en même temps
             renderSubNavigation();
             loadRobotData();
         }
