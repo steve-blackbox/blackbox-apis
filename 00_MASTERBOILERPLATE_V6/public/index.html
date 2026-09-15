@@ -328,16 +328,18 @@
             if (robotsList.length === 0) return;
             const robot = robotsList[activeRobotIndex];
 
-            document.getElementById('robot-main-title').innerHTML = robot.title;
-            document.getElementById('robot-main-desc').textContent = robot.desc;
+            // 🚀 CORRECTION : Protection absolue et injection propre
+            document.getElementById('robot-main-title').innerHTML = robot.title || 'No Title Available';
+            document.getElementById('robot-main-desc').textContent = robot.desc || 'No Description';
             
-            document.getElementById('feature-title-1').innerHTML = `<span>✦</span> ` + robot.t1;
-            document.getElementById('feature-desc-1').textContent = robot.d1;
-            document.getElementById('feature-title-2').innerHTML = `<span>✦</span> ` + robot.t2;
-            document.getElementById('feature-desc-2').textContent = robot.d2;
+            // Alignement strict avec les variables d'armures B2B
+            document.getElementById('feature-title-1').innerHTML = `<span>✦</span> ` + (robot.t1 || 'Core Function A');
+            document.getElementById('feature-desc-1').textContent = robot.d1 || 'Awaiting specification...';
+            document.getElementById('feature-title-2').innerHTML = `<span>✦</span> ` + (robot.t2 || 'Core Function B');
+            document.getElementById('feature-desc-2').textContent = robot.d2 || 'Awaiting parameters...';
             
             const targetTag = document.getElementById('gateway-target-tag');
-            if (targetTag) targetTag.textContent = robot.endpoint;
+            if (targetTag) targetTag.textContent = robot.endpoint || '';
             
             document.getElementById('price-solo-tag').textContent = "49$";
             document.getElementById('price-agency-tag').textContent = "149$";
