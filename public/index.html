@@ -161,6 +161,29 @@
                 <h1 id="current-division-title">Form & Data Protection</h1>
                 <div style="width: 1px; height: 1px;"></div>
             </header>
+            <!-- 🎛️ CORE ACCESS TOKEN ACTIVATION INTERFACE -->
+            <div style="background: rgba(4, 6, 15, 0.85); border: 1px solid var(--border-glow); padding: 20px; border-radius: 8px; margin-bottom: 40px; font-family: monospace; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;">
+                <div>
+                    <span style="color: var(--accent-green); font-weight: bold;">» ACCESS INGRESS PROTOCOL</span>
+                    <p style="margin: 4px 0 0 0; font-size: 11px; color: var(--text-muted);">Enter your permanent Lifetime License key to unlock volatile node execution.</p>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <input type="text" id="license-input" placeholder="BB-XXXX-XXXX" style="background: #020308; border: 1px solid var(--border-glow); padding: 10px 14px; border-radius: 4px; color: #ffffff; font-family: monospace; font-size: 13px; width: 180px; outline: none; text-transform: uppercase;">
+                    <button onclick="verifyLicenseKey()" style="background: var(--accent-green); border: none; padding: 10px 20px; border-radius: 4px; color: #020308; font-family: monospace; font-weight: bold; font-size: 13px; cursor: pointer; transition: transform 0.1s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">VERIFY</button>
+                </div>
+            </div>
+
+            <!-- 🧠 MEMORY REGISTER AUTOMATION SCRIPT -->
+            <script>
+                function verifyLicenseKey() {
+                    const input = document.getElementById('license-input').value.trim();
+                    if(input.toUpperCase().startsWith('BB-') && input.length >= 11) {
+                        alert('» ACCESS GRANTED. Ephemeral infrastructure layers unlocked for this session.');
+                    } else {
+                        alert('» ACCESS DENIED. Invalid security signature context.');
+                    }
+                }
+            </script>
 
             <section class="robot-display-section">
                 <!-- 📡 COMPOSANT HYDRO-RÉACTIF INJECTÉ POUR LA FLOTTE -->
