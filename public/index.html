@@ -442,7 +442,13 @@
             if (!robot) return;
             try {
                 // Normalisation absolue de la variable de soute
-    const cleanPlanType = String(planType || '').toLowerCase().trim();
+   // Normalisation absolue et détection de secours par rapport au bouton cliqué
+    let cleanPlanType = String(planType || '').toLowerCase().trim();
+    
+    // Sécurité de soute : Si le bouton a envoyé du texte invalide, on détecte l'index de sélection
+    if (cleanPlanType !== 'core' && cleanPlanType !== 'labs') {
+        cleanPlanType = (robot && robot.id > 10) ? 'labs' : 'core';
+    }
                 const response = await fetch('/v1/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
