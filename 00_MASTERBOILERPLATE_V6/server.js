@@ -26,13 +26,17 @@ app.post('/v1/checkout', express.json(), async (req, res) => {
     let targetPriceId = '';
 
     // Cartographie absolue des jetons de prix officiels Stripe Live de ta soute
-    if (planType === 'core') {
-        targetPriceId = 'price_1UGKHFAQxUv6pdHq2GjHXjNk'; // Ton plan CORE à 49$ à vie
-    } else if (planType === 'labs') {
-        targetPriceId = 'price_1UGKM8AQxUv6pdHqSm6BEjaO'; // Ton plan LABS à 149$ à vie
-    } else {
-        return res.status(400).json({ error: "Invalid planType. Must be 'core' or 'labs'." });
-    }
+    // 🟢 BLINDAGE DE SÔUTE ABSOLU (Anti-Friction Casse & Secours Client)
+const cleanPlan = String(planType || '').toLowerCase().trim();
+
+if (cleanPlan === 'core') {
+    targetPriceId = 'price_1UGKHFAQxUv6pdHq2GjHXjNk'; // 49$
+} else if (cleanPlan === 'labs' || cleanPlan === 'agency') { 
+    // Sécurité totale : capte 'labs' ET 'agency' au cas où le vieux HTML persiste
+    targetPriceId = 'price_1UGKM8AQxUv6pdHqSm6BEja0'; // 149$
+} else {
+    return res.status(400).json({ error: "Invalid plan type configuration layout." });
+}
 
     try {
         const session = await stripe.checkout.sessions.create({
