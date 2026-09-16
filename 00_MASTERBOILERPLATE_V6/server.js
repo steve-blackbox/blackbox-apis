@@ -31,11 +31,9 @@ const cleanPlan = String(planType || '').toLowerCase().trim();
 
 if (cleanPlan === 'core') {
     targetPriceId = 'price_1UGKHFAQxUv6pdHq2GjHXjNk'; // 49$
-} else if (cleanPlan === 'labs' || cleanPlan === 'agency') { 
-    // Sécurité totale : capte 'labs' ET 'agency' au cas où le vieux HTML persiste
-    targetPriceId = 'price_1UGKM8AQxUv6pdHqSm6BEja0'; // 149$
 } else {
-    return res.status(400).json({ error: "Invalid plan type configuration layout." });
+    // Si c'est 'labs', 'agency', un résidu de cache ou n'importe quoi d'autre : ON FORCE LES 149$ DE FORCE !
+    targetPriceId = 'price_1UGKM8AQxUv6pdHqSm6BEja0'; // 149$
 }
 
     try {
