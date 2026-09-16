@@ -1,0 +1,101 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "BlackBox Microservices Elite Fleet",
+    "description": "Stateless, high-performance in-memory processing nodes. 100 industrial cyber-robots deployed algorithmically every 14 days. Sub-0.03ms execution latency bound to decentralized volatile memory arrays.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://blackbox-apis.com",
+      "description": "Main Production Ingress Core Gateway Node"
+    }
+  ],
+  "paths": {
+    "/robot/{id}": {
+      "post": {
+        "summary": "Execute Volatile Robot Processing Node (1-100)",
+        "description": "Routes data payloads instantly to the targeted in-memory microservice. Services 02 to 100 ignite automatically every 14 days according to the master release calendar. Returns 423 Locked if the targeted node is still under time-lock.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The exact index index of the targeted cyber-robot (e.g., 1 for FormShield Alpha, 2 for AdBlock Bypass, 3 for AES Encryptor)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "example": 1
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["key", "payload"],
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "Cryptographic authentication token signature bound to your node.",
+                    "example": "BB-ADMIN-CORE-99"
+                  },
+                  "payload": {
+                    "type": "string",
+                    "description": "Raw unstructured string data payload context to filter, mutate, encrypt, or scrub.",
+                    "example": "USER_RAW_DATA_INPUT   WITH   UNSANITIZED   SPACES"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Processing successful. In-memory array has returned the completely sterile and optimized dataset.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "robotIndex": 1,
+                  "module": "BlackBox-Robot-01",
+                  "status": "STERILE",
+                  "processedPayload": "USER_RAW_DATA_INPUT WITH UNSANITIZED SPACES",
+                  "metrics": {
+                    "latency": "0.022ms",
+                    "memoryAlloc": "In-Memory Volatile Loop Register"
+                  }
+                }
+              }
+            }
+          },
+          "423": {
+            "description": "Node Time-Locked. The requested cyber-robot is still sealed inside the scheduled incubation matrix.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "» MODULE TIME-LOCKED: Robot 02 is scheduled to automatically ignite on 2026-09-29 at midnight UTC."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied. Token signature invalid or expired.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Invalid or missing access token signature."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
