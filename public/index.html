@@ -444,7 +444,7 @@
                 const response = await fetch('/v1/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ plan: planType, endpoint_target: robot.endpoint })
+                 body: JSON.stringify({ planType, endpoint_target: robot.endpoint })   
                 });
                 const session = await response.json();
                 if (session.url) window.location.href = session.url;
