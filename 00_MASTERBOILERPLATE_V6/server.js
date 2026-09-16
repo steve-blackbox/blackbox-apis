@@ -21,23 +21,28 @@ global.activeLicenseKeys = new Set(['BB-ADMIN-CORE-99']);
 const INCEPTION_DATE = new Date("2026-09-15T00:00:00Z");
 const INTERVAL_DAYS = 14;
 
-// 💳 API ENDPOINT: SECURE CHECKOUT STREAM (Tunnel à Cash Lifetime)
+// 💳 API ENDPOINT: DYNAMIC LIFETIME CHECKOUT STREAM (Aiguillage intelligent PRO & ULTRA)
 app.post('/v1/checkout', express.json(), async (req, res) => {
+    const { planType } = req.body; // Récupère le type de plan cliqué sur le site
+    let targetPriceId = '';
+
+    // Cartographie des jetons de prix officiels Stripe Live
+    if (planType === 'core') {
+        targetPriceId = 'price_1UGKHFAQxUv6pdHq2GjHXjNk'; // Ton plan CORE à 49$ à vie
+    } else if (planType === 'labs') {
+        targetPriceId = 'price_1UGKM8AQxUv6pdHqSm6BEjaO'; // Ton plan LABS à 149$ à vie
+    } else {
+        return res.status(400).json({ error: "Invalid planType. Must be 'core' or 'labs'." });
+    }
+
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [{
-                price_data: {
-                    currency: 'usd',
-                    product_data: {
-                        name: 'BlackBox Labs - Lifetime Access Token',
-                        description: 'Permanent operational accreditation for 100 automated microservices.',
-                    },
-                    unit_amount: 14900, 
-                },
+                price: targetPriceId, // Injection dynamique du prix Stripe lié
                 quantity: 1,
             }],
-            mode: 'payment',
+            mode: 'payment', // Mode paiement unique (Lifetime access)
             success_url: 'https://blackbox-apis.com',
             cancel_url: 'https://blackbox-apis.com',
         });
