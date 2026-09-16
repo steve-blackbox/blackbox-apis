@@ -441,10 +441,13 @@
             const robot = activeGroup ? activeGroup.robots[activeRobotIndex] : null;
             if (!robot) return;
             try {
+                // Normalisation absolue de la variable de soute
+    const cleanPlanType = String(planType || '').toLowerCase().trim();
                 const response = await fetch('/v1/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                 body: JSON.stringify({ planType, endpoint_target: robot.endpoint })   
+                    body: JSON.stringify({ planType: cleanPlanType, endpoint_target: robot.endpoint })
+
                 });
                 const session = await response.json();
                 if (session.url) window.location.href = session.url;
