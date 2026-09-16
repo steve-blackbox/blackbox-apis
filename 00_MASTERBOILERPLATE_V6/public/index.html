@@ -446,9 +446,10 @@
     let cleanPlanType = String(planType || '').toLowerCase().trim();
     
     // Sécurité de soute : Si le bouton a envoyé du texte invalide, on détecte l'index de sélection
-    if (cleanPlanType !== 'core' && cleanPlanType !== 'labs') {
-        cleanPlanType = (robot && robot.id > 10) ? 'labs' : 'core';
-    }
+    // 🟢 RÉALIGNEMENT TOTAL : Le bouton décide de la soute sans bridage d'ID
+if (cleanPlanType !== 'core' && cleanPlanType !== 'labs') {
+    cleanPlanType = 'labs'; 
+}
                 const response = await fetch('/v1/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
