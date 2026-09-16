@@ -21,12 +21,11 @@ global.activeLicenseKeys = new Set(['BB-ADMIN-CORE-99']);
 const INCEPTION_DATE = new Date("2026-09-15T00:00:00Z");
 const INTERVAL_DAYS = 14;
 
-// 💳 API ENDPOINT: DYNAMIC LIFETIME CHECKOUT STREAM (Aiguillage intelligent PRO & ULTRA)
 app.post('/v1/checkout', express.json(), async (req, res) => {
-    const { planType } = req.body; // Récupère le type de plan cliqué sur le site
+    const { planType } = req.body; // Récupère la clé normalisée du frontend
     let targetPriceId = '';
 
-    // Cartographie des jetons de prix officiels Stripe Live
+    // Cartographie absolue des jetons de prix officiels Stripe Live de ta soute
     if (planType === 'core') {
         targetPriceId = 'price_1UGKHFAQxUv6pdHq2GjHXjNk'; // Ton plan CORE à 49$ à vie
     } else if (planType === 'labs') {
@@ -39,14 +38,14 @@ app.post('/v1/checkout', express.json(), async (req, res) => {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [{
-                price: targetPriceId, // Injection dynamique du prix Stripe lié
+                price: targetPriceId, // Injection de ta vraie clé Stripe Live
                 quantity: 1,
             }],
             mode: 'payment', // Mode paiement unique (Lifetime access)
             success_url: 'https://blackbox-apis.com',
             cancel_url: 'https://blackbox-apis.com',
         });
-        res.json({ id: session.id });
+        res.json({ url: session.url }); // REDIRECTION DIRECTE HAUTE PRÉCISION
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
