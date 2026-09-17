@@ -1,5 +1,5 @@
 {
-  "name": "00_masterboilerplate_v6",
+  "name": "00_masterboilerplate",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-   "dependencies": {
+  "dependencies": {
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.19.2",
@@ -19,4 +19,4 @@
     "resend": "^3.2.0",
     "stripe": "^15.12.0"
   }
-
+}
