@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /00_MASTERBOILERPLATE_V6/
-Disallow: /node_modules/
-Allow: /
