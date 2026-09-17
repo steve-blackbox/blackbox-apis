@@ -441,7 +441,7 @@
         // 🟢 SÉCURISÉ : Plus aucune lettre manquante ou en trop
         let cleanPlanType = String(planType || '').toLowerCase().trim();
         
-        // 📡 DÉCLENCHEMENT DE L'API DYNAMIQUE
+         // 📡 DÉCLENCHEMENT DE L'API DYNAMIQUE RE-FIABILISÉE
         fetch('/v1/checkout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -453,7 +453,7 @@
         .then(res => res.json())
         .then(data => {
             if (data.url) {
-                window.location.href = data.url; // 🚀 Ignition Stripe Checkout dynamique !
+                window.location.href = data.url; 
             } else {
                 console.error("Erreur de soute : Pas d'URL reçue dans la réponse");
                 alert("Erreur de configuration du panier.");
@@ -461,6 +461,7 @@
         })
         .catch(err => {
             console.error('Erreur réseau dans le fetch:', err);
+            alert("Erreur de communication avec le serveur.");
         });
 
     } catch (error) {
