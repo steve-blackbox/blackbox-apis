@@ -29,11 +29,14 @@ app.post('/v1/checkout', express.json(), async (req, res) => {
     // 🟢 BLINDAGE DE SÔUTE ABSOLU (Anti-Friction Casse & Secours Client)
 const cleanPlan = String(planType || '').toLowerCase().trim();
 
-if (cleanPlan === 'core') {
-    targetPriceId = 'price_1UGKHFAQxUv6pdHq2GjHXjNk'; // 49$
+if (planType === 'core' || planType === 'solo' || planType === 'matrix') {
+    targetPriceId = 'price_1UGKHFAQxUv6pdHq2GjHXjNk'; // 🟢 TON PLAN CORE FIXE A 49$
+} else if (planType === 'labs' || planType === 'premium' || planType === 'allaccess' || planType === 'all-access') {
+    // 🔵 ICI : METS LE PRICE ID UNIQUE DU NOUVEAU PRIX A 149$ QUE TU AS CRÉÉ DANS STRIPE
+    targetPriceId = 'price_1UGhxWAQxUv6pdHqZ1nY7ftw'; 
 } else {
-    // Si c'est 'labs', 'agency', un résidu de cache ou n'importe quoi d'autre : ON FORCE LES 149$ DE FORCE !
-    targetPriceId = 'price_1UGfpmAQxUv6pdHqJkFS3eLn'; // 149$
+    // Sécurité de soute absolue : par défaut, on met à 149$
+    targetPriceId = 'price_1UGhxWAQxUv6pdHqZ1nY7ftw';
 }
 
     try {
