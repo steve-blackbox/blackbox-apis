@@ -246,7 +246,7 @@
                                     <span class="plan-price" id="price-agency-tag">149$</span>
                                     <span class="plan-term">One-time payment • Lifetime</span>
                                 </div>
-                                <button onclick="triggerCheckout('agency')" class="buy-btn laser-btn">Deploy</button>
+                                <button onclick="triggerCheckout('labs')" class="buy-btn laser-btn">Deploy</button>
                             </div>
                         </div>
                     </div>
@@ -436,33 +436,24 @@
             document.getElementById('price-agency-tag').textContent = "149$";
         }
 
-        async function triggerCheckout(planType) {
-            const activeGroup = matrixEcosystem[currentDivisionId];
-            const robot = activeGroup ? activeGroup.robots[activeRobotIndex] : null;
-            if (!robot) return;
-            try {
-                // Normalisation absolue de la variable de soute
-   // Normalisation absolue et détection de secours par rapport au bouton cliqué
-    let cleanPlanType = String(planType || '').toLowerCase().trim();
-    
-    // Sécurité de soute : Si le bouton a envoyé du texte invalide, on détecte l'index de sélection
-    if (cleanPlanType !== 'core' && cleanPlanType !== 'labs') {
-        cleanPlanType = (robot && robot.id > 10) ? 'labs' : 'core';
+    async function triggerCheckout(planType) {
+    try {
+        let cleanPlanType = String(planType || '').toLowerCase().trim();
+
+        // 🔵 1. ENTONNOIR POUR L'OFFRE LABS ALL-ACCESS (149 DOLLARS)
+        if (cleanPlanType === 'labs' || cleanPlanType === 'premium' || cleanPlanType === 'allaccess' || cleanPlanType === 'all-access') {
+            window.location.href = "https://buy.stripe.com/5kQ9AS2JM86Ldb5daJfYY02"; // TON VRAI LIEN STRIPE A 149\$
+            return;
+        } 
+        
+        // 🟢 2. PAR SÉCURITÉ ABSOLUE, TOUT LE RESTE (core / solo / matrix) EST ROUTÉ ICI (49 DOLLARS)
+        window.location.href = "https://buy.stripe.com/dRm28q702dr57QLgmVfYY01"; // TON VRAI LIEN STRIPE A 49\$
+        return;
+
+    } catch (err) {
+        alert(`Network failure: ${err.message}`);
     }
-                const response = await fetch('/v1/checkout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ planType: cleanPlanType, endpoint_target: robot.endpoint })
-
-                });
-                const session = await response.json();
-                if (session.url) window.location.href = session.url;
-                else alert(`Stripe Error: ${session.error}`);
-            } catch (err) {
-                alert(`Network failure: ${err.message}`);
-            }
-        }
-
+}
         function initializeApp() {
             const sidebarContainer = document.getElementById('sidebar-categories');
             sidebarContainer.innerHTML = '';
