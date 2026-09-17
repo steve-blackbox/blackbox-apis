@@ -440,11 +440,21 @@
     try {
         let cleanPlanType = String(planType || '').toLowerCase().trim();
 
-        // 🔵 1. ENTONNOIR POUR L'OFFRE LABS ALL-ACCESS (149 DOLLARS)
-        if (cleanPlanType === 'labs' || cleanPlanType === 'premium' || cleanPlanType === 'allaccess' || cleanPlanType === 'all-access') {
-            window.location.href = "https://buy.stripe.com/5kQ9AS2JM86Ldb5daJfYY02"; // TON VRAI LIEN STRIPE A 149\$
-            return;
-        } 
+       // On supprime le court-circuit du lien Stripe et on envoie le signal propre au serveur backend !
+fetch('/v1/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plan: cleanPlantType, endpoint_target: robot.endpoint })
+})
+.then(res => res.json())
+.then(data => {
+    if (data.url) {
+        window.location.href = data.url; // Stripe Checkout stérile à 49$ ou 149$ s'ouvre ici !
+    } else {
+        console.error('Erreur de soute : Pas d\'URL de paiement reçue');
+    }
+})
+.catch(err => console.error('Erreur réseau de soute:', err));
         
         // 🟢 2. PAR SÉCURITÉ ABSOLUE, TOUT LE RESTE (core / solo / matrix) EST ROUTÉ ICI (49 DOLLARS)
         window.location.href = "https://buy.stripe.com/dRm28q702dr57QLgmVfYY01"; // TON VRAI LIEN STRIPE A 49\$
