@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const Stripe = require('stripe');
 
 // 🔑 ENCAPSULATION SECURISEE STRIPE (Variable d'environnement de soute)
-const stripe = Stripe(process.env.STRIPE_LIVE_KEY); 
+ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
