@@ -12,6 +12,8 @@ const app = express();
 
 // 🛡️ MIDDLEWARES STRUCTURAUX DE SOUTE
 app.use(cors({ origin: '*' }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 🧠 ARCHITECTURE IN-MEMORY : REGISTRES VOLATILES DE SÛRETÉ
