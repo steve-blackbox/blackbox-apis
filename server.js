@@ -1,17 +1,82 @@
-// 🛰️ BLACKBOX MICROSERVICES CORE ENGINE — PRODUCTION NODE V6
+// 🌌 BLACKBOX MICROSERVICES CORE ENGINE — PRODUCTION NODE V6
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const crypto = require('crypto');
 const Stripe = require('stripe');
 
+// 📨 EXPÉDITEUR D'E-MAILS RESEND INITIALISÉ
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 // 🔑 ENCAPSULATION SECURISEE STRIPE (Variable d'environnement de soute)
- const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
 // 🛡️ MIDDLEWARES STRUCTURAUX DE SOUTE
 app.use(cors({ origin: '*' }));
+
+// 📡 1. ROUTE DU WEBHOOK STRIPE (PLINDÉE AVANT EXPRESS.JSON)
+app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event;
+
+    try {
+        // Validation forensique du signal Stripe avec ton secret Render
+        event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    } catch (err) {
+        console.error(`❌ Erreur Webhook Signature: ${err.message}`);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // 🟢 CASH SÉCURISÉ : L'achat est validé sur Stripe Checkout
+    if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+        const customerEmail = session.customer_details.email;
+        const customerName = session.customer_details.name || 'Client BlackBox';
+        
+        // Extraction du plan acheté (core, labs, etc.) depuis les metadata passées au checkout
+        const purchasedPlan = session.metadata?.plan || 'labs';
+
+        // 🔑 GÉNÉRATION DE LA CLÉ DE LICENCE EXCLUSIVE BLACKBOX
+        const uniqueId = crypto.randomBytes(4).toString('hex').toUpperCase();
+        const licenseKey = `BB-${purchasedPlan.toUpperCase()}-CORE-${uniqueId}`;
+
+        // Sauvegarde volatile en soute in-memory
+        if (global.activeLicenseKeys) {
+            global.activeLicenseKeys.add(licenseKey);
+        }
+
+        console.log(`🚀 Paiement Validé pour ${customerEmail}! Licence Générée: ${licenseKey}`);
+
+        try {
+            // 📨 EXPÉDITION INSTANTANÉE PAR RESEND
+            await resend.emails.send({
+                from: 'BlackBox Audio Labs <activation@blackbox-apis.com>',
+                to: [customerEmail],
+                subject: '🔥 Activation de votre licence BlackBox Audio Labs',
+                html: `
+                    <div style="font-family: sans-serif; padding: 20px; background: #000; color: #fff; border-radius: 8px;">
+                        <h2 style="color: #00ffcc;">Félicitations ${customerName} !</h2>
+                        <p>Votre paiement a été sécurisé avec succès. Votre réacteur d'automatisation est prêt.</p>
+                        <div style="background: #111; padding: 15px; border-left: 4px solid #00ffcc; margin: 20px 0; font-family: monospace; font-size: 16px; letter-spacing: 1px;">
+                            <strong>VOTRE CLÉ DE LICENCE :</strong> ${licenseKey}
+                        </div>
+                        <p style="color: #888; font-size: 12px;">LLC BlackBox Audio Labs — Wyoming, USA</p>
+                    </div>
+                `
+            });
+            console.log(`📧 E-mail de licence envoyé avec succès à ${customerEmail}`);
+        } catch (emailError) {
+            console.error(`❌ Échec de l'envoi de l'e-mail Resend:`, emailError);
+        }
+    }
+
+    res.json({ received: true });
+});
+
+// 📡 2. TRADUCTEURS DE PAYLOADS POUR LES AUTRES ROUTES SOUCHÉES
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
