@@ -438,10 +438,9 @@
 
     async function triggerCheckout(planType) {
     try {
-        // 🟢 SÉCURISÉ : Plus aucune lettre manquante ou en trop
-        let cleanPlanType = String(planType || '').toLowerCase().trim();
+        let cleanPlantType = String(planType || '').toLowerCase().trim();
         
-         // 📡 DÉCLENCHEMENT DE L'API DYNAMIQUE RE-FIABILISÉE
+        // 📡 DÉCLENCHEMENT DE L'API DYNAMIQUE SANS ACCUMULATION DE CASSEROLES
         fetch('/v1/checkout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -453,7 +452,7 @@
         .then(res => res.json())
         .then(data => {
             if (data.url) {
-                window.location.href = data.url; 
+                window.location.href = data.url; // 🚀 Redirection Stripe Checkout !
             } else {
                 console.error("Erreur de soute : Pas d'URL reçue dans la réponse");
                 alert("Erreur de configuration du panier.");
@@ -465,10 +464,9 @@
         });
 
     } catch (error) {
-        console.error("Erreur d'exécution globale:", error);
+        console.error("Erreur d'exécution globale dans triggerCheckout:", error);
     }
-    }
-        function initializeApp() {
+function initializeApp() {
             const sidebarContainer = document.getElementById('sidebar-categories');
             sidebarContainer.innerHTML = '';
             
