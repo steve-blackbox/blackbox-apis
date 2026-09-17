@@ -436,35 +436,22 @@
             document.getElementById('price-agency-tag').textContent = "149$";
         }
 
-        async function triggerCheckout(planType) {
+    async function triggerCheckout(planType) {
     try {
         let cleanPlanType = String(planType || '').toLowerCase().trim();
 
         // 🚀 ROUTAGE DIRECT STRIPE (Bypass total de l'infrastructure intermédiaire)
         if (cleanPlanType === 'core' || cleanPlanType === 'solo') {
             window.location.href = "https://buy.stripe.com/dRm28q702dr57QLgmVfYY01"; 
+            return;
         } else {
             window.location.href = "https://buy.stripe.com/5kQ9AS2JM86Ldb5daJfYY02"; 
+            return;
         }
-        return;
     } catch (err) {
         alert(`Network failure: ${err.message}`);
     }
 }
-                const response = await fetch('/v1/checkout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ planType: cleanPlanType, endpoint_target: robot.endpoint })
-
-                });
-                const session = await response.json();
-                if (session.url) window.location.href = session.url;
-                else alert(`Stripe Error: ${session.error}`);
-            } catch (err) {
-                alert(`Network failure: ${err.message}`);
-            }
-        }
-
         function initializeApp() {
             const sidebarContainer = document.getElementById('sidebar-categories');
             sidebarContainer.innerHTML = '';
