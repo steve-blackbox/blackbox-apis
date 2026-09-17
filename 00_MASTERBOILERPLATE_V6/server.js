@@ -33,7 +33,7 @@ if (cleanPlan === 'core') {
     targetPriceId = 'price_1UGKHFAQxUv6pdHq2GjHXjNk'; // 49$
 } else {
     // Si c'est 'labs', 'agency', un résidu de cache ou n'importe quoi d'autre : ON FORCE LES 149$ DE FORCE !
-    targetPriceId = 'price_1UGKM8AQxUv6pdHqSm6BEja0'; // 149$
+    targetPriceId = 'price_1UGfpmAQxUv6pdHqJkFS3eLn'; // 149$
 }
 
     try {
