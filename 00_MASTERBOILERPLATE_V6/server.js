@@ -21,38 +21,45 @@ global.activeLicenseKeys = new Set(['BB-ADMIN-CORE-99']);
 const INCEPTION_DATE = new Date("2026-09-15T00:00:00Z");
 const INTERVAL_DAYS = 14;
 
-app.post('/v1/checkout', express.json(), async (req, res) => {
-    const { planType } = req.body; // Récupère la clé normalisée du frontend
-    let targetPriceId = '';
-
-    // Cartographie absolue des jetons de prix officiels Stripe Live de ta soute
-    // 🟢 BLINDAGE DE SÔUTE ABSOLU (Anti-Friction Casse & Secours Client)
-const cleanPlan = String(planType || '').toLowerCase().trim();
-
-if (planType === 'core' || planType === 'solo' || planType === 'matrix') {
-    targetPriceId = 'price_1UGKHFAQxUv6pdHq2GjHXjNk'; // 🟢 TON PLAN CORE FIXE A 49$
-} else if (planType === 'labs' || planType === 'premium' || planType === 'allaccess' || planType === 'all-access') {
-    // 🔵 ICI : METS LE PRICE ID UNIQUE DU NOUVEAU PRIX A 149$ QUE TU AS CRÉÉ DANS STRIPE
-    targetPriceId = 'price_1UGhxWAQxUv6pdHqZ1nY7ftw'; 
-} else {
-    // Sécurité de soute absolue : par défaut, on met à 149$
-    targetPriceId = 'price_1UGhxWAQxUv6pdHqZ1nY7ftw';
-}
-
+app.post('/v1/checkout', async (req, res) => {
     try {
+        const { plan, endpoint_target } = req.body;
+        
+        let targetPriceId = '';
+        const planType = plan ? plan.toLowerCase().trim() : '';
+
+        // Dictionnaire hermétique connecté à tes deux nouveaux produits Stripe
+        if (planType === 'core' || planType === 'solo' || planType === 'matrix' || planType === 'single') {
+            targetPriceId = 'price_1UGjACAQxUv6pdHqpCxlPwKc'; // 🟢 PLAN SINGLE ACCESS A 49\$
+        } else if (planType === 'labs' || planType === 'premium' || planType === 'allaccess' || planType === 'all-access' || planType === 'adblock_bypass') {
+            targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F'; // 🔵 PLAN ALL ACCESS A 149\$
+        } else {
+            // Sécurité absolue : si le signal est inconnu, on facture 149\$
+            targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F';
+        }
+
+        // Création de la session sécurisée en paiement unique sec (One-time strict)
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
-            line_items: [{
-                price: targetPriceId, // Injection de ta vraie clé Stripe Live
-                quantity: 1,
-            }],
-            mode: 'payment', // Mode paiement unique (Lifetime access)
-            success_url: 'https://blackbox-apis.com',
-            cancel_url: 'https://blackbox-apis.com',
+            line_items: [
+                {
+                    price: targetPriceId,
+                    quantity: 1,
+                },
+            ],
+            mode: 'payment', // Mode paiement direct (Supprime la date 1970)
+            success_url: `${req.headers.origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${req.headers.origin}/cancel.html`,
+            metadata: {
+                endpoint_target: endpoint_target || 'none'
+            }
         });
-        res.json({ url: session.url }); // REDIRECTION DIRECTE HAUTE PRÉCISION
+
+        res.json({ url: session.url });
+
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Erreur forensique lors de la création du Checkout:', error);
+        res.status(500).json({ error: 'Erreur interne du serveur de soute' });
     }
 });
 
