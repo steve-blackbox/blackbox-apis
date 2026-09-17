@@ -437,18 +437,19 @@
         }
 
         async function triggerCheckout(planType) {
-            const activeGroup = matrixEcosystem[currentDivisionId];
-            const robot = activeGroup ? activeGroup.robots[activeRobotIndex] : null;
-            if (!robot) return;
-            try {
-                // Normalisation absolue de la variable de soute
-   // Normalisation absolue et détection de secours par rapport au bouton cliqué
-    let cleanPlanType = String(planType || '').toLowerCase().trim();
-    
-    // Sécurité de soute : Si le bouton a envoyé du texte invalide, on détecte l'index de sélection
-    // 🟢 RÉALIGNEMENT TOTAL : Le bouton décide de la soute sans bridage d'ID
-if (cleanPlanType !== 'core' && cleanPlanType !== 'labs') {
-    cleanPlanType = 'labs'; 
+    try {
+        let cleanPlanType = String(planType || '').toLowerCase().trim();
+
+        // 🚀 ROUTAGE DIRECT STRIPE (Bypass total de l'infrastructure intermédiaire)
+        if (cleanPlanType === 'core' || cleanPlanType === 'solo') {
+            window.location.href = "https://buy.stripe.com/dRm28q702dr57QLgmVfYY01"; 
+        } else {
+            window.location.href = "https://buy.stripe.com/5kQ9AS2JM86Ldb5daJfYY02"; 
+        }
+        return;
+    } catch (err) {
+        alert(`Network failure: ${err.message}`);
+    }
 }
                 const response = await fetch('/v1/checkout', {
                     method: 'POST',
