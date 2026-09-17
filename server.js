@@ -30,13 +30,13 @@ app.post('/v1/checkout', async (req, res) => {
 
         // Dictionnaire hermétique connecté à tes deux nouveaux produits Stripe
         if (planType === 'core' || planType === 'solo' || planType === 'matrix' || planType === 'single') {
-            targetPriceId = 'price_1UGjACAQxUv6pdHqpCxlPwKc'; // 🟢 PLAN SINGLE ACCESS A 49\$
-        } else if (planType === 'labs' || planType === 'premium' || planType === 'allaccess' || planType === 'all-access' || planType === 'adblock_bypass') {
-            targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F'; // 🔵 PLAN ALL ACCESS A 149\$
-        } else {
-            // Sécurité absolue : si le signal est inconnu, on facture 149\$
-            targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F';
-        }
+    targetPriceId = 'price_1UGjACAQxUv6pdHqpCxlPwKc'; // 🟢 TON NOUVEAU FORFAIT SINGLE ACCESS A 49$ PROPRE
+} else if (planType === 'labs' || planType === 'premium' || planType === 'allaccess' || planType === 'all-access' || planType === 'adblock_bypass') {
+    targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F'; // 🔵 TON NOUVEAU FORFAIT ALL ACCESS A 149$ PROPRE
+} else {
+    // Sécurité de soute absolue : si le signal est inconnu, on facture 149$ par précaution
+    targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F';
+}
 
         // Création de la session sécurisée en paiement unique sec (One-time strict)
         const session = await stripe.checkout.sessions.create({
