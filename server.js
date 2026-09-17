@@ -34,8 +34,10 @@ app.post('/v1/checkout', async (req, res) => {
 } else if (planType === 'labs' || planType === 'premium' || planType === 'allaccess' || planType === 'all-access' || planType === 'adblock_bypass') {
     targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F'; // 🔵 TON NOUVEAU FORFAIT ALL ACCESS A 149$ PROPRE
 } else {
-    // Sécurité de soute absolue : si le signal est inconnu, on facture 149$ par précaution
-    targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F';
+    // 🟢 SÉCURITÉ UNIVERSELLE DE SECOURS : Si le mot-clé arrive vide, altéré ou non reconnu
+    // par les conditions précédentes, on force le Price ID valide à 149$.
+    console.log("👉 Alerte soute : planType inconnu ou manquant. Redirection forcé sur All Access 149$. Input reçu :", planType);
+    targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F'; 
 }
 
         // Création de la session sécurisée en paiement unique sec (One-time strict)
