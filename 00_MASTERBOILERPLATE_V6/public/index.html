@@ -440,14 +440,16 @@
     try {
         let cleanPlanType = String(planType || '').toLowerCase().trim();
 
-        // 🚀 ROUTAGE DIRECT STRIPE (Bypass total de l'infrastructure intermédiaire)
-        if (cleanPlanType === 'core' || cleanPlanType === 'solo') {
-            window.location.href = "https://buy.stripe.com/5kQ9AS2JM86Ldb5daJfYY02"; 
+        // 🔵 1. ENTONNOIR POUR L'OFFRE LABS ALL-ACCESS (149 DOLLARS)
+        if (cleanPlanType === 'labs' || cleanPlanType === 'premium' || cleanPlanType === 'allaccess' || cleanPlanType === 'all-access') {
+            window.location.href = "https://buy.stripe.com/5kQ9AS2JM86Ldb5daJfYY02"; // TON VRAI LIEN STRIPE A 149\$
             return;
-        } else {
-            window.location.href = "https://buy.stripe.com/dRm28q702dr57QLgmVfYY01"; 
-            return;
-        }
+        } 
+        
+        // 🟢 2. PAR SÉCURITÉ ABSOLUE, TOUT LE RESTE (core / solo / matrix) EST ROUTÉ ICI (49 DOLLARS)
+        window.location.href = "https://buy.stripe.com/dRm28q702dr57QLgmVfYY01"; // TON VRAI LIEN STRIPE A 49\$
+        return;
+
     } catch (err) {
         alert(`Network failure: ${err.message}`);
     }
