@@ -436,19 +436,19 @@
             document.getElementById('price-agency-tag').textContent = "149$";
         }
 
-    async function triggerCheckout(planType) {
+   async function triggerCheckout(planType) {
     try {
         let cleanPlantType = String(planType || '').toLowerCase().trim();
         
-        // 📡 DÉCLENCHEMENT DE L'API DYNAMIQUE SANS ACCUMULATION DE CASSEROLES
+        // 📡 DÉCLENCHEMENT DE L'API DYNAMIQUE SANS CASSEROLE SYNTAXIQUE
         fetch('/v1/checkout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 plan: cleanPlantType, 
                 endpoint_target: "robot" 
-            })
-        })
+             })
+          })   
         .then(res => res.json())
         .then(data => {
             if (data.url) {
@@ -466,6 +466,7 @@
     } catch (error) {
         console.error("Erreur d'exécution globale dans triggerCheckout:", error);
     }
+} 
 function initializeApp() {
             const sidebarContainer = document.getElementById('sidebar-categories');
             sidebarContainer.innerHTML = '';
