@@ -304,6 +304,25 @@
         </div>     
     </main>
     <script>
+        // 🟢 GESTIONNAIRE DE CLICS UNIVERSEL POUR LES PAGES DU FOOTER
+    window.showFooterContent = function(contentType) {
+        console.log("📁 Déclenchement du Footer pour : " + contentType);
+        
+        // On masque d'abord tous les blocs de texte légaux pour éviter les chevauchements
+        var blocks = document.querySelectorAll('.footer-legal-block');
+        for (var i = 0; i < blocks.length; i++) {
+            blocks[i].style.display = 'none';
+        }
+
+        // On cherche le conteneur cible (ex: content-terms, content-privacy, content-docs)
+        var targetBlock = document.getElementById('content-' + contentType);
+        if (targetBlock) {
+            targetBlock.style.display = 'block';
+            targetBlock.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            console.error("❌ Impossible de trouver le conteneur pour: content-" + contentType);
+        }
+    };
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
