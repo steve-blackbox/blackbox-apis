@@ -3,22 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - BlackBox Audio Labs</title>
+    <title>Compliance Center - BlackBox Audio Labs</title>
     <style>
         body { background: #030408; color: #f3f4f6; font-family: monospace; padding: 40px 20px; line-height: 1.6; max-width: 800px; margin: 0 auto; }
-        h1, h4 { color: #00ff88; border-bottom: 1px solid #1a202c; padding-bottom: 10px; }
+        .nav-tabs { display: flex; gap: 20px; border-bottom: 1px solid #1a202c; padding-bottom: 15px; margin-bottom: 30px; }
+        .tab-btn { background: transparent; border: 1px solid #374151; color: #9ca3af; padding: 8px 16px; cursor: pointer; font-family: monospace; border-radius: 4px; transition: all 0.2s; font-weight: bold; }
+        .tab-btn:hover { color: #00ff88; border-color: #00ff88; }
+        .active-btn { color: #030408 !important; background: #00ff88 !important; border-color: #00ff88 !important; }
+        .legal-section { display: none; }
+        .active-section { display: block !important; }
+        h1, h4 { color: #00ff88; border-bottom: 1px solid #1a202c; padding-bottom: 10px; margin-top: 30px; }
         strong { color: #00ff88; }
     </style>
 </head>
 <body>
-    <h1>Terms of Service</h1>
-    <p style="color: #9ca3af; font-size: 14px;"><strong>Last Updated: September 2026</strong></p>
-    <p>Welcome to BlackBox Audio Labs. By accessing our services and APIs, you agree to be bound by these Terms of Service. These terms are governed by and construed in accordance with the laws of the State of Wyoming, United States, without regard to its conflict of law principles.</p>
-    <h4>1. License Grant & Access</h4>
-    <p>Subject to full payment of the chosen plan (Core Access at \$49 or Labs All-Access at \$149), BlackBox Audio Labs LLC grants you a limited, non-exclusive, non-transferable license to utilize our high-performance audio automation endpoints.</p>
-    <h4>2. License Keys & Refund Policy</h4>
-    <p>Each generated license key (`BB-CORE-...`) is unique and instantly activated upon delivery. Due to the immediate digital nature of our software assets and automated delivery via Stripe and Resend, <strong>all sales are final and absolutely no refunds will be issued</strong>.</p>
-    <h4>3. Limitation of Liability</h4>
-    <p>BlackBox Audio Labs LLC provides its APIs on an "as is" and "as available" basis, without any warranties regarding uninterrupted server uptime or fitness for a particular purpose.</p>
+
+    <!-- 🎛️ BARRE DE NAVIGATION INTERNE DIRECTE (0% Flash, 100% Instantané) -->
+    <div class="nav-tabs">
+        <button id="btn-terms" class="tab-btn active-btn" onclick="switchTab('terms')">Terms of Service</button>
+        <button id="btn-privacy" class="tab-btn" onclick="switchTab('privacy')">Privacy Policy</button>
+        <button id="btn-docs" class="tab-btn" onclick="switchTab('docs')">API Documentation</button>
+    </div>
+
+    <!-- 📄 SECTION 1 : TERMS OF SERVICE -->
+    <div id="sec-terms" class="legal-section active-section">
+        <h1>Terms of Service</h1>
+        <p style="color: #9ca3af; font-size: 14px;"><strong>Last Updated: September 2026</strong></p>
+        <p>Welcome to BlackBox Audio Labs. By accessing our services and APIs, you agree to be bound by these Terms of Service. These terms are governed by and construed in accordance with the laws of the State of Wyoming, United States, without regard to its conflict of law principles.</p>
+        <h4>1. License Grant & Access</h4>
+        <p>Subject to full payment of the chosen plan (Single Access at \$49 or All Access at \$149), BlackBox Audio Labs LLC grants you a limited, non-exclusive, non-transferable license to utilize our high-performance audio automation endpoints.</p>
+        <h4>2. License Keys & Refund Policy</h4>
+        <p>Each generated license key (`BB-CORE-...`) is unique and instantly activated upon delivery. Due to the immediate digital nature of our software assets and automated delivery via Stripe and Resend, <strong>all sales are final and absolutely no refunds will be issued</strong>.</p>
+        <h4>3. Limitation of Liability</h4>
+        <p>BlackBox Audio Labs LLC provides its APIs on an "as is" and "as available" basis, without any warranties regarding uninterrupted server uptime or fitness for a particular purpose.</p>
+    </div>
+
+    <!-- 📄 SECTION 2 : PRIVACY POLICY -->
+    <div id="sec-privacy" class="legal-section">
+        <h1>Privacy Policy</h1>
+        <p style="color: #9ca3af; font-size: 14px;"><strong>Last Updated: September 2026</strong></p>
+        <p>At BlackBox Audio Labs LLC, we take your data security seriously. This policy outlines how we collect and process your information during transatlantic checkouts.</p>
+        <h4>1. Transactional Data Collection</h4>
+        <p>All financial payments are securely processed and encrypted through Stripe infrastructure. BlackBox Audio Labs LLC never stores or has access to your credit card numbers. We exclusively collect your full name and email address for the sole purpose of generating and delivering your license key via Resend.</p>
+        <h4>2. Data Retention & Sharing</h4>
+        <p>Your contact details will never be sold, rented, or shared with third parties for marketing purposes. Data is processed strictly to maintain active license records and sync transaction payouts to your Mercury LLC bank account.</p>
+    </div>
+
+    <!-- 📄 SECTION 3 : API DOCUMENTATION -->
+    <div id="sec-docs" class="legal-section">
+        <h1>BlackBox Core API Documentation</h1>
+        <p style="color: #9ca3af;">High-throughput audio automation infrastructure endpoints.</p>
+        <h4>[POST] /v1/webhook</h4>
+        <p>Main route handling encrypted Stripe event payloads. Upon detecting the `checkout.session.completed` hook, the server instantiates a `BB-CORE` key and securely triggers the Resend automated mail relay system.</p>
+        <h4>[GET] /api/v1/validate-license</h4>
+        <p>Query params: `?key=YOUR_BB_KEY`. Returns JSON payload `{"valid": true, "scope": "all"}` or 403 status code if the asset key has expired or has been administratively revoked.</p>
+    </div>
+
+    <script>
+        function switchTab(section) {
+            document.querySelectorAll('.legal-section').forEach(sec => sec.classList.remove('active-section'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active-btn'));
+            
+            document.getElementById('sec-' + section).classList.add('active-section');
+            document.getElementById('btn-' + section).classList.add('active-btn');
+        }
+        
+        // Routage automatique si l'URL contient un hashtag spécifique (ex: terms.html#privacy)
+        window.onload = function() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById('sec-' + hash)) {
+                switchTab(hash);
+            }
+        };
+    </script>
 </body>
 </html>
