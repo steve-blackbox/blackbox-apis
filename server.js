@@ -155,10 +155,10 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
     return res.json({ received: true });
 });
 
-// 📁 API ENDPOINTS: STRUCTURAL DOCUMENTATION & LEGAL ROUTES UNIFIED
-app.get('/docs', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
-app.get('/terms.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
-app.get('/privacy.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+// 📁 API ENDPOINTS: STANDALONE INDEPENDENT PRODUCTION ROUTING (0% FLASH)
+app.get('/docs', (req, res) => res.sendFile(path.join(__dirname, 'public', 'docs.html')));
+app.get('/terms.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'terms.html')));
+app.get('/privacy.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'privacy.html')));
 
 // 🚀 API ENDPOINT UNIVERSAL ROUTER: THE 100 CYBER-ROBOTS GATEWAY
 app.post('/robot/:id', express.json(), (req, res) => {
