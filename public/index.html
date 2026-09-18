@@ -261,6 +261,37 @@
                       <a href="/docs" style="color: var(--text-muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-green)'" onmouseout="this.style.color='var(--text-muted)'">Documentation API</a>                  
                     <a href="/privacy.html" style="color: var(--text-muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-green)'" onmouseout="this.style.color='var(--text-muted)'">Privacy Policy</a>
            </footer>
+           <!-- 📦 BOÎTES LÉGALES PROFESSIONNELLES — LES TROIS TEXTES EN DUR VALIDÉS -->
+<div id="content-terms" class="footer-legal-block" style="display: none; padding: 30px; background: #111827; border: 1px solid #374151; margin: 30px auto; color: #f3f4f6; border-radius: 8px; max-width: 800px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); position: relative; z-index: 9999; font-family: monospace; line-height: 1.6;">
+    <h2 style="color: #00ff88; margin-top: 0; border-bottom: 1px solid #374151; padding-bottom: 10px;">Terms of Service</h2>
+    <p style="font-size: 14px; color: #9ca3af;"><strong>Last Updated: September 2026</strong></p>
+    <p>Welcome to BlackBox Audio Labs. By accessing our services and APIs, you agree to be bound by these Terms of Service. These terms are governed by and construed in accordance with the laws of the State of Wyoming, United States, without regard to its conflict of law principles.</p>
+    <h4 style="color: #00ff88; margin-bottom: 5px;">1. License Grant & Access</h4>
+    <p>Subject to full payment of the chosen plan (Single Access at \$49 or All Access at \$149), BlackBox Audio Labs LLC grants you a limited, non-exclusive, non-transferable license to utilize our high-performance audio automation endpoints.</p>
+    <h4 style="color: #00ff88; margin-bottom: 5px;">2. License Keys & Refund Policy</h4>
+    <p>Each generated license key (`BB-CORE-...`) is unique and instantly activated upon delivery. Due to the immediate digital nature of our software assets and automated delivery via Stripe and Resend, <strong>all sales are final and absolutely no refunds will be issued</strong>.</p>
+    <h4 style="color: #00ff88; margin-bottom: 5px;">3. Limitation of Liability</h4>
+    <p>BlackBox Audio Labs LLC provides its APIs on an "as is" and "as available" basis, without any warranties regarding uninterrupted server uptime or fitness for a particular purpose.</p>
+</div>
+
+<div id="content-privacy" class="footer-legal-block" style="display: none; padding: 30px; background: #111827; border: 1px solid #374151; margin: 30px auto; color: #f3f4f6; border-radius: 8px; max-width: 800px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); position: relative; z-index: 9999; font-family: monospace; line-height: 1.6;">
+    <h2 style="color: #00ff88; margin-top: 0; border-bottom: 1px solid #374151; padding-bottom: 10px;">Privacy Policy</h2>
+    <p style="font-size: 14px; color: #9ca3af;"><strong>Last Updated: September 2026</strong></p>
+    <p>At BlackBox Audio Labs LLC, we take your data security seriously. This policy outlines how we collect and process your information during transatlantique checkouts.</p>
+    <h4 style="color: #00ff88; margin-bottom: 5px;">1. Transactional Data Collection</h4>
+    <p>All financial payments are securely processed and encrypted through Stripe infrastructure. BlackBox Audio Labs LLC never stores or has access to your credit card numbers. We exclusively collect your full name and email address for the sole purpose of generating and delivering your license key via Resend.</p>
+    <h4 style="color: #00ff88; margin-bottom: 5px;">2. Data Retention & Sharing</h4>
+    <p>Your contact details will never be sold, rented, or shared with third parties for marketing purposes. Data is processed strictly to maintain active license records and sync transaction payouts to your Mercury LLC bank account.</p>
+</div>
+
+<div id="content-docs" class="footer-legal-block" style="display: none; padding: 30px; background: #111827; border: 1px solid #374151; margin: 30px auto; color: #f3f4f6; border-radius: 8px; max-width: 800px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); position: relative; z-index: 9999; font-family: monospace; line-height: 1.6;">
+    <h2 style="color: #00ff88; margin-top: 0; border-bottom: 1px solid #374151; padding-bottom: 10px;">BlackBox Core API Documentation</h2>
+    <p style="color: #9ca3af;">High-throughput audio automation infrastructure endpoints.</p>
+    <h4 style="color: #00ff88; margin-bottom: 5px;">[POST] /v1/webhook</h4>
+    <p>Main route handling encrypted Stripe event payloads. Upon detecting the `checkout.session.completed` hook, the server instantiates a `BB-[PLAN]-CORE-[HEX]` key and securely triggers the Resend automated mail relay system.</p>
+    <h4 style="color: #00ff88; margin-bottom: 5px;">[GET] /api/v1/validate-license</h4>
+    <p>Query params: `?key=YOUR_BB_KEY`. Returns JSON payload `{"valid": true, "scope": "all"}` or 403 status code if the asset key has expired or has been administrative revoked.</p>
+</div>
         </div>     
     </main>
     <script>
