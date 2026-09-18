@@ -160,7 +160,8 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
 app.get('/docs', (req, res) => res.sendFile(path.join(__dirname, 'public', 'docs.html')));
 app.get('/terms.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'terms.html')));
 app.get('/privacy.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'privacy.html')));
-
+// 🔄 REDIRECTION DE SECOURS STRIPE : RENVOIE DIRECTEMENT SUR L'ACCUEIL EN CAS D'ANNULATION
+app.get('/cancel.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 // 🚀 API ENDPOINT UNIVERSAL ROUTER: THE 100 CYBER-ROBOTS GATEWAY
 app.post('/robot/:id', express.json(), (req, res) => {
     const robotId = parseInt(req.params.id, 10);
