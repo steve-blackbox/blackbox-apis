@@ -2552,3 +2552,299 @@
 html body main #screen-command #sidebar-categories {
     flex-wrap: nowrap !important;
 }
+
+/* 🧭 Repère de transition page 1 → page 2 : habille l'espace vide en bas de
+   #screen-command et annonce à la fois le scroll vertical vers la page suivante
+   et le défilement horizontal une fois à l'intérieur de la matrice de robots. */
+.bb-section-transition-cue {
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 22px !important;
+    transform: translateX(-50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+    opacity: 0.85 !important;
+}
+
+.bb-transition-line {
+    width: 1px !important;
+    height: 34px !important;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.35) 100%) !important;
+}
+
+.bb-transition-label {
+    font-size: 10px !important;
+    letter-spacing: 0.18em !important;
+    color: rgba(255, 255, 255, 0.55) !important;
+    text-transform: uppercase !important;
+}
+
+.bb-transition-chevrons {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    line-height: 0.6 !important;
+    color: var(--accent-green) !important;
+    font-size: 18px !important;
+}
+
+.bb-transition-chevrons span {
+    display: block !important;
+    animation: bb-chevron-bounce 1.6s ease-in-out infinite !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.25) !important;
+}
+
+.bb-transition-chevrons span:nth-child(2) { animation-delay: 0.2s !important; opacity: 0.5 !important; }
+
+@keyframes bb-chevron-bounce {
+    0%, 100% { transform: translateY(0); opacity: 0.35; }
+    50% { transform: translateY(5px); opacity: 1; }
+}
+
+.bb-transition-swipe {
+    font-size: 9.5px !important;
+    letter-spacing: 0.14em !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    text-transform: uppercase !important;
+    margin-top: 2px !important;
+    animation: bb-swipe-pulse 2.4s ease-in-out infinite !important;
+}
+
+@keyframes bb-swipe-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.75; }
+}
+
+@media (max-width: 700px) {
+    .bb-section-transition-cue { display: none !important; }
+}
+
+/* 🖥️ HABILLAGE GÉOMÉTRIQUE D'AMBIANCE // formes en pointillé façon schéma technique,
+   très subtiles, purement décoratives (pointer-events:none) et posées en arrière-plan
+   de chaque section pleine page. N'affecte ni la grille ni les flex existants : tout
+   passe par des pseudo-éléments ::before/::after positionnés en absolu derrière le
+   contenu réel (voir règles position/z-index ci-dessous qui remontent le contenu). */
+.screen-section {
+    isolation: isolate !important;
+}
+
+.screen-section::before,
+.screen-section::after {
+    content: '' !important;
+    position: absolute !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    border: 1px dashed rgba(255, 255, 255, 0.07) !important;
+    opacity: 0.6 !important;
+}
+
+/* Grand cercle en pointillé, rotation lente — évoque un scan / radar de traitement. */
+.screen-section::before {
+    width: 620px !important;
+    height: 620px !important;
+    border-radius: 50% !important;
+    top: -180px !important;
+    right: -220px !important;
+    animation: bb-geo-spin 90s linear infinite !important;
+}
+
+/* Carré pivoté (losange) en pointillé, rotation inverse plus lente — casse la
+   symétrie du cercle et renforce l'effet "traitement informatique" en arrière-plan. */
+.screen-section::after {
+    width: 420px !important;
+    height: 420px !important;
+    bottom: -160px !important;
+    left: -140px !important;
+    transform: rotate(45deg) !important;
+    animation: bb-geo-spin-reverse 120s linear infinite !important;
+}
+
+@keyframes bb-geo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes bb-geo-spin-reverse {
+    from { transform: rotate(45deg); }
+    to { transform: rotate(-315deg); }
+}
+
+/* Légère variation de position/teinte par section pour éviter un effet "copié-collé"
+   trop identique entre les 3 pages tout en gardant la même famille visuelle. */
+#screen-playground::before { top: -260px !important; right: -260px !important; border-color: rgba(255, 255, 255, 0.06) !important; }
+#screen-payment::after { border-color: rgba(255, 255, 255, 0.05) !important; }
+
+/* Petits repères d'angle façon "viseur / scan de traitement", aux 4 coins de chaque
+   section. Purement cosmétique, très discret (opacité faible), sans texte ajouté. */
+.screen-section .bb-scan-corner {
+    position: absolute !important;
+    z-index: 0 !important;
+    width: 22px !important;
+    height: 22px !important;
+    pointer-events: none !important;
+    opacity: 0.35 !important;
+}
+
+.bb-scan-corner--tl { top: 28px !important; left: 28px !important; border-top: 1px solid rgba(255, 255, 255, 0.18) !important; border-left: 1px solid rgba(255, 255, 255, 0.18) !important; }
+.bb-scan-corner--br { bottom: 28px !important; right: 28px !important; border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important; border-right: 1px solid rgba(255, 255, 255, 0.18) !important; }
+
+/* Remonte le contenu réel de chaque section au-dessus de la couche décorative
+   (les pseudo-éléments ci-dessus sont en z-index:0, le contenu passe à z-index:1). */
+#screen-command > .screen-content,
+#screen-playground > .bb-horizontal-snap-track,
+#screen-payment > .screen-content {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .screen-section::before,
+    .screen-section::after {
+        animation: none !important;
+    }
+}
+
+@media (max-width: 700px) {
+    .screen-section::before,
+    .screen-section::after {
+        display: none !important;
+    }
+    .screen-section .bb-scan-corner {
+        display: none !important;
+    }
+}
+
+/* 🧩 USE-CASE ROW — replaces the old 3-icon "trust badges" with concrete,
+   illustrated before/after scenarios so a visitor can picture their own
+   project using each API category. */
+#screen-payment .bb-usecase-row {
+   display: flex !important;
+   justify-content: space-between !important;
+   gap: 24px !important;
+   width: 100% !important;
+   max-width: 1200px !important;
+   margin: 0 auto 28px !important;
+   padding: 0 !important;
+   box-sizing: border-box !important;
+}
+
+#screen-payment .bb-usecase-card {
+   flex: 1 1 0 !important;
+   min-width: 0 !important;
+   display: flex !important;
+   flex-direction: column !important;
+   gap: 10px !important;
+   padding: 24px !important;
+   box-sizing: border-box !important;
+   background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.01) 100%) !important;
+   border: 1px solid rgba(255, 255, 255, 0.06) !important;
+   border-radius: 14px !important;
+   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+#screen-payment .bb-usecase-card:hover {
+   transform: translateY(-4px) !important;
+   border-color: rgba(0, 210, 255, 0.3) !important;
+   box-shadow: 0 12px 32px rgba(0, 210, 255, 0.08) !important;
+}
+
+.bb-usecase-tag {
+   color: #00d2ff !important;
+   font-family: 'JetBrains Mono', monospace !important;
+   font-size: 10px !important;
+   font-weight: 700 !important;
+   letter-spacing: 0.08em !important;
+}
+
+.bb-usecase-scenario {
+   color: #cbd5e1 !important;
+   font-family: 'Inter', sans-serif !important;
+   font-size: 12px !important;
+   font-weight: 300 !important;
+   line-height: 1.55 !important;
+   min-height: 56px !important;
+}
+
+.bb-usecase-io {
+   display: flex !important;
+   align-items: baseline !important;
+   gap: 8px !important;
+   padding: 8px 10px !important;
+   background: rgba(239, 68, 68, 0.06) !important;
+   border: 1px solid rgba(239, 68, 68, 0.15) !important;
+   border-radius: 6px !important;
+}
+
+.bb-usecase-io--out {
+   background: rgba(0, 255, 136, 0.05) !important;
+   border-color: rgba(0, 255, 136, 0.18) !important;
+}
+
+.bb-usecase-io-label {
+   flex-shrink: 0 !important;
+   color: #64748b !important;
+   font-family: 'JetBrains Mono', monospace !important;
+   font-size: 9px !important;
+   font-weight: 700 !important;
+   letter-spacing: 0.05em !important;
+}
+
+.bb-usecase-io code {
+   color: #ffffff !important;
+   font-family: 'JetBrains Mono', monospace !important;
+   font-size: 11px !important;
+   overflow-wrap: anywhere !important;
+   white-space: normal !important;
+}
+
+.bb-usecase-endpoint {
+   color: #64748b !important;
+   font-family: 'JetBrains Mono', monospace !important;
+   font-size: 10px !important;
+   letter-spacing: 0.02em !important;
+   margin-top: 2px !important;
+}
+
+.bb-usecase-endpoint code {
+   color: #94a3b8 !important;
+   font-family: 'JetBrains Mono', monospace !important;
+}
+
+@media (max-width: 760px) {
+   #screen-payment .bb-usecase-row {
+       flex-direction: column !important;
+       gap: 16px !important;
+       margin-bottom: 24px !important;
+   }
+   .bb-usecase-scenario {
+       min-height: 0 !important;
+   }
+}
+
+/* 🧮 PLAN BOX REBALANCE — anchors price/CTA to the bottom of each pricing
+   card via a column layout, so both cards line up their action area on the
+   same baseline regardless of how many bullet points the plan copy has. */
+#screen-payment .plan-box {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+}
+
+#screen-payment .plan-info {
+    width: 100% !important;
+    flex: 1 1 auto !important;
+}
+
+#screen-payment .plan-action {
+    width: 100% !important;
+    margin-top: auto !important;
+    padding-top: 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}

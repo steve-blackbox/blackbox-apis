@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BlackBox Labs Privacy Policy — how data sent to the 12 developer APIs is processed.">
+    <title>Privacy Policy — BlackBox Labs</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="scroll-snap-type: none; display: block; align-items: normal; justify-content: normal;">
+    <main style="display: block; height: auto; min-height: 100vh; padding: 60px 24px 80px;">
+        <div style="max-width: 860px; margin: 0 auto;">
+            <a href="index.html" style="display: inline-block; margin-bottom: 28px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-decoration: none; letter-spacing: 0.05em;">← Back to BlackBox Labs</a>
+            <div class="legal-drawer is-open" style="max-height: none; opacity: 1; padding: 32px; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 12px;">
+                <h2>🔒 PRIVACY POLICY</h2>
+                <p class="legal-meta">Effective date: September 2026 · Version 1.1</p>
+
+                <h4>1. WHAT WE PROCESS, IN-MEMORY ONLY</h4>
+                <p>Each of the 12 API endpoints processes the request payload you send it (a piece of text, a JSON object, a phone number, an image, a CSV file, a URL, etc.) in-memory, for the sole purpose of returning the transformed result — a masked log line, a verified checksum, a stripped image, a deduplicated CSV. We do not write the content of your request payloads to a database, log file, or backup.</p>
+
+                <h4>2. WHAT WE DO KEEP</h4>
+                <p>To operate the subscription and prevent abuse, we keep minimal operational data: your email address and license key (to authenticate requests and send support/billing communication), Stripe subscription and payment status (Stripe itself handles and stores your card details under its own privacy policy — we never see full card numbers), and basic request metadata (timestamp, endpoint called, response status) for rate-limiting and debugging, kept only as long as needed for that purpose.</p>
+
+                <h4>3. THIRD-PARTY PROCESSORS</h4>
+                <p>We use Stripe for payment processing and subscription billing, and Umami for privacy-respecting, cookie-free website analytics (page views only, no cross-site tracking). Neither processor receives the content of your API request payloads.</p>
+
+                <h4>4. NO SALE OF DATA</h4>
+                <p>We do not sell, rent, or share your data with advertisers or data brokers. We do not use the content you send to our endpoints to train models, build profiles, or for any purpose other than returning your API response.</p>
+
+                <h4>5. YOUR REQUESTS &amp; DATA SUBJECT RIGHTS</h4>
+                <p>You are responsible for having a lawful basis to send any personal data through our endpoints (for example, PII you are masking on behalf of your own users). You can request access to, correction of, or deletion of the account data we hold (email, license key, billing status) at any time through our support channel.</p>
+
+                <h4>6. CHANGES TO THIS POLICY</h4>
+                <p>We may update this policy to reflect technical, legal, or operational changes. The effective date above reflects the version currently in force.</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

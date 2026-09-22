@@ -1,80 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compliance Center - BlackBox Audio Labs</title>
-    <style>
-        body { background: #03050d; color: #f3f4f6; font-family: monospace; padding: 40px 20px; line-height: 1.6; max-width: 800px; margin: 0 auto; }
-        .nav-tabs { display: flex; gap: 20px; border-bottom: 1px solid #182635; padding-bottom: 15px; margin-bottom: 30px; }
-        .tab-btn { background: transparent; border: 1px solid #374151; color: #9ca3af; padding: 8px 16px; cursor: pointer; font-family: monospace; border-radius: 4px; transition: all 0.2s; font-weight: bold; }
-        .tab-btn:hover { color: #00d2ff; border-color: #00d2ff; }
-        .active-btn { color: #03050d !important; background: #00d2ff !important; border-color: #00d2ff !important; }
-        .legal-section { display: none; }
-        .active-section { display: block !important; }
-        h1, h4 { color: #00d2ff; border-bottom: 1px solid #182635; padding-bottom: 10px; margin-top: 30px; }
-        strong { color: #00d2ff; }
-    </style>
+    <meta name="description" content="BlackBox Labs Terms of Service — subscription terms for the 12 developer APIs.">
+    <title>Terms of Service — BlackBox Labs</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body style="scroll-snap-type: none; display: block; align-items: normal; justify-content: normal;">
+    <main style="display: block; height: auto; min-height: 100vh; padding: 60px 24px 80px;">
+        <div style="max-width: 860px; margin: 0 auto;">
+            <a href="index.html" style="display: inline-block; margin-bottom: 28px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-decoration: none; letter-spacing: 0.05em;">← Back to BlackBox Labs</a>
+            <div class="legal-drawer is-open" style="max-height: none; opacity: 1; padding: 32px; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 12px;">
+                <h2>⚖️ TERMS OF SERVICE</h2>
+                <p class="legal-meta">Effective date: September 2026 · Version 1.1</p>
 
-    <!-- 🎛️ BARRE DE NAVIGATION INTERNE DIRECTE (0% Flash, 100% Instantané) -->
-    <div class="nav-tabs">
-        <button id="btn-terms" class="tab-btn active-btn" onclick="switchTab('terms')">Terms of Service</button>
-        <button id="btn-privacy" class="tab-btn" onclick="switchTab('privacy')">Privacy Policy</button>
-        <button id="btn-docs" class="tab-btn" onclick="switchTab('docs')">API Documentation</button>
-    </div>
+                <h4>1. SCOPE OF SERVICE</h4>
+                <p>BlackBox Labs LLC ("we", "us") operates a set of 12 developer APIs, grouped into 3 categories (Privacy &amp; PII Protection, Security &amp; Link Integrity, Data &amp; Media Utilities), accessed over HTTPS using a personal license key. By purchasing a subscription or otherwise accessing the service, you agree to these terms. If you do not accept them, do not use the service.</p>
 
-    <!-- 📄 SECTION 1 : TERMS OF SERVICE -->
-    <div id="sec-terms" class="legal-section active-section">
-        <h1>Terms of Service</h1>
-        <p style="color: #9ca3af; font-size: 14px;"><strong>Last Updated: September 2026</strong></p>
-        <p>Welcome to BlackBox Audio Labs. By accessing our services and APIs, you agree to be bound by these Terms of Service. These terms are governed by and construed in accordance with the laws of the State of Wyoming, United States, without regard to its conflict of law principles.</p>
-        <h4>1. License Grant & Access</h4>
-        <p>Subject to full payment of the chosen plan (Single Access at \$49 or All Access at \$149), BlackBox Audio Labs LLC grants you a limited, non-exclusive, non-transferable license to utilize our high-performance audio automation endpoints.</p>
-        <h4>2. License Keys & Refund Policy</h4>
-        <p>Each generated license key (`BB-CORE-...`) is unique and instantly activated upon delivery. Due to the immediate digital nature of our software assets and automated delivery via Stripe and Resend, <strong>all sales are final and absolutely no refunds will be issued</strong>.</p>
-        <h4>3. Limitation of Liability</h4>
-        <p>BlackBox Audio Labs LLC provides its APIs on an "as is" and "as available" basis, without any warranties regarding uninterrupted server uptime or fitness for a particular purpose.</p>
-    </div>
+                <h4>2. SUBSCRIPTIONS &amp; BILLING</h4>
+                <p>Access is sold as a recurring monthly subscription (SOLO CORE: one category / 4 robots, or LABS ALL-ACCESS: all 3 categories / 12 robots). Subscriptions renew automatically each month until cancelled and can be cancelled at any time; access remains active until the end of the current billing period. Payments are processed by Stripe — we do not store your card details on our servers.</p>
 
-    <!-- 📄 SECTION 2 : PRIVACY POLICY -->
-    <div id="sec-privacy" class="legal-section">
-        <h1>Privacy Policy</h1>
-        <p style="color: #9ca3af; font-size: 14px;"><strong>Last Updated: September 2026</strong></p>
-        <p>At BlackBox Audio Labs LLC, we take your data security seriously. This policy outlines how we collect and process your information during transatlantic checkouts.</p>
-        <h4>1. Transactional Data Collection</h4>
-        <p>All financial payments are securely processed and encrypted through Stripe infrastructure. BlackBox Audio Labs LLC never stores or has access to your credit card numbers. We exclusively collect your full name and email address for the sole purpose of generating and delivering your license key via Resend.</p>
-        <h4>2. Data Retention & Sharing</h4>
-        <p>Your contact details will never be sold, rented, or shared with third parties for marketing purposes. Data is processed strictly to maintain active license records and sync transaction payouts to your Mercury LLC bank account.</p>
-    </div>
+                <h4>3. LICENSE KEY &amp; ACCEPTABLE USE</h4>
+                <p>Your license key is personal, non-transferable, and must be kept confidential. It may not be shared, resold, or published in a public repository. You agree not to attempt to bypass rate limits or authentication, not to use the service for unlawful processing, fraud, or malware delivery, and not to reverse-engineer or resell the underlying API logic as your own product.</p>
 
-    <!-- 📄 SECTION 3 : API DOCUMENTATION -->
-    <div id="sec-docs" class="legal-section">
-        <h1>BlackBox Core API Documentation</h1>
-        <p style="color: #9ca3af;">High-throughput audio automation infrastructure endpoints.</p>
-        <h4>[POST] /v1/webhook</h4>
-        <p>Main route handling encrypted Stripe event payloads. Upon detecting the `checkout.session.completed` hook, the server instantiates a `BB-CORE` key and securely triggers the Resend automated mail relay system.</p>
-        <h4>[GET] /api/v1/validate-license</h4>
-        <p>Query params: `?key=YOUR_BB_KEY`. Returns JSON payload `{"valid": true, "scope": "all"}` or 403 status code if the asset key has expired or has been administratively revoked.</p>
-    </div>
+                <h4>4. AVAILABILITY &amp; MAINTENANCE</h4>
+                <p>We may perform maintenance or infrastructure changes that temporarily affect availability, and may suspend access where activity creates a security, legal, or payment risk. We aim for high availability but do not guarantee uninterrupted service.</p>
 
-    <script>
-        function switchTab(section) {
-            document.querySelectorAll('.legal-section').forEach(sec => sec.classList.remove('active-section'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active-btn'));
-            
-            document.getElementById('sec-' + section).classList.add('active-section');
-            document.getElementById('btn-' + section).classList.add('active-btn');
-        }
-        
-        // Routage automatique si l'URL contient un hashtag spécifique (ex: terms.html#privacy)
-        window.onload = function() {
-            const hash = window.location.hash.replace('#', '');
-            if (hash && document.getElementById('sec-' + hash)) {
-                switchTab(hash);
-            }
-        };
-    </script>
+                <h4>5. DISCLAIMER OF LIABILITY</h4>
+                <p>The service is provided "as is". Each endpoint performs the specific, documented transformation described in the API documentation (e.g. masking, checksum verification, EXIF stripping) — we do not persist the data you send to these endpoints. To the fullest extent permitted by law, we are not liable for indirect, incidental, or consequential damages arising from your use of the service or from how you integrate it into your own systems.</p>
+
+                <h4>6. GOVERNING LAW &amp; CONTACT</h4>
+                <p>These terms are governed by the laws applicable to BlackBox Labs LLC's registered jurisdiction, without limiting any mandatory consumer protections that cannot be waived. Questions about these terms can be sent through the contact channel listed on the main site.</p>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

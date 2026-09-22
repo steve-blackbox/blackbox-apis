@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BlackBox Labs API documentation — authentication, endpoints and response format for the 12 developer APIs.">
+    <title>API Documentation — BlackBox Labs</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="scroll-snap-type: none; display: block; align-items: normal; justify-content: normal;">
+    <main style="display: block; height: auto; min-height: 100vh; padding: 60px 24px 80px;">
+        <div style="max-width: 860px; margin: 0 auto;">
+            <a href="index.html" style="display: inline-block; margin-bottom: 28px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-decoration: none; letter-spacing: 0.05em;">← Back to BlackBox Labs</a>
+            <div class="legal-drawer is-open" style="max-height: none; opacity: 1; padding: 32px; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 12px;">
+                <h2>📚 API DOCUMENTATION</h2>
+                <p class="legal-meta">Technical reference · v1</p>
+
+                <h4>1. AUTHENTICATION</h4>
+                <p>Every request to a <code>/v1/*</code> endpoint must include your license key as a Bearer token in the <code>Authorization</code> header. Requests without a valid, active key are rejected with a <code>401</code> response.</p>
+                <pre>Authorization: Bearer BB-XXXX-XXXX</pre>
+                <p>Your key is generated automatically and emailed to you after a successful Stripe checkout. Keep it secret — do not commit it to a public repository or expose it in client-side code.</p>
+
+                <h4>2. ENDPOINTS BY CATEGORY</h4>
+                <p><strong>Privacy &amp; PII Protection</strong></p>
+                <ul>
+                    <li><code>POST /v1/log_sanitizer</code> — masks card numbers, emails and bearer tokens found in raw log text.</li>
+                    <li><code>POST /v1/pii_masker</code> — partially masks card/email fields in a JSON payload.</li>
+                    <li><code>POST /v1/phone_sanitizer</code> — normalizes phone numbers to E.164 format.</li>
+                    <li><code>POST /v1/ip_anonymizer</code> — masks the last octet (IPv4) or block (IPv6) of an IP address.</li>
+                </ul>
+                <p><strong>Security &amp; Link Integrity</strong></p>
+                <ul>
+                    <li><code>POST /v1/bot_detector</code> — flags likely automated traffic from User-Agent/headers.</li>
+                    <li><code>POST /v1/crypto_verify</code> — verifies BTC addresses via real Base58Check/Bech32 checksums (format-only for ETH/SOL).</li>
+                    <li><code>POST /v1/link_signer</code> — issues an HMAC-signed URL with an expiration timestamp.</li>
+                    <li><code>POST /v1/link_validator</code> — verifies a signed URL's signature and expiration.</li>
+                </ul>
+                <p><strong>Data &amp; Media Utilities</strong></p>
+                <ul>
+                    <li><code>POST /v1/csv_dedupe</code> — deduplicates CSV rows by one or more key columns.</li>
+                    <li><code>POST /v1/exif_cloak</code> — strips EXIF/comment metadata from a JPEG/PNG at the byte level.</li>
+                    <li><code>POST /v1/timezone_converter</code> — converts a datetime between IANA timezones.</li>
+                    <li><code>POST /v1/uptime_check</code> — makes a live HTTP request to a URL and returns status &amp; latency.</li>
+                </ul>
+
+                <h4>3. EXAMPLE REQUEST</h4>
+                <pre>curl -X POST https://blackbox.labs/v1/log_sanitizer \
+  -H "Authorization: Bearer BB-XXXX-XXXX" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"card 4111111111111111 user@mail.com"}'</pre>
+
+                <h4>4. RESPONSE FORMAT</h4>
+                <p>All endpoints return JSON. A successful response has the shape below; the exact fields depend on the endpoint called.</p>
+                <pre>{
+  "success": true,
+  "result": "..."
+}</pre>
+                <p>Errors follow the same JSON envelope with <code>success: false</code> and a <code>message</code> describing the failure (invalid input, invalid/missing license key, etc.).</p>
+
+                <h4>5. ACCESS SCOPE</h4>
+                <p>A SOLO CORE license unlocks the 4 endpoints of a single category you choose at checkout. A LABS ALL-ACCESS license unlocks all 12 endpoints across all 3 categories. Calling an endpoint outside your plan's scope returns a <code>401</code>.</p>
+
+                <h4>6. GOOD PRACTICES</h4>
+                <ul>
+                    <li>Store your license key in a server-side secret store, never in client-side code.</li>
+                    <li>Handle <code>401</code> responses explicitly instead of retrying blindly.</li>
+                    <li>Use HTTPS only — plain HTTP requests are rejected.</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

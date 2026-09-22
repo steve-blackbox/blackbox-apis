@@ -32,10 +32,24 @@
     <main>
         <div class="content-container">
             <section id="screen-command" class="screen-section" aria-label="Central command system">
+                <span class="bb-scan-corner bb-scan-corner--tl" aria-hidden="true"></span>
+                <span class="bb-scan-corner bb-scan-corner--br" aria-hidden="true"></span>
                 <div class="screen-content" id="hero-content"></div>
+                <!-- 🧭 Repère de transition : annonce le scroll vertical vers la page 2 puis le
+                     défilement horizontal à l'intérieur de celle-ci (matrice des robots). -->
+                <div class="bb-section-transition-cue" aria-hidden="true">
+                    <span class="bb-transition-line"></span>
+                    <span class="bb-transition-label">ROBOT MATRIX AHEAD</span>
+                    <span class="bb-transition-chevrons" aria-hidden="true">
+                        <span>⌄</span><span>⌄</span>
+                    </span>
+                    <span class="bb-transition-swipe">SCROLL ↓ &nbsp;·&nbsp; THEN SWIPE →</span>
+                </div>
             </section>
             <!-- 🗺️ SECTION 2 // PLAYGROUND MATRIX — 5-PANEL HORIZONTAL INDUSTRY SLIDER -->
             <section id="screen-playground" class="screen-section bb-horizontal-snap-container" aria-label="Robot category matrix">
+                            <span class="bb-scan-corner bb-scan-corner--tl" aria-hidden="true"></span>
+                            <span class="bb-scan-corner bb-scan-corner--br" aria-hidden="true"></span>
                             <div class="bb-horizontal-snap-track" id="playground-track">
                                 <div class="bb-horizontal-slide">
                                   <div class="bb-horizontal-slide-inner">
@@ -160,6 +174,8 @@
                             </div>
                         </section>
             <section id="screen-payment" class="screen-section" aria-label="Payment and secure gateway">
+                <span class="bb-scan-corner bb-scan-corner--tl" aria-hidden="true"></span>
+                <span class="bb-scan-corner bb-scan-corner--br" aria-hidden="true"></span>
                 <div class="screen-content" id="cash-content"></div>
             </section>
             <!-- 🎛️ CORE ACCESS TOKEN ACTIVATION INTERFACE (relocated to page 3 next to purchase) -->
@@ -223,7 +239,9 @@
                                 <p>You call one of our 12 endpoints instead. Each one does exactly one real, verifiable job — actual HMAC signing, actual checksum verification, actual binary-level EXIF stripping, actual CSV parsing — with no persistent storage of the data you send us. No inflated claims about what's under the hood.</p>
                             </div>
                         </div>
-                        <div class="bento-card" style="margin-top: 20px;">
+                    </section>
+                    <section id="live-blueprint-viewport" class="live-blueprint-viewport telemetry-console" aria-live="polite" aria-label="Live technical simulation">
+                        <div class="bento-card" style="margin-top: 0;">
                             <h3 id="feature-title-1" class="value-label">+ WHAT IT DOES</h3>
                             <div id="feature-content-1"></div>
                         </div>
@@ -232,47 +250,47 @@
                             <div id="feature-content-2"></div>
                         </div>
                     </section>
-                    <section id="live-blueprint-viewport" class="live-blueprint-viewport telemetry-console" aria-live="polite" aria-label="Live technical simulation">
-                        <div id="bb-mockup-holder" class="bb-mockup-holder" aria-hidden="true">
-                            <div class="bb-terminal-workspace-panel">
-                                <div class="bb-screenshot-chrome">
-                                    <span class="bb-screenshot-dot"></span>
-                                    <span class="bb-screenshot-dot"></span>
-                                    <span class="bb-screenshot-dot"></span>
-                                    <span class="bb-screenshot-title">robot-fleet.status.js</span>
-                                </div>
-                                <pre class="bb-terminal-code"><code><span class="bb-code-comment">// BLACKBOX LABS // 12 REAL ROBOTS BOOTSTRAP SEQUENCE</span>
-<span class="bb-code-fn">init_robot_fleet</span>(<span class="bb-code-key">robots</span>=<span class="bb-code-num">12</span>);
-<span class="bb-code-fn">verify_hmac_signatures</span>(<span class="bb-code-key">algorithm</span>=<span class="bb-code-str">'sha256'</span>);
-<span class="bb-code-fn">parse_binary_segments</span>(<span class="bb-code-key">formats</span>=<span class="bb-code-str">'jpeg,png'</span>);
-<span class="bb-code-fn">check_target_uptime</span>(<span class="bb-code-key">method</span>=<span class="bb-code-str">'live_http_fetch'</span>);
-
-<span class="bb-code-comment">// RUNTIME VALIDATION LOOP</span>
-<span class="bb-code-ok">[ OK ]</span> log_sanitizer // regex scrub active
-<span class="bb-code-ok">[ OK ]</span> crypto_verify // base58check + bech32 checksum
-<span class="bb-code-ok">[ OK ]</span> exif_cloak // binary segment strip verified
-<span class="bb-code-ok">[ OK ]</span> uptime_check // live fetch, real latency
-<span class="bb-code-ok">[ OK ]</span> fleet status // 12/12 robots online</code></pre>
-                            </div>
-                        </div>
-                    </section>
                 </div>
                 <div class="stripe-section">
-                    <div class="bb-trust-row" aria-label="System assurance badges">
-                        <div class="bb-trust-badge">
-                            <span class="bb-trust-icon">🛡️</span>
-                            <div class="bb-trust-title">STATELESS BY DESIGN</div>
-                            <div class="bb-trust-copy">Requests are processed in-memory and are not written to a persistent database by these endpoints.</div>
+                    <div class="bb-usecase-row" aria-label="Concrete use cases for each API category">
+                        <div class="bb-usecase-card">
+                            <div class="bb-usecase-tag">01 // PRIVACY &amp; PII PROTECTION</div>
+                            <div class="bb-usecase-scenario">You're building a signup form or a support ticket pipeline and don't want raw emails or card numbers sitting in your logs.</div>
+                            <div class="bb-usecase-io">
+                                <span class="bb-usecase-io-label">IN</span>
+                                <code>"card 4111111111111111 user@mail.com"</code>
+                            </div>
+                            <div class="bb-usecase-io bb-usecase-io--out">
+                                <span class="bb-usecase-io-label">OUT</span>
+                                <code>"card ****1111 u***@mail.com"</code>
+                            </div>
+                            <div class="bb-usecase-endpoint">via <code>log_sanitizer</code> / <code>pii_masker</code></div>
                         </div>
-                        <div class="bb-trust-badge">
-                            <span class="bb-trust-icon">⚡</span>
-                            <div class="bb-trust-title">REAL, TESTED LOGIC</div>
-                            <div class="bb-trust-copy">Every endpoint runs actual parsing, hashing, or checksum logic — verified against real test inputs, not simulated responses.</div>
+                        <div class="bb-usecase-card">
+                            <div class="bb-usecase-tag">02 // SECURITY &amp; LINK INTEGRITY</div>
+                            <div class="bb-usecase-scenario">You're generating temporary download links or accepting crypto addresses and need real, not superficial, validation.</div>
+                            <div class="bb-usecase-io">
+                                <span class="bb-usecase-io-label">IN</span>
+                                <code>"/files/report.pdf", expiresIn: 3600</code>
+                            </div>
+                            <div class="bb-usecase-io bb-usecase-io--out">
+                                <span class="bb-usecase-io-label">OUT</span>
+                                <code>"...report.pdf?sig=8f2a...&amp;exp=..."</code>
+                            </div>
+                            <div class="bb-usecase-endpoint">via <code>link_signer</code> / <code>crypto_verify</code></div>
                         </div>
-                        <div class="bb-trust-badge">
-                            <span class="bb-trust-icon">🔒</span>
-                            <div class="bb-trust-title">SECURE STRIPE CHECKOUT</div>
-                            <div class="bb-trust-copy">Payments are processed through Stripe. Your license key is generated and emailed automatically after a successful payment.</div>
+                        <div class="bb-usecase-card">
+                            <div class="bb-usecase-tag">03 // DATA &amp; MEDIA UTILITIES</div>
+                            <div class="bb-usecase-scenario">Your app accepts photo uploads or CSV exports and you need to clean them before storing or forwarding them.</div>
+                            <div class="bb-usecase-io">
+                                <span class="bb-usecase-io-label">IN</span>
+                                <code>photo.jpg (GPS + device EXIF data)</code>
+                            </div>
+                            <div class="bb-usecase-io bb-usecase-io--out">
+                                <span class="bb-usecase-io-label">OUT</span>
+                                <code>photo.jpg (metadata stripped)</code>
+                            </div>
+                            <div class="bb-usecase-endpoint">via <code>exif_cloak</code> / <code>csv_dedupe</code></div>
                         </div>
                     </div>
                     <div class="bb-getting-started-strip" aria-label="Getting started in three steps">
@@ -300,7 +318,7 @@
                                 <ul style="list-style: none; margin: 14px 0 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-family: 'JetBrains Mono', monospace;">
                                     <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» Access to 1 category of your choice (4 robots)</li>
                                     <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» Full API documentation &amp; curl examples</li>
-                                    <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» No request limit, no expiry</li>
+                                    <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» No request limit while your subscription is active</li>
                                 </ul>
                             </div>
                             <div class="plan-action">
@@ -317,11 +335,9 @@
                                 <span class="plan-desc">Unlock all 3 categories and all 12 robots with a single license key, no per-category restriction.</span>
                                 <span class="plan-target-audience">// Perfect for web agencies, growth hackers &amp; multi-client setups</span>
                                 <ul style="list-style: none; margin: 14px 0 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-family: 'JetBrains Mono', monospace;">
-                                    <li style="font-size: 11px; color: #ffffff; font-weight: 700; line-height: 1.5;">» INCLUDED: All 12 Robots, All 3 Categories</li>
-                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Real HMAC Signing &amp; Checksum Verification</li>
-                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Binary-Level File Processing (EXIF, CSV)</li>
-                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Live Uptime &amp; Timezone Utilities</li>
-                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Full Access to All 3 Categories &amp; 12 Robots</li>
+                                    <li style="font-size: 11px; color: #ffffff; font-weight: 700; line-height: 1.5;">» Access to all 3 categories (12 robots total)</li>
+                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Full API documentation &amp; curl examples</li>
+                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» No request limit while your subscription is active</li>
                                 </ul>
                             </div>
                             <div class="plan-action">
@@ -341,117 +357,13 @@
 <footer style="border-top: 1px solid #182635; padding: 20px 0; margin-top: 40px; width: 100%; display: flex; justify-content: space-between; align-items: center; font-family: monospace; font-size: 11px; color: #4b5563; box-sizing: border-box; clear: both;">
     <div>© 2026 BlackBox Audio Labs LLC. All rights reserved.</div>
     <div>
-        <a href="javascript:void(0)" onclick="toggleLegalDrawer('drawer-docs')" style="color: #ffffff; text-decoration: none; margin-left: 20px; cursor: pointer;">API Documentation</a>
-        <a href="javascript:void(0)" onclick="toggleLegalDrawer('drawer-terms')" style="color: #ffffff; text-decoration: none; margin-left: 20px; cursor: pointer;">Terms of Service</a>
-        <a href="javascript:void(0)" onclick="toggleLegalDrawer('drawer-privacy')" style="color: #ffffff; text-decoration: none; margin-left: 20px; cursor: pointer;">Privacy Policy</a>
+        <a href="docs.html" style="color: #ffffff; text-decoration: none; margin-left: 20px;">API Documentation</a>
+        <a href="terms.html" style="color: #ffffff; text-decoration: none; margin-left: 20px;">Terms of Service</a>
+        <a href="privacy.html" style="color: #ffffff; text-decoration: none; margin-left: 20px;">Privacy Policy</a>
     </div>
 </footer>
-           <!-- 📦 PROFESSIONAL LEGAL BLOCKS — THREE VALIDATED HARDCODED TEXTS -->
-<div id="drawer-terms" class="footer-legal-block" style="display: none; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.07); padding: 32px; margin-top: 20px; border-radius: 12px; box-sizing: border-box; width: 100%;">
-    <h2>⚖️ COMPLIANCE INFRASTRUCTURE AGREEMENT // TERMS OF SERVICE</h2>
-    <p class="legal-meta">Effective date: September 2026 · Version 1.0</p>
-    <h4>1. BINDING TERMS &amp; SERVICE SCOPE</h4>
-    <p>By accessing the BlackBox Automated Control dynamic interface, users agree to be legally bound by this master infrastructure agreement. The system provides an automated runtime execution grid for web data pipelines and system routing utilities.</p>
-    <p>These terms apply to visitors, purchasing customers, authorized operators, and any person or organization accessing an account, seat token, endpoint, or related documentation. If you do not accept these terms, do not access or use the service.</p>
-    <h4>2. PROPRIETARY SEAT LICENSING</h4>
-    <p>Subject to operational payment validation, users receive a non-exclusive, non-transferable, revocable lifetime seat token layout. This token grants local runtime execution parameters strictly bound to the allocated seat slots. Sub-licensing, routing redistribution, or cloning active core modules is strictly prohibited and systematically monitored.</p>
-    <p>A seat license authorizes use of the purchased service scope only. It does not transfer ownership of source code, service architecture, trademarks, deployment methods, security controls, or technical documentation. Credentials must be kept confidential and may not be shared, resold, pledged, or embedded in a public repository.</p>
-    <h4>3. PROHIBITED INFRASTRUCTURE ACTIONS &amp; NETWORK DISRUPTION</h4>
-    <p>Users shall not deploy malicious transaction payload stress testing, ingress loops, headless runtime manipulation aimed at system disruption, or symmetric key cracking loops. Any unauthorized routing patterns trigger automated permanent firewall insulation without prior warning.</p>
-    <p>Users must not probe, bypass, disable, overload, reverse engineer, scrape, or interfere with authentication controls, rate limits, tenant boundaries, billing safeguards, or availability protections. Use of the service for unlawful processing, fraud, abuse, harassment, malware delivery, credential theft, or unauthorized surveillance is prohibited.</p>
-    <h4>4. PAYMENT, ACTIVATION &amp; DIGITAL DELIVERY</h4>
-    <p>Payments are processed through certified third-party payment infrastructure. A service seat becomes active after payment authorization and fulfillment validation. Digital credentials, activation data, and service access instructions may be delivered electronically to the contact information supplied during checkout.</p>
-    <p>Because access and digital credentials may be delivered immediately, customers are responsible for reviewing plan scope before purchase and maintaining accurate contact details. Any billing dispute must first be raised through the applicable payment channel and include sufficient transaction context for investigation.</p>
-    <h4>5. AVAILABILITY, MAINTENANCE &amp; SECURITY CONTROLS</h4>
-    <p>We may perform maintenance, security remediation, capacity management, or infrastructure changes that temporarily affect availability. We may restrict, suspend, or terminate access where activity creates a security, legal, operational, or payment risk.</p>
-    <h4>6. ABSOLUTE DISCLAIMER OF OPERATIONAL LIABILITY</h4>
-    <p>The system is provided "as is" and "as available" across sandbox tenant communication boundaries. BlackBox Labs LLC and its affiliates maintain absolute structural separation from user ingestion payloads. Users retain 100% individual, technical, and legal liability for data routing, compliance metrics, and processing outcomes.</p>
-    <p>To the fullest extent permitted by applicable law, no provider party is liable for indirect, incidental, consequential, special, exemplary, or loss-of-profit damages arising from use of the service, service interruption, unauthorized user activity, or customer-configured integrations.</p>
-    <h4>7. GOVERNING FRAMEWORK &amp; CONTACT</h4>
-    <p>This agreement is interpreted under the laws applicable to the provider entity and its registered jurisdiction, without limiting mandatory consumer protections that cannot lawfully be waived. Notices concerning these terms may be delivered through the service interface or the customer contact channel on file.</p>
-</div>
-
-<div id="drawer-privacy" class="footer-legal-block" style="display: none; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.07); padding: 32px; margin-top: 20px; border-radius: 12px; box-sizing: border-box; width: 100%;">
-    <h2>🔒 VOLATILE ARCHITECTURE COMPLIANCE // PRIVACY POLICY</h2>
-    <p class="legal-meta">Effective date: September 2026 · Version 1.0</p>
-    <h4>1. STRICT RUNTIME ZERO-LOG DATACENTER DATA INSULATION</h4>
-    <p>Our global infrastructure operates under a verified volatile processing doctrine. Ingress transaction streams and dynamic data payloads are processed directly inside ephemeral volatile server memory. The system enforces immediate data purges upon processing lifecycle termination. No data persistence, logs, or backups are maintained on structural storage layers.</p>
-    <p>This zero-log approach applies to customer payload content processed by the runtime. Limited operational signals may be generated where technically necessary to prevent abuse, maintain service integrity, resolve a support request, satisfy a legal obligation, or confirm payment state. Such signals are minimized, access-controlled, and retained only for the applicable purpose.</p>
-    <h4>2. END-TO-END PAYMENT AND GATEWAY ENCRYPTION SECURITY</h4>
-    <p>All client financial pipelines, registration verification, and subscription transaction flows route exclusively through certified, tier-1 standard encryption transaction structures (SSL/TLS secure tokens). No volatile billing data, personal account metrics, or specific banking parameters are tracked, monitored, or saved on our servers.</p>
-    <p>Payment providers may independently process payment credentials, fraud signals, tax details, receipts, and transaction identifiers under their own privacy notices. We receive only the limited confirmation and contact data required to provision access, respond to support requests, and reconcile service status.</p>
-    <h4>3. HARDENED ANONYMITY &amp; DATA TRANSFER POLICIES</h4>
-    <p>The service maintains absolute architectural privacy. We do not sell, rent, or distribute configuration parameters to third-party tracking nets. Operational server nodes communicate anonymously via decentralized secure clouds to protect core network insulation and shield customer configurations from public exposure.</p>
-    <p>Where a transfer is technically required, data is protected using encrypted transport, least-privilege access, tenant isolation, and purpose limitation. We do not use customer payloads to build advertising profiles or sell behavioral datasets.</p>
-    <h4>4. CUSTOMER RESPONSIBILITIES &amp; DATA SUBJECT REQUESTS</h4>
-    <p>Customers remain responsible for ensuring that their inputs, integrations, and routing instructions have a lawful basis and do not include unnecessary sensitive information. Do not submit credentials, payment card numbers, government identifiers, health records, or other sensitive data unless the service explicitly documents a lawful and secure processing path.</p>
-    <p>Questions about access, correction, deletion, or privacy practices may be submitted through the support channel associated with the service. Requests are evaluated against applicable law, security requirements, and the technical limits of volatile processing.</p>
-    <h4>5. RETENTION, INCIDENT RESPONSE &amp; POLICY UPDATES</h4>
-    <p>Retention is limited to the minimum period required for service delivery, security review, dispute handling, or legal compliance. If a security incident affecting protected information is identified, response and notification actions are handled according to applicable legal requirements and the nature of the affected data.</p>
-    <p>This policy may be updated to reflect technical, legal, or operational changes. The effective date shown above identifies the current version presented through this interface.</p>
-</div>
-
-<div id="drawer-docs" class="footer-legal-block" style="display: none; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.07); padding: 32px; margin-top: 20px; border-radius: 12px; box-sizing: border-box; width: 100%;">
-    <h2>📚 ADVANCED INFRASTRUCTURE FLOW // API CORE v1.0.4 SPECIFICATIONS</h2>
-    <p class="legal-meta">Technical reference · Stable release channel</p>
-    <h4>» TECHNICAL ARCHITECTURAL SPECIFICATIONS &amp; ENDPOINT DEPLOYMENT PROTOCOLS</h4>
-    <h4>1. SECURE GATEWAY AUTHENTICATION</h4>
-    <p>All API requests directed to the dynamic tenant node infrastructure must be authenticated using hardened cryptographic Bearer Tokens passed strictly via the dynamic <code>X-BlackBox-Key</code> verification row headers. Unauthenticated or malformed request payloads will instantly trigger localized firewall insulation routines at the network edge layer.</p>
-    <p>Credentials must be transmitted over encrypted transport, never placed in query strings, browser history, client-side logs, or publicly accessible source files. Tokens are scoped to the allocated service seat and should be rotated immediately after suspected exposure.</p>
-    <h4>2. CORE SYSTEM ENDPOINTS</h4>
-    <ul>
-        <li><code>GET /v1/fleet/status</code> : Queries operational transaction matrix metrics in raw asynchronous format.</li>
-        <li><code>POST /v1/fleet/deploy</code> : Triggers automated isolated tenant configuration loops. Expects dynamic seat routing identifiers.</li>
-        <li><code>DELETE /v1/fleet/purge</code> : Enforces volatile memory wipes across defined tenant communication boundaries.</li>
-    </ul>
-    <h4>3. LIFE-CYCLE RATE LIMITS &amp; STACK DEBORDEMENT</h4>
-    <p>Traffic pipelines are structurally capped at 10,000 queries per master cluster runtime sequence. Ingress throttling blocks burst streams exceeding 250 concurrent requests per microsecond transaction window.</p>
-    <p>Clients should implement exponential backoff, bounded retries, idempotency keys for mutation requests, and explicit timeout handling. A throttled response should be treated as a recoverable capacity signal rather than retried as an unbounded loop.</p>
-    <h4>4. RESPONSE METRICS SCHEMATICS</h4>
-    <p>All outputs structurally adhere to standard architectural JSON format:</p>
-    <pre>{
-  "status": "ACTIVE",
-  "node_id": "BB-CLUSTER-O1",
-  "compliance": "VERIFIED",
-  "timestamp": 1790697600
-}</pre>
-    <h4>5. ERROR STATES &amp; OBSERVABILITY</h4>
-    <p>Clients should handle authentication failures, validation failures, rate limits, unavailable nodes, and malformed responses explicitly. A successful HTTP transport does not by itself indicate successful business execution; consumers must validate the response status and compliance fields before proceeding.</p>
-    <h4>6. DEPLOYMENT SAFETY CHECKLIST</h4>
-    <ul>
-        <li>Store keys in a protected runtime secret store.</li>
-        <li>Validate tenant and seat identifiers before deployment.</li>
-        <li>Use idempotency controls for retryable mutations.</li>
-        <li>Apply least-privilege access to operators and service accounts.</li>
-        <li>Purge temporary payloads and credentials from local diagnostics.</li>
-    </ul>
-</div>
     </main>
     <script>
-        function toggleLegalDrawer(drawerId) {
-            const drawers = ['drawer-docs', 'drawer-terms', 'drawer-privacy'];
-            const footer = document.querySelector('footer');
-
-            drawers.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    if (footer && el.nextElementSibling !== footer) {
-                        footer.parentNode.insertBefore(el, footer);
-                    }
-                    if (id === drawerId) {
-                        if (el.style.display === 'block') {
-                            el.style.display = 'none';
-                        } else {
-                            el.style.display = 'block';
-                        }
-                    } else {
-                        el.style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        window.toggleLegalDrawer = toggleLegalDrawer;
 
         const robotsCatalog = [
             {
@@ -721,11 +633,7 @@ function initializeApp() {
             composeScreenSections();
             const sidebarContainer = document.getElementById('sidebar-categories');
             sidebarContainer.innerHTML = '';
-            ['drawer-docs', 'drawer-terms', 'drawer-privacy'].forEach(id => {
-                const drawer = document.getElementById(id);
-                if (drawer) drawer.style.display = 'none';
-            });
-            
+
             robotCategories.forEach((category) => {
                 const btn = document.createElement('button');
                 btn.id = `btn-theme-${category}`;
@@ -750,7 +658,6 @@ function initializeApp() {
             const robotSection = document.querySelector('.robot-display-section');
             const stripe = document.querySelector('.stripe-section');
             const footer = document.querySelector('footer');
-            const drawers = [...document.querySelectorAll('.footer-legal-block')];
 
             if (!container || !hero || !cash || !ingress || !robotSection || !stripe || !footer) return;
 
@@ -768,7 +675,7 @@ function initializeApp() {
             hero.appendChild(topLine);
             hero.appendChild(navLine);
             if (robotSection) hero.appendChild(robotSection);
-            [stripe, ingress, ...drawers, footer].forEach(node => node && cash.appendChild(node));
+            [stripe, ingress, footer].forEach(node => node && cash.appendChild(node));
             container.classList.add('screens-composed');
             const aside = document.querySelector('aside');
             if (aside) aside.setAttribute('aria-hidden', 'true');
