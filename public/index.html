@@ -320,41 +320,35 @@
                 <div class="stripe-section">
                     <div class="bb-usecase-row" aria-label="Concrete use cases for each API category">
                         <div class="bb-usecase-card">
-                            <div class="bb-usecase-tag">01 // PRIVACY &amp; PII PROTECTION</div>
-                            <div class="bb-usecase-scenario">You're building a signup form or a support ticket pipeline and don't want raw emails or card numbers sitting in your logs.</div>
-                            <div class="bb-usecase-io">
-                                <span class="bb-usecase-io-label">IN</span>
+                            <span class="bb-usecase-accent-line"></span>
+                            <h3 class="bb-usecase-title">Privacy &amp; PII Protection</h3>
+                            <p class="bb-usecase-scenario">You're building a signup form or a support ticket pipeline and don't want raw emails or card numbers sitting in your logs.</p>
+                            <div class="bb-usecase-example">
                                 <code>"card 4111111111111111 user@mail.com"</code>
-                            </div>
-                            <div class="bb-usecase-io bb-usecase-io--out">
-                                <span class="bb-usecase-io-label">OUT</span>
-                                <code>"card ****1111 u***@mail.com"</code>
+                                <span class="bb-usecase-arrow">→</span>
+                                <code class="bb-usecase-result">"card ****1111 u***@mail.com"</code>
                             </div>
                             <div class="bb-usecase-endpoint">via <code>log_sanitizer</code> / <code>pii_masker</code></div>
                         </div>
                         <div class="bb-usecase-card">
-                            <div class="bb-usecase-tag">02 // SECURITY &amp; LINK INTEGRITY</div>
-                            <div class="bb-usecase-scenario">You're generating temporary download links or accepting crypto addresses and need real, not superficial, validation.</div>
-                            <div class="bb-usecase-io">
-                                <span class="bb-usecase-io-label">IN</span>
+                            <span class="bb-usecase-accent-line"></span>
+                            <h3 class="bb-usecase-title">Security &amp; Link Integrity</h3>
+                            <p class="bb-usecase-scenario">You're generating temporary download links or accepting crypto addresses and need real, not superficial, validation.</p>
+                            <div class="bb-usecase-example">
                                 <code>"/files/report.pdf", expiresIn: 3600</code>
-                            </div>
-                            <div class="bb-usecase-io bb-usecase-io--out">
-                                <span class="bb-usecase-io-label">OUT</span>
-                                <code>"...report.pdf?sig=8f2a...&amp;exp=..."</code>
+                                <span class="bb-usecase-arrow">→</span>
+                                <code class="bb-usecase-result">"...report.pdf?sig=8f2a...&amp;exp=..."</code>
                             </div>
                             <div class="bb-usecase-endpoint">via <code>link_signer</code> / <code>crypto_verify</code></div>
                         </div>
                         <div class="bb-usecase-card">
-                            <div class="bb-usecase-tag">03 // DATA &amp; MEDIA UTILITIES</div>
-                            <div class="bb-usecase-scenario">Your app accepts photo uploads or CSV exports and you need to clean them before storing or forwarding them.</div>
-                            <div class="bb-usecase-io">
-                                <span class="bb-usecase-io-label">IN</span>
+                            <span class="bb-usecase-accent-line"></span>
+                            <h3 class="bb-usecase-title">Data &amp; Media Utilities</h3>
+                            <p class="bb-usecase-scenario">Your app accepts photo uploads or CSV exports and you need to clean them before storing or forwarding them.</p>
+                            <div class="bb-usecase-example">
                                 <code>photo.jpg (GPS + device EXIF data)</code>
-                            </div>
-                            <div class="bb-usecase-io bb-usecase-io--out">
-                                <span class="bb-usecase-io-label">OUT</span>
-                                <code>photo.jpg (metadata stripped)</code>
+                                <span class="bb-usecase-arrow">→</span>
+                                <code class="bb-usecase-result">photo.jpg (metadata stripped)</code>
                             </div>
                             <div class="bb-usecase-endpoint">via <code>exif_cloak</code> / <code>csv_dedupe</code></div>
                         </div>

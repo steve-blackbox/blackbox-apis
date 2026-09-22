@@ -949,7 +949,7 @@
         .bb-mock-status-value {
             font-size: 13px !important;
             font-weight: 700 !important;
-            color: #00ff88 !important;
+            color: #00d2ff !important;
             letter-spacing: 0.02em !important;
         }
 
@@ -2809,12 +2809,26 @@ html body main #screen-command #sidebar-categories {
    box-shadow: 0 12px 32px rgba(0, 210, 255, 0.08) !important;
 }
 
-.bb-usecase-tag {
-   color: #00d2ff !important;
-   font-family: 'JetBrains Mono', monospace !important;
-   font-size: 10px !important;
-   font-weight: 700 !important;
-   letter-spacing: 0.08em !important;
+/* Punchy title treatment matching the hero manifesto: a big bold heading with
+   a single short accent line above it — contrast without extra chrome. */
+.bb-usecase-accent-line {
+   display: block !important;
+   width: 36px !important;
+   height: 3px !important;
+   background: #00d2ff !important;
+   border-radius: 2px !important;
+   margin-bottom: 4px !important;
+}
+
+.bb-usecase-title {
+   font-family: 'Inter', sans-serif !important;
+   font-size: 19px !important;
+   font-weight: 800 !important;
+   letter-spacing: -0.01em !important;
+   color: #ffffff !important;
+   text-transform: uppercase !important;
+   margin: 0 !important;
+   line-height: 1.25 !important;
 }
 
 .bb-usecase-scenario {
@@ -2826,36 +2840,29 @@ html body main #screen-command #sidebar-categories {
    min-height: 56px !important;
 }
 
-.bb-usecase-io {
+.bb-usecase-example {
    display: flex !important;
+   flex-wrap: wrap !important;
    align-items: baseline !important;
    gap: 8px !important;
-   padding: 8px 10px !important;
-   background: rgba(239, 68, 68, 0.06) !important;
-   border: 1px solid rgba(239, 68, 68, 0.15) !important;
-   border-radius: 6px !important;
-}
-
-.bb-usecase-io--out {
-   background: rgba(0, 255, 136, 0.05) !important;
-   border-color: rgba(0, 255, 136, 0.18) !important;
-}
-
-.bb-usecase-io-label {
-   flex-shrink: 0 !important;
-   color: #64748b !important;
-   font-family: 'JetBrains Mono', monospace !important;
-   font-size: 9px !important;
-   font-weight: 700 !important;
-   letter-spacing: 0.05em !important;
-}
-
-.bb-usecase-io code {
-   color: #ffffff !important;
    font-family: 'JetBrains Mono', monospace !important;
    font-size: 11px !important;
+}
+
+.bb-usecase-example code {
+   color: #64748b !important;
    overflow-wrap: anywhere !important;
    white-space: normal !important;
+}
+
+.bb-usecase-example .bb-usecase-result {
+   color: #ffffff !important;
+   font-weight: 600 !important;
+}
+
+.bb-usecase-arrow {
+   color: #00d2ff !important;
+   font-weight: 700 !important;
 }
 
 .bb-usecase-endpoint {
