@@ -58,6 +58,20 @@
                                         <h2>PRIVACY &amp; PII PROTECTION</h2>
                                         <span class="bb-horizontal-slide-subtitle">Mask, Sanitize &amp; Normalize Sensitive Data Before It Ever Hits Your Database</span>
                                         <p>Four real, working endpoints that strip card numbers, emails, and bearer tokens from raw log text, partially mask PII in JSON payloads, normalize phone numbers to E.164 format, and anonymize IPv4/IPv6 addresses the same way Google Analytics does. Drop them in front of any pipeline that touches user data before you store or forward it.</p>
+                                        <div class="bb-slide-specs" aria-hidden="true">
+                                            <div class="bb-slide-spec-item">
+                                                <span class="bb-slide-spec-value">04</span>
+                                                <span class="bb-slide-spec-label">Live Endpoints</span>
+                                            </div>
+                                            <div class="bb-slide-spec-item">
+                                                <span class="bb-slide-spec-value">JSON</span>
+                                                <span class="bb-slide-spec-label">Request Format</span>
+                                            </div>
+                                            <div class="bb-slide-spec-item">
+                                                <span class="bb-slide-spec-value">Stateless</span>
+                                                <span class="bb-slide-spec-label">No PII Stored</span>
+                                            </div>
+                                        </div>
                                         <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
                                             <li>LOG SANITIZER</li>
                                             <li>PII MASKER</li>
@@ -81,11 +95,19 @@
                                                     <div class="bb-terminal-line bb-terminal-success">[ REAL REGEX MATCH // NO RAW PII PERSISTED ]</div>
                                                 </div>
                                             </div>
-                                            <div class="bb-logos-compliance-shield">
-                                                <span class="bb-logo-shield-item">LOG SANITIZER</span>
-                                                <span class="bb-logo-shield-item">PII MASKER</span>
-                                                <span class="bb-logo-shield-item">PHONE NORMALIZER</span>
-                                                <span class="bb-logo-shield-item">IP ANONYMIZER</span>
+                                            <div class="bb-mock-status-row" aria-hidden="true">
+                                                <div class="bb-mock-status-item">
+                                                    <span class="bb-mock-status-value">200 OK</span>
+                                                    <span class="bb-mock-status-label">HTTP Status</span>
+                                                </div>
+                                                <div class="bb-mock-status-item">
+                                                    <span class="bb-mock-status-value">~40ms</span>
+                                                    <span class="bb-mock-status-label">Response Time</span>
+                                                </div>
+                                                <div class="bb-mock-status-item">
+                                                    <span class="bb-mock-status-value">v1</span>
+                                                    <span class="bb-mock-status-label">API Version</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -98,6 +120,20 @@
                                         <h2>SECURITY &amp; LINK INTEGRITY</h2>
                                         <span class="bb-horizontal-slide-subtitle">Real Cryptographic Checks — HMAC Signatures, Checksums, Bot Signals</span>
                                         <p>Four endpoints built on real cryptography, not string matching: HMAC-SHA256 signed URLs with expiration and constant-time signature verification, and Bitcoin address validation using actual Base58Check and Bech32 checksum algorithms (not just format regex). Includes a lightweight bot-signal detector for headless browser traffic.</p>
+                                        <div class="bb-slide-specs" aria-hidden="true">
+                                            <div class="bb-slide-spec-item">
+                                                <span class="bb-slide-spec-value">04</span>
+                                                <span class="bb-slide-spec-label">Live Endpoints</span>
+                                            </div>
+                                            <div class="bb-slide-spec-item">
+                                                <span class="bb-slide-spec-value">HMAC-SHA256</span>
+                                                <span class="bb-slide-spec-label">Signature Algo</span>
+                                            </div>
+                                            <div class="bb-slide-spec-item">
+                                                <span class="bb-slide-spec-value">Base58 / Bech32</span>
+                                                <span class="bb-slide-spec-label">Checksum Std</span>
+                                            </div>
+                                        </div>
                                         <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
                                             <li>BOT DETECTOR</li>
                                             <li>CRYPTO VERIFY</li>
@@ -121,11 +157,19 @@
                                                     <div class="bb-terminal-line bb-terminal-success">[ CHECKSUM VERIFIED // NOT JUST FORMAT MATCHING ]</div>
                                                 </div>
                                             </div>
-                                            <div class="bb-logos-compliance-shield">
-                                                <span class="bb-logo-shield-item">BOT DETECTOR</span>
-                                                <span class="bb-logo-shield-item">CRYPTO VERIFY</span>
-                                                <span class="bb-logo-shield-item">LINK SIGNER</span>
-                                                <span class="bb-logo-shield-item">LINK VALIDATOR</span>
+                                            <div class="bb-mock-status-row" aria-hidden="true">
+                                                <div class="bb-mock-status-item">
+                                                    <span class="bb-mock-status-value">200 OK</span>
+                                                    <span class="bb-mock-status-label">HTTP Status</span>
+                                                </div>
+                                                <div class="bb-mock-status-item">
+                                                    <span class="bb-mock-status-value">~55ms</span>
+                                                    <span class="bb-mock-status-label">Response Time</span>
+                                                </div>
+                                                <div class="bb-mock-status-item">
+                                                    <span class="bb-mock-status-value">v1</span>
+                                                    <span class="bb-mock-status-label">API Version</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -138,6 +182,20 @@
                                         <h2>DATA &amp; MEDIA UTILITIES</h2>
                                         <span class="bb-horizontal-slide-subtitle">Binary-Level File Processing &amp; Real Uptime Monitoring</span>
                                         <p>Four endpoints that actually parse the files and requests they claim to handle: a real CSV parser with row or column-based deduplication, a binary JPEG/PNG parser that strips EXIF and comment segments at the byte level, native timezone conversion via Intl, and a live HTTP uptime checker that measures real latency against your target URL.</p>
+                                        <div class="bb-slide-specs" aria-hidden="true">
+                                            <div class="bb-slide-spec-item">
+                                                <span class="bb-slide-spec-value">04</span>
+                                                <span class="bb-slide-spec-label">Live Endpoints</span>
+                                            </div>
+                                            <div class="bb-slide-spec-item">
+                                                <span class="bb-slide-spec-value">Binary</span>
+                                                <span class="bb-slide-spec-label">File-Level Parsing</span>
+                                            </div>
+                                            <div class="bb-slide-spec-item">
+                                                <span class="bb-slide-spec-value">Real-Time</span>
+                                                <span class="bb-slide-spec-label">Uptime Checks</span>
+                                            </div>
+                                        </div>
                                         <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
                                             <li>CSV DEDUPE</li>
                                             <li>EXIF CLOAK</li>
@@ -161,11 +219,19 @@
                                                     <div class="bb-terminal-line bb-terminal-success">[ BINARY SEGMENTS ACTUALLY STRIPPED, IMAGE STILL VALID ]</div>
                                                 </div>
                                             </div>
-                                            <div class="bb-logos-compliance-shield">
-                                                <span class="bb-logo-shield-item">CSV DEDUPE</span>
-                                                <span class="bb-logo-shield-item">EXIF CLOAK</span>
-                                                <span class="bb-logo-shield-item">TIMEZONE CONVERTER</span>
-                                                <span class="bb-logo-shield-item">UPTIME CHECK</span>
+                                            <div class="bb-mock-status-row" aria-hidden="true">
+                                                <div class="bb-mock-status-item">
+                                                    <span class="bb-mock-status-value">200 OK</span>
+                                                    <span class="bb-mock-status-label">HTTP Status</span>
+                                                </div>
+                                                <div class="bb-mock-status-item">
+                                                    <span class="bb-mock-status-value">~35ms</span>
+                                                    <span class="bb-mock-status-label">Response Time</span>
+                                                </div>
+                                                <div class="bb-mock-status-item">
+                                                    <span class="bb-mock-status-value">v1</span>
+                                                    <span class="bb-mock-status-label">API Version</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -658,16 +658,16 @@
         }
 
         .bb-horizontal-slide-copy {
-            flex: 0 0 42% !important;
-            max-width: 42% !important;
+            flex: 0 0 44% !important;
+            max-width: 44% !important;
             display: flex !important;
             flex-direction: column !important;
-            gap: 18px !important;
+            gap: 22px !important;
             font-family: 'JetBrains Mono', monospace !important;
         }
 
         .bb-horizontal-slide-kicker {
-            font-size: 12px !important;
+            font-size: 13px !important;
             letter-spacing: 0.1em !important;
             color: #00d2ff !important;
             text-transform: uppercase !important;
@@ -675,31 +675,74 @@
         }
 
         .bb-horizontal-slide-copy h2 {
-            font-size: 38px !important;
-            line-height: 1.2 !important;
+            font-size: 50px !important;
+            line-height: 1.15 !important;
             color: #ffffff !important;
             font-weight: 700 !important;
             margin: 0 !important;
-            letter-spacing: -0.01em !important;
+            letter-spacing: -0.015em !important;
             font-family: Inter, sans-serif !important;
         }
 
         .bb-horizontal-slide-subtitle {
-            font-size: 13.5px !important;
-            line-height: 1.45 !important;
+            font-size: 15.5px !important;
+            line-height: 1.5 !important;
             color: #94a3b8 !important;
             font-weight: 500 !important;
             letter-spacing: 0.01em !important;
             font-family: Inter, sans-serif !important;
-            margin-top: -6px !important;
+            margin-top: -8px !important;
         }
 
         .bb-horizontal-slide-copy p {
-            font-size: 14.5px !important;
-            line-height: 1.65 !important;
+            font-size: 16px !important;
+            line-height: 1.7 !important;
             color: #94a3b8 !important;
             margin: 0 !important;
             font-family: Inter, sans-serif !important;
+        }
+
+        /* Truthful "spec strip": a compact readout of real, verifiable facts about
+           each robot category (endpoint count, protocol, guarantee) — fills the
+           vertical rhythm of the copy column with substance instead of fake stats. */
+        .bb-slide-specs {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 0 !important;
+            margin: 4px 0 0 0 !important;
+            padding: 18px 0 !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
+        .bb-slide-spec-item {
+            flex: 1 1 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 4px !important;
+            padding: 0 18px !important;
+            border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
+        .bb-slide-spec-item:first-child {
+            padding-left: 0 !important;
+            border-left: none !important;
+        }
+
+        .bb-slide-spec-value {
+            font-size: 17px !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            letter-spacing: -0.01em !important;
+        }
+
+        .bb-slide-spec-label {
+            font-size: 10px !important;
+            letter-spacing: 0.08em !important;
+            color: #64748b !important;
+            text-transform: uppercase !important;
+            font-family: 'JetBrains Mono', monospace !important;
         }
 
         .bb-horizontal-slide-targets {
@@ -712,12 +755,12 @@
         }
 
         .bb-horizontal-slide-targets li {
-            font-size: 11px !important;
+            font-size: 12px !important;
             letter-spacing: 0.05em !important;
             color: #ffffff !important;
             background: rgba(0, 210, 255, 0.05) !important;
             border: 1px solid rgba(0, 210, 255, 0.18) !important;
-            padding: 7px 14px !important;
+            padding: 8px 15px !important;
             border-radius: 6px !important;
             transition: background 0.2s ease, border-color 0.2s ease !important;
         }
@@ -741,7 +784,7 @@
 
         .bb-visual-mockup-frame {
             width: 100% !important;
-            max-width: 540px !important;
+            max-width: 620px !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
@@ -795,7 +838,7 @@
             flex-direction: column !important;
             align-items: center !important;
             gap: 18px !important;
-            padding: 24px 28px !important;
+            padding: 32px 34px !important;
             box-sizing: border-box !important;
         }
 
@@ -829,9 +872,9 @@
             width: 100% !important;
             display: flex !important;
             flex-direction: column !important;
-            gap: 8px !important;
+            gap: 10px !important;
             font-family: 'JetBrains Mono', monospace !important;
-            font-size: 11px !important;
+            font-size: 12.5px !important;
         }
 
         .bb-terminal-line {
@@ -862,7 +905,9 @@
             border-radius: 4px !important;
         }
 
-        .bb-product-screenshot-mockup .bb-logos-compliance-shield {
+        /* Compact live-status readout replacing the previous duplicated tag list —
+           echoes real request telemetry instead of repeating the left-column tags. */
+        .bb-product-screenshot-mockup .bb-mock-status-row {
             padding: 20px 28px !important;
             box-sizing: border-box !important;
             border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
@@ -883,33 +928,36 @@
             text-align: center !important;
         }
 
-        /* Brand compliance shield: high-density asymmetric grid, monochrome dimmed by default. */
-        .bb-logos-compliance-shield {
-            display: grid !important;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
-            grid-auto-flow: dense !important;
+        /* Live-status readout: three short facts (HTTP status, latency band, region)
+           laid out like a small telemetry bar under the terminal mockup. */
+        .bb-mock-status-row {
+            display: flex !important;
             align-items: center !important;
-            gap: 14px 24px !important;
+            justify-content: space-between !important;
             width: 100% !important;
-        }
-
-        .bb-logo-shield-item {
             font-family: 'JetBrains Mono', monospace !important;
-            font-size: 16px !important;
+        }
+
+        .bb-mock-status-item {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 3px !important;
+            align-items: center !important;
+            flex: 1 1 0 !important;
+        }
+
+        .bb-mock-status-value {
+            font-size: 13px !important;
             font-weight: 700 !important;
+            color: #00ff88 !important;
             letter-spacing: 0.02em !important;
-            color: rgba(255, 255, 255, 0.04) !important;
+        }
+
+        .bb-mock-status-label {
+            font-size: 9.5px !important;
+            letter-spacing: 0.08em !important;
+            color: rgba(255, 255, 255, 0.4) !important;
             text-transform: uppercase !important;
-            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        }
-
-        /* Activated when the parent slide becomes the current visible panel in the horizontal snap track. */
-        .bb-horizontal-slide.is-active-slide .bb-logo-shield-item {
-            color: #ffffff !important;
-        }
-
-        .bb-logo-shield-item:hover {
-            color: #ffffff !important;
         }
 
         @media (max-width: 900px) {
@@ -943,12 +991,20 @@
                 padding: 18px 20px !important;
             }
 
-            .bb-product-screenshot-mockup .bb-logos-compliance-shield {
+            .bb-product-screenshot-mockup .bb-mock-status-row {
                 padding: 16px 20px !important;
             }
 
-            .bb-logo-shield-item {
-                font-size: 13px !important;
+            .bb-mock-status-value {
+                font-size: 11px !important;
+            }
+
+            .bb-slide-specs {
+                padding: 14px 0 !important;
+            }
+
+            .bb-slide-spec-item {
+                padding: 0 12px !important;
             }
         }
 
