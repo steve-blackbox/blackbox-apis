@@ -747,8 +747,8 @@
 
         .bb-horizontal-slide-targets {
             list-style: none !important;
-            display: flex !important;
-            flex-wrap: wrap !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
             gap: 10px !important;
             margin: 8px 0 0 0 !important;
             padding: 0 !important;
@@ -762,6 +762,7 @@
             border: 1px solid rgba(0, 210, 255, 0.18) !important;
             padding: 8px 15px !important;
             border-radius: 6px !important;
+            text-align: center !important;
             cursor: default !important;
             transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease !important;
         }
@@ -953,6 +954,149 @@
             color: #ffffff !important;
             font-weight: 700 !important;
             letter-spacing: 0.04em !important;
+        }
+
+        /* Slide 1 mockup: before/after diff card (Privacy & PII) — replaces the terminal
+           look with a raw-vs-sanitized comparison to make the proof visually distinct. */
+        .bb-mock-diff {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 10px !important;
+            font-family: 'JetBrains Mono', monospace !important;
+        }
+
+        .bb-mock-diff-row {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 6px !important;
+            padding: 12px 14px !important;
+            border-radius: 6px !important;
+            border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        }
+
+        .bb-mock-diff-row--before {
+            background: rgba(255, 255, 255, 0.02) !important;
+        }
+
+        .bb-mock-diff-row--before .bb-mock-diff-value {
+            color: rgba(255, 255, 255, 0.35) !important;
+            text-decoration: line-through !important;
+            text-decoration-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .bb-mock-diff-row--after {
+            background: rgba(0, 210, 255, 0.05) !important;
+            border-color: rgba(0, 210, 255, 0.2) !important;
+        }
+
+        .bb-mock-diff-row--after .bb-mock-diff-value {
+            color: #ffffff !important;
+        }
+
+        .bb-mock-diff-label {
+            font-size: 10px !important;
+            letter-spacing: 0.08em !important;
+            color: rgba(255, 255, 255, 0.4) !important;
+            text-transform: uppercase !important;
+        }
+
+        .bb-mock-diff-value {
+            font-size: 12px !important;
+            line-height: 1.4 !important;
+            word-break: break-word !important;
+        }
+
+        .bb-mock-diff-arrow {
+            align-self: center !important;
+            color: #00d2ff !important;
+            font-size: 14px !important;
+        }
+
+        .bb-mock-diff-tag {
+            margin-top: 4px !important;
+            font-size: 11.5px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.04em !important;
+            color: #ffffff !important;
+            text-align: center !important;
+        }
+
+        /* Slide 2 mockup: sequential verification checklist (Security & Link Integrity)
+           ending in a seal, standing in for a plain terminal output. */
+        .bb-mock-checklist {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            font-family: 'JetBrains Mono', monospace !important;
+        }
+
+        .bb-mock-check-item {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            font-size: 12.5px !important;
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .bb-mock-check-mark {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 18px !important;
+            height: 18px !important;
+            flex-shrink: 0 !important;
+            border-radius: 50% !important;
+            background: rgba(0, 210, 255, 0.12) !important;
+            color: #00d2ff !important;
+            font-size: 11px !important;
+        }
+
+        .bb-mock-check-seal {
+            margin-top: 8px !important;
+            align-self: center !important;
+            padding: 8px 20px !important;
+            border: 1px solid rgba(0, 210, 255, 0.35) !important;
+            border-radius: 20px !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.1em !important;
+            color: #00d2ff !important;
+        }
+
+        /* Slide 3 mockup: 2x2 stat grid (Data & Media Utilities) tying each tile back to
+           one of the 4 robots in this category, instead of demoing a single endpoint. */
+        .bb-mock-stat-grid {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
+            font-family: 'JetBrains Mono', monospace !important;
+        }
+
+        .bb-mock-stat-tile {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 6px !important;
+            padding: 16px !important;
+            border-radius: 6px !important;
+            border: 1px solid rgba(255, 255, 255, 0.06) !important;
+            background: rgba(255, 255, 255, 0.02) !important;
+        }
+
+        .bb-mock-stat-value {
+            font-size: 15px !important;
+            font-weight: 700 !important;
+            color: #00d2ff !important;
+        }
+
+        .bb-mock-stat-label {
+            font-size: 10px !important;
+            letter-spacing: 0.05em !important;
+            color: rgba(255, 255, 255, 0.45) !important;
+            text-transform: uppercase !important;
         }
 
         .bb-region-row {

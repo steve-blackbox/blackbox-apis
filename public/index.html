@@ -88,11 +88,17 @@
                                                 <span class="bb-screenshot-title">log_sanitizer.request.json</span>
                                             </div>
                                             <div class="bb-screenshot-body">
-                                                <div class="bb-screenshot-terminal">
-                                                    <div class="bb-terminal-line">$ curl -X POST /v1/log_sanitizer</div>
-                                                    <div class="bb-terminal-line">&gt; input: "card 4111 1111 1111 1111, user@mail.com"</div>
-                                                    <div class="bb-terminal-line">&gt; output: "card **** **** **** 1111, u***@mail.com"</div>
-                                                    <div class="bb-terminal-line bb-terminal-success">[ REAL REGEX MATCH // NO RAW PII PERSISTED ]</div>
+                                                <div class="bb-mock-diff">
+                                                    <div class="bb-mock-diff-row bb-mock-diff-row--before">
+                                                        <span class="bb-mock-diff-label">RAW INPUT</span>
+                                                        <span class="bb-mock-diff-value">card 4111 1111 1111 1111, user@mail.com, +33 6 12 34 56 78</span>
+                                                    </div>
+                                                    <span class="bb-mock-diff-arrow" aria-hidden="true">↓</span>
+                                                    <div class="bb-mock-diff-row bb-mock-diff-row--after">
+                                                        <span class="bb-mock-diff-label">SANITIZED OUTPUT</span>
+                                                        <span class="bb-mock-diff-value">card **** **** **** 1111, u***@mail.com, +33 6 ** ** ** 78</span>
+                                                    </div>
+                                                    <div class="bb-mock-diff-tag">[ REAL REGEX MATCH // NO RAW PII PERSISTED ]</div>
                                                 </div>
                                             </div>
                                             <div class="bb-mock-status-row" aria-hidden="true">
@@ -111,7 +117,7 @@
                                             </div>
                                         </div>
                                         <div class="bb-slide-tag-detail" aria-live="polite">
-                                            <span class="bb-slide-tag-detail-placeholder">» Survolez un robot ci-contre pour voir ce qu'il fait</span>
+                                            <span class="bb-slide-tag-detail-placeholder">» Hover a robot on the left to see what it does</span>
                                             <span class="bb-slide-tag-detail-name"></span>
                                             <span class="bb-slide-tag-detail-copy"></span>
                                         </div>
@@ -155,11 +161,12 @@
                                                 <span class="bb-screenshot-title">crypto_verify.request.json</span>
                                             </div>
                                             <div class="bb-screenshot-body">
-                                                <div class="bb-screenshot-terminal">
-                                                    <div class="bb-terminal-line">$ curl -X POST /v1/crypto_verify</div>
-                                                    <div class="bb-terminal-line">&gt; { "address": "1BvBM...NVN2", "network": "btc" }</div>
-                                                    <div class="bb-terminal-line">&gt; verification_method: "base58check_checksum"</div>
-                                                    <div class="bb-terminal-line bb-terminal-success">[ CHECKSUM VERIFIED // NOT JUST FORMAT MATCHING ]</div>
+                                                <div class="bb-mock-checklist">
+                                                    <div class="bb-mock-check-item"><span class="bb-mock-check-mark">✓</span> Signature format: valid (HMAC-SHA256)</div>
+                                                    <div class="bb-mock-check-item"><span class="bb-mock-check-mark">✓</span> Expiration window: still active</div>
+                                                    <div class="bb-mock-check-item"><span class="bb-mock-check-mark">✓</span> Address checksum: Base58Check passed</div>
+                                                    <div class="bb-mock-check-item"><span class="bb-mock-check-mark">✓</span> Compare: constant-time match</div>
+                                                    <div class="bb-mock-check-seal">ACCESS GRANTED</div>
                                                 </div>
                                             </div>
                                             <div class="bb-mock-status-row" aria-hidden="true">
@@ -178,7 +185,7 @@
                                             </div>
                                         </div>
                                         <div class="bb-slide-tag-detail" aria-live="polite">
-                                            <span class="bb-slide-tag-detail-placeholder">» Survolez un robot ci-contre pour voir ce qu'il fait</span>
+                                            <span class="bb-slide-tag-detail-placeholder">» Hover a robot on the left to see what it does</span>
                                             <span class="bb-slide-tag-detail-name"></span>
                                             <span class="bb-slide-tag-detail-copy"></span>
                                         </div>
@@ -219,33 +226,31 @@
                                                 <span class="bb-screenshot-dot"></span>
                                                 <span class="bb-screenshot-dot"></span>
                                                 <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-title">exif_cloak.request.json</span>
+                                                <span class="bb-screenshot-title">data_utils.summary.json</span>
                                             </div>
                                             <div class="bb-screenshot-body">
-                                                <div class="bb-screenshot-terminal">
-                                                    <div class="bb-terminal-line">$ curl -X POST /v1/exif_cloak</div>
-                                                    <div class="bb-terminal-line">&gt; { "image_base64": "..." }</div>
-                                                    <div class="bb-terminal-line">&gt; segments_removed: 2 (EXIF, comment)</div>
-                                                    <div class="bb-terminal-line bb-terminal-success">[ BINARY SEGMENTS ACTUALLY STRIPPED, IMAGE STILL VALID ]</div>
-                                                </div>
-                                            </div>
-                                            <div class="bb-mock-status-row" aria-hidden="true">
-                                                <div class="bb-mock-status-item">
-                                                    <span class="bb-mock-status-value">200 OK</span>
-                                                    <span class="bb-mock-status-label">HTTP Status</span>
-                                                </div>
-                                                <div class="bb-mock-status-item">
-                                                    <span class="bb-mock-status-value">~35ms</span>
-                                                    <span class="bb-mock-status-label">Response Time</span>
-                                                </div>
-                                                <div class="bb-mock-status-item">
-                                                    <span class="bb-mock-status-value">v1</span>
-                                                    <span class="bb-mock-status-label">API Version</span>
+                                                <div class="bb-mock-stat-grid">
+                                                    <div class="bb-mock-stat-tile">
+                                                        <span class="bb-mock-stat-value">128 → 94</span>
+                                                        <span class="bb-mock-stat-label">CSV rows deduped</span>
+                                                    </div>
+                                                    <div class="bb-mock-stat-tile">
+                                                        <span class="bb-mock-stat-value">2 segments</span>
+                                                        <span class="bb-mock-stat-label">EXIF data stripped</span>
+                                                    </div>
+                                                    <div class="bb-mock-stat-tile">
+                                                        <span class="bb-mock-stat-value">UTC → CET</span>
+                                                        <span class="bb-mock-stat-label">Timezone converted</span>
+                                                    </div>
+                                                    <div class="bb-mock-stat-tile">
+                                                        <span class="bb-mock-stat-value">~312ms</span>
+                                                        <span class="bb-mock-stat-label">Real uptime latency</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="bb-slide-tag-detail" aria-live="polite">
-                                            <span class="bb-slide-tag-detail-placeholder">» Survolez un robot ci-contre pour voir ce qu'il fait</span>
+                                            <span class="bb-slide-tag-detail-placeholder">» Hover a robot on the left to see what it does</span>
                                             <span class="bb-slide-tag-detail-name"></span>
                                             <span class="bb-slide-tag-detail-copy"></span>
                                         </div>
