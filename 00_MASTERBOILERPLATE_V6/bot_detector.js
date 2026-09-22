@@ -1,14 +1,14 @@
 /**
  * 🛰️ BLACKBOX AUTOMATED CONTROL — APIS CONSTELLATION
- * 🤖 ROBOT 33 : BOT-DETECTOR CORE ENGINE (SCRAPING EVASION SCANNER)
- * 👁️ REAL-TIME BEHAVIORAL ATTRIBUTE INSPECTION GATEWAY
+ * 🤖 ROBOT 33 : BOT-DETECTOR CORE ENGINE (INBOUND AUTOMATION DETECTION)
+ * 👁️ REAL-TIME BEHAVIORAL ATTRIBUTE INSPECTION GATEWAY FOR YOUR OWN TRAFFIC
  */
 
 const express = require('express');
 const router = express.Router();
 
 /**
- * 📥 ROUTE CORE : VERIFICATION SYNTAXIQUE ET HEADLESS SIGNATURES
+ * 📥 ROUTE CORE : VERIFICATION SYNTAXIQUE ET SIGNATURES D'AUTOMATISATION
  */
 router.post('/', (req, res) => {
     const { headers_payload, fingerprint_meta } = req.body;
@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
         return res.status(400).json({ error: "Missing required 'headers_payload' object inside dataset request." });
     }
 
-    console.log(`[👁️ BOT-DETECTOR] Scan d'evasion active pour un nouveau noeud entrant.`);
+    console.log(`[👁️ BOT-DETECTOR] Analyse d'une nouvelle requete entrante.`);
 
     let botDetected = false;
     const reasons = [];
@@ -36,7 +36,7 @@ router.post('/', (req, res) => {
 
     res.status(200).json({
         status: "BEHAVIORAL_AUDIT_COMPLETED",
-        stealth_bot_detected: botDetected,
+        automated_traffic_detected: botDetected,
         security_verdict: botDetected ? "DENIED_OR_CHALLENGED" : "CLEAR_HUMAN_PATH",
         diagnostic: {
             flags: reasons,

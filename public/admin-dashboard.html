@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>BlackBox — Tableau de bord de traction</title>
+    <style>
+        :root {
+            --bg: #05070d;
+            --panel: #0b0f19;
+            --border: #1c2430;
+            --green: #00ff88;
+            --amber: #ffb020;
+            --red: #ff4d4f;
+            --text: #e5e7eb;
+            --muted: #6b7280;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            padding: 32px 20px 60px;
+        }
+        h1 { font-size: 20px; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .sub { color: var(--muted); font-size: 12px; margin-bottom: 28px; }
+        #gate {
+            max-width: 420px; margin: 80px auto; text-align: center;
+        }
+        #gate input {
+            width: 100%; padding: 12px; background: #000; border: 1px solid var(--border);
+            color: var(--text); font-family: inherit; border-radius: 6px; margin: 16px 0;
+        }
+        #gate button, .refresh-btn {
+            width: 100%; padding: 12px; background: var(--green); color: #000; border: none;
+            font-weight: bold; text-transform: uppercase; border-radius: 6px; cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+        #dashboard { display: none; max-width: 1100px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .card {
+            background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px;
+        }
+        .card .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card .value { font-size: 26px; font-weight: bold; margin-top: 8px; }
+        .badge {
+            display: inline-block; padding: 6px 14px; border-radius: 999px; font-size: 11px;
+            font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .badge.GO, .badge.OK, .badge.SEUIL_ATTEINT { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid var(--green); }
+        .badge.ZONE_GRISE, .badge.EN_COURS { background: rgba(255,176,32,0.15); color: var(--amber); border: 1px solid var(--amber); }
+        .badge.NO_GO, .badge.ALERTE { background: rgba(255,77,79,0.15); color: var(--red); border: 1px solid var(--red); }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border); }
+        th { color: var(--muted); text-transform: uppercase; font-size: 10px; }
+        .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 24px; }
+        .traffic-note { color: var(--muted); font-size: 12px; line-height: 1.6; }
+        .traffic-note a { color: var(--green); }
+        #error { color: var(--red); font-size: 12px; margin-top: 10px; }
+        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="gate">
+        <h1>🔐 Accès tableau de bord</h1>
+        <p class="sub">Entrez la clé admin (ADMIN_DASHBOARD_KEY) configurée côté serveur.</p>
+        <input type="password" id="keyInput" placeholder="Clé admin">
+        <button onclick="unlock()">Déverrouiller</button>
+        <div id="error"></div>
+    </div>
+
+    <div id="dashboard">
+        <div class="top-row">
+            <div>
+                <h1>📊 BlackBox — Traction en temps réel</h1>
+                <p class="sub" id="launchInfo"></p>
+            </div>
+            <button class="refresh-btn" style="width:auto; padding:10px 18px;" onclick="loadStats()">↻ Rafraîchir</button>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <div class="label">Checkpoint actuel</div>
+                <div class="value" id="checkpointDay">—</div>
+                <div id="checkpointBadge" style="margin-top:10px;"></div>
+                <div class="traffic-note" id="checkpointLabel" style="margin-top:10px;"></div>
+            </div>
+            <div class="card">
+                <div class="label">Revenu total (cumulé)</div>
+                <div class="value" id="totalRevenue">—</div>
+            </div>
+            <div class="card">
+                <div class="label">Ventes totales</div>
+                <div class="value" id="totalSales">—</div>
+            </div>
+            <div class="card">
+                <div class="label">Revenu — 30 derniers jours</div>
+                <div class="value" id="last30Revenue">—</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="label" style="color: var(--muted); font-size: 11px; text-transform: uppercase; margin-bottom: 12px;">Ventes par offre</div>
+            <table>
+                <thead><tr><th>Plan</th><th>Ventes</th><th>Revenu</th></tr></thead>
+                <tbody id="byPlanBody"></tbody>
+            </table>
+        </div>
+
+        <div class="panel">
+            <div class="label" style="color: var(--muted); font-size: 11px; text-transform: uppercase; margin-bottom: 12px;">20 dernières ventes</div>
+            <table>
+                <thead><tr><th>Date</th><th>Email</th><th>Plan</th><th>Montant</th></tr></thead>
+                <tbody id="recentBody"></tbody>
+            </table>
+        </div>
+
+        <div class="panel">
+            <div class="label" style="color: var(--muted); font-size: 11px; text-transform: uppercase; margin-bottom: 12px;">Trafic / visiteurs</div>
+            <p class="traffic-note">
+                Le trafic (visiteurs, pages vues, taux de clic) est suivi séparément via
+                <strong>Umami</strong> (ou Plausible), branché directement sur le site.
+                Consultez votre tableau de bord Umami pour les métriques de trafic du checkpoint J+30.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'bb_admin_key';
+
+        function fmtEUR(n) {
+            return (n || 0).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+        }
+
+        async function unlock() {
+            const key = document.getElementById('keyInput').value.trim();
+            if (!key) return;
+            localStorage.setItem(STORAGE_KEY, key);
+            await loadStats();
+        }
+
+        async function loadStats() {
+            const key = localStorage.getItem(STORAGE_KEY);
+            if (!key) return;
+
+            const errorEl = document.getElementById('error');
+            errorEl.textContent = '';
+
+            try {
+                const res = await fetch('/api/admin/stats', { headers: { 'x-admin-key': key } });
+                if (res.status === 401) {
+                    errorEl.textContent = 'Clé invalide.';
+                    localStorage.removeItem(STORAGE_KEY);
+                    return;
+                }
+                if (!res.ok) throw new Error('Erreur serveur (' + res.status + ')');
+
+                const data = await res.json();
+                renderStats(data);
+
+                document.getElementById('gate').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            } catch (e) {
+                errorEl.textContent = 'Impossible de charger les statistiques : ' + e.message;
+            }
+        }
+
+        function renderStats(data) {
+            document.getElementById('launchInfo').textContent =
+                'Lancement : ' + data.launchDate + ' — Jour ' + data.daysSinceLaunch;
+
+            document.getElementById('checkpointDay').textContent = 'J+' + data.daysSinceLaunch;
+            document.getElementById('checkpointLabel').textContent = data.checkpoint.label;
+            document.getElementById('checkpointBadge').innerHTML =
+                '<span class="badge ' + data.checkpoint.status + '">' + data.checkpoint.status.replace(/_/g, ' ') + '</span>';
+
+            document.getElementById('totalRevenue').textContent = fmtEUR(data.totalRevenue);
+            document.getElementById('totalSales').textContent = data.totalSales;
+            document.getElementById('last30Revenue').textContent = fmtEUR(data.last30DaysRevenue);
+
+            const byPlanBody = document.getElementById('byPlanBody');
+            byPlanBody.innerHTML = data.byPlan.length
+                ? data.byPlan.map(p => `<tr><td>${p.plan}</td><td>${p.count}</td><td>${fmtEUR(p.revenue)}</td></tr>`).join('')
+                : '<tr><td colspan="3" style="color:var(--muted)">Aucune vente pour le moment</td></tr>';
+
+            const recentBody = document.getElementById('recentBody');
+            recentBody.innerHTML = data.recent.length
+                ? data.recent.map(s => `<tr><td>${s.created_at}</td><td>${s.email || '—'}</td><td>${s.plan || '—'}</td><td>${fmtEUR(s.amount_cents / 100)}</td></tr>`).join('')
+                : '<tr><td colspan="4" style="color:var(--muted)">Aucune vente pour le moment</td></tr>';
+        }
+
+        // Auto-tentative si une clé est déjà stockée
+        if (localStorage.getItem(STORAGE_KEY)) {
+            loadStats();
+        }
+
+        // Rafraîchissement automatique toutes les 30 secondes
+        setInterval(() => {
+            if (localStorage.getItem(STORAGE_KEY)) loadStats();
+        }, 30000);
+    </script>
+</body>
+</html>

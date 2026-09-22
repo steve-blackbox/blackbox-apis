@@ -4,175 +4,169 @@
    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta name="description" content="Deploy high-velocity microservices using the absolute stateless data protection API. Process encrypted payloads in-memory with less than 0.03ms latency. Full compliance.">
-    <title>BlackBox Automated Control — 100 Core API Fleet</title>
-    <style>
-        :root {
-            --bg-base: #020308;
-            --bg-sidebar: rgba(4, 6, 15, 0.85);
-            --bg-card: rgba(6, 12, 22, 0.65);
-            --border-glow: #14281a;
-            --border-active: #00ff88;
-            --text-main: #e2fbe9; 
-            --text-muted: #385340; 
-            --accent-green: #00ff88; 
-            --sidebar-width: 310px;
-        }
-
-        body {
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0; padding: 0; display: flex !important; flex-direction: row !important;
-            height: 100vh; overflow: hidden; box-sizing: border-box;
-        }
-
-        #matrixCanvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; opacity: 0.14; pointer-events: none;
-        }
-
-        aside {
-            width: var(--sidebar-width) !important; min-width: var(--sidebar-width) !important; max-width: var(--sidebar-width) !important;
-            background-color: var(--bg-sidebar); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border-right: 1px solid var(--border-glow); display: flex !important; flex-direction: column !important;
-            height: 100vh !important; box-shadow: 20px 0 60px rgba(0, 0, 0, 0.9); z-index: 50; box-sizing: border-box;
-        }
-
-        .sidebar-header {
-            padding: 32px 24px; border-bottom: 1px solid var(--border-glow);
-            background: linear-gradient(to bottom, rgba(3,8,5,0.4), transparent);
-            display: flex; align-items: center; gap: 12px;
-        }
-       .linear-logo-container {
-            width: 32px; height: 32px; min-width: 32px;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .sidebar-title { 
-            font-size: 18px; font-weight: 900; margin: 0; letter-spacing: -0.5px; 
-            color: #ffffff; text-shadow: 0 0 15px rgba(255,255,255,0.1);
-        }
-
-        .theme-list { flex: 1; overflow-y: auto; padding: 24px 12px; }
-        .theme-list::-webkit-scrollbar { width: 3px; }
-        .theme-list::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 2px; }
-
-        .theme-btn {
-            width: 100%; background: transparent; border: none; color: var(--text-muted);
-            padding: 14px 16px; text-align: left; font-size: 14px; cursor: pointer;
-            outline: none; border-radius: 8px; margin-bottom: 4px; display: flex; flex-direction: column;
-            box-sizing: border-box; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .theme-btn:hover { background-color: rgba(0, 255, 136, 0.03); color: var(--text-main); }
-        .theme-btn.active {
-            background: linear-gradient(90deg, rgba(0, 255, 136, 0.05) 0%, transparent 100%);
-            color: #ffffff !important; font-weight: 700; border-left: 3px solid var(--accent-green); padding-left: 20px;
-        }
-
-        main {
-            flex: 1 !important; padding: 50px; overflow-y: auto; box-sizing: border-box; z-index: 10;
-            background: radial-gradient(circle at top right, rgba(0,255,136,0.04), transparent 60%);
-        }
-
-        main::-webkit-scrollbar { width: 3px; }
-        main::-webkit-scrollbar-thumb { background: var(--border-glow); }
-        .content-container { max-width: 950px; width: 100%; margin: 0 auto; }
-
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glow); padding-bottom: 24px; margin-bottom: 40px; }
-        h1 {
-            font-size: 24px; font-weight: 900; color: #ffffff; margin: 0; text-transform: uppercase; letter-spacing: -0.5px;
-            background: linear-gradient(to right, #ffffff 50%, var(--text-main)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .robots-nav { display: flex; gap: 12px; margin-bottom: 40px; border-bottom: 1px solid var(--border-glow); padding-bottom: 20px; overflow-x: auto; }
-        .robot-tab {
-            background: rgba(0, 255, 136, 0.01); border: 1px solid var(--border-glow); color: var(--text-muted);
-            padding: 12px 24px; text-align: center; font-size: 12px; font-family: monospace; cursor: pointer;
-            border-radius: 8px; outline: none; white-space: nowrap; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .robot-tab:hover { border-color: rgba(0, 255, 136, 0.3); color: var(--text-main); background: rgba(0, 255, 136, 0.02); }
-        .robot-tab.active { background: rgba(0, 255, 136, 0.04); border-color: var(--accent-green); color: var(--accent-green); font-weight: 700; box-shadow: 0 0 25px rgba(0, 255, 136, 0.2); }
-
-        .robot-main-title { font-size: 42px; font-weight: 900; color: #ffffff; margin: 0 0 24px 0; line-height: 1.15; letter-spacing: -1.5px; text-shadow: 0 0 20px rgba(255,255,255,0.05); }
-        .robot-main-desc { font-size: 16px; color: #8fa394; line-height: 1.6; margin-bottom: 45px; max-width: 780px; }
-
-        .bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 50px; }
-        .bento-card {
-            background-color: var(--bg-card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-glow); padding: 30px; border-radius: 14px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .bento-card:hover { border-color: rgba(0, 255, 136, 0.3); box-shadow: 0 0 30px rgba(0, 255, 136, 0.05); transform: translateY(-2px); }
-        .bento-card h3 { font-size: 13px; font-weight: 700; color: #ffffff; margin: 0 0 14px 0; text-transform: uppercase; font-family: monospace; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; }
-        .bento-card h3 span { color: var(--accent-green); text-shadow: 0 0 10px var(--accent-green); }
-        .bento-card p { font-size: 13px; color: #8fa394; margin: 0; line-height: 1.6; }
-        .stripe-section { border-top: 1px solid var(--border-glow); padding-top: 40px; }
-        .stripe-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-        
-        .plan-box {
-            background: linear-gradient(135deg, rgba(4,8,6,0.8) 0%, rgba(2,4,3,0.9) 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-glow); padding: 28px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .plan-box:hover { border-color: rgba(0, 255, 136, 0.4); box-shadow: 0 0 30px rgba(0, 255, 136, 0.08); }
-        .plan-info { display: flex; flex-direction: column; max-width: 65%; }
-        .plan-name { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 4px; text-transform: uppercase; font-family: monospace; letter-spacing: 0.5px; }
-        .plan-desc { font-size: 11px; color: #8fa394; line-height: 1.4; margin-bottom: 4px; font-weight: 500; }
-        .plan-target-audience { font-size: 11px; color: var(--accent-green); font-family: monospace; opacity: 0.8; }
-        .plan-action { display: flex; align-items: center; gap: 24px; }
-        .plan-price-wrapper { display: flex; flex-direction: column; align-items: flex-end; }
-        .plan-price { font-size: 24px; font-weight: 900; color: var(--accent-green); font-family: monospace; text-shadow: 0 0 10px rgba(0,255,136,0.3); }
-        .plan-term { font-size: 9px; color: var(--text-muted); font-family: monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-top: -2px; }
-
-        .buy-btn {
-            background-color: transparent; color: var(--accent-green); border: 1px solid rgba(0, 255, 136, 0.4);
-            padding: 12px 24px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer;
-            text-transform: uppercase; font-family: monospace; outline: none; transition: all 0.2s ease;
-        }
-        .buy-btn:hover { background-color: rgba(0, 255, 136, 0.05); border-color: var(--accent-green); transform: scale(1.02); }
-        .buy-btn.laser-btn {
-            background-color: var(--accent-green); color: #000000; border: none; font-weight: 900;
-            box-shadow: 0 0 25px rgba(0, 255, 136, 0.35);
-        }
-        .buy-btn.laser-btn:hover { background-color: #00e676; box-shadow: 0 0 35px rgba(0, 255, 136, 0.5); }
-    </style>
+     <meta name="description" content="12 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, crypto address validation, and more.">
+    <title>BlackBox Labs — 12 Developer APIs</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 📈 SUIVI DE TRAFIC UMAMI (checkpoints J+30/60/90 — voir utiles/ligne_directrice_strategie.md) -->
+    <!-- Compte Umami Cloud actif — site "BlackBox Labs" / domaine blackbox-apis.com / région US -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="6a0c59fa-5ccf-4cef-b71d-0e77551f0f4e"></script>
 </head>
 <body>
 
-    <canvas id="matrixCanvas"></canvas>
-
     <aside>
         <div class="sidebar-header">
-            <div class="linear-logo-container">
-                <svg width="28" height="28" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.3));">
-                    <circle cx="50" cy="50" r="46" fill="#020308" stroke="#14281a" stroke-width="4"/>
-                    <path d="M25,75 L75,25 M35,80 L80,35 M20,65 L65,20" stroke="#00ff88" stroke-width="6" stroke-linecap="round"/>
-                    <path d="M45,85 L85,45 M15,50 L50,15" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
-                </svg>
+            <!-- ⚡ EXECUTIVE MASTER BRANDING GATE (ENLARGED & LOCKED) -->
+            <div class="bb-executive-header" style="display: flex; align-items: center; gap: 16px; font-family: 'JetBrains Mono', monospace; padding: 24px 0; margin-bottom: 20px;">
+                <!-- Cryptographic Emblem (The ONLY dynamic active Blue element on the entire application) -->
+                <div style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #010206; border: 1px solid #00d2ff; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 210, 255, 0.25); position: relative;">
+                    <span style="color: #00d2ff; font-size: 16px; font-weight: bold;">◼</span>
+                </div>
+                <!-- Premium Lab Technical Typography -->
+                <div style="font-size: 22px; font-weight: 700; color: #ffffff; letter-spacing: 0.22em; text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
+                    BLACKBOX LABS
+                </div>
             </div>
-            <div class="sidebar-title">BLACKBOX LABS</div>
         </div>
-        <div class="theme-list sidebar-scroll" id="sidebar-categories"></div>
     </aside>
 
     <main>
         <div class="content-container">
-            <header>
-                <h1 id="current-division-title">Form & Data Protection</h1>
-                <div style="width: 1px; height: 1px;"></div>
-            </header>
+            <section id="screen-command" class="screen-section" aria-label="Central command system">
+                <div class="screen-content" id="hero-content"></div>
+            </section>
+            <!-- 🗺️ SECTION 2 // PLAYGROUND MATRIX — 5-PANEL HORIZONTAL INDUSTRY SLIDER -->
+            <section id="screen-playground" class="screen-section bb-horizontal-snap-container" aria-label="Robot category matrix">
+                            <div class="bb-horizontal-snap-track" id="playground-track">
+                                <div class="bb-horizontal-slide">
+                                    <div class="bb-horizontal-slide-copy">
+                                        <span class="bb-horizontal-slide-kicker">» ROBOT CATEGORY // 01</span>
+                                        <h2>PRIVACY &amp; PII PROTECTION</h2>
+                                        <span class="bb-horizontal-slide-subtitle">Mask, Sanitize &amp; Normalize Sensitive Data Before It Ever Hits Your Database</span>
+                                        <p>Four real, working endpoints that strip card numbers, emails, and bearer tokens from raw log text, partially mask PII in JSON payloads, normalize phone numbers to E.164 format, and anonymize IPv4/IPv6 addresses the same way Google Analytics does. Drop them in front of any pipeline that touches user data before you store or forward it.</p>
+                                        <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
+                                            <li>LOG SANITIZER</li>
+                                            <li>PII MASKER</li>
+                                            <li>PHONE NORMALIZER</li>
+                                            <li>IP ANONYMIZER</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bb-horizontal-slide-mock" aria-hidden="true">
+                                        <div class="bb-visual-mockup-frame bb-product-screenshot-mockup">
+                                            <div class="bb-screenshot-chrome">
+                                                <span class="bb-screenshot-dot"></span>
+                                                <span class="bb-screenshot-dot"></span>
+                                                <span class="bb-screenshot-dot"></span>
+                                                <span class="bb-screenshot-title">log_sanitizer.request.json</span>
+                                            </div>
+                                            <div class="bb-screenshot-body">
+                                                <div class="bb-screenshot-terminal">
+                                                    <div class="bb-terminal-line">$ curl -X POST /v1/log_sanitizer</div>
+                                                    <div class="bb-terminal-line">&gt; input: "card 4111 1111 1111 1111, user@mail.com"</div>
+                                                    <div class="bb-terminal-line">&gt; output: "card **** **** **** 1111, u***@mail.com"</div>
+                                                    <div class="bb-terminal-line bb-terminal-success">[ REAL REGEX MATCH // NO RAW PII PERSISTED ]</div>
+                                                </div>
+                                            </div>
+                                            <div class="bb-logos-compliance-shield">
+                                                <span class="bb-logo-shield-item">LOG SANITIZER</span>
+                                                <span class="bb-logo-shield-item">PII MASKER</span>
+                                                <span class="bb-logo-shield-item">PHONE NORMALIZER</span>
+                                                <span class="bb-logo-shield-item">IP ANONYMIZER</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bb-horizontal-slide">
+                                    <div class="bb-horizontal-slide-copy">
+                                        <span class="bb-horizontal-slide-kicker">» ROBOT CATEGORY // 02</span>
+                                        <h2>SECURITY &amp; LINK INTEGRITY</h2>
+                                        <span class="bb-horizontal-slide-subtitle">Real Cryptographic Checks — HMAC Signatures, Checksums, Bot Signals</span>
+                                        <p>Four endpoints built on real cryptography, not string matching: HMAC-SHA256 signed URLs with expiration and constant-time signature verification, and Bitcoin address validation using actual Base58Check and Bech32 checksum algorithms (not just format regex). Includes a lightweight bot-signal detector for headless browser traffic.</p>
+                                        <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
+                                            <li>BOT DETECTOR</li>
+                                            <li>CRYPTO VERIFY</li>
+                                            <li>LINK SIGNER</li>
+                                            <li>LINK VALIDATOR</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bb-horizontal-slide-mock" aria-hidden="true">
+                                        <div class="bb-visual-mockup-frame bb-product-screenshot-mockup">
+                                            <div class="bb-screenshot-chrome">
+                                                <span class="bb-screenshot-dot"></span>
+                                                <span class="bb-screenshot-dot"></span>
+                                                <span class="bb-screenshot-dot"></span>
+                                                <span class="bb-screenshot-title">crypto_verify.request.json</span>
+                                            </div>
+                                            <div class="bb-screenshot-body">
+                                                <div class="bb-screenshot-terminal">
+                                                    <div class="bb-terminal-line">$ curl -X POST /v1/crypto_verify</div>
+                                                    <div class="bb-terminal-line">&gt; { "address": "1BvBM...NVN2", "network": "btc" }</div>
+                                                    <div class="bb-terminal-line">&gt; verification_method: "base58check_checksum"</div>
+                                                    <div class="bb-terminal-line bb-terminal-success">[ CHECKSUM VERIFIED // NOT JUST FORMAT MATCHING ]</div>
+                                                </div>
+                                            </div>
+                                            <div class="bb-logos-compliance-shield">
+                                                <span class="bb-logo-shield-item">BOT DETECTOR</span>
+                                                <span class="bb-logo-shield-item">CRYPTO VERIFY</span>
+                                                <span class="bb-logo-shield-item">LINK SIGNER</span>
+                                                <span class="bb-logo-shield-item">LINK VALIDATOR</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bb-horizontal-slide">
+                                    <div class="bb-horizontal-slide-copy">
+                                        <span class="bb-horizontal-slide-kicker">» ROBOT CATEGORY // 03</span>
+                                        <h2>DATA &amp; MEDIA UTILITIES</h2>
+                                        <span class="bb-horizontal-slide-subtitle">Binary-Level File Processing &amp; Real Uptime Monitoring</span>
+                                        <p>Four endpoints that actually parse the files and requests they claim to handle: a real CSV parser with row or column-based deduplication, a binary JPEG/PNG parser that strips EXIF and comment segments at the byte level, native timezone conversion via Intl, and a live HTTP uptime checker that measures real latency against your target URL.</p>
+                                        <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
+                                            <li>CSV DEDUPE</li>
+                                            <li>EXIF CLOAK</li>
+                                            <li>TIMEZONE CONVERTER</li>
+                                            <li>UPTIME CHECK</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bb-horizontal-slide-mock" aria-hidden="true">
+                                        <div class="bb-visual-mockup-frame bb-product-screenshot-mockup">
+                                            <div class="bb-screenshot-chrome">
+                                                <span class="bb-screenshot-dot"></span>
+                                                <span class="bb-screenshot-dot"></span>
+                                                <span class="bb-screenshot-dot"></span>
+                                                <span class="bb-screenshot-title">exif_cloak.request.json</span>
+                                            </div>
+                                            <div class="bb-screenshot-body">
+                                                <div class="bb-screenshot-terminal">
+                                                    <div class="bb-terminal-line">$ curl -X POST /v1/exif_cloak</div>
+                                                    <div class="bb-terminal-line">&gt; { "image_base64": "..." }</div>
+                                                    <div class="bb-terminal-line">&gt; segments_removed: 2 (EXIF, comment)</div>
+                                                    <div class="bb-terminal-line bb-terminal-success">[ BINARY SEGMENTS ACTUALLY STRIPPED, IMAGE STILL VALID ]</div>
+                                                </div>
+                                            </div>
+                                            <div class="bb-logos-compliance-shield">
+                                                <span class="bb-logo-shield-item">CSV DEDUPE</span>
+                                                <span class="bb-logo-shield-item">EXIF CLOAK</span>
+                                                <span class="bb-logo-shield-item">TIMEZONE CONVERTER</span>
+                                                <span class="bb-logo-shield-item">UPTIME CHECK</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+            <section id="screen-payment" class="screen-section" aria-label="Payment and secure gateway">
+                <div class="screen-content" id="cash-content"></div>
+            </section>
             <!-- 🎛️ CORE ACCESS TOKEN ACTIVATION INTERFACE -->
-            <div style="background: rgba(4, 6, 15, 0.85); border: 1px solid var(--border-glow); padding: 20px; border-radius: 8px; margin-bottom: 40px; font-family: monospace; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;">
+            <div id="license-ingress" style="background: transparent; border: none; padding: 0; border-radius: 0; margin-bottom: 40px; font-family: monospace; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;">
                 <div>
-                    <span style="color: var(--accent-green); font-weight: bold;">» ACCESS INGRESS PROTOCOL</span>
-                    <p style="margin: 4px 0 0 0; font-size: 11px; color: var(--text-muted);">Enter your permanent Lifetime License key to unlock volatile node execution.</p>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #ffffff;">» INGRESS KEY</span>
                 </div>
                 <div style="display: flex; gap: 12px; align-items: center;">
-                    <input type="text" id="license-input" placeholder="BB-XXXX-XXXX" style="background: #020308; border: 1px solid var(--border-glow); padding: 10px 14px; border-radius: 4px; color: #ffffff; font-family: monospace; font-size: 13px; width: 180px; outline: none; text-transform: uppercase;">
-                    <button onclick="verifyLicenseKey()" style="background: var(--accent-green); border: none; padding: 10px 20px; border-radius: 4px; color: #020308; font-family: monospace; font-weight: bold; font-size: 13px; cursor: pointer; transition: transform 0.1s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">VERIFY</button>
+                    <input type="text" id="license-input" placeholder="BB-XXXX-XXXX" aria-label="Ingress key" style="border: none; border-bottom: 1px solid rgba(255, 255, 255, 0.1); background: transparent; border-radius: 0px; width: 140px; padding: 4px 0px; text-align: center; color: #ffffff; font-family: monospace; font-size: 13px; outline: none; text-transform: uppercase;">
+                    <button onclick="verifyLicenseKey()" style="padding: 6px 16px; font-size: 10px; border-radius: 4px; font-weight: 600; background: #ffffff; color: #000000; text-transform: uppercase; border: none; font-family: monospace; cursor: pointer; transition: transform 0.1s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">VERIFY</button>
                 </div>
             </div>
+            <div class="theme-list central-floating-dock" id="sidebar-categories"></div>
 
             <!-- 🧠 MEMORY REGISTER AUTOMATION SCRIPT -->
             <script>
@@ -202,34 +196,108 @@
             </script>
 
             <section class="robot-display-section">
-                <!-- 📡 COMPOSANT HYDRO-RÉACTIF INJECTÉ POUR LA FLOTTE -->
-                <nav class="robots-nav" id="robots-subnav"></nav>
+                <h2 class="robot-main-title" id="robot-main-title">Loading robot data...</h2>
+                <p class="robot-main-desc" id="robot-main-desc">Awaiting initialization...</p>
 
-                <h2 class="robot-main-title" id="robot-main-title">Loading Active Node Ingress...</h2>
-                <p class="robot-main-desc" id="robot-main-desc">Awaiting initialization variables...</p>
+                <div class="simulation-lab-grid">
+                    <section class="simulation-lab-summary" aria-label="Active robot business conversion">
+                        <div class="bb-manifesto-block">
+                            <h2 class="bb-manifesto-hero">WE BUILD REAL, WORKING DEVELOPER APIS.</h2>
+                            <div class="bb-manifesto-before">
+                                <span class="bb-manifesto-label">YOUR PROJECT WITHOUT US //</span>
+                                <p>You end up writing and maintaining one-off scripts for recurring chores — masking PII before logging, validating a crypto address format, stripping EXIF data from an upload, deduplicating a CSV export — each one a small maintenance burden that never quite gets prioritized.</p>
+                            </div>
+                            <div class="bb-manifesto-after">
+                                <span class="bb-manifesto-label">YOUR PROJECT WITH US //</span>
+                                <p>You call one of our 12 endpoints instead. Each one does exactly one real, verifiable job — actual HMAC signing, actual checksum verification, actual binary-level EXIF stripping, actual CSV parsing — with no persistent storage of the data you send us. No inflated claims about what's under the hood.</p>
+                            </div>
+                        </div>
+                        <div class="bento-card" style="margin-top: 20px;">
+                            <h3 id="feature-title-1" class="value-label">+ WHAT IT DOES</h3>
+                            <div id="feature-content-1"></div>
+                        </div>
+                        <div class="bento-card" style="margin-top: 16px;">
+                            <h3 id="feature-title-2" class="value-label">+ HOW TO INTEGRATE</h3>
+                            <div id="feature-content-2"></div>
+                        </div>
+                    </section>
+                    <section id="live-blueprint-viewport" class="live-blueprint-viewport telemetry-console" aria-live="polite" aria-label="Live technical simulation">
+                        <div id="bb-mockup-holder" class="bb-mockup-holder" aria-hidden="true">
+                            <div class="bb-terminal-workspace-panel">
+                                <div class="bb-screenshot-chrome">
+                                    <span class="bb-screenshot-dot"></span>
+                                    <span class="bb-screenshot-dot"></span>
+                                    <span class="bb-screenshot-dot"></span>
+                                    <span class="bb-screenshot-title">robot-fleet.status.js</span>
+                                </div>
+                                <pre class="bb-terminal-code"><code><span class="bb-code-comment">// BLACKBOX LABS // 12 REAL ROBOTS BOOTSTRAP SEQUENCE</span>
+<span class="bb-code-fn">init_robot_fleet</span>(<span class="bb-code-key">robots</span>=<span class="bb-code-num">12</span>);
+<span class="bb-code-fn">verify_hmac_signatures</span>(<span class="bb-code-key">algorithm</span>=<span class="bb-code-str">'sha256'</span>);
+<span class="bb-code-fn">parse_binary_segments</span>(<span class="bb-code-key">formats</span>=<span class="bb-code-str">'jpeg,png'</span>);
+<span class="bb-code-fn">check_target_uptime</span>(<span class="bb-code-key">method</span>=<span class="bb-code-str">'live_http_fetch'</span>);
 
-                <div class="bento-grid">
-                    <div class="bento-card">
-                        <h3 id="feature-title-1"><span>✦</span> Function Core A</h3>
-                        <p id="feature-desc-1">Loading structural specifications loop...</p>
-                    </div>
-                    <div class="bento-card">
-                        <h3 id="feature-title-2"><span>✦</span> Function Core B</h3>
-                        <p id="feature-desc-2">Loading performance benchmarks parameters...</p>
-                    </div>
+<span class="bb-code-comment">// RUNTIME VALIDATION LOOP</span>
+<span class="bb-code-ok">[ OK ]</span> log_sanitizer // regex scrub active
+<span class="bb-code-ok">[ OK ]</span> crypto_verify // base58check + bech32 checksum
+<span class="bb-code-ok">[ OK ]</span> exif_cloak // binary segment strip verified
+<span class="bb-code-ok">[ OK ]</span> uptime_check // live fetch, real latency
+<span class="bb-code-ok">[ OK ]</span> fleet status // 12/12 robots online</code></pre>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-
                 <div class="stripe-section">
+                    <div class="bb-trust-row" aria-label="System assurance badges">
+                        <div class="bb-trust-badge">
+                            <div class="bb-trust-title">🛡️ STATELESS BY DESIGN</div>
+                            <div class="bb-trust-copy">Requests are processed in-memory and are not written to a persistent database by these endpoints.</div>
+                        </div>
+                        <div class="bb-trust-badge">
+                            <div class="bb-trust-title">⚡ REAL, TESTED LOGIC</div>
+                            <div class="bb-trust-copy">Every endpoint runs actual parsing, hashing, or checksum logic — verified against real test inputs, not simulated responses.</div>
+                        </div>
+                        <div class="bb-trust-badge">
+                            <div class="bb-trust-title">🔒 SECURE STRIPE CHECKOUT</div>
+                            <div class="bb-trust-copy">Payments are processed through Stripe. Your license key is generated and emailed automatically after a successful payment.</div>
+                        </div>
+                    </div>
+                    <section class="bb-editorial-showcase" aria-label="Infrastructure lifecycle manifesto">
+                        <div class="bb-editorial-manifesto">
+                            <span class="bb-editorial-kicker">SYSTEM MANIFESTO // STRUCTURAL CONTROL</span>
+                            <p>BUILT FOR HONESTY, NOT HYPE // Twelve endpoints, each doing exactly one real job, documented plainly.</p>
+                        </div>
+                        <div class="bb-editorial-flow" aria-label="Three-step infrastructure workflow">
+                            <span class="bb-editorial-flow-label">VOLATILE EXECUTION LIFECYCLE</span>
+                            <div class="bb-editorial-steps">
+                                <div class="bb-editorial-step">
+                                    <span>[ AUTHENTICATE // LINK LIFETIME KEY ]</span>
+                                </div>
+                                <span class="bb-editorial-connector" aria-hidden="true"></span>
+                                <div class="bb-editorial-step">
+                                    <span>[ EXECUTE // TRIGGER VOLATILE NODE ]</span>
+                                </div>
+                                <span class="bb-editorial-connector" aria-hidden="true"></span>
+                                <div class="bb-editorial-step">
+                                    <span>[ DELIVER // ABSORB SCRUBBED DATA ]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                     <div class="stripe-grid">
                         <div class="plan-box">
                             <div class="plan-info">
-                                <span class="plan-name">CORE ACCESS</span>
-                                <span class="plan-desc">1 Active Endpoint • Unlimited Ingestion • Direct Code Injection</span>
-                                <span class="plan-target-audience">// Perfect for independent developers, consultants & micro-projects</span>
+                                <span class="plan-name">SOLO CORE</span>
+                                <span class="plan-desc">1 Category (4 robots) • Unlimited Requests • Direct API Access</span>
+                                <span class="plan-target-audience">// Perfect for independent developers, consultants &amp; micro-projects</span>
+                                <ul style="list-style: none; margin: 14px 0 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-family: 'JetBrains Mono', monospace;">
+                                    <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» Access to 1 category of your choice (4 robots)</li>
+                                    <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» Full API documentation &amp; curl examples</li>
+                                    <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» No request limit, no expiry</li>
+                                </ul>
                             </div>
                             <div class="plan-action">
                                 <div class="plan-price-wrapper">
-                                    <span class="plan-price" id="price-solo-tag">49$</span>
+                                    <span class="plan-price" id="price-solo-tag">$49</span>
                                     <span class="plan-term">One-time payment • Lifetime</span>
                                 </div>
                                 <button onclick="triggerCheckout('core')" class="buy-btn" style="text-decoration: none; display: inline-block; text-align: center; line-height: 50px; width: 100%; border: none; cursor: pointer;">Acquire</button>
@@ -238,15 +306,23 @@
                         <div class="plan-box">
                             <div class="plan-info">
                                 <span class="plan-name">LABS ALL-ACCESS</span>
-                                <span class="plan-desc">100 Open Endpoints • Master Fleet Key • Priority Infrastructure Support</span>
-                                <span class="plan-target-audience">// Perfect for web agencies, growth hackers & multi-client setups</span>
+                                <span class="plan-desc">Unlock all 3 categories and all 12 robots with a single license key, no per-category restriction.</span>
+                                <span class="plan-target-audience">// Perfect for web agencies, growth hackers &amp; multi-client setups</span>
+                                <ul style="list-style: none; margin: 14px 0 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-family: 'JetBrains Mono', monospace;">
+                                    <li style="font-size: 11px; color: #ffffff; font-weight: 700; line-height: 1.5;">» INCLUDED: All 12 Robots, All 3 Categories</li>
+                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Real HMAC Signing &amp; Checksum Verification</li>
+                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Binary-Level File Processing (EXIF, CSV)</li>
+                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Live Uptime &amp; Timezone Utilities</li>
+                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Full Access to All 3 Categories &amp; 12 Robots</li>
+                                </ul>
                             </div>
                             <div class="plan-action">
                                 <div class="plan-price-wrapper">
-                                    <span class="plan-price" id="price-agency-tag">149$</span>
+                                    <span class="plan-price" id="price-agency-tag">$149</span>
                                     <span class="plan-term">One-time payment • Lifetime</span>
                                 </div>
                                 <button onclick="triggerCheckout('labs')" class="buy-btn laser-btn" style="text-decoration: none; display: inline-block; text-align: center; line-height: 50px; width: 100%; border: none; cursor: pointer;">Deploy</button>
+                                <span class="labs-savings-badge" style="font-family: 'JetBrains Mono', monospace; font-size: 10px !important; letter-spacing: 0.05em !important; color: #ffffff !important; background: rgba(255, 255, 255, 0.04) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; padding: 4px 10px !important; border-radius: 4px !important; display: inline-block !important; margin-top: 12px !important;">[ Save $47 vs. buying 3 category licenses separately ]</span>
                             </div>
                         </div>
                     </div>
@@ -254,176 +330,312 @@
             </section>
         </div>
         <!-- ⚖️ MICRO-FOOTER DE COMPLIANCE MANDATAIRE STRIPE & MERCURY -->
-           <!-- ⚙️ FOOTER D'ÉLITE UNIFIÉ (Copyright à Gauche — Liens à Droite — Vert Matrix Émeraude Calibré) -->
-<!-- ⚙️ FOOTER D'ÉLITE UNIFIÉ (Ouverture de nouvelles pages sur onglets séparés) -->
-<footer style="margin-top: 50px; padding: 25px 40px; border-top: 1px solid #1a202c; display: flex !important; justify-content: space-between !important; align-items: center !important; background: #000000; position: relative; z-index: 10000; font-family: monospace; width: 100%; box-sizing: border-box;">
-    
-    <!-- COPYRIGHT À GAUCHE -->
-    <div style="color: #64748b; font-size: 13px; letter-spacing: 0.5px; white-space: nowrap;">
-        © 2026 BlackBox Audio Labs LLC. All rights reserved.
+<footer style="border-top: 1px solid #182635; padding: 20px 0; margin-top: 40px; width: 100%; display: flex; justify-content: space-between; align-items: center; font-family: monospace; font-size: 11px; color: #4b5563; box-sizing: border-box; clear: both;">
+    <div>© 2026 BlackBox Audio Labs LLC. All rights reserved.</div>
+    <div>
+        <a href="javascript:void(0)" onclick="toggleLegalDrawer('drawer-docs')" style="color: #ffffff; text-decoration: none; margin-left: 20px; cursor: pointer;">API Documentation</a>
+        <a href="javascript:void(0)" onclick="toggleLegalDrawer('drawer-terms')" style="color: #ffffff; text-decoration: none; margin-left: 20px; cursor: pointer;">Terms of Service</a>
+        <a href="javascript:void(0)" onclick="toggleLegalDrawer('drawer-privacy')" style="color: #ffffff; text-decoration: none; margin-left: 20px; cursor: pointer;">Privacy Policy</a>
     </div>
-
-    <!-- LIENS D'ACTION : OUVERTURE EN NOUVEL ONGLET BLAND (target="_blank") -->
-    <!-- 🎛️ ACCÈS DIRECT AU COMPLIANCE CENTER (Aiguillage par Hashtag 0% Erreur) -->
-    <div style="display: flex !important; gap: 40px; align-items: center;">
-        <a href="./terms.html#docs" target="_blank" style="color: rgba(0, 230, 118, 0.85); text-decoration: none; font-weight: bold; font-size: 13px; letter-spacing: 0.5px; transition: all 0.2s; opacity: 0.9;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">Documentation API</a>
-        <a href="./terms.html#terms" target="_blank" style="color: rgba(0, 230, 118, 0.85); text-decoration: none; font-weight: bold; font-size: 13px; letter-spacing: 0.5px; transition: all 0.2s; opacity: 0.9;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">Terms of Service</a>
-        <a href="./terms.html#privacy" target="_blank" style="color: rgba(0, 230, 118, 0.85); text-decoration: none; font-weight: bold; font-size: 13px; letter-spacing: 0.5px; transition: all 0.2s; opacity: 0.9;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">Privacy Policy</a>
-    </div>
-
 </footer>
-           <!-- 📦 BOÎTES LÉGALES PROFESSIONNELLES — LES TROIS TEXTES EN DUR VALIDÉS -->
-<div id="content-terms" class="footer-legal-block" style="display: none; padding: 30px; background: #111827; border: 1px solid #374151; margin: 30px auto; color: #f3f4f6; border-radius: 8px; max-width: 800px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); position: relative; z-index: 9999; font-family: monospace; line-height: 1.6;">
-    <h2 style="color: #00ff88; margin-top: 0; border-bottom: 1px solid #374151; padding-bottom: 10px;">Terms of Service</h2>
-    <p style="font-size: 14px; color: #9ca3af;"><strong>Last Updated: September 2026</strong></p>
-    <p>Welcome to BlackBox Audio Labs. By accessing our services and APIs, you agree to be bound by these Terms of Service. These terms are governed by and construed in accordance with the laws of the State of Wyoming, United States, without regard to its conflict of law principles.</p>
-    <h4 style="color: #00ff88; margin-bottom: 5px;">1. License Grant & Access</h4>
-    <p>Subject to full payment of the chosen plan (Single Access at \$49 or All Access at \$149), BlackBox Audio Labs LLC grants you a limited, non-exclusive, non-transferable license to utilize our high-performance audio automation endpoints.</p>
-    <h4 style="color: #00ff88; margin-bottom: 5px;">2. License Keys & Refund Policy</h4>
-    <p>Each generated license key (`BB-CORE-...`) is unique and instantly activated upon delivery. Due to the immediate digital nature of our software assets and automated delivery via Stripe and Resend, <strong>all sales are final and absolutely no refunds will be issued</strong>.</p>
-    <h4 style="color: #00ff88; margin-bottom: 5px;">3. Limitation of Liability</h4>
-    <p>BlackBox Audio Labs LLC provides its APIs on an "as is" and "as available" basis, without any warranties regarding uninterrupted server uptime or fitness for a particular purpose.</p>
+           <!-- 📦 PROFESSIONAL LEGAL BLOCKS — THREE VALIDATED HARDCODED TEXTS -->
+<div id="drawer-terms" class="footer-legal-block" style="display: none; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.07); padding: 32px; margin-top: 20px; border-radius: 12px; box-sizing: border-box; width: 100%;">
+    <h2>⚖️ COMPLIANCE INFRASTRUCTURE AGREEMENT // TERMS OF SERVICE</h2>
+    <p class="legal-meta">Effective date: September 2026 · Version 1.0</p>
+    <h4>1. BINDING TERMS &amp; SERVICE SCOPE</h4>
+    <p>By accessing the BlackBox Automated Control dynamic interface, users agree to be legally bound by this master infrastructure agreement. The system provides an automated runtime execution grid for web data pipelines and system routing utilities.</p>
+    <p>These terms apply to visitors, purchasing customers, authorized operators, and any person or organization accessing an account, seat token, endpoint, or related documentation. If you do not accept these terms, do not access or use the service.</p>
+    <h4>2. PROPRIETARY SEAT LICENSING</h4>
+    <p>Subject to operational payment validation, users receive a non-exclusive, non-transferable, revocable lifetime seat token layout. This token grants local runtime execution parameters strictly bound to the allocated seat slots. Sub-licensing, routing redistribution, or cloning active core modules is strictly prohibited and systematically monitored.</p>
+    <p>A seat license authorizes use of the purchased service scope only. It does not transfer ownership of source code, service architecture, trademarks, deployment methods, security controls, or technical documentation. Credentials must be kept confidential and may not be shared, resold, pledged, or embedded in a public repository.</p>
+    <h4>3. PROHIBITED INFRASTRUCTURE ACTIONS &amp; NETWORK DISRUPTION</h4>
+    <p>Users shall not deploy malicious transaction payload stress testing, ingress loops, headless runtime manipulation aimed at system disruption, or symmetric key cracking loops. Any unauthorized routing patterns trigger automated permanent firewall insulation without prior warning.</p>
+    <p>Users must not probe, bypass, disable, overload, reverse engineer, scrape, or interfere with authentication controls, rate limits, tenant boundaries, billing safeguards, or availability protections. Use of the service for unlawful processing, fraud, abuse, harassment, malware delivery, credential theft, or unauthorized surveillance is prohibited.</p>
+    <h4>4. PAYMENT, ACTIVATION &amp; DIGITAL DELIVERY</h4>
+    <p>Payments are processed through certified third-party payment infrastructure. A service seat becomes active after payment authorization and fulfillment validation. Digital credentials, activation data, and service access instructions may be delivered electronically to the contact information supplied during checkout.</p>
+    <p>Because access and digital credentials may be delivered immediately, customers are responsible for reviewing plan scope before purchase and maintaining accurate contact details. Any billing dispute must first be raised through the applicable payment channel and include sufficient transaction context for investigation.</p>
+    <h4>5. AVAILABILITY, MAINTENANCE &amp; SECURITY CONTROLS</h4>
+    <p>We may perform maintenance, security remediation, capacity management, or infrastructure changes that temporarily affect availability. We may restrict, suspend, or terminate access where activity creates a security, legal, operational, or payment risk.</p>
+    <h4>6. ABSOLUTE DISCLAIMER OF OPERATIONAL LIABILITY</h4>
+    <p>The system is provided "as is" and "as available" across sandbox tenant communication boundaries. BlackBox Labs LLC and its affiliates maintain absolute structural separation from user ingestion payloads. Users retain 100% individual, technical, and legal liability for data routing, compliance metrics, and processing outcomes.</p>
+    <p>To the fullest extent permitted by applicable law, no provider party is liable for indirect, incidental, consequential, special, exemplary, or loss-of-profit damages arising from use of the service, service interruption, unauthorized user activity, or customer-configured integrations.</p>
+    <h4>7. GOVERNING FRAMEWORK &amp; CONTACT</h4>
+    <p>This agreement is interpreted under the laws applicable to the provider entity and its registered jurisdiction, without limiting mandatory consumer protections that cannot lawfully be waived. Notices concerning these terms may be delivered through the service interface or the customer contact channel on file.</p>
 </div>
 
-<div id="content-privacy" class="footer-legal-block" style="display: none; padding: 30px; background: #111827; border: 1px solid #374151; margin: 30px auto; color: #f3f4f6; border-radius: 8px; max-width: 800px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); position: relative; z-index: 9999; font-family: monospace; line-height: 1.6;">
-    <h2 style="color: #00ff88; margin-top: 0; border-bottom: 1px solid #374151; padding-bottom: 10px;">Privacy Policy</h2>
-    <p style="font-size: 14px; color: #9ca3af;"><strong>Last Updated: September 2026</strong></p>
-    <p>At BlackBox Audio Labs LLC, we take your data security seriously. This policy outlines how we collect and process your information during transatlantique checkouts.</p>
-    <h4 style="color: #00ff88; margin-bottom: 5px;">1. Transactional Data Collection</h4>
-    <p>All financial payments are securely processed and encrypted through Stripe infrastructure. BlackBox Audio Labs LLC never stores or has access to your credit card numbers. We exclusively collect your full name and email address for the sole purpose of generating and delivering your license key via Resend.</p>
-    <h4 style="color: #00ff88; margin-bottom: 5px;">2. Data Retention & Sharing</h4>
-    <p>Your contact details will never be sold, rented, or shared with third parties for marketing purposes. Data is processed strictly to maintain active license records and sync transaction payouts to your Mercury LLC bank account.</p>
+<div id="drawer-privacy" class="footer-legal-block" style="display: none; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.07); padding: 32px; margin-top: 20px; border-radius: 12px; box-sizing: border-box; width: 100%;">
+    <h2>🔒 VOLATILE ARCHITECTURE COMPLIANCE // PRIVACY POLICY</h2>
+    <p class="legal-meta">Effective date: September 2026 · Version 1.0</p>
+    <h4>1. STRICT RUNTIME ZERO-LOG DATACENTER DATA INSULATION</h4>
+    <p>Our global infrastructure operates under a verified volatile processing doctrine. Ingress transaction streams and dynamic data payloads are processed directly inside ephemeral volatile server memory. The system enforces immediate data purges upon processing lifecycle termination. No data persistence, logs, or backups are maintained on structural storage layers.</p>
+    <p>This zero-log approach applies to customer payload content processed by the runtime. Limited operational signals may be generated where technically necessary to prevent abuse, maintain service integrity, resolve a support request, satisfy a legal obligation, or confirm payment state. Such signals are minimized, access-controlled, and retained only for the applicable purpose.</p>
+    <h4>2. END-TO-END PAYMENT AND GATEWAY ENCRYPTION SECURITY</h4>
+    <p>All client financial pipelines, registration verification, and subscription transaction flows route exclusively through certified, tier-1 standard encryption transaction structures (SSL/TLS secure tokens). No volatile billing data, personal account metrics, or specific banking parameters are tracked, monitored, or saved on our servers.</p>
+    <p>Payment providers may independently process payment credentials, fraud signals, tax details, receipts, and transaction identifiers under their own privacy notices. We receive only the limited confirmation and contact data required to provision access, respond to support requests, and reconcile service status.</p>
+    <h4>3. HARDENED ANONYMITY &amp; DATA TRANSFER POLICIES</h4>
+    <p>The service maintains absolute architectural privacy. We do not sell, rent, or distribute configuration parameters to third-party tracking nets. Operational server nodes communicate anonymously via decentralized secure clouds to protect core network insulation and shield customer configurations from public exposure.</p>
+    <p>Where a transfer is technically required, data is protected using encrypted transport, least-privilege access, tenant isolation, and purpose limitation. We do not use customer payloads to build advertising profiles or sell behavioral datasets.</p>
+    <h4>4. CUSTOMER RESPONSIBILITIES &amp; DATA SUBJECT REQUESTS</h4>
+    <p>Customers remain responsible for ensuring that their inputs, integrations, and routing instructions have a lawful basis and do not include unnecessary sensitive information. Do not submit credentials, payment card numbers, government identifiers, health records, or other sensitive data unless the service explicitly documents a lawful and secure processing path.</p>
+    <p>Questions about access, correction, deletion, or privacy practices may be submitted through the support channel associated with the service. Requests are evaluated against applicable law, security requirements, and the technical limits of volatile processing.</p>
+    <h4>5. RETENTION, INCIDENT RESPONSE &amp; POLICY UPDATES</h4>
+    <p>Retention is limited to the minimum period required for service delivery, security review, dispute handling, or legal compliance. If a security incident affecting protected information is identified, response and notification actions are handled according to applicable legal requirements and the nature of the affected data.</p>
+    <p>This policy may be updated to reflect technical, legal, or operational changes. The effective date shown above identifies the current version presented through this interface.</p>
 </div>
 
-<div id="content-docs" class="footer-legal-block" style="display: none; padding: 30px; background: #111827; border: 1px solid #374151; margin: 30px auto; color: #f3f4f6; border-radius: 8px; max-width: 800px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); position: relative; z-index: 9999; font-family: monospace; line-height: 1.6;">
-    <h2 style="color: #00ff88; margin-top: 0; border-bottom: 1px solid #374151; padding-bottom: 10px;">BlackBox Core API Documentation</h2>
-    <p style="color: #9ca3af;">High-throughput audio automation infrastructure endpoints.</p>
-    <h4 style="color: #00ff88; margin-bottom: 5px;">[POST] /v1/webhook</h4>
-    <p>Main route handling encrypted Stripe event payloads. Upon detecting the `checkout.session.completed` hook, the server instantiates a `BB-[PLAN]-CORE-[HEX]` key and securely triggers the Resend automated mail relay system.</p>
-    <h4 style="color: #00ff88; margin-bottom: 5px;">[GET] /api/v1/validate-license</h4>
-    <p>Query params: `?key=YOUR_BB_KEY`. Returns JSON payload `{"valid": true, "scope": "all"}` or 403 status code if the asset key has expired or has been administrative revoked.</p>
+<div id="drawer-docs" class="footer-legal-block" style="display: none; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.07); padding: 32px; margin-top: 20px; border-radius: 12px; box-sizing: border-box; width: 100%;">
+    <h2>📚 ADVANCED INFRASTRUCTURE FLOW // API CORE v1.0.4 SPECIFICATIONS</h2>
+    <p class="legal-meta">Technical reference · Stable release channel</p>
+    <h4>» TECHNICAL ARCHITECTURAL SPECIFICATIONS &amp; ENDPOINT DEPLOYMENT PROTOCOLS</h4>
+    <h4>1. SECURE GATEWAY AUTHENTICATION</h4>
+    <p>All API requests directed to the dynamic tenant node infrastructure must be authenticated using hardened cryptographic Bearer Tokens passed strictly via the dynamic <code>X-BlackBox-Key</code> verification row headers. Unauthenticated or malformed request payloads will instantly trigger localized firewall insulation routines at the network edge layer.</p>
+    <p>Credentials must be transmitted over encrypted transport, never placed in query strings, browser history, client-side logs, or publicly accessible source files. Tokens are scoped to the allocated service seat and should be rotated immediately after suspected exposure.</p>
+    <h4>2. CORE SYSTEM ENDPOINTS</h4>
+    <ul>
+        <li><code>GET /v1/fleet/status</code> : Queries operational transaction matrix metrics in raw asynchronous format.</li>
+        <li><code>POST /v1/fleet/deploy</code> : Triggers automated isolated tenant configuration loops. Expects dynamic seat routing identifiers.</li>
+        <li><code>DELETE /v1/fleet/purge</code> : Enforces volatile memory wipes across defined tenant communication boundaries.</li>
+    </ul>
+    <h4>3. LIFE-CYCLE RATE LIMITS &amp; STACK DEBORDEMENT</h4>
+    <p>Traffic pipelines are structurally capped at 10,000 queries per master cluster runtime sequence. Ingress throttling blocks burst streams exceeding 250 concurrent requests per microsecond transaction window.</p>
+    <p>Clients should implement exponential backoff, bounded retries, idempotency keys for mutation requests, and explicit timeout handling. A throttled response should be treated as a recoverable capacity signal rather than retried as an unbounded loop.</p>
+    <h4>4. RESPONSE METRICS SCHEMATICS</h4>
+    <p>All outputs structurally adhere to standard architectural JSON format:</p>
+    <pre>{
+  "status": "ACTIVE",
+  "node_id": "BB-CLUSTER-O1",
+  "compliance": "VERIFIED",
+  "timestamp": 1790697600
+}</pre>
+    <h4>5. ERROR STATES &amp; OBSERVABILITY</h4>
+    <p>Clients should handle authentication failures, validation failures, rate limits, unavailable nodes, and malformed responses explicitly. A successful HTTP transport does not by itself indicate successful business execution; consumers must validate the response status and compliance fields before proceeding.</p>
+    <h4>6. DEPLOYMENT SAFETY CHECKLIST</h4>
+    <ul>
+        <li>Store keys in a protected runtime secret store.</li>
+        <li>Validate tenant and seat identifiers before deployment.</li>
+        <li>Use idempotency controls for retryable mutations.</li>
+        <li>Apply least-privilege access to operators and service accounts.</li>
+        <li>Purge temporary payloads and credentials from local diagnostics.</li>
+    </ul>
 </div>
-        </div>     
     </main>
     <script>
-        // 🟢 GESTIONNAIRE DE CLICS UNIVERSEL POUR LES PAGES DU FOOTER
-    window.showFooterContent = function(contentType) {
-        console.log("📁 Déclenchement du Footer pour : " + contentType);
-        
-        // On masque d'abord tous les blocs de texte légaux pour éviter les chevauchements
-        var blocks = document.querySelectorAll('.footer-legal-block');
-        for (var i = 0; i < blocks.length; i++) {
-            blocks[i].style.display = 'none';
-        }
+        function toggleLegalDrawer(drawerId) {
+            const drawers = ['drawer-docs', 'drawer-terms', 'drawer-privacy'];
+            const footer = document.querySelector('footer');
 
-        // On cherche le conteneur cible (ex: content-terms, content-privacy, content-docs)
-        var targetBlock = document.getElementById('content-' + contentType);
-        if (targetBlock) {
-            targetBlock.style.display = 'block';
-            targetBlock.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            console.error("❌ Impossible de trouver le conteneur pour: content-" + contentType);
-        }
-    };
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
-        const columns = Math.floor(width / 24);
-        const yPositions = Array(columns).fill(0);
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(2, 3, 8, 0.06)';
-            ctx.fillRect(0, 0, width, height);
-            ctx.fillStyle = '#00ff88';
-            ctx.font = '11px monospace';
-            yPositions.forEach((y, index) => {
-                const text = String.fromCharCode(33 + Math.random() * 93);
-                ctx.fillText(text, index * 24, y);
-                if (y > 100 + Math.random() * 15000) yPositions[index] = 0;
-                else yPositions[index] = y + 13;
+            drawers.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (footer && el.nextElementSibling !== footer) {
+                        footer.parentNode.insertBefore(el, footer);
+                    }
+                    if (id === drawerId) {
+                        if (el.style.display === 'block') {
+                            el.style.display = 'none';
+                        } else {
+                            el.style.display = 'block';
+                        }
+                    } else {
+                        el.style.display = 'none';
+                    }
+                }
             });
         }
-        setInterval(drawMatrix, 33);
-        window.addEventListener('resize', () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        });
 
-        // 🚀 HORLOGE SOUVERAINE SEO : Point zéro calé sur aujourd'hui le 15 Septembre 2026
-        const LAUNCH_DATE = new Date("2026-09-15T00:00:00");
+        window.toggleLegalDrawer = toggleLegalDrawer;
 
-        const categoriesDatabase = [
-            { id: "div01", name: "Form & Data Protection", wave: 1 },
-            { id: "div02", name: "Cyber-Defense Modules", wave: 1 },
-            { id: "div03", name: "Privacy & Cloud Proxy", wave: 2 },
-            { id: "div04", name: "Audio Processing Lab", wave: 2 },
-            { id: "div05", name: "Media & Asset Optimizer", wave: 3 },
-            { id: "div06", name: "Document Automation", wave: 3 },
-            { id: "div07", name: "Geoloc & Smart Routing", wave: 4 },
-            { id: "div08", name: "Agent Web Analytics", wave: 4 },
-            { id: "div09", name: "Web Scraping Matrix", wave: 5 },
-            { id: "div10", name: "Code & Performance Core", wave: 5 },
-            { id: "div11", name: "Automated Task Scheduling", wave: 6 },
-            { id: "div12", name: "SEO Keyword Optimizer", wave: 6 },
-            { id: "div13", name: "Link Protection & Cloaking", wave: 7 },
-            { id: "div14", name: "Fintech & Currency Utilities", wave: 7 },
-            { id: "div15", name: "Crypto Security Gateways", wave: 8 },
-            { id: "div16", name: "Symmetric Encryption Nets", wave: 8 },
-            { id: "div17", name: "Dynamic Case Compilers", wave: 9 },
-            { id: "div18", name: "System Health Diagnostics", wave: 9 },
-            { id: "div19", name: "Log Sanitizers & Privacy", wave: 10 },
-            { id: "div20", name: "Multi-Cloud Traffic Flow", wave: 10 }
+        const robotsCatalog = [
+            {
+                id: "log_sanitizer",
+                name: "Log Sanitizer",
+                category: "Privacy & PII Protection",
+                heading: "Strips PII from raw log text before it hits your logging pipeline.",
+                description: "Scans arbitrary text for credit card numbers, email addresses, and Bearer tokens, then masks them in place using real pattern matching.",
+                endpoint: "/v1/log_sanitizer",
+                curl: "curl -X POST https://blackbox.labs/v1/log_sanitizer -H 'Authorization: Bearer YOUR_KEY' -d '{\"text\":\"card 4111111111111111 user@mail.com\"}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Detects credit card numbers, emails, and Authorization/Bearer tokens inside any block of text and masks all but a few identifying characters.", benefits: ["Keeps raw PII out of your log storage and monitoring tools.", "Works on unstructured text, not just known JSON fields.", "No data is stored server-side — processed in-memory per request."] },
+                    { title: "HOW TO INTEGRATE", body: "Send the raw text as JSON and receive the sanitized string back. Drop it in front of any logger, error tracker, or support ticket pipeline.", benefits: ["Single POST request, JSON in / JSON out.", "Typical response time under 50ms for normal log line sizes.", "Compatible with any backend language via plain HTTP."] }
+                ]
+            },
+            {
+                id: "pii_masker",
+                name: "PII Masker",
+                category: "Privacy & PII Protection",
+                heading: "Partially masks personal identifiers in structured payloads.",
+                description: "Masks card numbers and email addresses in JSON payloads while keeping enough of the original value for display purposes (e.g. **** **** **** 1111).",
+                endpoint: "/v1/pii_masker",
+                curl: "curl -X POST https://blackbox.labs/v1/pii_masker -H 'Authorization: Bearer YOUR_KEY' -d '{\"email\":\"jane@doe.com\",\"card\":\"4111111111111111\"}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Applies partial masking rules to known PII fields (card numbers, emails) so you can display a reference to the user without exposing the full value.", benefits: ["Safe to show masked values in UI or support tooling.", "Consistent masking format across your stack.", "No external PII database lookups — pure transformation."] },
+                    { title: "HOW TO INTEGRATE", body: "Send a JSON object with the fields to mask; receive the same object back with masked values in place.", benefits: ["Drop-in replacement before storing display copies.", "Works with existing JSON payload shapes.", "Deterministic output for the same input."] }
+                ]
+            },
+            {
+                id: "phone_sanitizer",
+                name: "Phone Number Normalizer",
+                category: "Privacy & PII Protection",
+                heading: "Normalizes phone numbers to E.164 format.",
+                description: "Parses loosely formatted phone numbers and outputs a consistent E.164 representation, rejecting inputs that can't be reliably normalized.",
+                endpoint: "/v1/phone_sanitizer",
+                curl: "curl -X POST https://blackbox.labs/v1/phone_sanitizer -H 'Authorization: Bearer YOUR_KEY' -d '{\"phone\":\"(555) 123-4567\",\"country\":\"US\"}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Converts phone numbers written in inconsistent formats into a single canonical E.164 string, using country hints when provided.", benefits: ["Reduces duplicate contacts caused by formatting differences.", "Flags clearly invalid numbers instead of silently accepting them.", "No telecom carrier lookups — format-level validation only."] },
+                    { title: "HOW TO INTEGRATE", body: "Send the raw phone string and an optional country code; receive the normalized E.164 value or a validation error.", benefits: ["Ideal as a signup-form validation step.", "Simple JSON in / JSON out contract.", "Consistent format for downstream SMS/CRM tools."] }
+                ]
+            },
+            {
+                id: "ip_anonymizer",
+                name: "IP Anonymizer",
+                category: "Privacy & PII Protection",
+                heading: "Masks the last octet or block of an IP address.",
+                description: "Anonymizes IPv4 and IPv6 addresses the same way analytics tools do, by zeroing out the last identifying segment.",
+                endpoint: "/v1/ip_anonymizer",
+                curl: "curl -X POST https://blackbox.labs/v1/ip_anonymizer -H 'Authorization: Bearer YOUR_KEY' -d '{\"ip\":\"203.0.113.42\"}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Detects IPv4 or IPv6 format and masks the final octet (IPv4) or final block (IPv6) while keeping the address usable for coarse geolocation.", benefits: ["Reduces the identifiability of stored IP addresses.", "Works for both IPv4 and IPv6 inputs.", "Simple, predictable masking rule you can document for compliance."] },
+                    { title: "HOW TO INTEGRATE", body: "Send the raw IP string; receive the masked IP back.", benefits: ["Call it right before you persist request metadata.", "No dependency on external GeoIP services.", "Sub-millisecond processing time."] }
+                ]
+            },
+            {
+                id: "bot_detector",
+                name: "Bot Signature Detector",
+                category: "Security & Link Integrity",
+                heading: "Flags likely automated traffic from request headers.",
+                description: "Inspects the User-Agent and common automation headers to flag requests that look like they come from headless browsers such as Puppeteer or Playwright.",
+                endpoint: "/v1/bot_detector",
+                curl: "curl -X POST https://blackbox.labs/v1/bot_detector -H 'Authorization: Bearer YOUR_KEY' -d '{\"userAgent\":\"...\",\"headers\":{...}}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Compares the incoming User-Agent and header set against known automation signatures (headless Chrome, Puppeteer, Playwright, common scraping libraries).", benefits: ["Gives you a signal to combine with rate-limiting or CAPTCHA logic.", "Not a silver bullet — documented as a heuristic signal, not a guarantee.", "Lightweight enough to run on every incoming request."] },
+                    { title: "HOW TO INTEGRATE", body: "Forward the request's User-Agent and headers as JSON; receive a boolean flag plus the matched signature if any.", benefits: ["Use as a pre-filter before heavier bot-mitigation services.", "No third-party bot database dependency.", "Transparent about what it can and can't catch."] }
+                ]
+            },
+            {
+                id: "crypto_verify",
+                name: "Crypto Address Verifier",
+                category: "Security & Link Integrity",
+                heading: "Validates crypto addresses with real checksum verification.",
+                description: "Verifies Bitcoin addresses using actual Base58Check (legacy) and Bech32/BIP-173 (SegWit) checksum algorithms. Ethereum and Solana addresses are validated for format only, clearly labeled as such.",
+                endpoint: "/v1/crypto_verify",
+                curl: "curl -X POST https://blackbox.labs/v1/crypto_verify -H 'Authorization: Bearer YOUR_KEY' -d '{\"address\":\"1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2\",\"network\":\"btc\"}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "For BTC addresses, runs a real checksum verification (Base58Check or Bech32) — a single altered character will fail validation. For ETH/SOL, checks format only and says so explicitly in the response.", benefits: ["Catches typos and corrupted BTC addresses before you send funds.", "Honest about the limits of format-only checks for ETH/SOL.", "No blockchain node calls — pure cryptographic validation, fast response."] },
+                    { title: "HOW TO INTEGRATE", body: "Send the address string and target network; receive a valid/invalid result plus the verification method used.", benefits: ["Use before accepting a withdrawal address from a user.", "Response tells you exactly which check was applied.", "Works offline, no external RPC dependency."] }
+                ]
+            },
+            {
+                id: "link_signer",
+                name: "Signed URL Generator",
+                category: "Security & Link Integrity",
+                heading: "Generates HMAC-SHA256 signed URLs with expiration.",
+                description: "Creates a tamper-evident signed URL for a resource path, with an expiration timestamp baked into the signature.",
+                endpoint: "/v1/link_signer",
+                curl: "curl -X POST https://blackbox.labs/v1/link_signer -H 'Authorization: Bearer YOUR_KEY' -d '{\"path\":\"/files/report.pdf\",\"expiresInSeconds\":3600}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Computes an HMAC-SHA256 signature over the resource path and expiration timestamp, returning a signed URL that can be validated later.", benefits: ["Prevents users from sharing links past their intended expiry.", "Signature can't be forged without your secret key.", "Standard HMAC — auditable and well understood."] },
+                    { title: "HOW TO INTEGRATE", body: "Send the resource path and desired expiration; receive the full signed URL to hand out to your users.", benefits: ["Pairs directly with the Signed URL Validator endpoint.", "Works for downloads, temporary access links, or pre-signed API calls.", "No session state required on your end."] }
+                ]
+            },
+            {
+                id: "link_validator",
+                name: "Signed URL Validator",
+                category: "Security & Link Integrity",
+                heading: "Verifies signed URLs in constant time.",
+                description: "Validates the HMAC signature and expiration of a signed URL using a constant-time comparison to avoid timing attacks.",
+                endpoint: "/v1/link_validator",
+                curl: "curl -X POST https://blackbox.labs/v1/link_validator -H 'Authorization: Bearer YOUR_KEY' -d '{\"url\":\"https://.../files/report.pdf?sig=...&exp=...\"}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Recomputes the expected HMAC signature and compares it using crypto.timingSafeEqual, then checks the expiration timestamp.", benefits: ["Resistant to signature timing side-channel attacks.", "Rejects expired links even with a valid signature.", "Pairs with the Signed URL Generator for a complete flow."] },
+                    { title: "HOW TO INTEGRATE", body: "Send the full URL (or its query parameters); receive a valid/invalid result with a reason if invalid.", benefits: ["Drop it in front of any download or access endpoint.", "Clear error reasons: bad signature vs. expired.", "No shared session state needed between signer and validator."] }
+                ]
+            },
+            {
+                id: "csv_dedupe",
+                name: "CSV Deduplicator",
+                category: "Data & Media Utilities",
+                heading: "Parses and deduplicates CSV data for real.",
+                description: "Uses a real CSV parser (handling quoted fields, embedded commas and newlines) and removes duplicate rows, either by full-row match or by chosen key columns.",
+                endpoint: "/v1/csv_dedupe",
+                curl: "curl -X POST https://blackbox.labs/v1/csv_dedupe -H 'Authorization: Bearer YOUR_KEY' -d '{\"csv\":\"id,email\\n1,a@x.com\\n1,a@x.com\",\"keyColumns\":[\"id\"]}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Parses the CSV respecting RFC 4180 quoting rules, then removes duplicate rows based on the full row or a set of key columns you specify.", benefits: ["Correctly handles commas and newlines inside quoted fields.", "Flexible dedupe key — full row or specific columns.", "Returns both the cleaned CSV and a count of removed duplicates."] },
+                    { title: "HOW TO INTEGRATE", body: "Send raw CSV text and optional key columns; receive the deduplicated CSV plus stats.", benefits: ["Useful for cleaning marketing list exports before import.", "No file upload needed — plain text in the request body.", "Fast enough for typical export-sized files."] }
+                ]
+            },
+            {
+                id: "exif_cloak",
+                name: "EXIF Metadata Stripper",
+                category: "Data & Media Utilities",
+                heading: "Removes EXIF and metadata segments at the binary level.",
+                description: "Parses the actual JPEG (APP1/COM markers) or PNG (tEXt/iTXt/zTXt/eXIf/tIME chunks) structure and removes metadata segments, leaving a valid image with no re-encoding.",
+                endpoint: "/v1/exif_cloak",
+                curl: "curl -X POST https://blackbox.labs/v1/exif_cloak -H 'Authorization: Bearer YOUR_KEY' -d '{\"image_base64\":\"...\"}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Reads the binary structure of the uploaded JPEG or PNG, identifies metadata segments/chunks, and strips them without re-compressing the image.", benefits: ["Removes GPS location and camera metadata before publishing user photos.", "No lossy re-encoding — the visible image is unchanged.", "Reports exactly which segments were removed."] },
+                    { title: "HOW TO INTEGRATE", body: "Send the image as base64; receive the cleaned image as base64 plus a list of removed segments.", benefits: ["Drop it into any upload pipeline before storage.", "Works for both JPEG and PNG.", "Output stays a valid, openable image file."] }
+                ]
+            },
+            {
+                id: "timezone_converter",
+                name: "Timezone Converter",
+                category: "Data & Media Utilities",
+                heading: "Converts timestamps between timezones using the Intl API.",
+                description: "Converts a given date/time between IANA timezones using the native Intl.DateTimeFormat API — no hardcoded offset tables.",
+                endpoint: "/v1/timezone_converter",
+                curl: "curl -X POST https://blackbox.labs/v1/timezone_converter -H 'Authorization: Bearer YOUR_KEY' -d '{\"datetime\":\"2026-03-15T10:00:00\",\"from\":\"Europe/Paris\",\"to\":\"America/New_York\"}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Uses the Intl API to correctly account for daylight saving time changes and timezone rules, rather than fixed offset math.", benefits: ["Correct across DST transitions, unlike naive offset math.", "Supports any IANA timezone identifier.", "Deterministic, no external timezone database dependency to maintain."] },
+                    { title: "HOW TO INTEGRATE", body: "Send the datetime and source/target IANA timezones; receive the converted timestamp.", benefits: ["Useful for scheduling features across regions.", "Simple JSON in / JSON out contract.", "No client-side timezone library needed."] }
+                ]
+            },
+            {
+                id: "uptime_check",
+                name: "Uptime Checker",
+                category: "Data & Media Utilities",
+                heading: "Performs a real live HTTP check against a target URL.",
+                description: "Issues an actual HTTP request to the target URL and reports status (ONLINE / DEGRADED / OFFLINE) along with measured response latency.",
+                endpoint: "/v1/uptime_check",
+                curl: "curl -X POST https://blackbox.labs/v1/uptime_check -H 'Authorization: Bearer YOUR_KEY' -d '{\"url\":\"https://example.com\"}'",
+                cards: [
+                    { title: "WHAT IT DOES", body: "Fetches the target URL live, measures the round-trip time, and classifies the result based on status code and latency thresholds.", benefits: ["Real network call — not a simulated or cached status.", "Latency figure comes from the actual request, not an estimate.", "Useful as a lightweight external monitor for a single endpoint."] },
+                    { title: "HOW TO INTEGRATE", body: "Send the target URL; receive status, HTTP code, and latency in milliseconds.", benefits: ["Pair with a cron job or scheduler for periodic checks.", "No agent installation needed on the monitored server.", "Simple enough to wire into a Slack/webhook alert."] }
+                ]
+            }
         ];
 
-        const matrixEcosystem = {};
-        
-        categoriesDatabase.forEach((cat, catIndex) => {
-            const rawPrefix = cat.name.split(' ');
-            const cleanPrefix = rawPrefix[0].replace('&', '').trim();
-            
-            // Calcul automatique de la date de release théorique (Vague 1 = Jour 0, Vague 2 = Jour 14, Vague 3 = Jour 28...)
-            const daysDelay = (cat.wave - 1) * 14;
-            const releaseDate = new Date(LAUNCH_DATE.getTime() + daysDelay * 24 * 60 * 60 * 1000);
-            
-            matrixEcosystem[cat.id] = {
-                name: cat.name,
-                wave: cat.wave,
-                releaseDate: releaseDate,
-                robots: [
-                    { id: `rb_${cat.id}_1`, name: `${cleanPrefix} Shield Alpha`, title: `${cat.name} Ingress.<br>Neutralize Threat Pattern Loops.`, desc: `Hardened automation engine engineered to protect active endpoints under microsecond transaction windows.`, t1: "SURGICAL SCRUB", d1: "Strips trace elements dynamically inside isolated runtime sandboxes.", t2: "STATELESS FLUX", d2: "Processes text packages natively without creating persistent history trails.", endpoint: `/v1/node-alpha-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_2`, name: `${cleanPrefix} Inspector Beta`, title: `${cat.name} Audit.<br>Deep Protocol Structure Check.`, desc: `Edge validation layer optimized to analyze malformed token signatures at the absolute perimeter limit.`, t1: "PERIMETER SHIELD", d1: "Intercepts buffer structures before data hydrations loops take place.", t2: "HIGH LATENCY DEFENSE", d2: "Operates cleanly under strict production environment constraints.", endpoint: `/v1/node-beta-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_3`, name: `${cleanPrefix} Secure Proxy`, title: `${cat.name} Proxy.<br>Encapsulated Content Stream Net.`, desc: `Hardened routing namespace crafted to block track footprint signatures across cloud clusters.`, t1: "DISRUPTION NET", d1: "Obfuscates operational metrics seamlessly during transaction lifecycles.", t2: "STERILE SLOTS", d2: "Enforces total context insulation across tenant communication boundaries.", endpoint: `/v1/node-proxy-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_4`, name: `${cleanPrefix} Compactor Core`, title: `${cat.name} Compactor.<br>Whitespace Payload Reduction.`, desc: `Algorithmic compressor designed to crush empty layouts and tabs into uniform data units.`, t1: "WEIGHT MITIGATION", d1: "Reduces raw ingress transaction masses by up to 60% dynamically.", t2: "REGISTER DEFENSE", d2: "Locks internal processing sequences within secure memory boundaries.", endpoint: `/v1/node-compact-${catIndex + 1}` },
-                    { id: `rb_${cat.id}_5`, name: `${cleanPrefix} Token Master`, title: `${cat.name} Forge.<br>High-Entropy Key Generator.`, desc: `Cryptographic seed scrambler generating single-use transaction stamps on the edge.`, t1: "ENTROPY MATRIX", d1: "Uses randomize multi-seeded low-level parameters to secure pipelines.", t2: "DESTRUCTION SIGN", d2: "Wipes operational signatures immediately upon ingestion completion.", endpoint: `/v1/node-master-${catIndex + 1}` }
-                ]
-            };
-        });
-         let currentDivisionId = "div01";
-        let activeRobotIndex = 0;
+        const robotCategories = [...new Set(robotsCatalog.map(r => r.category))];
+
+        let currentCategory = robotCategories[0];
+        let currentRobotId = robotsCatalog[0].id;
+
+        function renderCardContent(containerId, title, body, benefits) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = `
+                <p class="feature-main-value">${body}</p>
+                <span class="value-label">» KEY POINTS</span>
+                <ul class="feature-benefits">
+                    ${benefits.map(benefit => `<li>» ${benefit}</li>`).join('')}
+                </ul>
+            `;
+            const titleElement = document.getElementById(containerId.replace('content', 'title'));
+            if (titleElement) titleElement.innerHTML = `<span>✦</span> ${title}`;
+        }
 
         function renderSubNavigation() {
-            const subnavContainer = document.getElementById('robots-subnav');
+            const subnavContainer = document.getElementById('robots-carousel-dock');
             if (!subnavContainer) return;
             subnavContainer.innerHTML = '';
-            
-            const activeGroup = matrixEcosystem[currentDivisionId];
-            
-            // 🚀 VERROU TEMPOREL HORIZONTALE : Si la division complète est sous clé, on n'affiche aucun sous-onglet
-            const now = new Date();
-            if (activeGroup && now < activeGroup.releaseDate) {
-                return; 
-            }
-            
-            const robotsList = activeGroup ? activeGroup.robots : [];
-            robotsList.forEach((robot, index) => {
+            const robotsInCategory = robotsCatalog.filter(r => r.category === currentCategory);
+            robotsInCategory.forEach((robot) => {
                 const btn = document.createElement('button');
-                btn.id = `tab-robot-${currentDivisionId}-${index}`;
-                btn.className = `robot-tab ${index === activeRobotIndex ? 'active' : ''}`;
+                btn.id = `tab-robot-${robot.id}`;
+                btn.className = `theme-item robot-tab ${robot.id === currentRobotId ? 'active' : ''}`;
                 btn.innerText = robot.name;
                 btn.onclick = () => {
-                    activeRobotIndex = index;
-                    document.querySelectorAll('.robot-tab').forEach(t => t.classList.remove('active'));
+                    currentRobotId = robot.id;
+                    subnavContainer.querySelectorAll('.theme-item').forEach(t => t.classList.remove('active'));
                     btn.classList.add('active');
                     loadRobotData();
                 };
@@ -431,77 +643,46 @@
             });
         }
 
-        function switchDivision(divisionId) {
-            currentDivisionId = divisionId;
-            activeRobotIndex = 0; 
-            
+        function switchDivision(category) {
+            currentCategory = category;
+            const robotsInCategory = robotsCatalog.filter(r => r.category === category);
+            currentRobotId = robotsInCategory.length ? robotsInCategory[0].id : null;
+
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById(`btn-theme-${divisionId}`);
+            const activeBtn = document.getElementById(`btn-theme-${category}`);
             if (activeBtn) activeBtn.classList.add('active');
-            
+
             const mainHeaderTitle = document.getElementById('current-division-title');
             if (mainHeaderTitle && activeBtn) {
                 mainHeaderTitle.innerText = activeBtn.innerText;
             }
-            
+
             renderSubNavigation();
             loadRobotData();
         }
 
         function loadRobotData() {
-            const activeGroup = matrixEcosystem[currentDivisionId];
-            if (!activeGroup) return;
-            
-            const now = new Date();
-            const stripeBlock = document.querySelector('.stripe-section');
-            
-            // 🔒 INTERCEPTION : La catégorie cliquée fait-elle partie d'une vague future ?
-            if (now < activeGroup.releaseDate) {
-                // Calcul précis du nombre de jours restants avant la libération
-                const diffTime = activeGroup.releaseDate - now;
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                // Injection du message cyber-stealth au centre du cockpit
-                document.getElementById('robot-main-title').innerHTML = `SECURE ACCESS RESTRICTED`;
-                document.getElementById('robot-main-desc').innerHTML = `// Ingress payload encrypted. This node network vector will unlock and deploy to the matrix fleet automatically in <span style="color: var(--accent-green); font-weight: bold; text-shadow: 0 0 10px rgba(0,255,136,0.4);">${diffDays} days</span>. Awaiting automated cron sequence activation...`;
-                
-                document.getElementById('feature-title-1').innerHTML = `<span>✦</span> NETWORK ACCESS`;
-                document.getElementById('feature-desc-1').textContent = `STATUS: LOCKED (WAVE ${activeGroup.wave})`;
-                document.getElementById('feature-title-2').innerHTML = `<span>✦</span> DEPLOYMENT VECTOR`;
-                document.getElementById('feature-desc-2').textContent = `Awaiting calendar synchronization...`;
-                
-                // Camouflage tactique de la zone d'achat Stripe pour bloquer les transactions anticipées
-                if (stripeBlock) stripeBlock.style.display = 'none';
-                return;
-            }
-            
-            // 🟢 VAGUE VALIDE : Si la date est passée, on réactive le comportement standard et Stripe
-            if (stripeBlock) stripeBlock.style.display = 'block';
-            
-            const robotsList = activeGroup.robots;
-            if (robotsList.length === 0) return;
-            const robot = robotsList[activeRobotIndex];
+            const robot = robotsCatalog.find(r => r.id === currentRobotId);
+            if (!robot) return;
 
-            document.getElementById('robot-main-title').innerHTML = robot.title;
-            document.getElementById('robot-main-desc').textContent = robot.desc;
-            
-            document.getElementById('feature-title-1').innerHTML = `<span>✦</span> ` + robot.t1;
-            document.getElementById('feature-desc-1').textContent = robot.d1;
-            document.getElementById('feature-title-2').innerHTML = `<span>✦</span> ` + robot.t2;
-            document.getElementById('feature-desc-2').textContent = robot.d2;
-            
+            document.getElementById('robot-main-title').textContent = robot.name;
+            document.getElementById('robot-main-desc').textContent = robot.description;
+
+            renderCardContent('feature-content-1', robot.cards[0].title, robot.cards[0].body, robot.cards[0].benefits);
+            renderCardContent('feature-content-2', robot.cards[1].title, robot.cards[1].body, robot.cards[1].benefits);
+
             const targetTag = document.getElementById('gateway-target-tag');
             if (targetTag) targetTag.textContent = robot.endpoint;
-            
-            document.getElementById('price-solo-tag').textContent = "49$";
-            document.getElementById('price-agency-tag').textContent = "149$";
+
+            document.getElementById('price-solo-tag').textContent = "$49";
+            document.getElementById('price-agency-tag').textContent = "$149";
         }
 
    async function triggerCheckout(planType) {
     try {
         let cleanPlantType = String(planType || '').toLowerCase().trim();
         
-        // 📡 DÉCLENCHEMENT DE L'API DYNAMIQUE SANS CASSEROLE SYNTAXIQUE
+        // 📡 DYNAMIC API TRIGGER WITHOUT SYNTAX ISSUES
         fetch('/v1/checkout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -513,51 +694,95 @@
         .then(res => res.json())
         .then(data => {
             if (data.url) {
-                window.location.href = data.url; // 🚀 Redirection Stripe Checkout !
+                window.location.href = data.url; // 🚀 Stripe Checkout redirect!
             } else {
-                console.error("Erreur de soute : Pas d'URL reçue dans la réponse");
-                alert("Erreur de configuration du panier.");
+                console.error("Backend error: No URL received in response");
+                alert("Cart configuration error.");
             }
         })
         .catch(err => {
-            console.error('Erreur réseau dans le fetch:', err);
-            alert("Erreur de communication avec le serveur.");
+            console.error('Network error in fetch:', err);
+            alert("Server communication error.");
         });
 
     } catch (error) {
-        console.error("Erreur d'exécution globale dans triggerCheckout:", error);
+        console.error("Global execution error in triggerCheckout:", error);
     }
 } 
 function initializeApp() {
+            composeScreenSections();
             const sidebarContainer = document.getElementById('sidebar-categories');
             sidebarContainer.innerHTML = '';
-            
-            const now = new Date();
-            
-            categoriesDatabase.forEach((cat) => {
-                const activeGroup = matrixEcosystem[cat.id];
-                const btn = document.createElement('button');
-                btn.id = `btn-theme-${cat.id}`;
-                btn.className = `theme-btn ${cat.id === currentDivisionId ? 'active' : ''}`;
-                
-                // 🚀 CADENCEMENT VISUEL SIDEBAR : Ajoute une étiquette [ENCRYPTED] si la vague dort encore
-                if (activeGroup && now < activeGroup.releaseDate) {
-                    btn.innerHTML = `${cat.name} <span style="font-size: 9px; color: #ff3366; opacity: 0.7; font-family: monospace; letter-spacing: 0.5px; margin-top: 2px;">[ENCRYPTED]</span>`;
-                } else {
-                    btn.innerHTML = cat.name;
-                }
-                
-                btn.onclick = () => switchDivision(cat.id);
-                sidebarContainer.appendChild(btn);
+            ['drawer-docs', 'drawer-terms', 'drawer-privacy'].forEach(id => {
+                const drawer = document.getElementById(id);
+                if (drawer) drawer.style.display = 'none';
             });
             
-            currentDivisionId = "div01";
-            activeRobotIndex = 0;
+            robotCategories.forEach((category) => {
+                const btn = document.createElement('button');
+                btn.id = `btn-theme-${category}`;
+                btn.className = `theme-btn theme-item ${category === currentCategory ? 'active' : ''}`;
+                btn.textContent = category;
+                btn.onclick = () => switchDivision(category);
+                sidebarContainer.appendChild(btn);
+            });
+
             renderSubNavigation();
             loadRobotData();
         }
 
-        window.onload = initializeApp;
+        function composeScreenSections() {
+            const container = document.querySelector('.content-container');
+            const hero = document.getElementById('hero-content');
+            const cash = document.getElementById('cash-content');
+            const brand = document.querySelector('.sidebar-header');
+            const ingress = document.getElementById('license-ingress');
+            const categoryDock = document.getElementById('sidebar-categories');
+            const robotSection = document.querySelector('.robot-display-section');
+            const stripe = document.querySelector('.stripe-section');
+            const footer = document.querySelector('footer');
+            const drawers = [...document.querySelectorAll('.footer-legal-block')];
+
+            if (!container || !hero || !cash || !ingress || !robotSection || !stripe || !footer) return;
+
+            const topLine = document.createElement('div');
+            topLine.className = 'bb-header-top-line';
+            const navLine = document.createElement('div');
+            navLine.className = 'bb-header-navigation-line';
+
+            [brand, ingress].forEach(node => node && topLine.appendChild(node));
+            if (categoryDock) navLine.appendChild(categoryDock);
+
+            hero.appendChild(topLine);
+            hero.appendChild(navLine);
+            if (robotSection) hero.appendChild(robotSection);
+            [stripe, ...drawers, footer].forEach(node => node && cash.appendChild(node));
+            container.classList.add('screens-composed');
+            const aside = document.querySelector('aside');
+            if (aside) aside.setAttribute('aria-hidden', 'true');
+        }
+
+        // 🛰️ BRAND COMPLIANCE SHIELD ACTIVATION — highlights the target platforms of the
+        // horizontal slide currently centered in the viewport (scroll-snap driven).
+        function initLogoShieldActivation() {
+            const track = document.getElementById('playground-track');
+            if (!track) return;
+            const slides = [...track.querySelectorAll('.bb-horizontal-slide')];
+            if (!slides.length) return;
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    entry.target.classList.toggle('is-active-slide', entry.isIntersecting && entry.intersectionRatio >= 0.6);
+                });
+            }, { root: track, threshold: [0, 0.6, 1] });
+
+            slides.forEach((slide) => observer.observe(slide));
+        }
+
+        window.onload = () => {
+            initializeApp();
+            initLogoShieldActivation();
+        };
     </script>
 </body>
 </html>

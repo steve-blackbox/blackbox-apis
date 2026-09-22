@@ -1,14 +1,16 @@
 /**
  * 🛰️ BLACKBOX AUTOMATED CONTROL — APIS CONSTELLATION
  * 🤖 ROBOT 42 : EMAIL-EXTRACTOR CORE ENGINE (HEAVY REGEX LAB)
- * 🧹 LIGHTNING-FAST STATELESS BULK EMAIL HARVESTER FROM UNSTRUCTURED TEXT payloads
+ * 🧹 STATELESS EMAIL FORMAT EXTRACTOR FOR YOUR OWN CONSENTED TEXT (SUPPORT TICKETS, CRM NOTES, DOCUMENTS)
  */
 
 const express = require('express');
 const router = express.Router();
 
 /**
- * 📥 ROUTE CORE : EXTRACTION PAR RECH_ERCHE D'ARBRE REGEX INLINE
+ * 📥 ROUTE CORE : EXTRACTION PAR RECHERCHE D'ARBRE REGEX INLINE
+ * Note: destiné à traiter du texte que vous possédez déjà (tickets, notes, documents internes),
+ * pas à collecter des adresses depuis des sources tierces non consenties.
  */
 router.post('/', (req, res) => {
     const { raw_corpus_text } = req.body;
@@ -17,13 +19,13 @@ router.post('/', (req, res) => {
         return res.status(400).json({ error: "Missing required 'raw_corpus_text' string parameter string inside payload." });
     }
 
-    console.log(`[🧹 EMAIL-EXTRACTOR] Analyse d'un corpus de texte brut pour extraction.`);
+    console.log(`[🧹 EMAIL-EXTRACTOR] Analyse d'un corpus de texte brut fourni par l'appelant.`);
 
     // Regex chirurgicale de soute industrielle pour capturer les adresses e-mails standardisees
     const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-    
+
     const matches = raw_corpus_text.match(emailPattern) || [];
-    
+
     // Elimination instantanee des doublons de soute
     const uniqueEmails = [...new Set(matches.map(email => email.toLowerCase().trim()))];
 
@@ -31,7 +33,7 @@ router.post('/', (req, res) => {
         status: "RAW_TEXT_STREAM_PROCESSED",
         total_extracted_found: matches.length,
         total_unique_extracted: uniqueEmails.length,
-        harvested_records: uniqueEmails,
+        extracted_records: uniqueEmails,
         pipeline_integrity: {
             cache_usage: "STERILE_NONE",
             latency: "0.08ms"

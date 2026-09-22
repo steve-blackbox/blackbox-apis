@@ -51,7 +51,13 @@ router.post('/', (req, res) => {
             .update(`${baseUrl}?expires=${expires}`)
             .digest('hex');
 
-        if (signature !== expectedSignature) {
+        // Constant-time comparison to avoid leaking signature bytes via response timing.
+        const signatureBuffer = Buffer.from(signature, 'utf8');
+        const expectedBuffer = Buffer.from(expectedSignature, 'utf8');
+        const signaturesMatch = signatureBuffer.length === expectedBuffer.length &&
+            crypto.timingSafeEqual(signatureBuffer, expectedBuffer);
+
+        if (!signaturesMatch) {
             return res.status(200).json({
                 status: "SIGNATURE_MISMATCH_ATTACK_DETECTED",
                 valid: false,
