@@ -10,7 +10,7 @@ const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // 📊 SUIVI DE TRACTION (ventes persistantes + checkpoints J+30/60/90)
-const { recordSale, getStats, saveLicense, isValidLicense, getAllActiveLicenseKeys } = require('./lib/db');
+const { recordSale, getStats, saveLicense, isValidLicense, getAllActiveLicenseKeys, deactivateLicensesBySubscription } = require('./lib/db');
 
 // 🔑 ENCAPSULATION SECURISEE STRIPE (Variable d'environnement de soute)
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
@@ -33,7 +33,7 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // 🟢 CASH SÉCURISÉ : L'achat est validé sur Stripe Checkout
+    // 🟢 CASH SÉCURISÉ : L'achat est validé sur Stripe Checkout (abonnement mensuel récurrent)
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         const customerEmail = session.customer_details.email;
@@ -41,6 +41,8 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
         
         // Extraction du plan acheté (core, labs, etc.) depuis les metadata passées au checkout
         const purchasedPlan = session.metadata?.plan || 'labs';
+        const stripeSubscriptionId = session.subscription || null;
+        const stripeCustomerId = session.customer || null;
 
         // 🔑 GÉNÉRATION DE LA CLÉ DE LICENCE EXCLUSIVE BLACKBOX
         const uniqueId = crypto.randomBytes(4).toString('hex').toUpperCase();
@@ -52,8 +54,11 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
         }
 
         // 🔒 Sauvegarde PERSISTANTE en base (survit aux redémarrages/redéploiements Render)
+        // On garde l'ID de l'abonnement Stripe pour pouvoir couper l'accès si le client
+        // annule ou si un paiement mensuel échoue (voir customer.subscription.deleted /
+        // invoice.payment_failed plus bas).
         try {
-            saveLicense({ licenseKey, email: customerEmail, plan: purchasedPlan });
+            saveLicense({ licenseKey, email: customerEmail, plan: purchasedPlan, stripeSubscriptionId, stripeCustomerId });
         } catch (licenseError) {
             console.error('❌ Échec enregistrement persistant de la licence:', licenseError);
         }
@@ -96,6 +101,28 @@ app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, r
         }
     }
 
+    // 🔴 ANNULATION D'ABONNEMENT : le client résilie (ou est résilié après échecs de paiement
+    // répétés) → on coupe l'accès immédiatement. Empêche un client annulé de garder un accès
+    // à vie, ce qui rendrait le modèle mensuel non viable.
+    if (event.type === 'customer.subscription.deleted') {
+        const subscription = event.data.object;
+        const revoked = deactivateLicensesBySubscription(subscription.id);
+        if (revoked > 0 && global.activeLicenseKeys) {
+            // Le cache mémoire ne connaît que les clés, pas les subscription_id : on force
+            // une recharge complète depuis la base pour refléter la désactivation.
+            global.activeLicenseKeys = new Set(['BB-ADMIN-CORE-99', ...getAllActiveLicenseKeys()]);
+        }
+        console.log(`🚫 Abonnement ${subscription.id} annulé — ${revoked} licence(s) désactivée(s).`);
+    }
+
+    // 🟠 ÉCHEC DE PAIEMENT MENSUEL : Stripe retentera automatiquement selon vos règles de
+    // relance ; si l'échec est final, Stripe enverra ensuite customer.subscription.deleted.
+    // On journalise ici pour visibilité, sans couper l'accès prématurément sur un simple échec.
+    if (event.type === 'invoice.payment_failed') {
+        const invoice = event.data.object;
+        console.log(`⚠️ Échec de paiement mensuel pour l'abonnement ${invoice.subscription || 'inconnu'}.`);
+    }
+
     res.json({ received: true });
 });
 
@@ -130,19 +157,21 @@ app.post('/v1/checkout', async (req, res) => {
         let targetPriceId = '';
         const planType = plan ? plan.toLowerCase().trim() : '';
 
-        // Dictionnaire hermétique connecté à tes deux nouveaux produits Stripe
+        // Dictionnaire hermétique connecté à tes deux produits Stripe RÉCURRENTS MENSUELS
+        // ⚠️ REMPLACE ces deux price_id par ceux de tes nouveaux prix Stripe "Recurring / Monthly"
+        // (12$/mois Solo et 29$/mois All-Access) — voir dashboard.stripe.com > Produits.
         if (planType === 'core' || planType === 'solo' || planType === 'matrix' || planType === 'single') {
-    targetPriceId = 'price_1UGjACAQxUv6pdHqpCxlPwKc'; // 🟢 TON NOUVEAU FORFAIT SINGLE ACCESS A 49$ PROPRE
+    targetPriceId = process.env.STRIPE_PRICE_SOLO_MONTHLY || 'price_SOLO_MONTHLY_A_REMPLACER'; // 🟢 SOLO — 12$/mois
 } else if (planType === 'labs' || planType === 'premium' || planType === 'allaccess' || planType === 'all-access' || planType === 'adblock_bypass') {
-    targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F'; // 🔵 TON NOUVEAU FORFAIT ALL ACCESS A 149$ PROPRE
+    targetPriceId = process.env.STRIPE_PRICE_ALLACCESS_MONTHLY || 'price_ALLACCESS_MONTHLY_A_REMPLACER'; // 🔵 ALL-ACCESS — 29$/mois
 } else {
     // 🟢 SÉCURITÉ UNIVERSELLE DE SECOURS : Si le mot-clé arrive vide, altéré ou non reconnu
-    // par les conditions précédentes, on force le Price ID valide à 149$.
-    console.log("👉 Alerte soute : planType inconnu ou manquant. Redirection forcé sur All Access 149$. Input reçu :", planType);
-    targetPriceId = 'price_1UGj7mAQxUv6pdHqee0lOe3F'; 
+    // par les conditions précédentes, on force le forfait All-Access par défaut.
+    console.log("👉 Alerte soute : planType inconnu ou manquant. Redirection forcé sur All Access. Input reçu :", planType);
+    targetPriceId = process.env.STRIPE_PRICE_ALLACCESS_MONTHLY || 'price_ALLACCESS_MONTHLY_A_REMPLACER';
 }
 
-        // Création de la session sécurisée en paiement unique sec (One-time strict)
+        // Création de la session sécurisée en ABONNEMENT MENSUEL RÉCURRENT (plus de paiement unique)
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -151,10 +180,11 @@ app.post('/v1/checkout', async (req, res) => {
                     quantity: 1,
                 },
             ],
-            mode: 'payment', // Mode paiement direct (Supprime la date 1970)
+            mode: 'subscription', // Abonnement mensuel récurrent — facturé chaque mois jusqu'à résiliation
             success_url: `${req.headers.origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${req.headers.origin}/cancel.html`,
             metadata: {
+                plan: planType || 'labs',
                 endpoint_target: endpoint_target || 'none'
             }
         });

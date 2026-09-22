@@ -38,6 +38,7 @@
             <section id="screen-playground" class="screen-section bb-horizontal-snap-container" aria-label="Robot category matrix">
                             <div class="bb-horizontal-snap-track" id="playground-track">
                                 <div class="bb-horizontal-slide">
+                                  <div class="bb-horizontal-slide-inner">
                                     <div class="bb-horizontal-slide-copy">
                                         <span class="bb-horizontal-slide-kicker">» ROBOT CATEGORY // 01</span>
                                         <h2>PRIVACY &amp; PII PROTECTION</h2>
@@ -74,8 +75,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                  </div>
                                 </div>
                                 <div class="bb-horizontal-slide">
+                                  <div class="bb-horizontal-slide-inner">
                                     <div class="bb-horizontal-slide-copy">
                                         <span class="bb-horizontal-slide-kicker">» ROBOT CATEGORY // 02</span>
                                         <h2>SECURITY &amp; LINK INTEGRITY</h2>
@@ -112,8 +115,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                  </div>
                                 </div>
                                 <div class="bb-horizontal-slide">
+                                  <div class="bb-horizontal-slide-inner">
                                     <div class="bb-horizontal-slide-copy">
                                         <span class="bb-horizontal-slide-kicker">» ROBOT CATEGORY // 03</span>
                                         <h2>DATA &amp; MEDIA UTILITIES</h2>
@@ -150,21 +155,27 @@
                                             </div>
                                         </div>
                                     </div>
+                                  </div>
                                 </div>
                             </div>
                         </section>
             <section id="screen-payment" class="screen-section" aria-label="Payment and secure gateway">
                 <div class="screen-content" id="cash-content"></div>
             </section>
-            <!-- 🎛️ CORE ACCESS TOKEN ACTIVATION INTERFACE -->
-            <div id="license-ingress" style="background: transparent; border: none; padding: 0; border-radius: 0; margin-bottom: 40px; font-family: monospace; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;">
+            <!-- 🎛️ CORE ACCESS TOKEN ACTIVATION INTERFACE (relocated to page 3 next to purchase) -->
+            <div id="license-ingress" style="background: transparent; border: none; padding: 0; border-radius: 0; margin-bottom: 40px; font-family: monospace; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px;">
                 <div>
-                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #ffffff;">» INGRESS KEY</span>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #ffffff;">» ALREADY HAVE A KEY? VERIFY ACCESS</span>
                 </div>
                 <div style="display: flex; gap: 12px; align-items: center;">
                     <input type="text" id="license-input" placeholder="BB-XXXX-XXXX" aria-label="Ingress key" style="border: none; border-bottom: 1px solid rgba(255, 255, 255, 0.1); background: transparent; border-radius: 0px; width: 140px; padding: 4px 0px; text-align: center; color: #ffffff; font-family: monospace; font-size: 13px; outline: none; text-transform: uppercase;">
                     <button onclick="verifyLicenseKey()" style="padding: 6px 16px; font-size: 10px; border-radius: 4px; font-weight: 600; background: #ffffff; color: #000000; text-transform: uppercase; border: none; font-family: monospace; cursor: pointer; transition: transform 0.1s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">VERIFY</button>
                 </div>
+            </div>
+            <!-- ⚡ HEADER LIVE STATUS BADGE — replaces the old license box in the hero top-right -->
+            <div id="header-live-badge" aria-hidden="true">
+                <span class="bb-live-dot"></span>
+                <span>12 APIS LIVE</span>
             </div>
             <div class="theme-list central-floating-dock" id="sidebar-categories"></div>
 
@@ -249,40 +260,37 @@
                 <div class="stripe-section">
                     <div class="bb-trust-row" aria-label="System assurance badges">
                         <div class="bb-trust-badge">
-                            <div class="bb-trust-title">🛡️ STATELESS BY DESIGN</div>
+                            <span class="bb-trust-icon">🛡️</span>
+                            <div class="bb-trust-title">STATELESS BY DESIGN</div>
                             <div class="bb-trust-copy">Requests are processed in-memory and are not written to a persistent database by these endpoints.</div>
                         </div>
                         <div class="bb-trust-badge">
-                            <div class="bb-trust-title">⚡ REAL, TESTED LOGIC</div>
+                            <span class="bb-trust-icon">⚡</span>
+                            <div class="bb-trust-title">REAL, TESTED LOGIC</div>
                             <div class="bb-trust-copy">Every endpoint runs actual parsing, hashing, or checksum logic — verified against real test inputs, not simulated responses.</div>
                         </div>
                         <div class="bb-trust-badge">
-                            <div class="bb-trust-title">🔒 SECURE STRIPE CHECKOUT</div>
+                            <span class="bb-trust-icon">🔒</span>
+                            <div class="bb-trust-title">SECURE STRIPE CHECKOUT</div>
                             <div class="bb-trust-copy">Payments are processed through Stripe. Your license key is generated and emailed automatically after a successful payment.</div>
                         </div>
                     </div>
-                    <section class="bb-editorial-showcase" aria-label="Infrastructure lifecycle manifesto">
-                        <div class="bb-editorial-manifesto">
-                            <span class="bb-editorial-kicker">SYSTEM MANIFESTO // STRUCTURAL CONTROL</span>
-                            <p>BUILT FOR HONESTY, NOT HYPE // Twelve endpoints, each doing exactly one real job, documented plainly.</p>
+                    <div class="bb-getting-started-strip" aria-label="Getting started in three steps">
+                        <div class="bb-getting-started-step">
+                            <span class="bb-getting-started-index">01</span>
+                            <span>Get your key</span>
                         </div>
-                        <div class="bb-editorial-flow" aria-label="Three-step infrastructure workflow">
-                            <span class="bb-editorial-flow-label">VOLATILE EXECUTION LIFECYCLE</span>
-                            <div class="bb-editorial-steps">
-                                <div class="bb-editorial-step">
-                                    <span>[ AUTHENTICATE // LINK LIFETIME KEY ]</span>
-                                </div>
-                                <span class="bb-editorial-connector" aria-hidden="true"></span>
-                                <div class="bb-editorial-step">
-                                    <span>[ EXECUTE // TRIGGER VOLATILE NODE ]</span>
-                                </div>
-                                <span class="bb-editorial-connector" aria-hidden="true"></span>
-                                <div class="bb-editorial-step">
-                                    <span>[ DELIVER // ABSORB SCRUBBED DATA ]</span>
-                                </div>
-                            </div>
+                        <span class="bb-getting-started-arrow" aria-hidden="true">→</span>
+                        <div class="bb-getting-started-step">
+                            <span class="bb-getting-started-index">02</span>
+                            <span>Call the API</span>
                         </div>
-                    </section>
+                        <span class="bb-getting-started-arrow" aria-hidden="true">→</span>
+                        <div class="bb-getting-started-step">
+                            <span class="bb-getting-started-index">03</span>
+                            <span>Get your result</span>
+                        </div>
+                    </div>
                     <div class="stripe-grid">
                         <div class="plan-box">
                             <div class="plan-info">
@@ -297,8 +305,8 @@
                             </div>
                             <div class="plan-action">
                                 <div class="plan-price-wrapper">
-                                    <span class="plan-price" id="price-solo-tag">$49</span>
-                                    <span class="plan-term">One-time payment • Lifetime</span>
+                                    <span class="plan-price" id="price-solo-tag">$12</span>
+                                    <span class="plan-term">Per month • Cancel anytime</span>
                                 </div>
                                 <button onclick="triggerCheckout('core')" class="buy-btn" style="text-decoration: none; display: inline-block; text-align: center; line-height: 50px; width: 100%; border: none; cursor: pointer;">Acquire</button>
                             </div>
@@ -318,11 +326,11 @@
                             </div>
                             <div class="plan-action">
                                 <div class="plan-price-wrapper">
-                                    <span class="plan-price" id="price-agency-tag">$149</span>
-                                    <span class="plan-term">One-time payment • Lifetime</span>
+                                    <span class="plan-price" id="price-agency-tag">$29</span>
+                                    <span class="plan-term">Per month • Cancel anytime</span>
                                 </div>
                                 <button onclick="triggerCheckout('labs')" class="buy-btn laser-btn" style="text-decoration: none; display: inline-block; text-align: center; line-height: 50px; width: 100%; border: none; cursor: pointer;">Deploy</button>
-                                <span class="labs-savings-badge" style="font-family: 'JetBrains Mono', monospace; font-size: 10px !important; letter-spacing: 0.05em !important; color: #ffffff !important; background: rgba(255, 255, 255, 0.04) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; padding: 4px 10px !important; border-radius: 4px !important; display: inline-block !important; margin-top: 12px !important;">[ Save $47 vs. buying 3 category licenses separately ]</span>
+                                <span class="labs-savings-badge" style="font-family: 'JetBrains Mono', monospace; font-size: 10px !important; letter-spacing: 0.05em !important; color: #ffffff !important; background: rgba(255, 255, 255, 0.04) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; padding: 4px 10px !important; border-radius: 4px !important; display: inline-block !important; margin-top: 12px !important;">[ Save $7/mo vs. buying 3 category licenses separately ]</span>
                             </div>
                         </div>
                     </div>
@@ -674,8 +682,8 @@
             const targetTag = document.getElementById('gateway-target-tag');
             if (targetTag) targetTag.textContent = robot.endpoint;
 
-            document.getElementById('price-solo-tag').textContent = "$49";
-            document.getElementById('price-agency-tag').textContent = "$149";
+            document.getElementById('price-solo-tag').textContent = "$12";
+            document.getElementById('price-agency-tag').textContent = "$29";
         }
 
    async function triggerCheckout(planType) {
@@ -737,6 +745,7 @@ function initializeApp() {
             const cash = document.getElementById('cash-content');
             const brand = document.querySelector('.sidebar-header');
             const ingress = document.getElementById('license-ingress');
+            const liveBadge = document.getElementById('header-live-badge');
             const categoryDock = document.getElementById('sidebar-categories');
             const robotSection = document.querySelector('.robot-display-section');
             const stripe = document.querySelector('.stripe-section');
@@ -750,13 +759,16 @@ function initializeApp() {
             const navLine = document.createElement('div');
             navLine.className = 'bb-header-navigation-line';
 
-            [brand, ingress].forEach(node => node && topLine.appendChild(node));
+            // Hero header keeps only the brand mark + a playful live-status badge —
+            // the license verification widget now lives on the payment page (page 3),
+            // right next to the pricing grid, where it actually makes sense.
+            [brand, liveBadge].forEach(node => node && topLine.appendChild(node));
             if (categoryDock) navLine.appendChild(categoryDock);
 
             hero.appendChild(topLine);
             hero.appendChild(navLine);
             if (robotSection) hero.appendChild(robotSection);
-            [stripe, ...drawers, footer].forEach(node => node && cash.appendChild(node));
+            [stripe, ingress, ...drawers, footer].forEach(node => node && cash.appendChild(node));
             container.classList.add('screens-composed');
             const aside = document.querySelector('aside');
             if (aside) aside.setAttribute('aria-hidden', 'true');
