@@ -3072,3 +3072,14 @@ html body main #screen-command #sidebar-categories {
     flex: 0 0 100% !important;
     max-width: 100% !important;
 }
+
+/* 🔒 CATEGORY // 01 (PRIVACY & PII PROTECTION) — right-side mockup removed for the
+   same reason; copy takes the full row. */
+#category-slide-pii .bb-horizontal-slide-mock {
+    display: none !important;
+}
+
+#category-slide-pii .bb-horizontal-slide-copy {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+}
