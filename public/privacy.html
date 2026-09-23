@@ -20,10 +20,10 @@
                 <p>Each of the 12 API endpoints processes the request payload you send it (a piece of text, a JSON object, a phone number, an image, a CSV file, a URL, etc.) in-memory, for the sole purpose of returning the transformed result — a masked log line, a verified checksum, a stripped image, a deduplicated CSV. We do not write the content of your request payloads to a database, log file, or backup.</p>
 
                 <h4>2. WHAT WE DO KEEP</h4>
-                <p>To operate the subscription and prevent abuse, we keep minimal operational data: your email address and license key (to authenticate requests and send support/billing communication), Stripe subscription and payment status (Stripe itself handles and stores your card details under its own privacy policy — we never see full card numbers), and basic request metadata (timestamp, endpoint called, response status) for rate-limiting and debugging, kept only as long as needed for that purpose.</p>
+                <p>To operate the subscription and prevent abuse, we keep minimal operational data: your email address and license key (to authenticate requests and send support/billing communication), Paddle subscription and payment status (Paddle itself handles and stores your card details as our Merchant of Record — we never see full card numbers), and basic request metadata (timestamp, endpoint called, response status) for rate-limiting and debugging, kept only as long as needed for that purpose.</p>
 
                 <h4>3. THIRD-PARTY PROCESSORS</h4>
-                <p>We use Stripe for payment processing and subscription billing, and Umami for privacy-respecting, cookie-free website analytics (page views only, no cross-site tracking). Neither processor receives the content of your API request payloads.</p>
+                <p>We use Paddle as our Merchant of Record for payment processing, subscription billing, and tax/VAT compliance, and Umami for privacy-respecting, cookie-free website analytics (page views only, no cross-site tracking). Neither processor receives the content of your API request payloads.</p>
 
                 <h4>4. NO SALE OF DATA</h4>
                 <p>We do not sell, rent, or share your data with advertisers or data brokers. We do not use the content you send to our endpoints to train models, build profiles, or for any purpose other than returning your API response.</p>

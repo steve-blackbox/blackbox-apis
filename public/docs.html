@@ -19,7 +19,7 @@
                 <h4>1. AUTHENTICATION</h4>
                 <p>Every request to a <code>/v1/*</code> endpoint must include your license key as a Bearer token in the <code>Authorization</code> header. Requests without a valid, active key are rejected with a <code>401</code> response.</p>
                 <pre>Authorization: Bearer BB-XXXX-XXXX</pre>
-                <p>Your key is generated automatically and emailed to you after a successful Stripe checkout. Keep it secret — do not commit it to a public repository or expose it in client-side code.</p>
+                <p>Your key is generated automatically and emailed to you after a successful Paddle checkout. Keep it secret — do not commit it to a public repository or expose it in client-side code.</p>
 
                 <h4>2. ENDPOINTS BY CATEGORY</h4>
                 <p><strong>Privacy &amp; PII Protection</strong></p>
@@ -45,7 +45,7 @@
                 </ul>
 
                 <h4>3. EXAMPLE REQUEST</h4>
-                <pre>curl -X POST https://blackbox.labs/v1/log_sanitizer \
+                <pre>curl -X POST https://blackbox-apis.com/v1/log_sanitizer \
   -H "Authorization: Bearer BB-XXXX-XXXX" \
   -H "Content-Type: application/json" \
   -d '{"text":"card 4111111111111111 user@mail.com"}'</pre>

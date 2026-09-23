@@ -10,6 +10,16 @@
     <!-- 📈 SUIVI DE TRAFIC UMAMI (checkpoints J+30/60/90 — voir utiles/ligne_directrice_strategie.md) -->
     <!-- Compte Umami Cloud actif — site "BlackBox Labs" / domaine blackbox-apis.com / région US -->
     <script defer src="https://cloud.umami.is/script.js" data-website-id="6a0c59fa-5ccf-4cef-b71d-0e77551f0f4e"></script>
+    <!-- 🅿️ PADDLE.JS — nécessaire pour ouvrir l'overlay de paiement Paddle après redirection
+         depuis /v1/checkout. Le "client-side token" est public par nature (à l'inverse
+         de la clé API serveur), donc son exposition ici est normale et sans risque.
+         ⚠️ MIGRATION VERS LE COMPTE LIVE : remplacer setEnvironment('sandbox') par 'production'
+         ET remplacer le token ci-dessous par le client-side token du compte Paddle live. -->
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script>
+        Paddle.Environment.set('sandbox');
+        Paddle.Initialize({ token: 'test_873b3ce6c56afd9f9c89d3385ef' });
+    </script>
 </head>
 <body>
 
@@ -433,12 +443,13 @@
                 </div>
             </section>
         </div>
-        <!-- ⚖️ MICRO-FOOTER DE COMPLIANCE MANDATAIRE STRIPE & MERCURY -->
+        <!-- ⚖️ MICRO-FOOTER DE COMPLIANCE MANDATAIRE PADDLE & MERCURY -->
 <footer style="border-top: 1px solid #182635; padding: 20px 0; margin-top: 40px; width: 100%; display: flex; justify-content: space-between; align-items: center; font-family: monospace; font-size: 11px; color: #4b5563; box-sizing: border-box; clear: both;">
     <div>© 2026 BlackBox Audio Labs LLC. All rights reserved.</div>
     <div>
         <a href="docs.html" style="color: #ffffff; text-decoration: none; margin-left: 20px;">API Documentation</a>
         <a href="terms.html" style="color: #ffffff; text-decoration: none; margin-left: 20px;">Terms of Service</a>
+        <a href="terms.html#refund-policy" style="color: #ffffff; text-decoration: none; margin-left: 20px;">Refund Policy</a>
         <a href="privacy.html" style="color: #ffffff; text-decoration: none; margin-left: 20px;">Privacy Policy</a>
     </div>
 </footer>
@@ -453,7 +464,7 @@
                 heading: "Strips PII from raw log text before it hits your logging pipeline.",
                 description: "Scans arbitrary text for credit card numbers, email addresses, and Bearer tokens, then masks them in place using real pattern matching.",
                 endpoint: "/v1/log_sanitizer",
-                curl: "curl -X POST https://blackbox.labs/v1/log_sanitizer -H 'Authorization: Bearer YOUR_KEY' -d '{\"text\":\"card 4111111111111111 user@mail.com\"}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/log_sanitizer -H 'Authorization: Bearer YOUR_KEY' -d '{\"text\":\"card 4111111111111111 user@mail.com\"}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Detects credit card numbers, emails, and Authorization/Bearer tokens inside any block of text and masks all but a few identifying characters.", benefits: ["Keeps raw PII out of your log storage and monitoring tools.", "Works on unstructured text, not just known JSON fields.", "No data is stored server-side — processed in-memory per request."] },
                     { title: "HOW TO INTEGRATE", body: "Send the raw text as JSON and receive the sanitized string back. Drop it in front of any logger, error tracker, or support ticket pipeline.", benefits: ["Single POST request, JSON in / JSON out.", "Typical response time under 50ms for normal log line sizes.", "Compatible with any backend language via plain HTTP."] }
@@ -466,7 +477,7 @@
                 heading: "Partially masks personal identifiers in structured payloads.",
                 description: "Masks card numbers and email addresses in JSON payloads while keeping enough of the original value for display purposes (e.g. **** **** **** 1111).",
                 endpoint: "/v1/pii_masker",
-                curl: "curl -X POST https://blackbox.labs/v1/pii_masker -H 'Authorization: Bearer YOUR_KEY' -d '{\"email\":\"jane@doe.com\",\"card\":\"4111111111111111\"}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/pii_masker -H 'Authorization: Bearer YOUR_KEY' -d '{\"email\":\"jane@doe.com\",\"card\":\"4111111111111111\"}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Applies partial masking rules to known PII fields (card numbers, emails) so you can display a reference to the user without exposing the full value.", benefits: ["Safe to show masked values in UI or support tooling.", "Consistent masking format across your stack.", "No external PII database lookups — pure transformation."] },
                     { title: "HOW TO INTEGRATE", body: "Send a JSON object with the fields to mask; receive the same object back with masked values in place.", benefits: ["Drop-in replacement before storing display copies.", "Works with existing JSON payload shapes.", "Deterministic output for the same input."] }
@@ -479,7 +490,7 @@
                 heading: "Normalizes phone numbers to E.164 format.",
                 description: "Parses loosely formatted phone numbers and outputs a consistent E.164 representation, rejecting inputs that can't be reliably normalized.",
                 endpoint: "/v1/phone_sanitizer",
-                curl: "curl -X POST https://blackbox.labs/v1/phone_sanitizer -H 'Authorization: Bearer YOUR_KEY' -d '{\"phone\":\"(555) 123-4567\",\"country\":\"US\"}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/phone_sanitizer -H 'Authorization: Bearer YOUR_KEY' -d '{\"phone\":\"(555) 123-4567\",\"country\":\"US\"}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Converts phone numbers written in inconsistent formats into a single canonical E.164 string, using country hints when provided.", benefits: ["Reduces duplicate contacts caused by formatting differences.", "Flags clearly invalid numbers instead of silently accepting them.", "No telecom carrier lookups — format-level validation only."] },
                     { title: "HOW TO INTEGRATE", body: "Send the raw phone string and an optional country code; receive the normalized E.164 value or a validation error.", benefits: ["Ideal as a signup-form validation step.", "Simple JSON in / JSON out contract.", "Consistent format for downstream SMS/CRM tools."] }
@@ -492,7 +503,7 @@
                 heading: "Masks the last octet or block of an IP address.",
                 description: "Anonymizes IPv4 and IPv6 addresses the same way analytics tools do, by zeroing out the last identifying segment.",
                 endpoint: "/v1/ip_anonymizer",
-                curl: "curl -X POST https://blackbox.labs/v1/ip_anonymizer -H 'Authorization: Bearer YOUR_KEY' -d '{\"ip\":\"203.0.113.42\"}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/ip_anonymizer -H 'Authorization: Bearer YOUR_KEY' -d '{\"ip\":\"203.0.113.42\"}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Detects IPv4 or IPv6 format and masks the final octet (IPv4) or final block (IPv6) while keeping the address usable for coarse geolocation.", benefits: ["Reduces the identifiability of stored IP addresses.", "Works for both IPv4 and IPv6 inputs.", "Simple, predictable masking rule you can document for compliance."] },
                     { title: "HOW TO INTEGRATE", body: "Send the raw IP string; receive the masked IP back.", benefits: ["Call it right before you persist request metadata.", "No dependency on external GeoIP services.", "Sub-millisecond processing time."] }
@@ -505,7 +516,7 @@
                 heading: "Flags likely automated traffic from request headers.",
                 description: "Inspects the User-Agent and common automation headers to flag requests that look like they come from headless browsers such as Puppeteer or Playwright.",
                 endpoint: "/v1/bot_detector",
-                curl: "curl -X POST https://blackbox.labs/v1/bot_detector -H 'Authorization: Bearer YOUR_KEY' -d '{\"userAgent\":\"...\",\"headers\":{...}}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/bot_detector -H 'Authorization: Bearer YOUR_KEY' -d '{\"userAgent\":\"...\",\"headers\":{...}}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Compares the incoming User-Agent and header set against known automation signatures (headless Chrome, Puppeteer, Playwright, common scraping libraries).", benefits: ["Gives you a signal to combine with rate-limiting or CAPTCHA logic.", "Not a silver bullet — documented as a heuristic signal, not a guarantee.", "Lightweight enough to run on every incoming request."] },
                     { title: "HOW TO INTEGRATE", body: "Forward the request's User-Agent and headers as JSON; receive a boolean flag plus the matched signature if any.", benefits: ["Use as a pre-filter before heavier bot-mitigation services.", "No third-party bot database dependency.", "Transparent about what it can and can't catch."] }
@@ -518,7 +529,7 @@
                 heading: "Validates crypto addresses with real checksum verification.",
                 description: "Verifies Bitcoin addresses using actual Base58Check (legacy) and Bech32/BIP-173 (SegWit) checksum algorithms. Ethereum and Solana addresses are validated for format only, clearly labeled as such.",
                 endpoint: "/v1/crypto_verify",
-                curl: "curl -X POST https://blackbox.labs/v1/crypto_verify -H 'Authorization: Bearer YOUR_KEY' -d '{\"address\":\"1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2\",\"network\":\"btc\"}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/crypto_verify -H 'Authorization: Bearer YOUR_KEY' -d '{\"address\":\"1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2\",\"network\":\"btc\"}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "For BTC addresses, runs a real checksum verification (Base58Check or Bech32) — a single altered character will fail validation. For ETH/SOL, checks format only and says so explicitly in the response.", benefits: ["Catches typos and corrupted BTC addresses before you send funds.", "Honest about the limits of format-only checks for ETH/SOL.", "No blockchain node calls — pure cryptographic validation, fast response."] },
                     { title: "HOW TO INTEGRATE", body: "Send the address string and target network; receive a valid/invalid result plus the verification method used.", benefits: ["Use before accepting a withdrawal address from a user.", "Response tells you exactly which check was applied.", "Works offline, no external RPC dependency."] }
@@ -531,7 +542,7 @@
                 heading: "Generates HMAC-SHA256 signed URLs with expiration.",
                 description: "Creates a tamper-evident signed URL for a resource path, with an expiration timestamp baked into the signature.",
                 endpoint: "/v1/link_signer",
-                curl: "curl -X POST https://blackbox.labs/v1/link_signer -H 'Authorization: Bearer YOUR_KEY' -d '{\"path\":\"/files/report.pdf\",\"expiresInSeconds\":3600}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/link_signer -H 'Authorization: Bearer YOUR_KEY' -d '{\"path\":\"/files/report.pdf\",\"expiresInSeconds\":3600}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Computes an HMAC-SHA256 signature over the resource path and expiration timestamp, returning a signed URL that can be validated later.", benefits: ["Prevents users from sharing links past their intended expiry.", "Signature can't be forged without your secret key.", "Standard HMAC — auditable and well understood."] },
                     { title: "HOW TO INTEGRATE", body: "Send the resource path and desired expiration; receive the full signed URL to hand out to your users.", benefits: ["Pairs directly with the Signed URL Validator endpoint.", "Works for downloads, temporary access links, or pre-signed API calls.", "No session state required on your end."] }
@@ -544,7 +555,7 @@
                 heading: "Verifies signed URLs in constant time.",
                 description: "Validates the HMAC signature and expiration of a signed URL using a constant-time comparison to avoid timing attacks.",
                 endpoint: "/v1/link_validator",
-                curl: "curl -X POST https://blackbox.labs/v1/link_validator -H 'Authorization: Bearer YOUR_KEY' -d '{\"url\":\"https://.../files/report.pdf?sig=...&exp=...\"}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/link_validator -H 'Authorization: Bearer YOUR_KEY' -d '{\"url\":\"https://.../files/report.pdf?sig=...&exp=...\"}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Recomputes the expected HMAC signature and compares it using crypto.timingSafeEqual, then checks the expiration timestamp.", benefits: ["Resistant to signature timing side-channel attacks.", "Rejects expired links even with a valid signature.", "Pairs with the Signed URL Generator for a complete flow."] },
                     { title: "HOW TO INTEGRATE", body: "Send the full URL (or its query parameters); receive a valid/invalid result with a reason if invalid.", benefits: ["Drop it in front of any download or access endpoint.", "Clear error reasons: bad signature vs. expired.", "No shared session state needed between signer and validator."] }
@@ -557,7 +568,7 @@
                 heading: "Parses and deduplicates CSV data for real.",
                 description: "Uses a real CSV parser (handling quoted fields, embedded commas and newlines) and removes duplicate rows, either by full-row match or by chosen key columns.",
                 endpoint: "/v1/csv_dedupe",
-                curl: "curl -X POST https://blackbox.labs/v1/csv_dedupe -H 'Authorization: Bearer YOUR_KEY' -d '{\"csv\":\"id,email\\n1,a@x.com\\n1,a@x.com\",\"keyColumns\":[\"id\"]}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/csv_dedupe -H 'Authorization: Bearer YOUR_KEY' -d '{\"csv\":\"id,email\\n1,a@x.com\\n1,a@x.com\",\"keyColumns\":[\"id\"]}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Parses the CSV respecting RFC 4180 quoting rules, then removes duplicate rows based on the full row or a set of key columns you specify.", benefits: ["Correctly handles commas and newlines inside quoted fields.", "Flexible dedupe key — full row or specific columns.", "Returns both the cleaned CSV and a count of removed duplicates."] },
                     { title: "HOW TO INTEGRATE", body: "Send raw CSV text and optional key columns; receive the deduplicated CSV plus stats.", benefits: ["Useful for cleaning marketing list exports before import.", "No file upload needed — plain text in the request body.", "Fast enough for typical export-sized files."] }
@@ -570,7 +581,7 @@
                 heading: "Removes EXIF and metadata segments at the binary level.",
                 description: "Parses the actual JPEG (APP1/COM markers) or PNG (tEXt/iTXt/zTXt/eXIf/tIME chunks) structure and removes metadata segments, leaving a valid image with no re-encoding.",
                 endpoint: "/v1/exif_cloak",
-                curl: "curl -X POST https://blackbox.labs/v1/exif_cloak -H 'Authorization: Bearer YOUR_KEY' -d '{\"image_base64\":\"...\"}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/exif_cloak -H 'Authorization: Bearer YOUR_KEY' -d '{\"image_base64\":\"...\"}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Reads the binary structure of the uploaded JPEG or PNG, identifies metadata segments/chunks, and strips them without re-compressing the image.", benefits: ["Removes GPS location and camera metadata before publishing user photos.", "No lossy re-encoding — the visible image is unchanged.", "Reports exactly which segments were removed."] },
                     { title: "HOW TO INTEGRATE", body: "Send the image as base64; receive the cleaned image as base64 plus a list of removed segments.", benefits: ["Drop it into any upload pipeline before storage.", "Works for both JPEG and PNG.", "Output stays a valid, openable image file."] }
@@ -583,7 +594,7 @@
                 heading: "Converts timestamps between timezones using the Intl API.",
                 description: "Converts a given date/time between IANA timezones using the native Intl.DateTimeFormat API — no hardcoded offset tables.",
                 endpoint: "/v1/timezone_converter",
-                curl: "curl -X POST https://blackbox.labs/v1/timezone_converter -H 'Authorization: Bearer YOUR_KEY' -d '{\"datetime\":\"2026-03-15T10:00:00\",\"from\":\"Europe/Paris\",\"to\":\"America/New_York\"}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/timezone_converter -H 'Authorization: Bearer YOUR_KEY' -d '{\"datetime\":\"2026-03-15T10:00:00\",\"from\":\"Europe/Paris\",\"to\":\"America/New_York\"}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Uses the Intl API to correctly account for daylight saving time changes and timezone rules, rather than fixed offset math.", benefits: ["Correct across DST transitions, unlike naive offset math.", "Supports any IANA timezone identifier.", "Deterministic, no external timezone database dependency to maintain."] },
                     { title: "HOW TO INTEGRATE", body: "Send the datetime and source/target IANA timezones; receive the converted timestamp.", benefits: ["Useful for scheduling features across regions.", "Simple JSON in / JSON out contract.", "No client-side timezone library needed."] }
@@ -596,7 +607,7 @@
                 heading: "Performs a real live HTTP check against a target URL.",
                 description: "Issues an actual HTTP request to the target URL and reports status (ONLINE / DEGRADED / OFFLINE) along with measured response latency.",
                 endpoint: "/v1/uptime_check",
-                curl: "curl -X POST https://blackbox.labs/v1/uptime_check -H 'Authorization: Bearer YOUR_KEY' -d '{\"url\":\"https://example.com\"}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/uptime_check -H 'Authorization: Bearer YOUR_KEY' -d '{\"url\":\"https://example.com\"}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Fetches the target URL live, measures the round-trip time, and classifies the result based on status code and latency thresholds.", benefits: ["Real network call — not a simulated or cached status.", "Latency figure comes from the actual request, not an estimate.", "Useful as a lightweight external monitor for a single endpoint."] },
                     { title: "HOW TO INTEGRATE", body: "Send the target URL; receive status, HTTP code, and latency in milliseconds.", benefits: ["Pair with a cron job or scheduler for periodic checks.", "No agent installation needed on the monitored server.", "Simple enough to wire into a Slack/webhook alert."] }
@@ -694,7 +705,7 @@
         .then(res => res.json())
         .then(data => {
             if (data.url) {
-                window.location.href = data.url; // 🚀 Stripe Checkout redirect!
+                window.location.href = data.url; // 🚀 Paddle Checkout redirect!
             } else {
                 console.error("Backend error: No URL received in response");
                 alert("Cart configuration error.");

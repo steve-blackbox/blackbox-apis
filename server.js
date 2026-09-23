@@ -3,124 +3,152 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const crypto = require('crypto');
-const Stripe = require('stripe');
+const { Paddle, Environment, EventName } = require('@paddle/paddle-node-sdk');
 
 // 📨 EXPÉDITEUR D'E-MAILS RESEND INITIALISÉ
 const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // 📊 SUIVI DE TRACTION (ventes persistantes + checkpoints J+30/60/90)
-const { recordSale, getStats, saveLicense, isValidLicense, getAllActiveLicenseKeys, deactivateLicensesBySubscription } = require('./lib/db');
+const { recordSale, getStats, saveLicense, isValidLicense, getAllActiveLicenseKeys, deactivateLicensesByPaddleSubscription } = require('./lib/db');
 
-// 🔑 ENCAPSULATION SECURISEE STRIPE (Variable d'environnement de soute)
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+// 🅿️ ENCAPSULATION SECURISEE PADDLE (processeur de paiement unique — Stripe retiré)
+// PADDLE_ENV vaut 'sandbox' pendant les tests, puis 'production' une fois le compte
+// Paddle basculé en mode live (voir .env). Le client n'est initialisé que si la clé
+// est présente, pour ne jamais planter le serveur si la configuration est incomplète.
+const paddleClient = process.env.PADDLE_API_KEY
+    ? new Paddle(process.env.PADDLE_API_KEY, {
+        environment: process.env.PADDLE_ENV === 'production' ? Environment.production : Environment.sandbox,
+    })
+    : null;
 
 const app = express();
 
 // 🛡️ MIDDLEWARES STRUCTURAUX DE SOUTE
 app.use(cors({ origin: '*' }));
 
-// 📡 1. ROUTE DU WEBHOOK STRIPE (PLINDÉE AVANT EXPRESS.JSON)
-app.post('/v1/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
-    const sig = req.headers['stripe-signature'];
-    let event;
+// 📨 Envoie l'e-mail d'activation de licence
+async function sendLicenseActivationEmail({ email, name, licenseKey }) {
+    await resend.emails.send({
+        from: 'BlackBox Audio Labs <activation@blackbox-apis.com>',
+        to: [email],
+        subject: '🔥 Activation de votre licence BlackBox Audio Labs',
+        html: `
+            <div style="font-family: sans-serif; padding: 20px; background: #000; color: #fff; border-radius: 8px;">
+                <h2 style="color: #00ffcc;">Félicitations ${name} !</h2>
+                <p>Votre paiement a été sécurisé avec succès. Votre réacteur d'automatisation est prêt.</p>
+                <div style="background: #111; padding: 15px; border-left: 4px solid #00ffcc; margin: 20px 0; font-family: monospace; font-size: 16px; letter-spacing: 1px;">
+                    <strong>VOTRE CLÉ DE LICENCE :</strong> ${licenseKey}
+                </div>
+                <p style="color: #888; font-size: 12px;">LLC BlackBox Audio Labs — Wyoming, USA</p>
+            </div>
+        `
+    });
+}
+
+// 📡 1. ROUTE DU WEBHOOK PADDLE (PLINDÉE AVANT EXPRESS.JSON)
+// Le corps doit rester "brut" (non parsé par express.json) pour que la vérification de
+// signature Paddle (en-tête "paddle-signature") soit valide.
+app.post('/v1/webhook/paddle', express.raw({ type: 'application/json' }), async (req, res) => {
+    if (!paddleClient) {
+        console.error('❌ Webhook Paddle reçu mais PADDLE_API_KEY absente côté serveur.');
+        return res.status(503).send('Paddle non configuré côté serveur.');
+    }
+
+    const signature = req.headers['paddle-signature'];
+    let paddleEvent;
 
     try {
-        // Validation forensique du signal Stripe avec ton secret Render
-        event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+        // Validation forensique du signal Paddle avec le secret de la destination de
+        // notification (voir PADDLE_WEBHOOK_SECRET dans .env / Render).
+        paddleEvent = await paddleClient.webhooks.unmarshal(req.body.toString(), process.env.PADDLE_WEBHOOK_SECRET, signature);
     } catch (err) {
-        console.error(`❌ Erreur Webhook Signature: ${err.message}`);
+        console.error(`❌ Erreur Webhook Paddle Signature: ${err.message}`);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // 🟢 CASH SÉCURISÉ : L'achat est validé sur Stripe Checkout (abonnement mensuel récurrent)
-    if (event.type === 'checkout.session.completed') {
-        const session = event.data.object;
-        const customerEmail = session.customer_details.email;
-        const customerName = session.customer_details.name || 'Client BlackBox';
-        
-        // Extraction du plan acheté (core, labs, etc.) depuis les metadata passées au checkout
-        const purchasedPlan = session.metadata?.plan || 'labs';
-        const stripeSubscriptionId = session.subscription || null;
-        const stripeCustomerId = session.customer || null;
+    // 🟢 CASH SÉCURISÉ : la transaction est validée par Paddle (abonnement mensuel récurrent)
+    if (paddleEvent.eventType === EventName.TransactionCompleted) {
+        const transaction = paddleEvent.data;
+        const purchasedPlan = transaction.customData?.plan || 'labs';
+
+        // Le nom/e-mail du client n'est pas inclus directement dans la notification de
+        // transaction : on va le chercher via l'API Customers avec le customerId fourni.
+        let customerEmail = null;
+        let customerName = 'Client BlackBox';
+        try {
+            if (transaction.customerId) {
+                const customer = await paddleClient.customers.get(transaction.customerId);
+                customerEmail = customer.email;
+                customerName = customer.name || customerName;
+            }
+        } catch (customerError) {
+            console.error('❌ Échec récupération du client Paddle:', customerError);
+        }
+
+        if (!customerEmail) {
+            console.error(`❌ Transaction Paddle ${transaction.id} complétée mais e-mail client introuvable — licence NON générée.`);
+            return res.json({ received: true });
+        }
 
         // 🔑 GÉNÉRATION DE LA CLÉ DE LICENCE EXCLUSIVE BLACKBOX
         const uniqueId = crypto.randomBytes(4).toString('hex').toUpperCase();
         const licenseKey = `BB-${purchasedPlan.toUpperCase()}-CORE-${uniqueId}`;
 
-        // 💾 Sauvegarde volatile en mémoire (cache rapide pour la requête suivante)
         if (global.activeLicenseKeys) {
             global.activeLicenseKeys.add(licenseKey);
         }
 
-        // 🔒 Sauvegarde PERSISTANTE en base (survit aux redémarrages/redéploiements Render)
-        // On garde l'ID de l'abonnement Stripe pour pouvoir couper l'accès si le client
-        // annule ou si un paiement mensuel échoue (voir customer.subscription.deleted /
-        // invoice.payment_failed plus bas).
         try {
-            saveLicense({ licenseKey, email: customerEmail, plan: purchasedPlan, stripeSubscriptionId, stripeCustomerId });
+            saveLicense({
+                licenseKey,
+                email: customerEmail,
+                plan: purchasedPlan,
+                paddleSubscriptionId: transaction.subscriptionId,
+                paddleCustomerId: transaction.customerId,
+            });
         } catch (licenseError) {
-            console.error('❌ Échec enregistrement persistant de la licence:', licenseError);
+            console.error('❌ Échec enregistrement persistant de la licence (Paddle):', licenseError);
         }
 
-        // 📊 Enregistrement persistant de la vente (base du tableau de bord de traction)
         try {
             recordSale({
                 email: customerEmail,
                 plan: purchasedPlan,
-                amountCents: session.amount_total || 0,
-                currency: session.currency || 'usd',
+                amountCents: parseInt(transaction.details?.totals?.total || '0', 10),
+                currency: (transaction.currencyCode || 'usd').toLowerCase(),
                 licenseKey,
             });
         } catch (dbError) {
-            console.error('❌ Échec enregistrement vente en base de traction:', dbError);
+            console.error('❌ Échec enregistrement vente en base de traction (Paddle):', dbError);
         }
 
-        console.log(`🚀 Paiement Validé pour ${customerEmail}! Licence Générée: ${licenseKey}`);
+        console.log(`🚀 [PADDLE] Paiement Validé pour ${customerEmail}! Licence Générée: ${licenseKey}`);
 
         try {
-            // 📨 EXPÉDITION INSTANTANÉE PAR RESEND
-            await resend.emails.send({
-                from: 'BlackBox Audio Labs <activation@blackbox-apis.com>',
-                to: [customerEmail],
-                subject: '🔥 Activation de votre licence BlackBox Audio Labs',
-                html: `
-                    <div style="font-family: sans-serif; padding: 20px; background: #000; color: #fff; border-radius: 8px;">
-                        <h2 style="color: #00ffcc;">Félicitations ${customerName} !</h2>
-                        <p>Votre paiement a été sécurisé avec succès. Votre réacteur d'automatisation est prêt.</p>
-                        <div style="background: #111; padding: 15px; border-left: 4px solid #00ffcc; margin: 20px 0; font-family: monospace; font-size: 16px; letter-spacing: 1px;">
-                            <strong>VOTRE CLÉ DE LICENCE :</strong> ${licenseKey}
-                        </div>
-                        <p style="color: #888; font-size: 12px;">LLC BlackBox Audio Labs — Wyoming, USA</p>
-                    </div>
-                `
-            });
+            await sendLicenseActivationEmail({ email: customerEmail, name: customerName, licenseKey });
             console.log(`📧 E-mail de licence envoyé avec succès à ${customerEmail}`);
         } catch (emailError) {
-            console.error(`❌ Échec de l'envoi de l'e-mail Resend:`, emailError);
+            console.error(`❌ Échec de l'envoi de l'e-mail Resend (Paddle):`, emailError);
         }
     }
 
-    // 🔴 ANNULATION D'ABONNEMENT : le client résilie (ou est résilié après échecs de paiement
-    // répétés) → on coupe l'accès immédiatement. Empêche un client annulé de garder un accès
-    // à vie, ce qui rendrait le modèle mensuel non viable.
-    if (event.type === 'customer.subscription.deleted') {
-        const subscription = event.data.object;
-        const revoked = deactivateLicensesBySubscription(subscription.id);
+    // 🔴 ANNULATION D'ABONNEMENT PADDLE : coupe l'accès immédiatement (évite un accès
+    // à vie après résiliation).
+    if (paddleEvent.eventType === EventName.SubscriptionCanceled) {
+        const subscription = paddleEvent.data;
+        const revoked = deactivateLicensesByPaddleSubscription(subscription.id);
         if (revoked > 0 && global.activeLicenseKeys) {
-            // Le cache mémoire ne connaît que les clés, pas les subscription_id : on force
-            // une recharge complète depuis la base pour refléter la désactivation.
             global.activeLicenseKeys = new Set(['BB-ADMIN-CORE-99', ...getAllActiveLicenseKeys()]);
         }
-        console.log(`🚫 Abonnement ${subscription.id} annulé — ${revoked} licence(s) désactivée(s).`);
+        console.log(`🚫 [PADDLE] Abonnement ${subscription.id} annulé — ${revoked} licence(s) désactivée(s).`);
     }
 
-    // 🟠 ÉCHEC DE PAIEMENT MENSUEL : Stripe retentera automatiquement selon vos règles de
-    // relance ; si l'échec est final, Stripe enverra ensuite customer.subscription.deleted.
-    // On journalise ici pour visibilité, sans couper l'accès prématurément sur un simple échec.
-    if (event.type === 'invoice.payment_failed') {
-        const invoice = event.data.object;
-        console.log(`⚠️ Échec de paiement mensuel pour l'abonnement ${invoice.subscription || 'inconnu'}.`);
+    // 🟠 ÉCHEC/RETARD DE PAIEMENT MENSUEL PADDLE : journalisation seule, sans couper l'accès
+    // immédiatement (Paddle retente automatiquement avant d'envoyer subscription.canceled).
+    if (paddleEvent.eventType === EventName.SubscriptionPastDue) {
+        const subscription = paddleEvent.data;
+        console.log(`⚠️ [PADDLE] Abonnement ${subscription.id} en retard de paiement.`);
     }
 
     res.json({ received: true });
@@ -151,48 +179,44 @@ app.post('/api/verify-license', (req, res) => {
 });
 
 app.post('/v1/checkout', async (req, res) => {
+    if (!paddleClient) {
+        return res.status(503).json({ error: 'Paddle non configuré côté serveur (PADDLE_API_KEY manquante).' });
+    }
+
     try {
         const { plan, endpoint_target } = req.body;
-        
+
         let targetPriceId = '';
         const planType = plan ? plan.toLowerCase().trim() : '';
 
-        // Dictionnaire hermétique connecté à tes deux produits Stripe RÉCURRENTS MENSUELS
-        // ⚠️ REMPLACE ces deux price_id par ceux de tes nouveaux prix Stripe "Recurring / Monthly"
-        // (12$/mois Solo et 29$/mois All-Access) — voir dashboard.stripe.com > Produits.
         if (planType === 'core' || planType === 'solo' || planType === 'matrix' || planType === 'single') {
-    targetPriceId = process.env.STRIPE_PRICE_SOLO_MONTHLY || 'price_SOLO_MONTHLY_A_REMPLACER'; // 🟢 SOLO — 12$/mois
-} else if (planType === 'labs' || planType === 'premium' || planType === 'allaccess' || planType === 'all-access' || planType === 'adblock_bypass') {
-    targetPriceId = process.env.STRIPE_PRICE_ALLACCESS_MONTHLY || 'price_ALLACCESS_MONTHLY_A_REMPLACER'; // 🔵 ALL-ACCESS — 29$/mois
-} else {
-    // 🟢 SÉCURITÉ UNIVERSELLE DE SECOURS : Si le mot-clé arrive vide, altéré ou non reconnu
-    // par les conditions précédentes, on force le forfait All-Access par défaut.
-    console.log("👉 Alerte soute : planType inconnu ou manquant. Redirection forcé sur All Access. Input reçu :", planType);
-    targetPriceId = process.env.STRIPE_PRICE_ALLACCESS_MONTHLY || 'price_ALLACCESS_MONTHLY_A_REMPLACER';
-}
+            targetPriceId = process.env.PADDLE_PRICE_SOLO_MONTHLY; // 🟢 SOLO — 12$/mois
+        } else if (planType === 'labs' || planType === 'premium' || planType === 'allaccess' || planType === 'all-access' || planType === 'adblock_bypass') {
+            targetPriceId = process.env.PADDLE_PRICE_ALLACCESS_MONTHLY; // 🔵 ALL-ACCESS — 29$/mois
+        } else {
+            console.log("👉 Alerte soute : planType inconnu ou manquant (Paddle). Redirection forcé sur All Access. Input reçu :", planType);
+            targetPriceId = process.env.PADDLE_PRICE_ALLACCESS_MONTHLY;
+        }
 
-        // Création de la session sécurisée en ABONNEMENT MENSUEL RÉCURRENT (plus de paiement unique)
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [
-                {
-                    price: targetPriceId,
-                    quantity: 1,
-                },
-            ],
-            mode: 'subscription', // Abonnement mensuel récurrent — facturé chaque mois jusqu'à résiliation
-            success_url: `${req.headers.origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${req.headers.origin}/cancel.html`,
-            metadata: {
+        if (!targetPriceId) {
+            console.error('❌ Aucun PADDLE_PRICE_* configuré côté serveur pour le plan demandé:', planType);
+            return res.status(500).json({ error: 'Configuration de prix Paddle manquante côté serveur.' });
+        }
+
+        // Création de la transaction Paddle : Paddle renvoie une URL de paiement (checkout.url)
+        // vers laquelle on redirige le client (ouverture de l'overlay Paddle.js côté front).
+        const transaction = await paddleClient.transactions.create({
+            items: [{ priceId: targetPriceId, quantity: 1 }],
+            customData: {
                 plan: planType || 'labs',
-                endpoint_target: endpoint_target || 'none'
-            }
+                endpoint_target: endpoint_target || 'none',
+            },
         });
 
-        res.json({ url: session.url });
+        res.json({ url: transaction.checkout?.url || null });
 
     } catch (error) {
-        console.error('Erreur forensique lors de la création du Checkout:', error);
+        console.error('Erreur forensique lors de la création du Checkout Paddle:', error);
         res.status(500).json({ error: 'Erreur interne du serveur de soute' });
     }
 });
@@ -202,7 +226,7 @@ app.post('/v1/checkout', async (req, res) => {
 app.get('/docs', (req, res) => res.sendFile(path.join(__dirname, 'public', 'docs.html')));
 app.get('/terms.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'terms.html')));
 app.get('/privacy.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'privacy.html')));
-// 🔄 REDIRECTION DE SECOURS STRIPE : RENVOIE DIRECTEMENT SUR L'ACCUEIL EN CAS D'ANNULATION
+// 🔄 REDIRECTION DE SECOURS : RENVOIE DIRECTEMENT SUR L'ACCUEIL EN CAS D'ANNULATION
 app.get('/cancel.html', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 // 🔑 MIDDLEWARE DE LICENCE : vérifie la clé fournie via l'en-tête Authorization: Bearer <clé>

@@ -12,12 +12,12 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@paddle/paddle-node-sdk": "^3.10.0",
     "better-sqlite3": "^13.0.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.19.2",
     "path": "^0.12.7",
-    "resend": "^3.2.0",
-    "stripe": "^15.12.0"
+    "resend": "^3.2.0"
   }
 }
