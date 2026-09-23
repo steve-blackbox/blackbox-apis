@@ -18,7 +18,17 @@
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
     <script>
         Paddle.Environment.set('sandbox');
-        Paddle.Initialize({ token: 'test_873b3ce6c56afd9f9c89d3385ef' });
+        Paddle.Initialize({
+            token: 'test_873b3ce6c56afd9f9c89d3385ef',
+            checkout: {
+                settings: {
+                    // 🔁 Redirection après paiement réussi : sans ce réglage, Paddle affiche
+                    // juste un écran générique dans l'overlay et le client reste bloqué sur
+                    // cette page sans confirmation claire de la suite (voir merci.html).
+                    successUrl: window.location.origin + '/merci.html'
+                }
+            }
+        });
     </script>
 </head>
 <body>
@@ -365,6 +375,12 @@
                                     <span class="bb-pricing-price" id="price-solo-tag">$12</span>
                                     <span class="bb-pricing-term">Per month • Cancel anytime</span>
                                 </div>
+                                <label for="solo-category-select" style="display:block; font-size:11px; color:#64748b; font-family:monospace; margin-bottom:6px;">CHOOSE YOUR CATEGORY:</label>
+                                <select id="solo-category-select" style="width:100%; background:#000; border:1px solid #14281a; color:#fff; font-family:monospace; font-size:13px; padding:10px; border-radius:4px; margin-bottom:12px; box-sizing:border-box;">
+                                    <option value="Privacy &amp; PII Protection">Privacy &amp; PII Protection</option>
+                                    <option value="Security &amp; Link Integrity">Security &amp; Link Integrity</option>
+                                    <option value="Data &amp; Media Utilities">Data &amp; Media Utilities</option>
+                                </select>
                                 <button onclick="triggerCheckout('core')" class="buy-btn bb-pricing-btn">Get API Key</button>
                             </div>
                         </div>
@@ -642,13 +658,23 @@
    async function triggerCheckout(planType) {
     try {
         let cleanPlantType = String(planType || '').toLowerCase().trim();
-        
+
+        // 🗂️ Pour SOLO CORE, on lit la catégorie choisie dans le menu déroulant de la
+        // carte de prix — le serveur en a besoin pour restreindre l'accès à cette
+        // seule catégorie (voir requireLicense dans server.js).
+        let selectedCategory = null;
+        if (cleanPlantType === 'core') {
+            const categorySelect = document.getElementById('solo-category-select');
+            selectedCategory = categorySelect ? categorySelect.value : null;
+        }
+
         // 📡 DYNAMIC API TRIGGER WITHOUT SYNTAX ISSUES
         fetch('/v1/checkout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 plan: cleanPlantType, 
+                category: selectedCategory,
                 endpoint_target: "robot" 
              })
           })   
