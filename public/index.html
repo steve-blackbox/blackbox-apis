@@ -348,95 +348,44 @@
                     </section>
                 </div>
                 <div class="stripe-section">
-                    <div class="bb-usecase-row" aria-label="Concrete use cases for each API category">
-                        <div class="bb-usecase-card">
-                            <span class="bb-usecase-accent-line"></span>
-                            <h3 class="bb-usecase-title">Privacy &amp; PII Protection</h3>
-                            <p class="bb-usecase-scenario">You're building a signup form or a support ticket pipeline and don't want raw emails or card numbers sitting in your logs.</p>
-                            <div class="bb-usecase-example">
-                                <code>"card 4111111111111111 user@mail.com"</code>
-                                <span class="bb-usecase-arrow">→</span>
-                                <code class="bb-usecase-result">"card ****1111 u***@mail.com"</code>
+                    <div class="bb-pricing-grid">
+                        <div class="bb-pricing-card bento-card">
+                            <div class="bb-pricing-card-header">
+                                <h3 class="bb-pricing-name">SOLO CORE</h3>
+                                <span class="bb-pricing-audience">// Perfect for independent developers, consultants &amp; micro-projects</span>
                             </div>
-                            <div class="bb-usecase-endpoint">via <code>log_sanitizer</code> / <code>pii_masker</code></div>
-                        </div>
-                        <div class="bb-usecase-card">
-                            <span class="bb-usecase-accent-line"></span>
-                            <h3 class="bb-usecase-title">Security &amp; Link Integrity</h3>
-                            <p class="bb-usecase-scenario">You're generating temporary download links or accepting crypto addresses and need real, not superficial, validation.</p>
-                            <div class="bb-usecase-example">
-                                <code>"/files/report.pdf", expiresIn: 3600</code>
-                                <span class="bb-usecase-arrow">→</span>
-                                <code class="bb-usecase-result">"...report.pdf?sig=8f2a...&amp;exp=..."</code>
-                            </div>
-                            <div class="bb-usecase-endpoint">via <code>link_signer</code> / <code>crypto_verify</code></div>
-                        </div>
-                        <div class="bb-usecase-card">
-                            <span class="bb-usecase-accent-line"></span>
-                            <h3 class="bb-usecase-title">Data &amp; Media Utilities</h3>
-                            <p class="bb-usecase-scenario">Your app accepts photo uploads or CSV exports and you need to clean them before storing or forwarding them.</p>
-                            <div class="bb-usecase-example">
-                                <code>photo.jpg (GPS + device EXIF data)</code>
-                                <span class="bb-usecase-arrow">→</span>
-                                <code class="bb-usecase-result">photo.jpg (metadata stripped)</code>
-                            </div>
-                            <div class="bb-usecase-endpoint">via <code>exif_cloak</code> / <code>csv_dedupe</code></div>
-                        </div>
-                    </div>
-                    <div class="bb-getting-started-strip" aria-label="Getting started in three steps">
-                        <div class="bb-getting-started-step">
-                            <span class="bb-getting-started-index">01</span>
-                            <span>Get your key</span>
-                        </div>
-                        <span class="bb-getting-started-arrow" aria-hidden="true">→</span>
-                        <div class="bb-getting-started-step">
-                            <span class="bb-getting-started-index">02</span>
-                            <span>Call the API</span>
-                        </div>
-                        <span class="bb-getting-started-arrow" aria-hidden="true">→</span>
-                        <div class="bb-getting-started-step">
-                            <span class="bb-getting-started-index">03</span>
-                            <span>Get your result</span>
-                        </div>
-                    </div>
-                    <div class="stripe-grid">
-                        <div class="plan-box">
-                            <div class="plan-info">
-                                <span class="plan-name">SOLO CORE</span>
-                                <span class="plan-desc">1 Category (4 robots) • Unlimited Requests • Direct API Access</span>
-                                <span class="plan-target-audience">// Perfect for independent developers, consultants &amp; micro-projects</span>
-                                <ul style="list-style: none; margin: 14px 0 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-family: 'JetBrains Mono', monospace;">
-                                    <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» Access to 1 category of your choice (4 robots)</li>
-                                    <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» Full API documentation &amp; curl examples</li>
-                                    <li style="font-size: 11px; color: #64748b; line-height: 1.5;">» No request limit while your subscription is active</li>
-                                </ul>
-                            </div>
-                            <div class="plan-action">
-                                <div class="plan-price-wrapper">
-                                    <span class="plan-price" id="price-solo-tag">$12</span>
-                                    <span class="plan-term">Per month • Cancel anytime</span>
+                            <p class="bb-pricing-desc">1 Category (4 robots) • Unlimited Requests • Direct API Access</p>
+                            <ul class="bb-pricing-features">
+                                <li>» Access to 1 category of your choice (4 robots)</li>
+                                <li>» Full API documentation &amp; curl examples</li>
+                                <li>» No request limit while your subscription is active</li>
+                            </ul>
+                            <div class="bb-pricing-action">
+                                <div class="bb-pricing-price-wrapper">
+                                    <span class="bb-pricing-price" id="price-solo-tag">$12</span>
+                                    <span class="bb-pricing-term">Per month • Cancel anytime</span>
                                 </div>
-                                <button onclick="triggerCheckout('core')" class="buy-btn" style="text-decoration: none; display: inline-block; text-align: center; line-height: 50px; width: 100%; border: none; cursor: pointer;">Acquire</button>
+                                <button onclick="triggerCheckout('core')" class="buy-btn bb-pricing-btn">Acquire</button>
                             </div>
                         </div>
-                        <div class="plan-box">
-                            <div class="plan-info">
-                                <span class="plan-name">LABS ALL-ACCESS</span>
-                                <span class="plan-desc">Unlock all 3 categories and all 12 robots with a single license key, no per-category restriction.</span>
-                                <span class="plan-target-audience">// Perfect for web agencies, growth hackers &amp; multi-client setups</span>
-                                <ul style="list-style: none; margin: 14px 0 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-family: 'JetBrains Mono', monospace;">
-                                    <li style="font-size: 11px; color: #ffffff; font-weight: 700; line-height: 1.5;">» Access to all 3 categories (12 robots total)</li>
-                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» Full API documentation &amp; curl examples</li>
-                                    <li style="font-size: 11px; color: #ffffff; line-height: 1.5;">» No request limit while your subscription is active</li>
-                                </ul>
+                        <div class="bb-pricing-card bento-card bb-pricing-card--featured">
+                            <div class="bb-pricing-card-header">
+                                <h3 class="bb-pricing-name">LABS ALL-ACCESS</h3>
+                                <span class="bb-pricing-audience">// Perfect for web agencies, growth hackers &amp; multi-client setups</span>
                             </div>
-                            <div class="plan-action">
-                                <div class="plan-price-wrapper">
-                                    <span class="plan-price" id="price-agency-tag">$29</span>
-                                    <span class="plan-term">Per month • Cancel anytime</span>
+                            <p class="bb-pricing-desc">Unlock all 3 categories and all 12 robots with a single license key, no per-category restriction.</p>
+                            <ul class="bb-pricing-features bb-pricing-features--highlight">
+                                <li>» Access to all 3 categories (12 robots total)</li>
+                                <li>» Full API documentation &amp; curl examples</li>
+                                <li>» No request limit while your subscription is active</li>
+                            </ul>
+                            <div class="bb-pricing-action">
+                                <div class="bb-pricing-price-wrapper">
+                                    <span class="bb-pricing-price" id="price-agency-tag">$29</span>
+                                    <span class="bb-pricing-term">Per month • Cancel anytime</span>
                                 </div>
-                                <button onclick="triggerCheckout('labs')" class="buy-btn laser-btn" style="text-decoration: none; display: inline-block; text-align: center; line-height: 50px; width: 100%; border: none; cursor: pointer;">Deploy</button>
-                                <span class="labs-savings-badge" style="font-family: 'JetBrains Mono', monospace; font-size: 10px !important; letter-spacing: 0.05em !important; color: #ffffff !important; background: rgba(255, 255, 255, 0.04) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; padding: 4px 10px !important; border-radius: 4px !important; display: inline-block !important; margin-top: 12px !important;">[ Save $7/mo vs. buying 3 category licenses separately ]</span>
+                                <button onclick="triggerCheckout('labs')" class="buy-btn laser-btn bb-pricing-btn">Deploy</button>
+                                <span class="bb-pricing-savings-badge">[ Save $7/mo vs. buying 3 category licenses separately ]</span>
                             </div>
                         </div>
                     </div>

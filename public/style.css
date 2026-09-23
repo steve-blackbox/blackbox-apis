@@ -222,8 +222,7 @@
         }
 
         /* Last-resort cascade lock for the final legacy declarations. */
-        html body main .content-container .bento-card,
-        html body main .content-container .plan-box {
+        html body main .content-container .bento-card {
             background: rgba(10, 10, 12, 0.5) !important;
             backdrop-filter: blur(20px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
@@ -237,9 +236,7 @@
         /* Final editorial tokens: keep legacy cascade layers from overriding the system. */
         html body main .content-container .bento-card,
         html body main .content-container .simulation-lab-grid,
-        html body main .content-container .pricing-card,
-        html body main .content-container .plan-box,
-        html body main .content-container .stripe-grid .plan-box {
+        html body main .content-container .pricing-card {
             background: rgba(10, 10, 12, 0.5) !important;
             backdrop-filter: blur(20px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
@@ -1390,8 +1387,7 @@
         }
 
         #screen-command .bento-card,
-        #screen-payment .card-plan,
-        #screen-payment .plan-box {
+        #screen-payment .card-plan {
             background: rgba(10, 10, 12, 0.5) !important;
             backdrop-filter: blur(20px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
@@ -1609,21 +1605,6 @@
         .bento-card h3 span { color: var(--accent-green); text-shadow: 0 0 12px rgba(255, 255, 255, 0.12); }
         .bento-card p { font-size: 13px; color: #64748b; margin: 0; line-height: 1.6; }
         .stripe-section { border-top: 1px solid var(--border-glow); padding-top: 40px; }
-        .stripe-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-        
-        .plan-box {
-            background: rgba(10, 15, 30, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-glow); padding: 28px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .plan-box:hover { border-color: rgba(255, 255, 255, 0.45); box-shadow: 0 0 30px rgba(255, 255, 255, 0.10); }
-        .plan-info { display: flex; flex-direction: column; max-width: 65%; }
-        .plan-name { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 4px; text-transform: uppercase; font-family: monospace; letter-spacing: 0.5px; }
-        .plan-desc { font-size: 11px; color: #64748b; line-height: 1.4; margin-bottom: 4px; font-weight: 500; }
-        .plan-target-audience { font-size: 11px; color: var(--accent-green); font-family: monospace; opacity: 0.8; }
-        .plan-action { display: flex; align-items: center; gap: 24px; }
-        .plan-price-wrapper { display: flex; flex-direction: column; align-items: flex-end; }
-        .plan-price { font-size: 24px; font-weight: 900; color: var(--accent-green); font-family: monospace; text-shadow: 0 0 12px rgba(255, 255, 255, 0.12); }
-        .plan-term { font-size: 9px; color: var(--text-muted); font-family: monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-top: -2px; }
 
         .buy-btn {
             background-color: transparent; color: var(--accent-green); border: 1px solid rgba(255, 255, 255, 0.45);
@@ -1644,8 +1625,7 @@
         p,
         .content-container,
         .robot-main-desc,
-        .bento-card p,
-        .plan-desc {
+        .bento-card p {
             font-family: 'Inter', -apple-system, sans-serif;
         }
 
@@ -1656,10 +1636,6 @@
         .sidebar-title,
         .theme-btn,
         .robot-tab,
-        .plan-name,
-        .plan-target-audience,
-        .plan-price,
-        .plan-term,
         .buy-btn,
         input,
         textarea,
@@ -1673,10 +1649,6 @@
         h4,
         .sidebar-title,
         .robot-tab,
-        .plan-name,
-        .plan-target-audience,
-        .plan-price,
-        .plan-term,
         .buy-btn,
         input,
         textarea,
@@ -1685,15 +1657,12 @@
         }
 
         .robot-main-desc,
-        .bento-card p,
-        .plan-desc {
+        .bento-card p {
             font-weight: 300;
         }
 
         .theme-btn,
         .robot-tab,
-        .plan-target-audience,
-        .plan-term,
         .buy-btn,
         input,
         textarea,
@@ -1704,8 +1673,7 @@
         .bento-card,
         .card-plan,
         .bento-news-card,
-        .feature-mini-card,
-        .plan-box {
+        .feature-mini-card {
             border-radius: 12px !important;
             border: 1px solid rgba(255, 255, 255, 0.07) !important;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4) !important;
@@ -1871,8 +1839,7 @@
             flex-direction: column !important;
         }
 
-        .pricing-grid,
-        .stripe-grid {
+        .pricing-grid {
             gap: 32px !important;
         }
 
@@ -1900,9 +1867,7 @@
         .card-plan::before,
         .card-plan::after,
         .bento-news-card::before,
-        .bento-news-card::after,
-        .plan-box::before,
-        .plan-box::after {
+        .bento-news-card::after {
             content: "+";
             position: absolute;
             top: 10px;
@@ -1915,29 +1880,24 @@
 
         .bento-card::before,
         .card-plan::before,
-        .bento-news-card::before,
-        .plan-box::before {
+        .bento-news-card::before {
             left: 12px;
         }
 
         .bento-card::after,
         .card-plan::after,
-        .bento-news-card::after,
-        .plan-box::after {
+        .bento-news-card::after {
             right: 12px;
         }
 
         .bento-card p,
         .card-plan p,
-        .bento-news-card p,
-        .plan-box .plan-desc {
+        .bento-news-card p {
             color: #94a3b8 !important;
             font-weight: 300 !important;
             line-height: 1.75 !important;
         }
 
-        .plan-target-audience,
-        .plan-term,
         .robot-tab,
         .theme-btn,
         #license-input,
@@ -2269,9 +2229,7 @@
             82% { opacity: 0.5; transform: scale(0.92); }
         }
 
-        @media (max-width: 700px) {
-            .bento-grid,
-            .stripe-grid {
+        @media (max-width: 700px) {.bento-grid {
                 grid-template-columns: 1fr !important;
             }
         }
@@ -2366,8 +2324,7 @@
 
         .bento-card,
         .card-plan,
-        .bento-news-card,
-        .plan-box {
+        .bento-news-card {
             padding: 32px !important;
             border: 1px solid rgba(255, 255, 255, 0.05) !important;
             background: linear-gradient(180deg, #0f0f11 0%, #09090a 100%) !important;
@@ -2380,8 +2337,7 @@
 
         .bento-card:hover,
         .card-plan:hover,
-        .bento-news-card:hover,
-        .plan-box:hover {
+        .bento-news-card:hover {
             border-color: rgba(255, 255, 255, 0.15) !important;
             box-shadow: 0 0 40px rgba(255, 255, 255, 0.025) !important;
         }
@@ -2434,9 +2390,7 @@
         .robot-main-desc,
         .bento-card,
         .bento-card p,
-        .bento-card .feature-benefits,
-        .plan-desc,
-        .plan-target-audience {
+        .bento-card .feature-benefits {
             color: #9ca3af !important;
         }
 
@@ -2499,13 +2453,10 @@
             transform: translateY(-1px) !important;
             background: #d1d5db !important;
             color: #000000 !important;
-        }
-
-        /* Editorial card system shared across both snap screens. */
+        }/* Editorial card system shared across both snap screens. */
         html body .bento-card,
         html body .simulation-lab-grid,
-        html body .pricing-card,
-        html body .plan-box {
+        html body .pricing-card {
            background: rgba(10, 10, 12, 0.5) !important;
            backdrop-filter: blur(20px) saturate(180%) !important;
            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
@@ -2633,10 +2584,7 @@
            font-size: 12px !important;
            font-weight: 300 !important;
            line-height: 1.6 !important;
-        }
-
-        /* Compact "getting started" strip, placed just before the pricing grid. */
-        .bb-getting-started-strip {
+        }/* Compact "getting started" strip {
            display: flex !important;
            align-items: center !important;
            justify-content: center !important;
@@ -2652,38 +2600,11 @@
            font-family: 'JetBrains Mono', monospace !important;
         }
 
-        .bb-getting-started-step {
-           display: flex !important;
-           align-items: center !important;
-           gap: 8px !important;
-           color: #cbd5e1 !important;
-           font-size: 12px !important;
-           letter-spacing: 0.03em !important;
-           white-space: nowrap !important;
-        }
-
-        .bb-getting-started-index {
-           color: #00d2ff !important;
-           font-weight: 700 !important;
-           font-size: 12px !important;
-        }
-
-        .bb-getting-started-arrow {
-           color: rgba(255, 255, 255, 0.25) !important;
-           font-size: 14px !important;
-        }
-
         @media (max-width: 760px) {
            #screen-payment .bb-trust-row {
                flex-direction: column !important;
                gap: 16px !important;
                margin-bottom: 24px !important;
-           }
-
-           .bb-getting-started-strip {
-               flex-wrap: wrap !important;
-               gap: 12px !important;
-               padding: 16px !important;
            }
         }
 
@@ -2799,20 +2720,16 @@
 
         .content-container .bento-card > [id^="feature-content-"] {
             min-height: 0 !important;
-        }
-
-        /* Absolute final calibration layer: pricing, ROI, and integration balance. */
-        html body main #screen-payment .pricing-card,
-        html body main #screen-payment .plan-box,
-        html body main #screen-payment .stripe-grid .plan-box {
+        }/* Absolute final calibration layer: pricing,
+        ROI,
+        and integration balance. */
+        html body main #screen-payment .pricing-card {
             border: 1px solid rgba(255, 255, 255, 0.03) !important;
             background: rgba(10, 10, 12, 0.45) !important;
             transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
 
-        html body main #screen-payment .pricing-card:hover,
-        html body main #screen-payment .plan-box:hover,
-        html body main #screen-payment .stripe-grid .plan-box:hover {
+        html body main #screen-payment .pricing-card:hover {
             border-color: rgba(255, 255, 255, 0.15) !important;
         }
 
@@ -2987,139 +2904,137 @@ html body main #screen-command #sidebar-categories {
     }
 }
 
-/* 🧩 USE-CASE ROW — replaces the old 3-icon "trust badges" with concrete,
-   illustrated before/after scenarios so a visitor can picture their own
-   project using each API category. */
-#screen-payment .bb-usecase-row {
-   display: flex !important;
-   justify-content: space-between !important;
-   gap: 24px !important;
-   width: 100% !important;
-   max-width: 1200px !important;
-   margin: 0 auto 28px !important;
-   padding: 0 !important;
-   box-sizing: border-box !important;
+/* 💳 PRICING GRID — modern bento-style pricing cards replacing the old
+   wide "stripe" plan boxes, matching the compact card language used on
+   the rest of the site (screen-command / screen-playground). */
+.bb-pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
-#screen-payment .bb-usecase-card {
-   flex: 1 1 0 !important;
-   min-width: 0 !important;
-   display: flex !important;
-   flex-direction: column !important;
-   gap: 10px !important;
-   padding: 24px !important;
-   box-sizing: border-box !important;
-   background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.01) 100%) !important;
-   border: 1px solid rgba(255, 255, 255, 0.06) !important;
-   border-radius: 14px !important;
-   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease !important;
+.bb-pricing-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 28px !important;
 }
 
-#screen-payment .bb-usecase-card:hover {
-   transform: translateY(-4px) !important;
-   border-color: rgba(0, 210, 255, 0.3) !important;
-   box-shadow: 0 12px 32px rgba(0, 210, 255, 0.08) !important;
+.bb-pricing-card--featured {
+    border-color: rgba(0, 255, 136, 0.25) !important;
 }
 
-/* Punchy title treatment matching the hero manifesto: a big bold heading with
-   a single short accent line above it — contrast without extra chrome. */
-.bb-usecase-accent-line {
-   display: block !important;
-   width: 36px !important;
-   height: 3px !important;
-   background: #00d2ff !important;
-   border-radius: 2px !important;
-   margin-bottom: 4px !important;
+.bb-pricing-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.bb-usecase-title {
-   font-family: 'Inter', sans-serif !important;
-   font-size: 19px !important;
-   font-weight: 800 !important;
-   letter-spacing: -0.01em !important;
-   color: #ffffff !important;
-   text-transform: uppercase !important;
-   margin: 0 !important;
-   line-height: 1.25 !important;
+.bb-pricing-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
 }
 
-.bb-usecase-scenario {
-   color: #cbd5e1 !important;
-   font-family: 'Inter', sans-serif !important;
-   font-size: 12px !important;
-   font-weight: 300 !important;
-   line-height: 1.55 !important;
-   min-height: 56px !important;
+.bb-pricing-audience {
+    font-size: 11px;
+    color: var(--accent-green);
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0.8;
 }
 
-.bb-usecase-example {
-   display: flex !important;
-   flex-wrap: wrap !important;
-   align-items: baseline !important;
-   gap: 8px !important;
-   font-family: 'JetBrains Mono', monospace !important;
-   font-size: 11px !important;
+.bb-pricing-desc {
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin: 0;
 }
 
-.bb-usecase-example code {
-   color: #64748b !important;
-   overflow-wrap: anywhere !important;
-   white-space: normal !important;
+.bb-pricing-features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    flex: 1 1 auto;
 }
 
-.bb-usecase-example .bb-usecase-result {
-   color: #ffffff !important;
-   font-weight: 600 !important;
+.bb-pricing-features li {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
 }
 
-.bb-usecase-arrow {
-   color: #00d2ff !important;
-   font-weight: 700 !important;
+.bb-pricing-features--highlight li {
+    color: #ffffff;
+    font-weight: 700;
 }
 
-.bb-usecase-endpoint {
-   color: #64748b !important;
-   font-family: 'JetBrains Mono', monospace !important;
-   font-size: 10px !important;
-   letter-spacing: 0.02em !important;
-   margin-top: 2px !important;
+.bb-pricing-action {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.bb-usecase-endpoint code {
-   color: #94a3b8 !important;
-   font-family: 'JetBrains Mono', monospace !important;
+.bb-pricing-price-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.bb-pricing-price {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--accent-green);
+    font-family: 'JetBrains Mono', monospace;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.12);
+}
+
+.bb-pricing-term {
+    font-size: 9px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bb-pricing-btn {
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    line-height: 50px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+.bb-pricing-savings-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    align-self: flex-start;
 }
 
 @media (max-width: 760px) {
-   #screen-payment .bb-usecase-row {
-       flex-direction: column !important;
-       gap: 16px !important;
-       margin-bottom: 24px !important;
-   }
-   .bb-usecase-scenario {
-       min-height: 0 !important;
-   }
-}
-
-/* 🧮 PLAN BOX REBALANCE — anchors price/CTA to the bottom of each pricing
-   card via a column layout, so both cards line up their action area on the
-   same baseline regardless of how many bullet points the plan copy has. */
-#screen-payment .plan-box {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    justify-content: flex-start !important;
-    gap: 0 !important;
-}
-
-#screen-payment .plan-info {
-    width: 100% !important;
-    flex: 1 1 auto !important;
-}
-
-#screen-payment .plan-action {
-    width: 100% !important;
-    margin-top: auto !important;
-    padding-top: 20px !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    .bb-pricing-grid {
+        grid-template-columns: 1fr;
+    }
 }
