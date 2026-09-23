@@ -1,11 +1,15 @@
 /**
  * 🛰️ BLACKBOX AUTOMATED CONTROL — APIS CONSTELLATION
  * 🤖 ROBOT 36 : CRYPTO-ADDRESS-VERIFY CORE ENGINE (WEB3 STRUCTURE AUDIT)
- * 🪙 MULTI-CHAIN ADDRESS VERIFIER — REAL CHECKSUM VALIDATION WHERE POSSIBLE
+ * 🪙 MULTI-CHAIN ADDRESS VERIFIER — FULL CRYPTOGRAPHIC CHECKSUM COVERAGE
+ *    BTC: Base58Check (SHA-256d) + Bech32 (BIP-173) — ETH: EIP-55 (Keccak-256)
+ *    SOL: Ed25519 on-curve point decompression
  */
 
 const express = require('express');
 const crypto = require('crypto');
+const { keccak256 } = require('js-sha3');
+const { ed25519 } = require('@noble/curves/ed25519.js');
 const router = express.Router();
 
 const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -91,6 +95,39 @@ function verifyBech32(address) {
 }
 
 /**
+ * Real EIP-55 mixed-case checksum verification (Ethereum), using Keccak-256 of the
+ * lowercase hex address to determine expected letter casing per nibble.
+ */
+function verifyEip55Checksum(address) {
+    const stripped = address.slice(2);
+    const hash = keccak256(stripped.toLowerCase());
+    for (let i = 0; i < stripped.length; i++) {
+        const char = stripped[i];
+        if (!/[a-fA-F]/.test(char)) continue; // digits carry no casing information
+        const nibble = parseInt(hash[i], 16);
+        const shouldBeUpper = nibble >= 8;
+        if (shouldBeUpper && char !== char.toUpperCase()) return false;
+        if (!shouldBeUpper && char !== char.toLowerCase()) return false;
+    }
+    return true;
+}
+
+/**
+ * Real Ed25519 on-curve verification (Solana public keys): decodes the Base58 payload
+ * and confirms the 32-byte value decompresses to a valid point on the Edwards curve.
+ */
+function verifySolanaOnCurve(address) {
+    try {
+        const decoded = base58Decode(address);
+        if (decoded.length !== 32) return false;
+        ed25519.Point.fromBytes(decoded);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+/**
  * Validates a Bitcoin address: real cryptographic checksum verification for both
  * legacy Base58Check (1.../3...) and native SegWit Bech32 (bc1...) formats.
  */
@@ -121,13 +158,24 @@ router.post('/', (req, res) => {
     let diagnostic = null;
 
     if (chainType === 'eth') {
-        isValid = /^0x[a-fA-F0-9]{40}$/.test(targetAddress);
-        method = 'format_only';
-        // Real EIP-55 mixed-case checksum verification requires Keccak-256, which is not
-        // covered here. Purely lowercase/uppercase addresses are valid unchecksummed forms;
-        // mixed-case addresses are accepted on format only and flagged as unverified.
-        if (isValid && /[a-f]/.test(targetAddress.slice(2)) && /[A-F]/.test(targetAddress.slice(2))) {
-            diagnostic = "Mixed-case address detected: EIP-55 checksum casing was NOT cryptographically verified, format only.";
+        const formatValid = /^0x[a-fA-F0-9]{40}$/.test(targetAddress);
+        const isMixedCase = formatValid && /[a-f]/.test(targetAddress.slice(2)) && /[A-F]/.test(targetAddress.slice(2));
+
+        if (!formatValid) {
+            isValid = false;
+            method = 'format_rejected';
+        } else if (isMixedCase) {
+            // Real EIP-55 mixed-case checksum verification via Keccak-256.
+            isValid = verifyEip55Checksum(targetAddress);
+            method = 'eip55_checksum';
+            diagnostic = isValid
+                ? "Mixed-case address casing matches the cryptographic EIP-55 checksum."
+                : "Mixed-case address casing does NOT match the expected EIP-55 checksum: likely a typo or corrupted address.";
+        } else {
+            // All-lowercase or all-uppercase addresses are valid unchecksummed EIP-55 forms.
+            isValid = true;
+            method = 'format_only_unchecksummed';
+            diagnostic = "Address format is valid but not checksummed (all lower/upper case): casing integrity was not verifiable.";
         }
     } else if (chainType === 'btc') {
         const result = verifyBtcAddress(targetAddress);
@@ -135,11 +183,17 @@ router.post('/', (req, res) => {
         method = result.method;
     } else if (chainType === 'sol') {
         // Solana addresses are Base58-encoded Ed25519 public keys with no embedded checksum;
-        // real validation requires curve-point verification, out of scope here. Format only.
-        isValid = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(targetAddress);
-        method = 'format_only';
-        if (isValid) {
-            diagnostic = "Solana public key format is valid; on-curve Ed25519 verification was not performed.";
+        // validity is instead confirmed via real on-curve Ed25519 point decompression.
+        const formatValid = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(targetAddress);
+        if (!formatValid) {
+            isValid = false;
+            method = 'format_rejected';
+        } else {
+            isValid = verifySolanaOnCurve(targetAddress);
+            method = 'ed25519_oncurve_checksum';
+            diagnostic = isValid
+                ? "Base58 payload decodes to a valid 32-byte Ed25519 curve point."
+                : "Base58 payload does NOT decode to a valid Ed25519 curve point: address is structurally invalid despite matching format.";
         }
     }
 
@@ -150,7 +204,7 @@ router.post('/', (req, res) => {
             chain: chainType,
             address: targetAddress,
             verification_method: method,
-            diagnostic: "Checksum mapping or network pattern format signature is non-compliant."
+            diagnostic: diagnostic || "Checksum mapping or network pattern format signature is non-compliant."
         });
     }
 
