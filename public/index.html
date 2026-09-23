@@ -55,15 +55,21 @@
                 <span class="bb-scan-corner bb-scan-corner--tl" aria-hidden="true"></span>
                 <span class="bb-scan-corner bb-scan-corner--br" aria-hidden="true"></span>
                 <div class="screen-content" id="hero-content"></div>
-                <!-- 🧭 Repère de transition : annonce le scroll vertical vers la page 2 puis le
-                     défilement horizontal à l'intérieur de celle-ci (matrice des robots). -->
+                <!-- 🧭 Repère de transition : annonce l'arrivée sur la matrice des robots
+                     (page 2). Le scroll vertical suffit désormais à traverser les 3 catégories
+                     grâce au pont JS initPlaygroundScrollBridge(). -->
                 <div class="bb-section-transition-cue" aria-hidden="true">
                     <span class="bb-transition-line"></span>
                     <span class="bb-transition-label">ROBOT MATRIX AHEAD</span>
                     <span class="bb-transition-chevrons" aria-hidden="true">
                         <span>⌄</span><span>⌄</span>
                     </span>
-                    <span class="bb-transition-swipe">SCROLL ↓ &nbsp;·&nbsp; THEN SWIPE →</span>
+                    <span class="bb-transition-progress" aria-hidden="true">
+                        <span class="bb-transition-dot"></span>
+                        <span class="bb-transition-dot"></span>
+                        <span class="bb-transition-dot"></span>
+                    </span>
+                    <span class="bb-transition-swipe">SCROLL TO EXPLORE</span>
                 </div>
             </section>
             <!-- 🗺️ SECTION 2 // PLAYGROUND MATRIX — 5-PANEL HORIZONTAL INDUSTRY SLIDER -->
@@ -277,6 +283,15 @@
                                     </div>
                                   </div>
                                 </div>
+                            </div>
+                            <!-- 🧭 Repère de transition : annonce le passage de la matrice des robots
+                                 (page 2) vers la page de tarification (page 3). -->
+                            <div class="bb-section-transition-cue bb-section-transition-cue--playground" aria-hidden="true">
+                                <span class="bb-transition-line"></span>
+                                <span class="bb-transition-label">PRICING AHEAD</span>
+                                <span class="bb-transition-chevrons" aria-hidden="true">
+                                    <span>⌄</span><span>⌄</span>
+                                </span>
                             </div>
                         </section>
             <section id="screen-payment" class="screen-section" aria-label="Payment and secure gateway">
