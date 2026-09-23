@@ -2646,6 +2646,11 @@
            padding-bottom: 120px !important;
         }
 
+        /* License verification widget renders after the pricing cards — most visitors don't have a key yet. */
+        html body main #screen-payment #cash-content > #license-ingress {
+           order: 2 !important;
+        }
+
         html body main #screen-payment footer {
            position: relative !important;
            top: auto !important;
@@ -2677,6 +2682,24 @@
            order: 999 !important;
            flex: 0 0 auto !important;
            align-self: stretch !important;
+        }
+
+        @media (max-width: 600px) {
+            html body main #screen-payment footer {
+               flex-direction: column !important;
+               align-items: flex-start !important;
+               gap: 12px !important;
+            }
+
+            html body main #screen-payment footer > div:last-child {
+               display: flex !important;
+               flex-wrap: wrap !important;
+               gap: 8px 16px !important;
+            }
+
+            html body main #screen-payment footer a {
+               margin-left: 0 !important;
+            }
         }
 
         /* Final cascade guard for legacy neon declarations. */
