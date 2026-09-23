@@ -795,10 +795,60 @@ function initializeApp() {
             });
         }
 
+        // 🌉 VERTICAL-TO-HORIZONTAL SCROLL BRIDGE — the "ROBOT MATRIX" screen (page 2)
+        // is a horizontal category carousel (01/02/03) nested inside the vertical
+        // page-to-page snap flow (page 1 → 2 → 3). Without this bridge, a normal
+        // vertical scroll/wheel gesture does nothing once landed on page 2 — the user
+        // has to know to switch to a horizontal swipe, which reads as the flow being
+        // "stuck"/blocked. This redirects vertical wheel input into horizontal track
+        // movement while page 2 is active, and only releases control back to the
+        // normal vertical snap once the user is already on the first or last category.
+        function initPlaygroundScrollBridge() {
+            const screen = document.getElementById('screen-playground');
+            const track = document.getElementById('playground-track');
+            if (!screen || !track) return;
+
+            const EDGE_EPSILON = 4;
+
+            function isPlaygroundActive() {
+                const rect = screen.getBoundingClientRect();
+                return Math.abs(rect.top) < window.innerHeight * 0.15;
+            }
+
+            function atTrackStart() {
+                return track.scrollLeft <= EDGE_EPSILON;
+            }
+
+            function atTrackEnd() {
+                return track.scrollLeft >= track.scrollWidth - track.clientWidth - EDGE_EPSILON;
+            }
+
+            window.addEventListener('wheel', (event) => {
+                // Ignore near-purely-horizontal gestures (trackpad swipes already
+                // drive the track natively) and act only on vertical wheel intent.
+                if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+                if (!isPlaygroundActive()) return;
+
+                const scrollingForward = event.deltaY > 0;
+                const scrollingBackward = event.deltaY < 0;
+
+                if (scrollingForward && !atTrackEnd()) {
+                    event.preventDefault();
+                    track.scrollLeft += event.deltaY;
+                } else if (scrollingBackward && !atTrackStart()) {
+                    event.preventDefault();
+                    track.scrollLeft += event.deltaY;
+                }
+                // Otherwise: already at the first/last category, let the vertical
+                // page-to-page snap take over normally (page 1 ⇄ page 3).
+            }, { passive: false });
+        }
+
         window.onload = () => {
             initializeApp();
             initLogoShieldActivation();
             initSlideTagDetailReveal();
+            initPlaygroundScrollBridge();
         };
     </script>
 </body>
