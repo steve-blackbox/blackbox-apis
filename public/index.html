@@ -494,13 +494,13 @@
                 id: "bot_detector",
                 name: "Bot Signature Detector",
                 category: "Security & Link Integrity",
-                heading: "Flags likely automated traffic from request headers.",
-                description: "Inspects the User-Agent and common automation headers to flag requests that look like they come from headless browsers such as Puppeteer or Playwright.",
+                heading: "Weighted multi-signal engine that scores automated traffic likelihood in real time.",
+                description: "Combines User-Agent fingerprinting, HTTP header completeness checks, and optional client-side telemetry (navigator.webdriver, plugins, languages, hardwareConcurrency) into a single weighted probability score — not a single yes/no rule.",
                 endpoint: "/v1/bot_detector",
-                curl: "curl -X POST https://blackbox-apis.com/v1/bot_detector -H 'Authorization: Bearer YOUR_KEY' -d '{\"userAgent\":\"...\",\"headers\":{...}}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/bot_detector -H 'Authorization: ******' -d '{\"headers_payload\":{...},\"fingerprint_meta\":{...}}'",
                 cards: [
-                    { title: "WHAT IT DOES", body: "Compares the incoming User-Agent and header set against known automation signatures (headless Chrome, Puppeteer, Playwright, common scraping libraries).", benefits: ["Gives you a signal to combine with rate-limiting or CAPTCHA logic.", "Not a silver bullet — documented as a heuristic signal, not a guarantee.", "Lightweight enough to run on every incoming request."] },
-                    { title: "HOW TO INTEGRATE", body: "Forward the request's User-Agent and headers as JSON; receive a boolean flag plus the matched signature if any.", benefits: ["Use as a pre-filter before heavier bot-mitigation services.", "No third-party bot database dependency.", "Transparent about what it can and can't catch."] }
+                    { title: "WHAT IT DOES", body: "Detects headless browsers (Puppeteer, Playwright, Selenium), CLI HTTP clients (curl, wget, python-requests, axios, okhttp), and crawler/scraper signatures, then layers in header-completeness checks (missing Accept-Language, missing Accept) and optional browser fingerprint anomalies (webdriver flag, zero plugins, empty languages, zero hardwareConcurrency).", benefits: ["Independent-probability scoring: several weak signals can combine into a strong verdict, avoiding brittle single-rule false positives.", "Confidence score is capped below 100% — always honest about uncertainty, never overclaims certainty.", "Lightweight enough to run on every incoming request."] },
+                    { title: "HOW TO INTEGRATE", body: "Forward the request's headers as 'headers_payload'; optionally add client-collected 'fingerprint_meta' for a sharper score. Receive a numeric bot-probability score plus the exact list of triggered signals.", benefits: ["Use as a pre-filter before heavier bot-mitigation services or CAPTCHA challenges.", "No third-party bot database dependency — fully self-contained scoring.", "Transparent diagnostic flags so you can tune your own threshold."] }
                 ]
             },
             {

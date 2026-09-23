@@ -17,6 +17,9 @@ router.post('/', (req, res) => {
     if (!signed_url) {
         return res.status(400).json({ error: "Missing required 'signed_url' parameter string." });
     }
+    if (!secret_salt || typeof secret_salt !== 'string' || secret_salt.length < 8) {
+        return res.status(400).json({ error: "Missing or too short 'secret_salt' string (minimum 8 characters). Must match the salt used by link_signer for this URL." });
+    }
 
     console.log(`[🔬 LINK-VALIDATOR] Audit de signature cryptographique pour l'URL cliente.`);
 
@@ -45,9 +48,8 @@ router.post('/', (req, res) => {
         }
 
         // 🔐 2. Recalcul algorithmique pour traquer la falsification
-        const salt = secret_salt || 'blackbox_default_salt_layer';
         const expectedSignature = crypto
-            .createHmac('sha256', salt)
+            .createHmac('sha256', secret_salt)
             .update(`${baseUrl}?expires=${expires}`)
             .digest('hex');
 
