@@ -150,7 +150,7 @@
                                         <span class="bb-horizontal-slide-kicker">» ROBOT CATEGORY // 02</span>
                                         <h2>SECURITY &amp; LINK INTEGRITY</h2>
                                         <span class="bb-horizontal-slide-subtitle">Real Cryptographic Checks — HMAC Signatures, Checksums, Bot Signals</span>
-                                        <p>Four endpoints built on real cryptography, not string matching: HMAC-SHA256 signed URLs with expiration and constant-time signature verification, and Bitcoin address validation using actual Base58Check and Bech32 checksum algorithms (not just format regex). Includes a lightweight bot-signal detector for headless browser traffic.</p>
+                                        <p>Four endpoints built on real cryptography, not string matching: HMAC-SHA256 signed URLs with expiration and constant-time signature verification, and multi-chain crypto address validation with genuine checksum math on BTC (Base58Check/Bech32), ETH (EIP-55/Keccak-256), and SOL (Ed25519 on-curve) — not just format regex. Includes a lightweight bot-signal detector for headless browser traffic.</p>
                                         <div class="bb-slide-specs" aria-hidden="true">
                                             <div class="bb-slide-spec-item">
                                                 <span class="bb-slide-spec-value">04</span>
@@ -167,7 +167,7 @@
                                         </div>
                                         <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
                                             <li data-detail-name="BOT DETECTOR" data-detail-copy="Flags headless-browser &amp; scripted traffic from real request signals, not a simple user-agent check.">BOT DETECTOR</li>
-                                            <li data-detail-name="CRYPTO VERIFY" data-detail-copy="Validates BTC/ETH addresses via real Base58Check &amp; Bech32 checksum math — not just format regex.">CRYPTO VERIFY</li>
+                                            <li data-detail-name="CRYPTO VERIFY" data-detail-copy="Validates BTC, ETH &amp; SOL addresses via real checksum math — Base58Check/Bech32, EIP-55/Keccak-256, Ed25519 on-curve — not just format regex.">CRYPTO VERIFY</li>
                                             <li data-detail-name="LINK SIGNER" data-detail-copy="Generates HMAC-SHA256 signed URLs with a real, enforced expiration window.">LINK SIGNER</li>
                                             <li data-detail-name="LINK VALIDATOR" data-detail-copy="Verifies a signed URL's signature in constant time before granting access.">LINK VALIDATOR</li>
                                         </ul>
@@ -492,12 +492,12 @@
                 id: "crypto_verify",
                 name: "Crypto Address Verifier",
                 category: "Security & Link Integrity",
-                heading: "Validates crypto addresses with real checksum verification.",
-                description: "Verifies Bitcoin addresses using actual Base58Check (legacy) and Bech32/BIP-173 (SegWit) checksum algorithms. Ethereum and Solana addresses are validated for format only, clearly labeled as such.",
+                heading: "Validates crypto addresses across BTC, ETH & SOL with real checksum verification.",
+                description: "Verifies Bitcoin addresses using actual Base58Check (legacy) and Bech32/BIP-173 (SegWit) checksum algorithms, Ethereum addresses via the EIP-55 mixed-case checksum (Keccak-256), and Solana addresses via Ed25519 on-curve point verification — full cryptographic coverage across all three chains, not just format regex.",
                 endpoint: "/v1/crypto_verify",
                 curl: "curl -X POST https://blackbox-apis.com/v1/crypto_verify -H 'Authorization: Bearer YOUR_KEY' -d '{\"address\":\"1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2\",\"network\":\"btc\"}'",
                 cards: [
-                    { title: "WHAT IT DOES", body: "For BTC addresses, runs a real checksum verification (Base58Check or Bech32) — a single altered character will fail validation. For ETH/SOL, checks format only and says so explicitly in the response.", benefits: ["Catches typos and corrupted BTC addresses before you send funds.", "Honest about the limits of format-only checks for ETH/SOL.", "No blockchain node calls — pure cryptographic validation, fast response."] },
+                    { title: "WHAT IT DOES", body: "For BTC addresses, runs a real checksum verification (Base58Check or Bech32). For ETH, verifies the EIP-55 mixed-case checksum via Keccak-256. For SOL, confirms the address decodes to a valid Ed25519 curve point. A single altered character will fail validation on all three chains.", benefits: ["Catches typos and corrupted addresses before you send funds, on any of the 3 chains.", "Full checksum coverage — no chain is validated on format alone.", "No blockchain node calls — pure cryptographic validation, fast response."] },
                     { title: "HOW TO INTEGRATE", body: "Send the address string and target network; receive a valid/invalid result plus the verification method used.", benefits: ["Use before accepting a withdrawal address from a user.", "Response tells you exactly which check was applied.", "Works offline, no external RPC dependency."] }
                 ]
             },
