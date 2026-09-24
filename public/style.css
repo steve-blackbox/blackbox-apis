@@ -3163,3 +3163,59 @@ html body main #screen-command #sidebar-categories {
         }
     }
 }
+
+/* 📱 LANDSCAPE MODE FIXES — optimize transitions and scroll for mobile landscape */
+@media (max-height: 500px) and (orientation: landscape) {
+    html, body {
+        scroll-behavior: auto !important;
+    }
+
+    /* Reduce vertical space used in landscape */
+    .bb-horizontal-snap-track {
+        min-height: auto !important;
+    }
+
+    .bb-horizontal-slide {
+        min-height: 100vh !important;
+        padding: 20px !important;
+    }
+
+    /* Reduce padding in copy sections */
+    .bb-horizontal-slide-inner {
+        gap: 32px !important;
+    }
+
+    .bb-horizontal-slide-copy {
+        gap: 12px !important;
+    }
+
+    .bb-horizontal-slide-copy h2 {
+        font-size: 36px !important;
+        line-height: 1.1 !important;
+    }
+
+    .bb-horizontal-slide-subtitle {
+        font-size: 13px !important;
+    }
+
+    .bb-horizontal-slide-copy p {
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+    /* Hide scroll indicator in landscape to save space */
+    .bb-horizontal-slide::after {
+        display: none !important;
+    }
+
+    /* Improve scroll-snap behavior for transitions */
+    .screen-section {
+        scroll-snap-align: start !important;
+        scroll-snap-stop: always !important;
+    }
+
+    /* Faster transitions between pages in landscape */
+    * {
+        scroll-behavior: auto !important;
+    }
+}
