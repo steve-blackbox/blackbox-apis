@@ -623,6 +623,13 @@
             -webkit-overflow-scrolling: touch !important;
         }
 
+        /* Mobile: faster scroll without smooth animation */
+        @media (max-width: 768px) {
+            .bb-horizontal-snap-track {
+                scroll-behavior: auto !important;
+            }
+        }
+
         .bb-horizontal-snap-track::-webkit-scrollbar {
             display: none !important;
             width: 0 !important;
@@ -679,6 +686,37 @@
             box-sizing: border-box !important;
             min-height: 500px !important;
             padding: 60px 0 !important;
+        }
+
+        /* Mobile optimization: reduce heights and padding */
+        @media (max-width: 600px) {
+            .bb-horizontal-slide-inner {
+                min-height: auto !important;
+                padding: 20px 0 !important;
+                gap: 32px !important;
+            }
+
+            .bb-horizontal-slide {
+                padding: 16px 12px !important;
+            }
+
+            .bb-horizontal-slide-copy {
+                gap: 12px !important;
+            }
+
+            .bb-horizontal-slide-copy h2 {
+                font-size: 24px !important;
+                line-height: 1.2 !important;
+            }
+
+            .bb-horizontal-slide-subtitle {
+                font-size: 12px !important;
+            }
+
+            .bb-horizontal-slide-copy p {
+                font-size: 13px !important;
+                line-height: 1.4 !important;
+            }
         }
 
         .bb-horizontal-slide-copy {
@@ -3166,6 +3204,15 @@ html body main #screen-command #sidebar-categories {
         .bb-horizontal-slide::after {
             display: none !important;
         }
+    }
+}
+
+/* Show scroll indicator on mobile with short text */
+@media (max-width: 600px) {
+    .bb-horizontal-slide::after {
+        content: '← SWIPE →' !important;
+        font-size: 10px !important;
+        bottom: 16px !important;
     }
 }
 
