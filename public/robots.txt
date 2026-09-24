@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin-dashboard.html
+Disallow: /merci.html
+
+Sitemap: https://blackbox-apis.com/sitemap.xml
