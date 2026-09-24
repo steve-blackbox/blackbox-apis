@@ -19,6 +19,35 @@
     <meta name="twitter:title" content="BlackBox Labs — 12 Developer APIs">
     <meta name="twitter:description" content="12 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, crypto address validation, and more.">
     <meta name="twitter:image" content="https://blackbox-apis.com/favicon.svg">
+    <!-- 🔎 DONNÉES STRUCTURÉES SCHEMA.ORG — aide Google à comprendre le produit
+         et à afficher des résultats enrichis (prix, type d'appli) dans les SERP. -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "BlackBox Labs",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "url": "https://blackbox-apis.com/",
+        "description": "12 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, crypto address validation, and more.",
+        "offers": [
+            {
+                "@type": "Offer",
+                "name": "Solo Core",
+                "price": "12",
+                "priceCurrency": "USD",
+                "description": "1 category (4 robots), unlimited requests, direct API access."
+            },
+            {
+                "@type": "Offer",
+                "name": "Labs All-Access",
+                "price": "29",
+                "priceCurrency": "USD",
+                "description": "All 3 categories and all 12 robots with a single license key."
+            }
+        ]
+    }
+    </script>
     <link rel="stylesheet" href="style.css">
     <!-- 📈 SUIVI DE TRAFIC UMAMI (checkpoints J+30/60/90 — voir utiles/ligne_directrice_strategie.md) -->
     <!-- Compte Umami Cloud actif — site "BlackBox Labs" / domaine blackbox-apis.com / région US -->
@@ -363,7 +392,7 @@
                 <div class="simulation-lab-grid">
                     <section class="simulation-lab-summary" aria-label="Active robot business conversion">
                         <div class="bb-manifesto-block">
-                            <h2 class="bb-manifesto-hero">WE BUILD REAL, WORKING DEVELOPER APIS.</h2>
+                            <h1 class="bb-manifesto-hero">WE BUILD REAL, WORKING DEVELOPER APIS.</h1>
                             <div class="bb-manifesto-before">
                                 <span class="bb-manifesto-label">YOUR PROJECT WITHOUT US //</span>
                                 <p>You end up writing and maintaining one-off scripts for recurring chores — masking PII before logging, validating a crypto address format, stripping EXIF data from an upload, deduplicating a CSV export — each one a small maintenance burden that never quite gets prioritized.</p>
