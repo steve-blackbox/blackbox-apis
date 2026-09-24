@@ -867,6 +867,8 @@ function initializeApp() {
             if (!screen || !track) return;
 
             const EDGE_EPSILON = 4;
+            let lastWheelTime = 0;
+            const THROTTLE_MS = 16; // ~60fps
 
             function isPlaygroundActive() {
                 const rect = screen.getBoundingClientRect();
@@ -882,6 +884,11 @@ function initializeApp() {
             }
 
             window.addEventListener('wheel', (event) => {
+                // Throttle wheel events to prevent excessive DOM queries and reflows.
+                const now = performance.now();
+                if (now - lastWheelTime < THROTTLE_MS) return;
+                lastWheelTime = now;
+
                 // Ignore near-purely-horizontal gestures (trackpad swipes already
                 // drive the track natively) and act only on vertical wheel intent.
                 if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
