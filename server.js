@@ -10,7 +10,7 @@ const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // 📊 SUIVI DE TRACTION (ventes persistantes + checkpoints J+30/60/90)
-const { recordSale, getStats, saveLicense, isValidLicense, getLicenseByKey, getAllActiveLicenseMeta, deactivateLicensesByPaddleSubscription } = require('./lib/db');
+const { recordSale, getStats, saveLicense, isValidLicense, getLicenseByKey, getAllActiveLicenseMeta, deactivateLicensesByPaddleSubscription, DEMO_LICENSE_KEY, seedDemoLicense } = require('./lib/db');
 
 // 🗂️ CATALOGUE DES 3 CATÉGORIES DE ROBOTS (doit rester synchronisé avec `robotsCatalog`
 // dans public/index.html). Sert à restreindre l'accès des licences SOLO CORE à une
@@ -195,8 +195,24 @@ function rebuildLicenseCaches() {
     global.activeLicenseKeys = new Set(['BB-ADMIN-CORE-99', ...rows.map((r) => r.license_key)]);
     global.licenseMeta = new Map(rows.map((r) => [r.license_key, { plan: r.plan, category: r.category }]));
 }
+seedDemoLicense(); // ré-insère la clé démo publique (Postman) à chaque démarrage, quel que soit l'état du disque
 rebuildLicenseCaches();
 console.log(`🔑 ${global.activeLicenseKeys.size} licence(s) active(s) rechargée(s) depuis la base persistante.`);
+
+// 🎟️ QUOTA DE LA CLÉ DÉMO PUBLIQUE : compteur en mémoire, remis à zéro chaque jour UTC.
+// Volontairement généreux pour laisser tester chaque robot, mais strictement plafonné
+// pour ne jamais devenir un accès gratuit illimité une fois la clé publiée sur Postman.
+const DEMO_DAILY_LIMIT = 50;
+const demoUsage = { day: null, count: 0 };
+function checkDemoRateLimit() {
+    const today = new Date().toISOString().slice(0, 10);
+    if (demoUsage.day !== today) {
+        demoUsage.day = today;
+        demoUsage.count = 0;
+    }
+    demoUsage.count += 1;
+    return demoUsage.count <= DEMO_DAILY_LIMIT;
+}
 
 // 🔎 Route de vérification de licence appelée par le bouton "VERIFY" du site (public/index.html)
 app.post('/api/verify-license', (req, res) => {
@@ -321,6 +337,16 @@ function requireLicense(robotName) {
         }
 
         const meta = global.licenseMeta.get(token);
+
+        // 🎟️ Clé démo publique (Postman API Network) : quota journalier strict, jamais
+        // un accès illimité — voir DEMO_DAILY_LIMIT ci-dessus.
+        if (token === DEMO_LICENSE_KEY && !checkDemoRateLimit()) {
+            return res.status(429).json({
+                success: false,
+                message: `» DEMO QUOTA EXCEEDED: This public demo key is capped at ${DEMO_DAILY_LIMIT} requests/day. Get your own key at https://blackbox-apis.com/.`,
+            });
+        }
+
         // Une licence LABS ALL-ACCESS (ou la clé admin, sans meta) a accès à tout.
         // Une licence SOLO CORE ("core") n'a accès qu'à la catégorie achetée.
         if (meta && meta.plan === 'core' && meta.category !== robotCategory) {

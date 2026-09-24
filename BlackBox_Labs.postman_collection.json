@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "BlackBox Labs — 12 Developer APIs",
-    "description": "12 focused, single-purpose developer APIs: privacy & PII protection, security & link integrity, and data & media utilities. Every endpoint requires a Bearer API key (get one at https://blackbox-apis.com/). All request/response fields below match the live production contract exactly — copy/paste ready.",
+    "description": "12 focused, single-purpose developer APIs: privacy & PII protection, security & link integrity, and data & media utilities. Every endpoint requires a Bearer API key. This collection ships pre-filled with a shared PUBLIC DEMO key (capped at 50 requests/day total, for evaluation only) — get your own unlimited key at https://blackbox-apis.com/. All request/response fields below match the live production contract exactly — copy/paste ready.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_postman_id": "b1a2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
   },
@@ -13,7 +13,7 @@
   },
   "variable": [
     { "key": "base_url", "value": "https://blackbox-apis.com", "type": "string" },
-    { "key": "api_key", "value": "YOUR_KEY", "type": "string" }
+    { "key": "api_key", "value": "BB-DEMO-POSTMAN-PUBLIC01", "type": "string" }
   ],
   "item": [
     {
@@ -84,9 +84,9 @@
             "url": { "raw": "{{base_url}}/v1/crypto_verify", "host": ["{{base_url}}"], "path": ["v1", "crypto_verify"] },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"address\": \"1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\",\n  \"network\": \"bitcoin\"\n}"
+              "raw": "{\n  \"address\": \"1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\",\n  \"network\": \"btc\"\n}"
             },
-            "description": "Validates a crypto wallet address format/checksum for a given network before you send funds to it."
+            "description": "Validates a crypto wallet address format/checksum for a given network (btc, ltc, doge, trx, xrp, bch, ada, sol, eth + EVM-compatible chains) before you send funds to it."
           }
         },
         {
