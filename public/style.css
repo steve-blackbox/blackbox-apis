@@ -674,9 +674,11 @@
             margin: 0 auto !important;
             display: flex !important;
             flex-direction: row !important;
-            align-items: center !important;
+            align-items: flex-start !important;
             gap: 64px !important;
             box-sizing: border-box !important;
+            min-height: 500px !important;
+            padding: 60px 0 !important;
         }
 
         .bb-horizontal-slide-copy {
@@ -1201,8 +1203,11 @@
 
             .bb-horizontal-slide-inner {
                 flex-direction: column !important;
-                justify-content: center !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
                 gap: 32px !important;
+                min-height: auto !important;
+                padding: 40px 0 !important;
             }
 
             .bb-horizontal-slide-copy,
@@ -3183,6 +3188,9 @@ html body main #screen-command #sidebar-categories {
     /* Reduce padding in copy sections */
     .bb-horizontal-slide-inner {
         gap: 32px !important;
+        align-items: flex-start !important;
+        min-height: auto !important;
+        padding: 20px 0 !important;
     }
 
     .bb-horizontal-slide-copy {
