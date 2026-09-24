@@ -1,0 +1,398 @@
+openapi: 3.0.3
+info:
+  title: BlackBox Labs — 12 Developer APIs
+  description: >-
+    A suite of 12 focused, single-purpose developer APIs covering PII/privacy
+    protection, security/link integrity, and data/media utilities. Every
+    endpoint requires a Bearer license key. A free demo key
+    (BB-DEMO-POSTMAN-PUBLIC01) is available with a limit of 50 requests/day
+    so you can try every endpoint before purchasing your own key at
+    https://blackbox-apis.com.
+  version: "1.0.0"
+  contact:
+    name: BlackBox Labs Support
+    email: support@blackbox-apis.com
+    url: https://blackbox-apis.com
+servers:
+  - url: https://blackbox-apis.com
+    description: Production
+security:
+  - BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: license-key
+tags:
+  - name: Privacy & PII Protection
+  - name: Security & Link Integrity
+  - name: Data & Media Utilities
+paths:
+  /v1/pii_masker:
+    post:
+      operationId: piiMasker
+      summary: PII Masker
+      description: >-
+        Detects and masks sensitive PII (credit card numbers via Luhn check,
+        emails) found in raw text using a stateless regex engine. Returns the
+        redacted text plus counts of items masked.
+      tags: [Privacy & PII Protection]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [raw_payload_text]
+              properties:
+                raw_payload_text:
+                  type: string
+                  description: Raw text possibly containing card numbers or emails.
+            example:
+              raw_payload_text: "Contact John at john.doe@example.com or card 4111111111111111"
+      responses:
+        "200":
+          description: PII successfully masked.
+          content:
+            application/json:
+              example:
+                status: PII_DATA_STREAM_SANITIZED
+                unmasked_length: 66
+                masked_payload: "Contact John at j***@example.com or card XXXX-XXXX-XXXX-1111"
+                compliance_metrics:
+                  cards_masked: 1
+                  emails_masked: 1
+                  obfuscation_type: PARTIAL_REVERSION_BLOCK
+                timestamp: "2026-09-24T09:00:00.000Z"
+        "400":
+          description: Missing required parameter.
+  /v1/phone_sanitizer:
+    post:
+      operationId: phoneSanitizer
+      summary: Phone Sanitizer
+      description: >-
+        Cleans and validates a raw phone number string, returning an E.164
+        normalized version when valid.
+      tags: [Privacy & PII Protection]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [raw_phone_string]
+              properties:
+                raw_phone_string:
+                  type: string
+                default_country_code:
+                  type: string
+                  description: ISO country code used when the number has no country prefix.
+            example:
+              raw_phone_string: "+33 6 12 34 56 78"
+              default_country_code: "FR"
+      responses:
+        "200":
+          description: Phone number processed (valid or not).
+        "400":
+          description: Missing required parameter.
+  /v1/ip_anonymizer:
+    post:
+      operationId: ipAnonymizer
+      summary: IP Anonymizer
+      description: >-
+        Anonymizes an IPv4 or IPv6 address by masking the last octet/segment,
+        useful for GDPR-compliant log storage.
+      tags: [Privacy & PII Protection]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [raw_ip_address]
+              properties:
+                raw_ip_address:
+                  type: string
+            example:
+              raw_ip_address: "2001:db8:85a3::8a2e:370:7334"
+      responses:
+        "200":
+          description: IP address anonymized.
+        "400":
+          description: Missing required parameter.
+  /v1/log_sanitizer:
+    post:
+      operationId: logSanitizer
+      summary: Log Sanitizer
+      description: >-
+        Scrubs card numbers, emails, secret tokens, and IP addresses from raw
+        log lines before storage or third-party forwarding.
+      tags: [Privacy & PII Protection]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [log_data]
+              properties:
+                log_data:
+                  type: string
+            example:
+              log_data: "user=4111111111111111 auth=****** key=sk_live_51H8x from 203.0.113.42"
+      responses:
+        "200":
+          description: Log line sanitized.
+        "400":
+          description: Missing required parameter.
+  /v1/crypto_verify:
+    post:
+      operationId: cryptoVerify
+      summary: Crypto Verify
+      description: >-
+        Validates the syntax/checksum of a cryptocurrency wallet address for
+        a given network. Supported networks: btc, ltc, doge, trx, xrp, bch,
+        ada, sol, eth (and other EVM chains).
+      tags: [Security & Link Integrity]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [address, network]
+              properties:
+                address:
+                  type: string
+                network:
+                  type: string
+                  description: "Short network code, e.g. btc, eth, sol — not full names."
+            example:
+              address: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+              network: "btc"
+      responses:
+        "200":
+          description: Address validated (or found invalid).
+        "400":
+          description: Missing required parameters.
+  /v1/bot_detector:
+    post:
+      operationId: botDetector
+      summary: Bot Detector
+      description: >-
+        Analyzes incoming request headers and browser fingerprint metadata to
+        produce a bot-likelihood score and verdict.
+      tags: [Security & Link Integrity]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [headers_payload]
+              properties:
+                headers_payload:
+                  type: object
+                fingerprint_meta:
+                  type: object
+            example:
+              headers_payload:
+                user-agent: "Mozilla/5.0 ..."
+                accept-language: "en-US,en;q=0.9"
+              fingerprint_meta:
+                webdriver: false
+                plugins_length: 3
+      responses:
+        "200":
+          description: Behavioral audit completed.
+        "400":
+          description: Missing required parameter.
+  /v1/link_signer:
+    post:
+      operationId: linkSigner
+      summary: Link Signer
+      description: >-
+        Generates a time-limited, cryptographically signed URL that expires
+        after a given number of minutes, using a caller-supplied secret salt.
+      tags: [Security & Link Integrity]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [base_url, expiration_minutes, secret_salt]
+              properties:
+                base_url:
+                  type: string
+                expiration_minutes:
+                  type: integer
+                secret_salt:
+                  type: string
+                  description: Minimum 8 characters, caller-controlled secret.
+            example:
+              base_url: "https://example.com/download/report.pdf"
+              expiration_minutes: 30
+              secret_salt: "a-secret-you-control-min-8-chars"
+      responses:
+        "200":
+          description: Signed URL generated.
+        "400":
+          description: Missing or invalid parameters.
+  /v1/link_validator:
+    post:
+      operationId: linkValidator
+      summary: Link Validator
+      description: >-
+        Verifies a signed URL produced by Link Signer — checks the signature
+        and expiration timestamp using the same secret salt.
+      tags: [Security & Link Integrity]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [signed_url, secret_salt]
+              properties:
+                signed_url:
+                  type: string
+                secret_salt:
+                  type: string
+            example:
+              signed_url: "https://example.com/download/report.pdf?exp=...&sig=..."
+              secret_salt: "a-secret-you-control-min-8-chars"
+      responses:
+        "200":
+          description: Signature validated (or found invalid/expired).
+        "400":
+          description: Missing or invalid parameters.
+  /v1/csv_dedupe/process:
+    post:
+      operationId: csvDedupe
+      summary: CSV Dedupe
+      description: >-
+        Ingests a raw CSV string and removes duplicate rows based on one or
+        more chosen columns, returning the cleaned CSV.
+      tags: [Data & Media Utilities]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [csvRaw]
+              properties:
+                csvRaw:
+                  type: string
+                hasHeader:
+                  type: boolean
+                  default: true
+                dedupeColumns:
+                  type: array
+                  items:
+                    type: string
+            example:
+              csvRaw: "email,name\njohn@x.com,John\njohn@x.com,John Duplicate"
+              hasHeader: true
+              dedupeColumns: ["email"]
+      responses:
+        "200":
+          description: CSV deduplicated.
+          content:
+            application/json:
+              example:
+                status: CSV_DEDUPLICATION_COMPLETE
+                total_input_rows: 2
+                duplicates_removed: 1
+                unique_rows_kept: 1
+                cleaned_csv: "email,name\njohn@x.com,John"
+        "400":
+          description: Missing required parameter.
+  /v1/exif_cloak:
+    post:
+      operationId: exifCloak
+      summary: Exif Cloak
+      description: >-
+        Strips EXIF/binary metadata from a base64-encoded JPEG/PNG image,
+        returning the cleaned image bytes.
+      tags: [Data & Media Utilities]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [image_base64]
+              properties:
+                image_base64:
+                  type: string
+                  description: Base64-encoded JPEG or PNG bytes.
+            example:
+              image_base64: "<base64-encoded JPEG/PNG bytes>"
+      responses:
+        "200":
+          description: Metadata stripped.
+        "400":
+          description: Missing or invalid payload.
+  /v1/timezone_converter:
+    post:
+      operationId: timezoneConverter
+      summary: Timezone Converter
+      description: >-
+        Converts a date/time string from a source IANA timezone to a target
+        IANA timezone.
+      tags: [Data & Media Utilities]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [input_date_string, target_tz]
+              properties:
+                input_date_string:
+                  type: string
+                source_tz:
+                  type: string
+                target_tz:
+                  type: string
+            example:
+              input_date_string: "2026-09-24T09:30:00"
+              source_tz: "Europe/Paris"
+              target_tz: "America/New_York"
+      responses:
+        "200":
+          description: Date/time converted successfully.
+        "400":
+          description: Missing required parameters.
+  /v1/uptime_check:
+    post:
+      operationId: uptimeCheck
+      summary: Uptime Check
+      description: >-
+        Performs a live HTTP(S) check against a target URL with an enforced
+        timeout, returning latency and status information.
+      tags: [Data & Media Utilities]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [target_url]
+              properties:
+                target_url:
+                  type: string
+                timeout_ms:
+                  type: integer
+                  default: 5000
+            example:
+              target_url: "https://example.com"
+              timeout_ms: 5000
+      responses:
+        "200":
+          description: Diagnostic completed.
+        "400":
+          description: Missing or invalid parameter.
