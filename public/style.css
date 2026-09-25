@@ -644,6 +644,7 @@
             scroll-behavior: smooth !important;
             scrollbar-width: none !important;
             -webkit-overflow-scrolling: touch !important;
+            overscroll-behavior: contain !important;
         }
 
         /* Mobile: faster scroll without smooth animation */
@@ -665,7 +666,7 @@
             height: auto !important;
             flex-shrink: 0 !important;
             scroll-snap-align: start !important;
-            scroll-snap-stop: always !important;
+            scroll-snap-stop: none !important;
             display: flex !important;
             justify-content: center !important;
             align-items: flex-start !important;
@@ -1427,7 +1428,7 @@
             height: 100vh !important;
             min-height: 100vh !important;
             scroll-snap-align: start !important;
-            scroll-snap-stop: always !important;
+            scroll-snap-stop: none !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
@@ -1471,10 +1472,12 @@
             margin: 0 !important;
             padding: 0 !important;
             scroll-behavior: smooth !important;
-            scroll-snap-type: y mandatory !important;
+            scroll-snap-type: none !important;
             overflow-y: scroll !important;
             overflow-x: hidden !important;
             background: #050505 !important;
+            overscroll-behavior: none !important;
+            -webkit-overflow-scrolling: touch !important;
         }
 
         #screen-command {
@@ -3473,7 +3476,7 @@ html body main #screen-command #sidebar-categories {
     /* Improve scroll-snap behavior for transitions */
     .screen-section {
         scroll-snap-align: start !important;
-        scroll-snap-stop: always !important;
+        scroll-snap-stop: none !important;
     }
 
     /* Faster transitions between pages in landscape */

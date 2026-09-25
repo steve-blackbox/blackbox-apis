@@ -912,11 +912,11 @@ function initializeApp() {
 
             const EDGE_EPSILON = 4;
             let lastWheelTime = 0;
-            const THROTTLE_MS = 16; // ~60fps
+            const THROTTLE_MS = 8; // Reduced throttle for better trackpad response
 
             function isPlaygroundActive() {
                 const rect = screen.getBoundingClientRect();
-                return Math.abs(rect.top) < window.innerHeight * 0.15;
+                return Math.abs(rect.top) < window.innerHeight * 0.2;
             }
 
             function atTrackStart() {
@@ -933,20 +933,32 @@ function initializeApp() {
                 if (now - lastWheelTime < THROTTLE_MS) return;
                 lastWheelTime = now;
 
-                // Ignore near-purely-horizontal gestures (trackpad swipes already
-                // drive the track natively) and act only on vertical wheel intent.
-                if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+                // Only act when playground screen is active
                 if (!isPlaygroundActive()) return;
+
+                // Ignore near-purely-horizontal gestures (trackpad swipes already
+                // drive the track natively) and act only on strong vertical wheel intent.
+                const verticalStrength = Math.abs(event.deltaY);
+                const horizontalStrength = Math.abs(event.deltaX);
+                
+                // Only redirect if vertical is significantly stronger than horizontal
+                if (verticalStrength < 5 || horizontalStrength > verticalStrength * 0.7) return;
 
                 const scrollingForward = event.deltaY > 0;
                 const scrollingBackward = event.deltaY < 0;
 
+                let shouldConsume = false;
                 if (scrollingForward && !atTrackEnd()) {
-                    event.preventDefault();
-                    track.scrollLeft += event.deltaY;
+                    track.scrollLeft += event.deltaY * 0.5;
+                    shouldConsume = true;
                 } else if (scrollingBackward && !atTrackStart()) {
+                    track.scrollLeft += event.deltaY * 0.5;
+                    shouldConsume = true;
+                }
+                
+                // Only prevent default if we actually consumed the scroll
+                if (shouldConsume) {
                     event.preventDefault();
-                    track.scrollLeft += event.deltaY;
                 }
                 // Otherwise: already at the first/last category, let the vertical
                 // page-to-page snap take over normally (page 1 ⇄ page 3).
