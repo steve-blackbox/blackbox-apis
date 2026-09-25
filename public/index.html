@@ -140,6 +140,11 @@
                                                 <span class="bb-slide-spec-label">No PII Stored</span>
                                             </div>
                                         </div>
+                                        <div class="bb-code-snippet">
+<span class="keyword">curl</span> -X POST https://blackbox-apis.com/<span class="string">v1/log_sanitizer</span> \
+  -H <span class="string">"Authorization: Bearer YOUR_KEY"</span> \
+  -d <span class="string">'{"log_data":"card 4111 1111 1111 1111"}'</span>
+                                        </div>
                                         <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
                                             <li data-detail-name="LOG SANITIZER" data-detail-copy="Strips card numbers, emails &amp; bearer tokens straight out of raw log lines before they're written to disk.">LOG SANITIZER</li>
                                             <li data-detail-name="PII MASKER" data-detail-copy="Partially masks emails, phone numbers &amp; IDs inside JSON payloads before you store or forward them.">PII MASKER</li>
@@ -213,6 +218,11 @@
                                                 <span class="bb-slide-spec-label">Crypto Coverage</span>
                                             </div>
                                         </div>
+                                        <div class="bb-code-snippet">
+<span class="keyword">curl</span> -X POST https://blackbox-apis.com/<span class="string">v1/crypto_verify</span> \
+  -H <span class="string">"Authorization: Bearer YOUR_KEY"</span> \
+  -d <span class="string">'{"address":"1A1z7agoat...","chain":"BTC"}'</span>
+                                        </div>
                                         <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
                                             <li data-detail-name="BOT DETECTOR" data-detail-copy="Flags headless-browser &amp; scripted traffic from real request signals, not a simple user-agent check.">BOT DETECTOR</li>
                                             <li data-detail-name="CRYPTO VERIFY" data-detail-copy="Validates 9+ chains (BTC, LTC, DOGE, TRX, XRP, BCH, ADA, SOL, ETH + every EVM chain) via real checksum math — Base58Check/Bech32, CashAddr, EIP-55/Keccak-256, Ed25519 on-curve — not just format regex.">CRYPTO VERIFY</li>
@@ -280,6 +290,11 @@
                                                 <span class="bb-slide-spec-value">Real-Time</span>
                                                 <span class="bb-slide-spec-label">Uptime Checks</span>
                                             </div>
+                                        </div>
+                                        <div class="bb-code-snippet">
+<span class="keyword">curl</span> -X POST https://blackbox-apis.com/<span class="string">v1/csv_dedupe</span> \
+  -H <span class="string">"Authorization: Bearer YOUR_KEY"</span> \
+  -F <span class="string">"file=@data.csv"</span>
                                         </div>
                                         <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
                                             <li data-detail-name="CSV DEDUPE" data-detail-copy="Removes duplicate rows or columns from any CSV export you throw at it, no config required.">CSV DEDUPE</li>
