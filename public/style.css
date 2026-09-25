@@ -617,7 +617,7 @@
             height: auto !important;
             overflow-x: auto !important;
             overflow-y: auto !important;
-            scroll-snap-type: x mandatory !important;
+            scroll-snap-type: x proximity !important;
             scroll-behavior: smooth !important;
             scrollbar-width: none !important;
             -webkit-overflow-scrolling: touch !important;
