@@ -724,12 +724,12 @@
             max-width: 44% !important;
             display: flex !important;
             flex-direction: column !important;
-            gap: 22px !important;
+            gap: 28px !important;
             font-family: 'JetBrains Mono', monospace !important;
         }
 
         .bb-horizontal-slide-kicker {
-            font-size: 13px !important;
+            font-size: 14px !important;
             letter-spacing: 0.15em !important;
             color: #00ffff !important;
             text-transform: uppercase !important;
@@ -738,8 +738,8 @@
         }
 
         .bb-horizontal-slide-copy h2 {
-            font-size: 68px !important;
-            line-height: 1.1 !important;
+            font-size: 76px !important;
+            line-height: 1.05 !important;
             color: #ffffff !important;
             font-weight: 800 !important;
             margin: 0 !important;
@@ -748,8 +748,8 @@
         }
 
         .bb-horizontal-slide-subtitle {
-            font-size: 18px !important;
-            line-height: 1.6 !important;
+            font-size: 20px !important;
+            line-height: 1.7 !important;
             color: #cbd5e1 !important;
             font-weight: 500 !important;
             letter-spacing: 0.01em !important;
@@ -758,9 +758,9 @@
         }
 
         .bb-horizontal-slide-copy p {
-            font-size: 16.5px !important;
-            line-height: 1.8 !important;
-            color: #94a3b8 !important;
+            font-size: 18px !important;
+            line-height: 1.85 !important;
+            color: #a0aec0 !important;
             margin: 0 !important;
             font-family: Inter, sans-serif !important;
         }
@@ -793,7 +793,7 @@
         }
 
         .bb-slide-spec-value {
-            font-size: 18px !important;
+            font-size: 20px !important;
             font-weight: 800 !important;
             color: #00ffff !important;
             font-family: 'JetBrains Mono', monospace !important;
@@ -801,8 +801,8 @@
         }
 
         .bb-slide-spec-label {
-            font-size: 11px !important;
-            letter-spacing: 0.1em !important;
+            font-size: 12px !important;
+            letter-spacing: 0.12em !important;
             color: #cbd5e1 !important;
             text-transform: uppercase !important;
             font-family: 'JetBrains Mono', monospace !important;
@@ -812,13 +812,13 @@
         /* Code snippet styling */
         .bb-code-snippet {
             background: rgba(0, 0, 0, 0.6) !important;
-            border: 1px solid rgba(0, 210, 255, 0.2) !important;
+            border: 1.5px solid rgba(0, 210, 255, 0.25) !important;
             border-radius: 8px !important;
-            padding: 16px !important;
-            margin: 20px 0 0 0 !important;
+            padding: 20px !important;
+            margin: 24px 0 0 0 !important;
             font-family: 'JetBrains Mono', monospace !important;
-            font-size: 12px !important;
-            line-height: 1.6 !important;
+            font-size: 13.5px !important;
+            line-height: 1.7 !important;
             overflow-x: auto !important;
             color: #cbd5e1 !important;
         }
@@ -850,12 +850,12 @@
         }
 
         .bb-horizontal-slide-targets li {
-            font-size: 13px !important;
+            font-size: 14px !important;
             letter-spacing: 0.08em !important;
             color: #ffffff !important;
             background: rgba(0, 210, 255, 0.08) !important;
             border: 1.5px solid rgba(0, 210, 255, 0.25) !important;
-            padding: 14px 18px !important;
+            padding: 16px 20px !important;
             border-radius: 8px !important;
             text-align: center !important;
             cursor: pointer !important;
@@ -906,7 +906,7 @@
         }
 
         .bb-slide-tag-detail-placeholder {
-            font-size: 11px !important;
+            font-size: 12px !important;
             letter-spacing: 0.08em !important;
             color: #64748b !important;
             text-transform: uppercase !important;
@@ -922,7 +922,7 @@
         }
 
         .bb-slide-tag-detail-name {
-            font-size: 13px !important;
+            font-size: 14px !important;
             font-weight: 800 !important;
             letter-spacing: 0.08em !important;
             color: #00ffff !important;
@@ -930,8 +930,8 @@
         }
 
         .bb-slide-tag-detail-copy {
-            font-size: 13px !important;
-            line-height: 1.6 !important;
+            font-size: 14px !important;
+            line-height: 1.7 !important;
             color: #cbd5e1 !important;
             font-family: 'Inter', sans-serif !important;
         }
