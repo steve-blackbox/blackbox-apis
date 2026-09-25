@@ -394,31 +394,54 @@
             align-items: center !important;
             gap: 10px !important;
             flex: 0 0 auto !important;
-            padding: 8px 16px !important;
+            padding: 10px 18px !important;
             border-radius: 100px !important;
-            background: rgba(0, 210, 255, 0.06) !important;
-            border: 1px solid rgba(0, 210, 255, 0.25) !important;
+            background: rgba(0, 210, 255, 0.08) !important;
+            border: 1.5px solid rgba(0, 210, 255, 0.35) !important;
             font-family: 'JetBrains Mono', monospace !important;
-            font-size: 11px !important;
-            letter-spacing: 0.08em !important;
-            color: #ffffff !important;
+            font-size: 12px !important;
+            letter-spacing: 0.1em !important;
+            color: #00ffff !important;
             white-space: nowrap !important;
+            font-weight: 600 !important;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.15) !important;
+            animation: bb-badge-glow 3s ease-in-out infinite !important;
         }
 
         .bb-live-dot {
             display: inline-block !important;
-            width: 7px !important;
-            height: 7px !important;
+            width: 8px !important;
+            height: 8px !important;
             border-radius: 50% !important;
-            background: #00d2ff !important;
-            box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.6) !important;
-            animation: bb-live-pulse 2s ease-out infinite !important;
+            background: #00ff88 !important;
+            box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7) !important;
+            animation: bb-live-pulse 1.8s ease-out infinite !important;
         }
 
         @keyframes bb-live-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.55); }
-            70% { box-shadow: 0 0 0 8px rgba(0, 210, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0); }
+            0% { 
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 0 6px rgba(0, 255, 136, 0.3);
+                transform: scale(1.1);
+            }
+            100% { 
+                box-shadow: 0 0 0 12px rgba(0, 255, 136, 0); 
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bb-badge-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
+                border-color: rgba(0, 210, 255, 0.35);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(0, 210, 255, 0.35);
+                border-color: rgba(0, 210, 255, 0.6);
+            }
         }
 
         /* License verification widget now lives on page 3 (payment page), just above the pricing grid. */
