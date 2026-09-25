@@ -684,8 +684,7 @@
             align-items: flex-start !important;
             gap: 64px !important;
             box-sizing: border-box !important;
-            min-height: 500px !important;
-            padding: 60px 0 !important;
+            padding: 40px 0 !important;
         }
 
         /* Mobile optimization: reduce heights and padding */
