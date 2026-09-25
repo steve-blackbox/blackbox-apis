@@ -267,7 +267,7 @@
 
         #screen-command .simulation-lab-grid {
             display: grid !important;
-            grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) !important;
+            grid-template-columns: 1fr !important;
             gap: 18px !important;
             width: 100% !important;
             margin: 8px 0 24px !important;
