@@ -651,9 +651,9 @@
             position: relative !important;
         }
 
-        /* Visual scroll indicator: shows user can scroll horizontally */
+        /* Visual scroll indicator: shows user can scroll horizontally BETWEEN CATEGORIES */
         .bb-horizontal-slide::after {
-            content: '← SWIPE TO EXPLORE →' !important;
+            content: '← SWIPE CATEGORIES →' !important;
             position: absolute !important;
             bottom: 32px !important;
             left: 50% !important;
@@ -3294,7 +3294,7 @@ html body main #screen-command #sidebar-categories {
 /* Show scroll indicator on mobile with short text */
 @media (max-width: 600px) {
     .bb-horizontal-slide::after {
-        content: '← SWIPE →' !important;
+        content: '← SWIPE ←' !important;
         font-size: 10px !important;
         bottom: 16px !important;
     }
