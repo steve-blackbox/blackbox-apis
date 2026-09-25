@@ -2377,6 +2377,50 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3) !important;
         }
 
+        /* Mobile dropdown select for category navigation */
+        .mobile-category-select {
+            width: 100% !important;
+            max-width: none !important;
+            padding: 12px 16px !important;
+            margin: 0 !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 12px !important;
+            letter-spacing: 0.05em !important;
+            text-transform: uppercase !important;
+            border-radius: 6px !important;
+            cursor: pointer !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300d2ff' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 8px center !important;
+            background-size: 20px !important;
+            padding-right: 32px !important;
+            transition: background-color 0.2s ease, border-color 0.2s ease !important;
+        }
+
+        .mobile-category-select:hover {
+            background-color: rgba(255, 255, 255, 0.08) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .mobile-category-select:focus {
+            outline: none !important;
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            border-color: #00d2ff !important;
+            box-shadow: 0 0 8px rgba(0, 210, 255, 0.2) !important;
+        }
+
+        .mobile-category-select option {
+            background: #0a0d16 !important;
+            color: #ffffff !important;
+            padding: 8px !important;
+        }
+
         /* Obsidian and matte titanium finish */
         body,
         main {
@@ -3274,6 +3318,10 @@ html body main #screen-command #sidebar-categories {
 
 /* 📱 MOBILE RESPONSIVE FIXES — logo positioning and scroll indicator tweaks */
 @media (max-width: 768px) {
+    aside {
+        height: auto !important;
+    }
+
     .sidebar-header {
         padding: 12px 16px !important;
         justify-content: flex-start !important;
@@ -3281,6 +3329,17 @@ html body main #screen-command #sidebar-categories {
 
     .bb-executive-header {
         padding: 12px 0 !important;
+    }
+
+    /* Adapt theme-list for mobile dropdown */
+    .theme-list {
+        height: auto !important;
+        padding: 12px 16px !important;
+    }
+
+    /* Update main padding for smaller mobile header */
+    html body main {
+        padding-top: 110px !important;
     }
 
     /* Hide scroll indicator on very small screens */

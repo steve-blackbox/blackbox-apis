@@ -683,9 +683,14 @@
             const robotsInCategory = robotsCatalog.filter(r => r.category === category);
             currentRobotId = robotsInCategory.length ? robotsInCategory[0].id : null;
 
+            // Update active button state for desktop
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-theme-${category}`);
             if (activeBtn) activeBtn.classList.add('active');
+
+            // Update mobile dropdown select
+            const select = document.getElementById('mobile-category-select');
+            if (select) select.value = category;
 
             const mainHeaderTitle = document.getElementById('current-division-title');
             if (mainHeaderTitle && activeBtn) {
@@ -759,14 +764,38 @@ function initializeApp() {
             const sidebarContainer = document.getElementById('sidebar-categories');
             sidebarContainer.innerHTML = '';
 
-            robotCategories.forEach((category) => {
-                const btn = document.createElement('button');
-                btn.id = `btn-theme-${category}`;
-                btn.className = `theme-btn theme-item ${category === currentCategory ? 'active' : ''}`;
-                btn.textContent = category;
-                btn.onclick = () => switchDivision(category);
-                sidebarContainer.appendChild(btn);
-            });
+            // Check if mobile
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Create dropdown select for mobile
+                const select = document.createElement('select');
+                select.className = 'mobile-category-select';
+                select.id = 'mobile-category-select';
+                select.onchange = (e) => switchDivision(e.target.value);
+                
+                robotCategories.forEach((category) => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category;
+                    if (category === currentCategory) {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+                
+                sidebarContainer.appendChild(select);
+            } else {
+                // Create button buttons for desktop
+                robotCategories.forEach((category) => {
+                    const btn = document.createElement('button');
+                    btn.id = `btn-theme-${category}`;
+                    btn.className = `theme-btn theme-item ${category === currentCategory ? 'active' : ''}`;
+                    btn.textContent = category;
+                    btn.onclick = () => switchDivision(category);
+                    sidebarContainer.appendChild(btn);
+                });
+            }
 
             renderSubNavigation();
             loadRobotData();
