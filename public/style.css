@@ -3160,9 +3160,18 @@ html body main #screen-command #sidebar-categories {
 
 /* 🪙 CATEGORY // 02 (SECURITY & LINK INTEGRITY) — right-side mockup removed to give
    the crypto_verify multi-chain description more room; copy takes the full row. */
+/* 🔒 CATEGORY // 02 (SECURITY & LINK INTEGRITY) — right-side mockup removed;
+   copy takes the full row; tag-detail goes below. */
+#category-slide-security .bb-horizontal-slide-inner {
+    flex-direction: column !important;
+}
+
 #category-slide-security .bb-horizontal-slide-mock {
     display: flex !important;
     flex-direction: column !important;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 #category-slide-security .bb-visual-mockup-frame {
@@ -3183,10 +3192,17 @@ html body main #screen-command #sidebar-categories {
 }
 
 /* 🔒 CATEGORY // 01 (PRIVACY & PII PROTECTION) — right-side mockup removed for the
-   same reason; copy takes the full row. */
+   same reason; copy takes the full row; tag-detail goes below. */
+#category-slide-pii .bb-horizontal-slide-inner {
+    flex-direction: column !important;
+}
+
 #category-slide-pii .bb-horizontal-slide-mock {
     display: flex !important;
     flex-direction: column !important;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 #category-slide-pii .bb-visual-mockup-frame {
@@ -3206,11 +3222,37 @@ html body main #screen-command #sidebar-categories {
     margin-top: 20px !important;
 }
 
+/* Ensure tag-detail stays visible even when mockup visual is hidden */
+#category-slide-pii .bb-slide-tag-detail {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 20px !important;
+}
+
 /* 📦 CATEGORY // 03 (DATA & MEDIA UTILITIES) — right-side mockup removed for the
    same reason; copy takes the full row. */
 #category-slide-data .bb-horizontal-slide-mock {
     display: flex !important;
     flex-direction: column !important;
+}
+
+#category-slide-data .bb-visual-mockup-frame {
+    display: none !important;
+}
+
+/* 🔒 CATEGORY // 03 (DATA & MEDIA UTILITIES) — right-side mockup removed; copy 
+   takes the full row; tag-detail goes below. */
+#category-slide-data .bb-horizontal-slide-inner {
+    flex-direction: column !important;
+}
+
+#category-slide-data .bb-horizontal-slide-mock {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 #category-slide-data .bb-visual-mockup-frame {
