@@ -969,7 +969,12 @@ function initializeApp() {
             initializeApp();
             initLogoShieldActivation();
             initSlideTagDetailReveal();
-            initPlaygroundScrollBridge();
+            // initPlaygroundScrollBridge() disabled: it hijacked ALL vertical wheel
+            // events while page 2 was in view and redirected them into horizontal
+            // track movement, which could swallow scroll input in both directions
+            // and make the whole page feel "stuck". Native trackpad/scroll now
+            // passes straight through; page 2's horizontal category swipe still
+            // works natively via two-finger horizontal trackpad gestures.
         };
     </script>
 </body>

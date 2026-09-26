@@ -627,7 +627,7 @@
         /* ---- SECTION 2 // PLAYGROUND MATRIX — 5-panel horizontal industry slider ---- */
         #screen-playground.screen-section {
             padding: 0 !important;
-            overflow: hidden !important;
+            overflow: visible !important;
             display: block !important;
         }
 
@@ -639,12 +639,13 @@
             min-height: 100vh !important;
             height: auto !important;
             overflow-x: auto !important;
-            overflow-y: auto !important;
+            overflow-y: visible !important;
             scroll-snap-type: x proximity !important;
             scroll-behavior: smooth !important;
             scrollbar-width: none !important;
             -webkit-overflow-scrolling: touch !important;
-            overscroll-behavior: contain !important;
+            overscroll-behavior-x: contain !important;
+            overscroll-behavior-y: auto !important;
         }
 
         /* Mobile: faster scroll without smooth animation */
@@ -1422,11 +1423,16 @@
             }
         }
 
-        /* Architectural ambient layer for the three story-scroll frames. */
+        /* Architectural ambient layer for the three story-scroll frames.
+           NOTE: was height:100vh + overflow:hidden, which SILENTLY CLIPS any section
+           whose content is taller than one viewport (no scrollbar, no way to reach the
+           clipped part — feels like scrolling is "stuck"/broken). Sections now size to
+           their own content (min-height keeps the full-bleed one-screen feel on short
+           pages) and overflow is visible so the page just keeps flowing/scrolling. */
         .screen-section {
             width: 100vw !important;
-            height: 100vh !important;
             min-height: 100vh !important;
+            height: auto !important;
             scroll-snap-align: start !important;
             scroll-snap-stop: none !important;
             display: flex !important;
@@ -1436,7 +1442,7 @@
             box-sizing: border-box !important;
             position: relative !important;
             padding: 40px !important;
-            overflow: hidden !important;
+            overflow: visible !important;
             background-image: linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px) !important;
             background-size: 100px 100px !important;
@@ -1464,11 +1470,14 @@
                 linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px) !important;
         }
 
-        /* Linear-inspired two-page command and payment architecture. */
-        html,
-        body {
+        /* Linear-inspired two-page command and payment architecture.
+           NOTE: html and body must NOT both carry height:100% + overflow-y:scroll —
+           that creates two nested scroll containers (documentElement AND body each
+           scrollable) and the trackpad/wheel/scrollbar ends up fighting between the
+           two, which reads as the page being "stuck"/blocked. Only html scrolls; body
+           flows naturally to its content height. */
+        html {
             height: 100% !important;
-            min-height: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
             scroll-behavior: smooth !important;
@@ -1478,6 +1487,14 @@
             background: #050505 !important;
             overscroll-behavior: none !important;
             -webkit-overflow-scrolling: touch !important;
+        }
+
+        body {
+            min-height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            background: #050505 !important;
         }
 
         #screen-command {
@@ -2046,11 +2063,8 @@
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            overflow: hidden;
             box-sizing: border-box;
             flex-direction: column !important;
-            height: auto !important;
-            overflow-y: auto !important;
             min-height: 100vh !important;
             background-image: none !important;
         }
@@ -2058,7 +2072,6 @@
         main {
             padding: 60px 40px !important;
             flex: none !important;
-            overflow-y: auto;
             box-sizing: border-box !important;
             z-index: 10;
             background: #03050d !important;
