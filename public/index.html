@@ -194,6 +194,7 @@
                                             <span class="bb-slide-tag-detail-name"></span>
                                             <span class="bb-slide-tag-detail-copy"></span>
                                         </div>
+                                        <div class="bb-live-test" id="live-test-pii" data-category="pii"></div>
                                     </div>
                                   </div>
                                 </div>
@@ -267,6 +268,7 @@
                                             <span class="bb-slide-tag-detail-name"></span>
                                             <span class="bb-slide-tag-detail-copy"></span>
                                         </div>
+                                        <div class="bb-live-test" id="live-test-security" data-category="security"></div>
                                     </div>
                                   </div>
                                 </div>
@@ -337,6 +339,7 @@
                                             <span class="bb-slide-tag-detail-name"></span>
                                             <span class="bb-slide-tag-detail-copy"></span>
                                         </div>
+                                        <div class="bb-live-test" id="live-test-data" data-category="data"></div>
                                     </div>
                                   </div>
                                 </div>
@@ -867,6 +870,271 @@ function initializeApp() {
             slides.forEach((slide) => observer.observe(slide));
         }
 
+        // 🧪 LIVE TEST WIDGET — lets any visitor call the REAL backend endpoint with
+        // their own data (via the public rate-limited demo key) and see the actual
+        // JSON response, right below the "hover a robot" panel. One config entry per
+        // robot; the field list mirrors exactly what each endpoint's route handler
+        // reads off req.body (see the robot's own .js file at the project root).
+        const BB_DEMO_LICENSE_KEY = 'BB-DEMO-POSTMAN-PUBLIC01';
+
+        const BB_LIVE_TEST_CONFIG = {
+            'LOG SANITIZER': {
+                endpoint: '/v1/log_sanitizer',
+                fields: [
+                    { name: 'log_data', label: 'Log line / raw text', type: 'textarea', rows: 3,
+                      default: 'card 4111 1111 1111 1111, user@mail.com, Bearer sk_live_abc123' },
+                ],
+                buildBody: (v) => ({ log_data: v.log_data }),
+            },
+            'PII MASKER': {
+                endpoint: '/v1/pii_masker',
+                fields: [
+                    { name: 'raw_payload_text', label: 'Raw text or JSON payload', type: 'textarea', rows: 3,
+                      default: '{"email":"jane.doe@example.com","phone":"+1 415 555 0132"}' },
+                ],
+                buildBody: (v) => ({ raw_payload_text: v.raw_payload_text }),
+            },
+            'PHONE NORMALIZER': {
+                endpoint: '/v1/phone_sanitizer',
+                fields: [
+                    { name: 'raw_phone_string', label: 'Phone number', type: 'text', default: '06 12 34 56 78' },
+                    { name: 'default_country_code', label: 'Default country code', type: 'text', default: '33' },
+                ],
+                buildBody: (v) => ({ raw_phone_string: v.raw_phone_string, default_country_code: v.default_country_code }),
+            },
+            'IP ANONYMIZER': {
+                endpoint: '/v1/ip_anonymizer',
+                fields: [
+                    { name: 'raw_ip_address', label: 'IP address', type: 'text', default: '203.0.113.42' },
+                ],
+                buildBody: (v) => ({ raw_ip_address: v.raw_ip_address }),
+            },
+            'BOT DETECTOR': {
+                endpoint: '/v1/bot_detector',
+                fields: [],
+                note: "Auto-filled with YOUR browser's real headers & fingerprint — nothing to type.",
+                autoBody: () => ({
+                    headers_payload: {
+                        'user-agent': navigator.userAgent,
+                        'accept-language': navigator.language || 'en-US',
+                        'accept': 'text/html,application/xhtml+xml',
+                    },
+                    fingerprint_meta: {
+                        webdriver: !!navigator.webdriver,
+                        plugins: Array.from(navigator.plugins || []).map((p) => p.name),
+                        languages: navigator.languages || [navigator.language],
+                    },
+                }),
+            },
+            'CRYPTO VERIFY': {
+                endpoint: '/v1/crypto_verify',
+                fields: [
+                    { name: 'address', label: 'Wallet address', type: 'text', default: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' },
+                    { name: 'network', label: 'Chain', type: 'select', default: 'btc',
+                      options: ['btc', 'eth', 'ltc', 'doge', 'trx', 'xrp', 'bch', 'ada', 'sol'] },
+                ],
+                buildBody: (v) => ({ address: v.address, network: v.network }),
+            },
+            'LINK SIGNER': {
+                endpoint: '/v1/link_signer',
+                fields: [
+                    { name: 'base_url', label: 'URL to sign', type: 'text', default: 'https://example.com/download/report.pdf' },
+                    { name: 'expiration_minutes', label: 'Expires in (minutes)', type: 'text', default: '30' },
+                    { name: 'secret_salt', label: 'Secret salt (min 8 chars)', type: 'text', default: 'demo-salt-2026' },
+                ],
+                buildBody: (v) => ({
+                    base_url: v.base_url,
+                    expiration_minutes: parseInt(v.expiration_minutes, 10) || 30,
+                    secret_salt: v.secret_salt,
+                }),
+            },
+            'LINK VALIDATOR': {
+                endpoint: '/v1/link_validator',
+                fields: [
+                    { name: 'signed_url', label: 'Signed URL to verify', type: 'text',
+                      placeholder: 'Paste a URL generated by Link Signer above' },
+                    { name: 'secret_salt', label: 'Secret salt used to sign it', type: 'text', default: 'demo-salt-2026' },
+                ],
+                buildBody: (v) => ({ signed_url: v.signed_url, secret_salt: v.secret_salt }),
+            },
+            'CSV DEDUPE': {
+                endpoint: '/v1/csv_dedupe/process',
+                fields: [
+                    { name: 'csvRaw', label: 'CSV data', type: 'textarea', rows: 4,
+                      default: 'name,email\nJane Doe,jane@mail.com\nJohn Smith,john@mail.com\nJane Doe,jane@mail.com' },
+                ],
+                buildBody: (v) => ({ csvRaw: v.csvRaw, hasHeader: true }),
+            },
+            'EXIF CLOAK': {
+                endpoint: '/v1/exif_cloak',
+                fields: [
+                    { name: 'image_file', label: 'JPEG or PNG image', type: 'file' },
+                ],
+                buildBodyAsync: async (v, formEl) => {
+                    const fileInput = formEl.querySelector('[name="image_file"]');
+                    const file = fileInput && fileInput.files[0];
+                    if (!file) throw new Error('Choose a JPEG or PNG file first.');
+                    const base64 = await bbFileToRawBase64(file);
+                    return { image_base64: base64 };
+                },
+            },
+            'TIMEZONE CONVERTER': {
+                endpoint: '/v1/timezone_converter',
+                fields: [
+                    { name: 'input_date_string', label: 'Date/time', type: 'text', default: new Date().toISOString() },
+                    { name: 'source_tz', label: 'Source timezone (optional)', type: 'text', default: 'UTC' },
+                    { name: 'target_tz', label: 'Target timezone', type: 'text',
+                      default: (Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York') },
+                ],
+                buildBody: (v) => ({ input_date_string: v.input_date_string, source_tz: v.source_tz, target_tz: v.target_tz }),
+            },
+            'UPTIME CHECK': {
+                endpoint: '/v1/uptime_check',
+                fields: [
+                    { name: 'target_url', label: 'URL to ping', type: 'text', default: 'https://blackbox-apis.com' },
+                ],
+                buildBody: (v) => ({ target_url: v.target_url, timeout_ms: 5000 }),
+            },
+        };
+
+        function bbFileToRawBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve((reader.result || '').toString().split(',')[1] || '');
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function bbRenderLiveTestField(field) {
+            const wrap = document.createElement('div');
+            wrap.className = 'bb-live-test-field';
+            const label = document.createElement('label');
+            label.textContent = field.label;
+            wrap.appendChild(label);
+
+            let input;
+            if (field.type === 'textarea') {
+                input = document.createElement('textarea');
+                input.rows = field.rows || 3;
+            } else if (field.type === 'select') {
+                input = document.createElement('select');
+                (field.options || []).forEach((opt) => {
+                    const o = document.createElement('option');
+                    o.value = opt;
+                    o.textContent = opt.toUpperCase();
+                    input.appendChild(o);
+                });
+            } else {
+                input = document.createElement('input');
+                input.type = field.type === 'file' ? 'file' : 'text';
+                if (field.type === 'file') input.accept = 'image/png,image/jpeg';
+            }
+            input.name = field.name;
+            if (field.placeholder) input.placeholder = field.placeholder;
+            if (field.default !== undefined && field.type !== 'file') input.value = field.default;
+            wrap.appendChild(input);
+            return wrap;
+        }
+
+        function bbRenderLiveTest(container, robotName) {
+            const config = BB_LIVE_TEST_CONFIG[robotName];
+            container.innerHTML = '';
+            if (!config) return;
+
+            const header = document.createElement('div');
+            header.className = 'bb-live-test-header';
+            header.innerHTML = '<span class="bb-live-test-title">» Live test: ' + robotName + '</span>'
+                + '<span class="bb-live-test-endpoint">POST ' + config.endpoint + '</span>';
+            container.appendChild(header);
+
+            const form = document.createElement('form');
+            form.className = 'bb-live-test-fields';
+            form.autocomplete = 'off';
+
+            if (config.note) {
+                const note = document.createElement('div');
+                note.className = 'bb-live-test-quota';
+                note.style.margin = '0 0 4px 0';
+                note.textContent = '» ' + config.note;
+                form.appendChild(note);
+            }
+
+            config.fields.forEach((f) => form.appendChild(bbRenderLiveTestField(f)));
+
+            const runBtn = document.createElement('button');
+            runBtn.type = 'submit';
+            runBtn.className = 'bb-live-test-run';
+            runBtn.textContent = 'Run Live Test →';
+            form.appendChild(runBtn);
+
+            const output = document.createElement('div');
+            output.className = 'bb-live-test-output';
+
+            const quota = document.createElement('div');
+            quota.className = 'bb-live-test-quota';
+            quota.textContent = '» Shared public demo key — capped at 50 requests/day across all visitors.';
+
+            container.appendChild(form);
+            container.appendChild(output);
+            container.appendChild(quota);
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                runBtn.disabled = true;
+                runBtn.textContent = 'Running…';
+                output.className = 'bb-live-test-output is-visible';
+                output.textContent = '» Calling ' + config.endpoint + ' …';
+
+                try {
+                    const values = Object.fromEntries(new FormData(form).entries());
+                    const body = config.buildBodyAsync
+                        ? await config.buildBodyAsync(values, form)
+                        : (config.autoBody ? config.autoBody() : config.buildBody(values));
+
+                    const res = await fetch(config.endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + BB_DEMO_LICENSE_KEY,
+                        },
+                        body: JSON.stringify(body),
+                    });
+
+                    const json = await res.json().catch(() => ({}));
+                    output.textContent = JSON.stringify(json, null, 2);
+                    output.className = 'bb-live-test-output is-visible ' + (res.ok ? 'is-success' : 'is-error');
+                } catch (err) {
+                    output.textContent = '» Error: ' + (err && err.message ? err.message : 'Request failed.');
+                    output.className = 'bb-live-test-output is-visible is-error';
+                } finally {
+                    runBtn.disabled = false;
+                    runBtn.textContent = 'Run Live Test →';
+                }
+            });
+        }
+
+        // Wires each category slide's robot pills to the live-test widget: clicking a
+        // pill both shows its description (existing hover reveal) AND loads that
+        // robot's real form below. Defaults to the first robot so it's never empty.
+        function initLiveTestWidgets() {
+            document.querySelectorAll('.bb-live-test').forEach((container) => {
+                const slide = container.closest('.bb-horizontal-slide');
+                if (!slide) return;
+                const pills = slide.querySelectorAll('.bb-horizontal-slide-targets li[data-detail-name]');
+                if (!pills.length) return;
+
+                function selectPill(pill) {
+                    pills.forEach((p) => p.classList.remove('is-selected'));
+                    pill.classList.add('is-selected');
+                    bbRenderLiveTest(container, pill.dataset.detailName);
+                }
+
+                pills.forEach((pill) => pill.addEventListener('click', () => selectPill(pill)));
+                selectPill(pills[0]);
+            });
+        }
+
         // 🎯 ROBOT TAG DETAIL REVEAL — hovering a robot pill (left column) activates
         // the reserved reveal panel below the mockup card (right column), same slide only.
         function initSlideTagDetailReveal() {
@@ -969,6 +1237,7 @@ function initializeApp() {
             initializeApp();
             initLogoShieldActivation();
             initSlideTagDetailReveal();
+            initLiveTestWidgets();
             // initPlaygroundScrollBridge() disabled: it hijacked ALL vertical wheel
             // events while page 2 was in view and redirected them into horizontal
             // track movement, which could swallow scroll input in both directions
