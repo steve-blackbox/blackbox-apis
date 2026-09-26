@@ -20,7 +20,7 @@
         html body main {
             background: #030305 !important;
             margin: 0 !important;
-            padding: 80px 0 0 0 !important;
+            padding: 0 !important;
         }
 
         html body .content-container > header + div {
@@ -42,7 +42,7 @@
             gap: 12px !important;
             padding: 16px 0 !important;
             width: 100% !important;
-            max-width: 1200px !important;
+            max-width: 100% !important;
             margin: 30px auto !important;
             border: 0 !important;
             background: transparent !important;
@@ -446,7 +446,7 @@
 
         /* License verification widget now lives on page 3 (payment page), just above the pricing grid. */
         #screen-payment #cash-content > #license-ingress {
-            max-width: 1200px !important;
+            max-width: 100% !important;
             width: 100% !important;
             margin: 0 auto 36px !important;
             padding: 16px 24px !important;
@@ -612,7 +612,7 @@
         
 
         .screen-content {
-            width: min(1200px, 100%) !important;
+            width: 100% !important;
             max-height: 100% !important;
             overflow: auto !important;
             scrollbar-width: none !important;
@@ -703,7 +703,7 @@
            so the carousel no longer looks off-center relative to the rest of the site. */
         .bb-horizontal-slide-inner {
             width: 100% !important;
-            max-width: 1200px !important;
+            max-width: 100% !important;
             margin: 0 auto !important;
             display: flex !important;
             flex-direction: row !important;
@@ -1593,7 +1593,7 @@
             scroll-snap-stop: none !important;
             display: flex !important;
             flex-direction: column !important;
-            justify-content: center !important;
+            justify-content: flex-start !important;
             align-items: center !important;
             box-sizing: border-box !important;
             position: relative !important;
@@ -1715,7 +1715,7 @@
         #screen-payment .stripe-section,
         #screen-payment footer {
             width: 100% !important;
-            max-width: 1200px !important;
+            max-width: 100% !important;
         }
 
         #screen-command .theme-item,
@@ -1817,7 +1817,7 @@
         
 
         .central-floating-dock {
-            max-width: 1200px !important;
+            max-width: 100% !important;
             margin: 30px auto !important;
             padding: 16px 0 !important;
             gap: 12px !important;
@@ -2141,7 +2141,7 @@
             gap: 40px !important;
             display: flex !important;
             width: 100% !important;
-            max-width: 1400px !important;
+            max-width: 100% !important;
             margin: 0 !important;
             flex-direction: column !important;
         }
@@ -2882,7 +2882,7 @@
            justify-content: space-between !important;
            gap: 24px !important;
            width: 100% !important;
-           max-width: 1200px !important;
+           max-width: 100% !important;
            margin: 0 auto 28px !important;
            padding: 0 !important;
            box-sizing: border-box !important;
@@ -2941,7 +2941,7 @@
            justify-content: center !important;
            gap: 18px !important;
            width: 100% !important;
-           max-width: 1200px !important;
+           max-width: 100% !important;
            margin: 0 auto 48px !important;
            padding: 18px 28px !important;
            box-sizing: border-box !important;
@@ -2992,7 +2992,7 @@
         html body main #screen-payment .stripe-section {
            order: 1 !important;
            width: 100% !important;
-           max-width: 1200px !important;
+           max-width: 100% !important;
            margin: 0 auto !important;
            padding-bottom: 120px !important;
         }
@@ -3010,7 +3010,7 @@
            right: auto !important;
            margin: auto auto 0 !important;
            width: 100% !important;
-           max-width: 1200px !important;
+           max-width: 100% !important;
            padding: 20px 0 !important;
            box-sizing: border-box !important;
            z-index: 100 !important;
@@ -3262,6 +3262,14 @@ html body main #screen-command #sidebar-categories {
    trop identique entre les 3 pages tout en gardant la même famille visuelle. */
 #screen-playground::before { top: -260px !important; right: -260px !important; border-color: rgba(255, 255, 255, 0.06) !important; }
 #screen-payment::after { border-color: rgba(255, 255, 255, 0.05) !important; }
+
+/* The pricing/payment page (page 3) is much shorter than a full viewport once
+   the API playground block was removed — forcing min-height:100vh here left a
+   large dead band of background below the footer with nothing in it. Page 1 and
+   2 are close enough to a full screen that they don't need this override. */
+#screen-payment.screen-section {
+    min-height: auto !important;
+}
 
 /* Petits repères d'angle façon "viseur / scan de traitement", aux 4 coins de chaque
    section. Purement cosmétique, très discret (opacité faible), sans texte ajouté. */
