@@ -176,4 +176,57 @@ marché jeune, moins saturé que les API utilitaires classiques) :
 _(section à compléter au fil des discussions futures — nouvelles idées,
 articles lus, concurrents repérés, retours clients...)_
 
+- (27/09) **Sites d'affiliation "un moteur, plusieurs niches" (hors Amazon)**
+
+  **Origine** : Steve a suivi la formation d'Olivier Allain (revente Amazon),
+  qui recommande Helium10 + SEMrush pour trouver des niches produit et
+  Affilae pour l'affiliation. Idée initiale : un blog par niche avec liens
+  affiliés Amazon.
+
+  **Constat/challenge apporté** : le modèle "blog texte + affiliation
+  Amazon" a beaucoup vieilli depuis l'époque probable de cette formation :
+  - Mises à jour Google "Helpful Content" (2022-2024) pénalisent lourdement
+    les sites d'affiliation minces sans preuve d'usage réel du produit.
+  - Le contenu généré par IA a saturé ce créneau, rendant le SEO pur plus
+    dur et plus concurrentiel qu'avant.
+  - Les commissions Amazon ont baissé sur beaucoup de catégories (souvent
+    1-4% aujourd'hui).
+  - "Un site par niche" = fragile : dépendance à 100% à l'algorithme Google,
+    une mise à jour peut effacer plusieurs sites d'un coup.
+
+  **Pivot proposé — exclure Amazon, exploiter Affilae différemment** :
+  privilégier les verticales à commission plus intéressante que le retail
+  Amazon :
+  - **CPA fixe par lead** (souvent le plus rentable) : assurance/mutuelle
+    (20-80€/devis), comparateurs d'énergie (30-100€/contrat signé), banque
+    en ligne/carte bancaire (20-50€/ouverture de compte), crédit immobilier.
+  - **Commission récurrente mensuelle** : hébergement web, VPN, logiciels
+    SaaS — revenu qui s'accumule tant que le client reste abonné, contrairement
+    à un achat unique Amazon.
+  - **Formations/coaching en ligne** : commissions souvent 20-50%, panier
+    élevé (comme la formation Olivier Allain elle-même).
+
+  **Différenciation proposée** : au lieu d'un blog texte classique (facilement
+  copié par l'IA), construire un **outil interactif** par site (comparateur,
+  questionnaire de recommandation type "quelle offre vous correspond ?") —
+  s'appuie directement sur le pattern déjà éprouvé du widget "Live Test" de
+  BlackBox (formulaire → traitement → résultat affiché). Google valorise ce
+  type de contenu à valeur ajoutée réelle, difficile à reproduire par simple
+  génération de texte IA.
+
+  **Idée d'exécution rapide (pour ne pas reperdre des jours à chaque site)** :
+  construire **un seul moteur générique réutilisable** une fois (design,
+  structure, logique de questionnaire/recommandation), piloté par **un
+  fichier de config JSON par niche** (questions du quiz, liste d'offres +
+  liens d'affiliation + critères de recommandation, couleurs/branding). Le
+  premier site demande un vrai investissement de construction ; chaque site
+  suivant ne demande plus que de remplir ce fichier de config et déployer —
+  quelques heures, pas des jours.
+
+  **Prochaine étape suggérée (au bon moment, pas avant le lancement réel de
+  BlackBox Labs — voir priorités ci-dessus)** : consulter le catalogue/
+  marketplace Affilae, lister les 5-10 programmes qui paient le mieux par
+  verticale, choisir une première niche avec Steve, puis démarrer la
+  construction du moteur générique.
+
 -
