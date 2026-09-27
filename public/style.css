@@ -3266,9 +3266,17 @@ html body main #screen-command #sidebar-categories {
 /* The pricing/payment page (page 3) is much shorter than a full viewport once
    the API playground block was removed — forcing min-height:100vh here left a
    large dead band of background below the footer with nothing in it. Page 1 and
-   2 are close enough to a full screen that they don't need this override. */
+   2 are close enough to a full screen that they don't need this override.
+   Also: overflow must stay hidden specifically here (unlike the other two
+   sections, which need overflow:visible so their taller-than-viewport real
+   content isn't clipped) because #screen-payment is the LAST section — the
+   decorative ::after pseudo-element (a 420px square rotated 45°, anchored with
+   bottom:-160px) bleeds ~250px below the section with nothing after it to
+   visually absorb that bleed, which was inflating the whole page's scroll
+   height and showing up as dead empty space at the very bottom. */
 #screen-payment.screen-section {
     min-height: auto !important;
+    overflow: hidden !important;
 }
 
 /* Petits repères d'angle façon "viseur / scan de traitement", aux 4 coins de chaque
