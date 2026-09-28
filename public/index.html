@@ -190,7 +190,7 @@
                                             </div>
                                         </div>
                                         <div class="bb-slide-tag-detail" aria-live="polite">
-                                            <span class="bb-slide-tag-detail-placeholder">» Hover a robot on the left to see what it does</span>
+                                            <span class="bb-slide-tag-detail-placeholder">» Hover or tap a robot to see what it does</span>
                                             <span class="bb-slide-tag-detail-name"></span>
                                             <span class="bb-slide-tag-detail-copy"></span>
                                         </div>
@@ -264,7 +264,7 @@
                                             </div>
                                         </div>
                                         <div class="bb-slide-tag-detail" aria-live="polite">
-                                            <span class="bb-slide-tag-detail-placeholder">» Hover a robot on the left to see what it does</span>
+                                            <span class="bb-slide-tag-detail-placeholder">» Hover or tap a robot to see what it does</span>
                                             <span class="bb-slide-tag-detail-name"></span>
                                             <span class="bb-slide-tag-detail-copy"></span>
                                         </div>
@@ -335,7 +335,7 @@
                                             </div>
                                         </div>
                                         <div class="bb-slide-tag-detail" aria-live="polite">
-                                            <span class="bb-slide-tag-detail-placeholder">» Hover a robot on the left to see what it does</span>
+                                            <span class="bb-slide-tag-detail-placeholder">» Hover or tap a robot to see what it does</span>
                                             <span class="bb-slide-tag-detail-name"></span>
                                             <span class="bb-slide-tag-detail-copy"></span>
                                         </div>
@@ -1173,8 +1173,9 @@ function initializeApp() {
             });
         }
 
-        // 🎯 ROBOT TAG DETAIL REVEAL — hovering a robot pill (left column) activates
-        // the reserved reveal panel below the mockup card (right column), same slide only.
+        // 🎯 ROBOT TAG DETAIL REVEAL — hovering (desktop) or tapping (touch/mobile,
+        // where the pill grid stacks above this panel instead of beside it) a robot
+        // pill activates the reserved reveal panel, same slide only.
         function initSlideTagDetailReveal() {
             const slides = document.querySelectorAll('.bb-horizontal-slide');
             slides.forEach((slide) => {
@@ -1185,14 +1186,17 @@ function initializeApp() {
                 const nameEl = panel.querySelector('.bb-slide-tag-detail-name');
                 const copyEl = panel.querySelector('.bb-slide-tag-detail-copy');
 
+                function revealTag(tag) {
+                    tags.forEach((t) => t.classList.remove('is-hover-active'));
+                    tag.classList.add('is-hover-active');
+                    nameEl.textContent = tag.dataset.detailName || tag.textContent;
+                    copyEl.textContent = tag.dataset.detailCopy || '';
+                    panel.classList.add('is-active');
+                }
+
                 tags.forEach((tag) => {
-                    tag.addEventListener('mouseenter', () => {
-                        tags.forEach((t) => t.classList.remove('is-hover-active'));
-                        tag.classList.add('is-hover-active');
-                        nameEl.textContent = tag.dataset.detailName || tag.textContent;
-                        copyEl.textContent = tag.dataset.detailCopy || '';
-                        panel.classList.add('is-active');
-                    });
+                    tag.addEventListener('mouseenter', () => revealTag(tag));
+                    tag.addEventListener('click', () => revealTag(tag));
                     tag.addEventListener('focus', () => tag.dispatchEvent(new Event('mouseenter')));
                 });
 
