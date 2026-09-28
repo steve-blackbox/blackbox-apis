@@ -236,7 +236,10 @@ articles lus, concurrents repérés, retours clients...)_
   de recherche en création d'entreprise") qui prétend avoir analysé 4 145
   entreprises pour identifier les 7 modèles les plus rentables pour un
   débutant, avec un algorithme propriétaire de "correspondance profil-concept"
-  et un taux de "94% de réussite en Done-for-you".
+  et un taux de "94% de réussite en Done-for-you". Origine précisée par Steve :
+  document diffusé par Pierre Richet, un compte Instagram sur l'entrepreneuriat
+  — cohérent avec l'analyse ci-dessous (contenu créateur/influenceur destiné
+  à générer des leads, pas une étude d'un organisme de recherche indépendant).
 
   **Évaluation critique apportée** : ce document a la forme d'un rapport de
   recherche mais la fonction d'un tunnel de vente — chaque section se termine
