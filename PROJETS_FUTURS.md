@@ -229,4 +229,53 @@ articles lus, concurrents repérés, retours clients...)_
   verticale, choisir une première niche avec Steve, puis démarrer la
   construction du moteur générique.
 
+- (28/09) **Lecture critique d'un document "Venturlab" (7 modèles d'entreprise
+  rentables) — un insight à retenir, la source à traiter avec prudence**
+
+  **Contexte** : Steve a partagé un PDF marketing de Venturlab ("laboratoire
+  de recherche en création d'entreprise") qui prétend avoir analysé 4 145
+  entreprises pour identifier les 7 modèles les plus rentables pour un
+  débutant, avec un algorithme propriétaire de "correspondance profil-concept"
+  et un taux de "94% de réussite en Done-for-you".
+
+  **Évaluation critique apportée** : ce document a la forme d'un rapport de
+  recherche mais la fonction d'un tunnel de vente — chaque section se termine
+  par un CTA vers une consultation offerte ("venturlab.co/mentorat"), porte
+  d'entrée probable vers un coaching payant haut de gamme. Points de vigilance
+  identifiés :
+  - Le "94% de réussite" n'est jamais défini (premier euro ? entreprise
+    rentable à 1 an, 3 ans ?) — invérifiable de l'extérieur.
+  - L'algorithme "SCCP" (scores de compatibilité /100, pondérations
+    précises) est une boîte noire propriétaire, présentée avec le vocabulaire
+    de la rigueur scientifique mais sans aucune validation indépendante.
+  - Biais de survivance explicitement reconnu par le document lui-même
+    (corpus = entreprises déjà visibles/existantes uniquement) puis ignoré
+    dans la suite des pourcentages très précis avancés.
+  - Le tableau "entrepreneur intuitif vs analytique" est un faux dilemme
+    construit pour légitimer leur méthode, avec des exemples historiques
+    discutables (Bezos présenté comme ayant validé avant d'investir, ce qui
+    est contestable historiquement).
+
+  **Ce qui est réellement solide dans le contenu** (mais du bon sens business
+  classique, pas une découverte propriétaire) : vendre cher à peu de clients
+  plutôt que pas cher à beaucoup, privilégier le revenu récurrent, se
+  positionner sur une niche nommable, offre productisée plutôt que devis sur
+  mesure. Principes qu'on retrouve par exemple chez Alex Hormozi ("$100M
+  Offers"), disponibles gratuitement ailleurs.
+
+  **Insight actionnable retenu pour BlackBox** : dans leur classement des 7
+  modèles, "Automatisation et agents IA pour PME" arrive 4ème (22/25) —
+  diagnostiquer les processus manuels d'une PME et livrer des automatisations
+  no-code/IA sous forme d'audit payant (3000-5000€) puis projet au forfait
+  (10000-15000€). C'est un signal externe (même si la source est à prendre
+  avec recul) que l'angle **conseil/implémentation B2B sur mesure autour de
+  l'IA/automatisation** — en complément du produit API self-service actuel
+  de BlackBox — est un positionnement à fort potentiel, cohérent avec ce que
+  BlackBox sait déjà construire techniquement.
+
+  **Conclusion** : ne pas payer pour le "mentorat" Venturlab sur la seule foi
+  de ce document. Mais garder l'idée d'un service B2B (audit + implémentation
+  d'automatisations pour PME) comme extension possible du positionnement
+  BlackBox, à explorer plus tard aux côtés du produit API actuel.
+
 -
