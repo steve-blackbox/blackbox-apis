@@ -1961,8 +1961,8 @@
         .robot-tab:hover { border-color: rgba(255, 255, 255, 0.35); color: var(--text-main); background: rgba(255, 255, 255, 0.03); }
         .robot-tab.active { background: rgba(255, 255, 255, 0.04); border-color: var(--accent-green); color: var(--accent-green); font-weight: 700; box-shadow: 0 0 18px rgba(255, 255, 255, 0.10); }
 
-        .robot-main-title { font-size: 42px; font-weight: 900; color: #ffffff; margin: 0 0 24px 0; line-height: 1.15; letter-spacing: -1.5px; text-shadow: 0 0 12px rgba(255, 255, 255, 0.12); }
-        .robot-main-desc { font-size: 16px; color: #64748b; line-height: 1.6; margin-bottom: 45px; max-width: 780px; }
+        .robot-main-title { font-size: 42px; font-weight: 900; color: #ffffff; margin: 0 0 45px 0; line-height: 1.15; letter-spacing: -1.5px; text-shadow: 0 0 12px rgba(255, 255, 255, 0.12); }
+        .robot-main-desc { display: none; }
 
         .bento-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;

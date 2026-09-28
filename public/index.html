@@ -418,9 +418,6 @@
             </script>
 
             <section class="robot-display-section">
-                <h2 class="robot-main-title" id="robot-main-title">Loading robot data...</h2>
-                <p class="robot-main-desc" id="robot-main-desc">Awaiting initialization...</p>
-
                 <div class="simulation-lab-grid">
                     <section class="simulation-lab-summary" aria-label="Active robot business conversion">
                         <div class="bb-manifesto-block">
@@ -734,9 +731,6 @@
         function loadRobotData() {
             const robot = robotsCatalog.find(r => r.id === currentRobotId);
             if (!robot) return;
-
-            document.getElementById('robot-main-title').textContent = robot.name;
-            document.getElementById('robot-main-desc').textContent = robot.description;
 
             renderCardContent('feature-content-1', robot.cards[0].title, robot.cards[0].body, robot.cards[0].benefits);
             renderCardContent('feature-content-2', robot.cards[1].title, robot.cards[1].body, robot.cards[1].benefits);
