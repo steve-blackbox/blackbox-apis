@@ -529,8 +529,8 @@
 
         @media (max-width: 700px) {
             #screen-command #hero-content > .bb-header-top-line {
-                flex-wrap: wrap !important;
-                gap: 16px !important;
+                flex-wrap: nowrap !important;
+                gap: 12px !important;
             }
 
             #screen-payment #cash-content > #license-ingress {
@@ -558,6 +558,17 @@
             font-weight: 700 !important;
             color: #ffffff !important;
             letter-spacing: 0.22em !important;
+        }
+
+        /* Shrink the wordmark on phones so the hamburger button stays on the
+           same row instead of wrapping onto its own line, which was leaving a
+           dead gap above the fold before the hero heading appeared. Placed
+           after the base rule above (same selector) so it wins in the cascade. */
+        @media (max-width: 700px) {
+            #screen-command #hero-content .bb-executive-header > div:last-child {
+                font-size: 15px !important;
+                letter-spacing: 0.1em !important;
+            }
         }
 
         /* Upscaled master division tabs. */
