@@ -395,6 +395,29 @@
             background: rgba(255, 255, 255, 0.08) !important;
         }
 
+        /* Category picker on the SOLO CORE pricing card — same dark gradient,
+           border and monospace font as the hamburger menu (.bb-nav-menu) so the
+           closed box AND the native options list both match the rest of the
+           site instead of falling back to the OS's light default. */
+        .bb-category-select {
+            width: 100% !important;
+            background: linear-gradient(180deg, #0f0f11 0%, #09090a 100%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #e2e8f0 !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 13px !important;
+            padding: 10px !important;
+            border-radius: 6px !important;
+            margin-bottom: 12px !important;
+            box-sizing: border-box !important;
+        }
+
+        .bb-category-select option {
+            background: #0f0f11 !important;
+            color: #e2e8f0 !important;
+            font-family: 'JetBrains Mono', monospace !important;
+        }
+
         .bb-live-dot {
             display: inline-block !important;
             width: 8px !important;
