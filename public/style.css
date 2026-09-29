@@ -2963,18 +2963,21 @@ html body main #screen-command #sidebar-categories {
     position: absolute !important;
     z-index: 0 !important;
     pointer-events: none !important;
-    border: 1px dashed rgba(255, 255, 255, 0.07) !important;
-    opacity: 0.6 !important;
+    border: 1px dashed rgba(0, 210, 255, 0.14) !important;
+    opacity: 0.85 !important;
 }
 
-/* Grand cercle en pointillé, rotation lente — évoque un scan / radar de traitement. */
+/* Grand cercle en pointillé, rotation lente — évoque un scan / radar de traitement.
+   Vitesse doublée (90s → 42s) et teinte cyan de la marque (au lieu du blanc neutre)
+   pour que le mouvement d'arrière-plan se remarque réellement pendant une visite
+   typique, sans devenir une distraction. */
 .screen-section::before {
     width: 620px !important;
     height: 620px !important;
     border-radius: 50% !important;
     top: -180px !important;
     right: -220px !important;
-    animation: bb-geo-spin 90s linear infinite !important;
+    animation: bb-geo-spin 42s linear infinite !important;
 }
 
 /* Carré pivoté (losange) en pointillé, rotation inverse plus lente — casse la
@@ -2985,7 +2988,7 @@ html body main #screen-command #sidebar-categories {
     bottom: -160px !important;
     left: -140px !important;
     transform: rotate(45deg) !important;
-    animation: bb-geo-spin-reverse 120s linear infinite !important;
+    animation: bb-geo-spin-reverse 58s linear infinite !important;
 }
 
 @keyframes bb-geo-spin {
@@ -3000,8 +3003,8 @@ html body main #screen-command #sidebar-categories {
 
 /* Légère variation de position/teinte par section pour éviter un effet "copié-collé"
    trop identique entre les 3 pages tout en gardant la même famille visuelle. */
-#screen-playground::before { top: -260px !important; right: -260px !important; border-color: rgba(255, 255, 255, 0.06) !important; }
-#screen-payment::after { border-color: rgba(255, 255, 255, 0.05) !important; }
+#screen-playground::before { top: -260px !important; right: -260px !important; border-color: rgba(0, 255, 136, 0.12) !important; }
+#screen-payment::after { border-color: rgba(0, 210, 255, 0.1) !important; }
 
 /* The pricing/payment page (page 3) is much shorter than a full viewport once
    the API playground block was removed — forcing min-height:100vh here left a
