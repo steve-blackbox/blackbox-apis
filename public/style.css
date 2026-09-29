@@ -755,10 +755,10 @@
         .bb-horizontal-slide-kicker {
             font-size: 14px !important;
             letter-spacing: 0.15em !important;
-            color: #00ffff !important;
+            color: #00d2ff !important;
             text-transform: uppercase !important;
             font-weight: 700 !important;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3) !important;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.3) !important;
         }
 
         .bb-horizontal-slide-copy h2 {
@@ -819,7 +819,7 @@
         .bb-slide-spec-value {
             font-size: 20px !important;
             font-weight: 800 !important;
-            color: #00ffff !important;
+            color: #00d2ff !important;
             font-family: 'JetBrains Mono', monospace !important;
             letter-spacing: -0.01em !important;
         }
@@ -848,7 +848,7 @@
         }
 
         .bb-code-snippet code {
-            color: #00ffff !important;
+            color: #00d2ff !important;
             font-weight: 500 !important;
         }
 
@@ -1036,7 +1036,7 @@
             font-size: 14px !important;
             font-weight: 800 !important;
             letter-spacing: 0.08em !important;
-            color: #00ffff !important;
+            color: #00d2ff !important;
             text-transform: uppercase !important;
         }
 
@@ -1089,7 +1089,7 @@
         .bb-live-test-title {
             font-size: 12px !important;
             letter-spacing: 0.1em !important;
-            color: #00ffff !important;
+            color: #00d2ff !important;
             text-transform: uppercase !important;
             font-weight: 700 !important;
         }
@@ -1149,7 +1149,7 @@
             background: rgba(0, 210, 255, 0.12) !important;
             border: 1.5px solid rgba(0, 210, 255, 0.4) !important;
             border-radius: 6px !important;
-            color: #00ffff !important;
+            color: #00d2ff !important;
             font-family: 'JetBrains Mono', monospace !important;
             font-size: 12px !important;
             font-weight: 700 !important;
