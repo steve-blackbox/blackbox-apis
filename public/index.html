@@ -267,6 +267,47 @@
                 <span class="bb-scan-corner bb-scan-corner--br" aria-hidden="true"></span>
                 <div class="screen-content" id="cash-content"></div>
             </section>
+            <!-- ❓ PRICING FAQ — addresses the most common pre-purchase objections
+                 (limits, trust, refunds, cancellation) using only facts already
+                 stated in terms.html; relocated into #cash-content by
+                 composeScreenSections(), right after the pricing grid. -->
+            <div id="pricing-faq" class="bb-faq-block">
+                <h3 class="bb-faq-title">» FREQUENTLY ASKED QUESTIONS</h3>
+                <div class="bb-faq-grid">
+                    <div class="bb-faq-item">
+                        <span class="bb-faq-q">What do I actually get for $12 vs $29/month?</span>
+                        <p class="bb-faq-a">SOLO CORE ($12/mo) unlocks 1 category of your choice (4 robots) with unlimited requests. LABS ALL-ACCESS ($29/mo) unlocks all 3 categories (12 robots) under a single license key — no per-category restriction.</p>
+                    </div>
+                    <div class="bb-faq-item">
+                        <span class="bb-faq-q">Is there really no request limit?</span>
+                        <p class="bb-faq-a">Correct — once your subscription is active, neither plan has a hard request cap. Standard rate-limit and anti-abuse safeguards still apply, same as any production API.</p>
+                    </div>
+                    <div class="bb-faq-item">
+                        <span class="bb-faq-q">Can I try an endpoint before paying?</span>
+                        <p class="bb-faq-a">Yes — every category above has a live test box that calls the real API directly from your browser, no signup required (shared public demo key, capped at 50 requests/day across all visitors).</p>
+                    </div>
+                    <div class="bb-faq-item">
+                        <span class="bb-faq-q">Do you store the data I send you?</span>
+                        <p class="bb-faq-a">No. Every endpoint is stateless — your input is processed in memory to produce the response, then discarded. We don't keep a copy of the PII, files, or payloads you send.</p>
+                    </div>
+                    <div class="bb-faq-item">
+                        <span class="bb-faq-q">What if I want to cancel?</span>
+                        <p class="bb-faq-a">Cancel anytime — your access stays active until the end of the current billing period, then it simply stops renewing. No retention call, no hoops.</p>
+                    </div>
+                    <div class="bb-faq-item">
+                        <span class="bb-faq-q">What if I'm not happy with it?</span>
+                        <p class="bb-faq-a">Full refund within 14 days of your first payment — email <a href="mailto:support@blackbox-apis.com">support@blackbox-apis.com</a>. See our <a href="terms.html#refund-policy">Refund Policy</a> for the full terms.</p>
+                    </div>
+                    <div class="bb-faq-item">
+                        <span class="bb-faq-q">Do I need an SDK to integrate?</span>
+                        <p class="bb-faq-a">No. Every endpoint is a single POST request, JSON in / JSON out. Works from any language or backend that can make an HTTP call.</p>
+                    </div>
+                    <div class="bb-faq-item">
+                        <span class="bb-faq-q">Who processes the payment?</span>
+                        <p class="bb-faq-a">Paddle, our Merchant of Record, handles billing and refunds — we never see or store your card details on our servers.</p>
+                    </div>
+                </div>
+            </div>
             <!-- 🎛️ CORE ACCESS TOKEN ACTIVATION INTERFACE (relocated to page 3 next to purchase) -->
             <div id="license-ingress" style="background: transparent; border: none; padding: 0; border-radius: 0; margin-bottom: 40px; font-family: monospace; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px;">
                 <div>
@@ -369,7 +410,7 @@
                                     <span class="bb-pricing-price" id="price-solo-tag">$12</span>
                                     <span class="bb-pricing-term">Per month • Cancel anytime</span>
                                 </div>
-                                <label for="solo-category-select" style="display:block; font-size:11px; color:#64748b; font-family:monospace; margin-bottom:6px;">CHOOSE YOUR CATEGORY:</label>
+                                <label for="solo-category-select" style="display:block; font-size:11px; color:#94a3b8; font-family:monospace; margin-bottom:6px;">CHOOSE YOUR CATEGORY:</label>
                                 <select id="solo-category-select" style="width:100%; background:#000; border:1px solid #14281a; color:#fff; font-family:monospace; font-size:13px; padding:10px; border-radius:4px; margin-bottom:12px; box-sizing:border-box;">
                                     <option value="Privacy &amp; PII Protection">Privacy &amp; PII Protection</option>
                                     <option value="Security &amp; Link Integrity">Security &amp; Link Integrity</option>
@@ -379,6 +420,7 @@
                             </div>
                         </div>
                         <div class="bb-pricing-card bento-card bb-pricing-card--featured">
+                            <span class="bb-pricing-badge">★ Best Value</span>
                             <div class="bb-pricing-card-header">
                                 <h3 class="bb-pricing-name">LABS ALL-ACCESS</h3>
                                 <span class="bb-pricing-audience">// Perfect for web agencies, growth hackers &amp; multi-client setups</span>
@@ -765,6 +807,7 @@ function initializeApp() {
             const cash = document.getElementById('cash-content');
             const brand = document.querySelector('.sidebar-header');
             const ingress = document.getElementById('license-ingress');
+            const faq = document.getElementById('pricing-faq');
             const liveBadge = document.getElementById('header-live-badge');
             const categoryDock = document.getElementById('sidebar-categories');
             const robotSection = document.querySelector('.robot-display-section');
@@ -787,7 +830,7 @@ function initializeApp() {
             hero.appendChild(topLine);
             hero.appendChild(navLine);
             if (robotSection) hero.appendChild(robotSection);
-            [stripe, ingress, footer].forEach(node => node && cash.appendChild(node));
+            [stripe, faq, ingress, footer].forEach(node => node && cash.appendChild(node));
             container.classList.add('screens-composed');
             const aside = document.querySelector('aside');
             if (aside) aside.setAttribute('aria-hidden', 'true');
