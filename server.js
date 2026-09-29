@@ -39,21 +39,21 @@ app.use(cors({ origin: '*' }));
 // 📨 Envoie l'e-mail d'activation de licence
 async function sendLicenseActivationEmail({ email, name, licenseKey, category }) {
     const accessLine = category
-        ? `<p>Votre licence <strong>SOLO CORE</strong> donne accès à la catégorie : <strong>${category}</strong> (4 robots).</p>`
-        : `<p>Votre licence <strong>LABS ALL-ACCESS</strong> donne accès aux 3 catégories (12 robots).</p>`;
+        ? `<p>Your <strong>SOLO CORE</strong> license gives you access to the category: <strong>${category}</strong> (4 robots).</p>`
+        : `<p>Your <strong>LABS ALL-ACCESS</strong> license gives you access to all 3 categories (12 robots).</p>`;
     await resend.emails.send({
         from: 'BlackBox Audio Labs <activation@blackbox-apis.com>',
         to: [email],
-        subject: '🔥 Activation de votre licence BlackBox Audio Labs',
+        subject: '🔥 Your BlackBox Labs API Key Is Ready',
         html: `
             <div style="font-family: sans-serif; padding: 20px; background: #000; color: #fff; border-radius: 8px;">
-                <h2 style="color: #00ffcc;">Félicitations ${name} !</h2>
-                <p>Votre paiement a été sécurisé avec succès. Votre réacteur d'automatisation est prêt.</p>
+                <h2 style="color: #00ffcc;">Congratulations ${name}!</h2>
+                <p>Your payment was processed successfully. Your automation reactor is ready.</p>
                 <div style="background: #111; padding: 15px; border-left: 4px solid #00ffcc; margin: 20px 0; font-family: monospace; font-size: 16px; letter-spacing: 1px;">
-                    <strong>VOTRE CLÉ DE LICENCE :</strong> ${licenseKey}
+                    <strong>YOUR LICENSE KEY:</strong> ${licenseKey}
                 </div>
                 ${accessLine}
-                <p>Utilisez-la dans l'en-tête <code>Authorization: Bearer ${licenseKey}</code> de vos appels API (voir la <a href="https://blackbox-apis.com/docs.html" style="color:#00ffcc;">documentation</a>).</p>
+                <p>Use it in the <code>Authorization: Bearer ${licenseKey}</code> header of your API calls (see the <a href="https://blackbox-apis.com/docs.html" style="color:#00ffcc;">documentation</a>).</p>
                 <p style="color: #888; font-size: 12px;">LLC BlackBox Audio Labs — Wyoming, USA</p>
             </div>
         `

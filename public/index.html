@@ -357,12 +357,12 @@
                         const data = await response.json();
 
                         if (response.ok && data.success) {
-                            alert('» ACCESS GRANTED. Ephemeral infrastructure layers unlocked for this session.');
+                            alert('✓ Your key is valid and active — you\'re all set to call the APIs.');
                         } else {
-                            alert('» ACCESS DENIED. Invalid security signature context.');
+                            alert('✗ That key doesn\'t look right. Double-check it or contact support@blackbox-apis.com.');
                         }
                     } catch (error) {
-                        alert('» NETWORK ERROR. Secure gateway handshake failed.');
+                        alert('⚠ Connection error — please try again in a moment.');
                     }
                 }
             </script>
@@ -518,7 +518,7 @@
                 heading: "Weighted multi-signal engine that scores automated traffic likelihood in real time.",
                 description: "Combines User-Agent fingerprinting, HTTP header completeness checks, and optional client-side telemetry (navigator.webdriver, plugins, languages, hardwareConcurrency) into a single weighted probability score — not a single yes/no rule.",
                 endpoint: "/v1/bot_detector",
-                curl: "curl -X POST https://blackbox-apis.com/v1/bot_detector -H 'Authorization: ******' -d '{\"headers_payload\":{...},\"fingerprint_meta\":{...}}'",
+                curl: "curl -X POST https://blackbox-apis.com/v1/bot_detector -H 'Authorization: Bearer YOUR_KEY' -d '{\"headers_payload\":{...},\"fingerprint_meta\":{...}}'",
                 cards: [
                     { title: "WHAT IT DOES", body: "Detects headless browsers (Puppeteer, Playwright, Selenium), CLI HTTP clients (curl, wget, python-requests, axios, okhttp), and crawler/scraper signatures, then layers in header-completeness checks (missing Accept-Language, missing Accept) and optional browser fingerprint anomalies (webdriver flag, zero plugins, empty languages, zero hardwareConcurrency).", benefits: ["Independent-probability scoring: several weak signals can combine into a strong verdict, avoiding brittle single-rule false positives.", "Confidence score is capped below 100% — always honest about uncertainty, never overclaims certainty.", "Lightweight enough to run on every incoming request."] },
                     { title: "HOW TO INTEGRATE", body: "Forward the request's headers as 'headers_payload'; optionally add client-collected 'fingerprint_meta' for a sharper score. Receive a numeric bot-probability score plus the exact list of triggered signals.", benefits: ["Use as a pre-filter before heavier bot-mitigation services or CAPTCHA challenges.", "No third-party bot database dependency — fully self-contained scoring.", "Transparent diagnostic flags so you can tune your own threshold."] }
