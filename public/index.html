@@ -153,42 +153,7 @@
                                         </ul>
                                     </div>
                                     <div class="bb-horizontal-slide-mock" aria-hidden="true">
-                                        <div class="bb-visual-mockup-frame bb-product-screenshot-mockup">
-                                            <div class="bb-screenshot-chrome">
-                                                <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-title">log_sanitizer.request.json</span>
-                                            </div>
-                                            <div class="bb-screenshot-body">
-                                                <div class="bb-mock-diff">
-                                                    <div class="bb-mock-diff-row bb-mock-diff-row--before">
-                                                        <span class="bb-mock-diff-label">RAW INPUT</span>
-                                                        <span class="bb-mock-diff-value">card 4111 1111 1111 1111, user@mail.com, +33 6 12 34 56 78</span>
-                                                    </div>
-                                                    <span class="bb-mock-diff-arrow" aria-hidden="true">↓</span>
-                                                    <div class="bb-mock-diff-row bb-mock-diff-row--after">
-                                                        <span class="bb-mock-diff-label">SANITIZED OUTPUT</span>
-                                                        <span class="bb-mock-diff-value">card **** **** **** 1111, u***@mail.com, +33 6 ** ** ** 78</span>
-                                                    </div>
-                                                    <div class="bb-mock-diff-tag">[ REAL REGEX MATCH // NO RAW PII PERSISTED ]</div>
-                                                </div>
-                                            </div>
-                                            <div class="bb-mock-status-row" aria-hidden="true">
-                                                <div class="bb-mock-status-item">
-                                                    <span class="bb-mock-status-value">200 OK</span>
-                                                    <span class="bb-mock-status-label">HTTP Status</span>
-                                                </div>
-                                                <div class="bb-mock-status-item">
-                                                    <span class="bb-mock-status-value">~40ms</span>
-                                                    <span class="bb-mock-status-label">Response Time</span>
-                                                </div>
-                                                <div class="bb-mock-status-item">
-                                                    <span class="bb-mock-status-value">v1</span>
-                                                    <span class="bb-mock-status-label">API Version</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="bb-endpoint-reference" id="endpoint-ref-pii" data-category="Privacy &amp; PII Protection"></div>
                                         <div class="bb-slide-tag-detail" aria-live="polite">
                                             <span class="bb-slide-tag-detail-placeholder">» Hover or tap a robot to see what it does</span>
                                             <span class="bb-slide-tag-detail-name"></span>
@@ -232,37 +197,7 @@
                                         </ul>
                                     </div>
                                     <div class="bb-horizontal-slide-mock" aria-hidden="true">
-                                        <div class="bb-visual-mockup-frame bb-product-screenshot-mockup">
-                                            <div class="bb-screenshot-chrome">
-                                                <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-title">crypto_verify.request.json</span>
-                                            </div>
-                                            <div class="bb-screenshot-body">
-                                                <div class="bb-mock-checklist">
-                                                    <div class="bb-mock-check-item"><span class="bb-mock-check-mark">✓</span> Signature format: valid (HMAC-SHA256)</div>
-                                                    <div class="bb-mock-check-item"><span class="bb-mock-check-mark">✓</span> Expiration window: still active</div>
-                                                    <div class="bb-mock-check-item"><span class="bb-mock-check-mark">✓</span> Address checksum: Base58Check passed</div>
-                                                    <div class="bb-mock-check-item"><span class="bb-mock-check-mark">✓</span> Compare: constant-time match</div>
-                                                    <div class="bb-mock-check-seal">ACCESS GRANTED</div>
-                                                </div>
-                                            </div>
-                                            <div class="bb-mock-status-row" aria-hidden="true">
-                                                <div class="bb-mock-status-item">
-                                                    <span class="bb-mock-status-value">200 OK</span>
-                                                    <span class="bb-mock-status-label">HTTP Status</span>
-                                                </div>
-                                                <div class="bb-mock-status-item">
-                                                    <span class="bb-mock-status-value">~55ms</span>
-                                                    <span class="bb-mock-status-label">Response Time</span>
-                                                </div>
-                                                <div class="bb-mock-status-item">
-                                                    <span class="bb-mock-status-value">v1</span>
-                                                    <span class="bb-mock-status-label">API Version</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="bb-endpoint-reference" id="endpoint-ref-security" data-category="Security &amp; Link Integrity"></div>
                                         <div class="bb-slide-tag-detail" aria-live="polite">
                                             <span class="bb-slide-tag-detail-placeholder">» Hover or tap a robot to see what it does</span>
                                             <span class="bb-slide-tag-detail-name"></span>
@@ -306,34 +241,7 @@
                                         </ul>
                                     </div>
                                     <div class="bb-horizontal-slide-mock" aria-hidden="true">
-                                        <div class="bb-visual-mockup-frame bb-product-screenshot-mockup">
-                                            <div class="bb-screenshot-chrome">
-                                                <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-dot"></span>
-                                                <span class="bb-screenshot-title">data_utils.summary.json</span>
-                                            </div>
-                                            <div class="bb-screenshot-body">
-                                                <div class="bb-mock-stat-grid">
-                                                    <div class="bb-mock-stat-tile">
-                                                        <span class="bb-mock-stat-value">128 → 94</span>
-                                                        <span class="bb-mock-stat-label">CSV rows deduped</span>
-                                                    </div>
-                                                    <div class="bb-mock-stat-tile">
-                                                        <span class="bb-mock-stat-value">2 segments</span>
-                                                        <span class="bb-mock-stat-label">EXIF data stripped</span>
-                                                    </div>
-                                                    <div class="bb-mock-stat-tile">
-                                                        <span class="bb-mock-stat-value">UTC → CET</span>
-                                                        <span class="bb-mock-stat-label">Timezone converted</span>
-                                                    </div>
-                                                    <div class="bb-mock-stat-tile">
-                                                        <span class="bb-mock-stat-value">~312ms</span>
-                                                        <span class="bb-mock-stat-label">Real uptime latency</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="bb-endpoint-reference" id="endpoint-ref-data" data-category="Data &amp; Media Utilities"></div>
                                         <div class="bb-slide-tag-detail" aria-live="polite">
                                             <span class="bb-slide-tag-detail-placeholder">» Hover or tap a robot to see what it does</span>
                                             <span class="bb-slide-tag-detail-name"></span>
@@ -1146,6 +1054,32 @@ function initializeApp() {
             });
         }
 
+        // Static "quick reference" card for the right column of each category slide:
+        // lists the 4 real endpoints (name, path, one-line description) straight from
+        // robotsCatalog, so the column isn't just the interactive hover/live-test
+        // panels — real, always-visible substance instead of duplicating the pills.
+        function renderEndpointReferenceCards() {
+            document.querySelectorAll('.bb-endpoint-reference').forEach((container) => {
+                const categoryName = container.getAttribute('data-category');
+                const robots = robotsCatalog.filter((r) => r.category === categoryName);
+                if (!robots.length) return;
+
+                const rows = robots.map((r) => (
+                    '<div class="bb-endpoint-ref-row">' +
+                        '<div class="bb-endpoint-ref-top">' +
+                            '<span class="bb-endpoint-ref-name">' + r.name + '</span>' +
+                            '<span class="bb-endpoint-ref-path">' + r.endpoint + '</span>' +
+                        '</div>' +
+                        '<p class="bb-endpoint-ref-desc">' + r.heading + '</p>' +
+                    '</div>'
+                )).join('');
+
+                container.innerHTML =
+                    '<h3 class="bb-endpoint-ref-title">» ENDPOINT REFERENCE</h3>' +
+                    '<div class="bb-endpoint-ref-list">' + rows + '</div>';
+            });
+        }
+
         // Wires each category slide's robot pills to the live-test widget: clicking a
         // pill both shows its description (existing hover reveal) AND loads that
         // robot's real form below. Defaults to the first robot so it's never empty.
@@ -1272,6 +1206,7 @@ function initializeApp() {
         window.onload = () => {
             initializeApp();
             initLogoShieldActivation();
+            renderEndpointReferenceCards();
             initSlideTagDetailReveal();
             initLiveTestWidgets();
             // initPlaygroundScrollBridge() disabled: it hijacked ALL vertical wheel

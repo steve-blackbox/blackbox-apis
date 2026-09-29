@@ -136,89 +136,16 @@
         }
 
         /* Final telemetry console override. */
-        html body main #screen-command .telemetry-console,
-        html body main #screen-command .telemetry-console > .bb-mockup-holder {
+        html body main #screen-command .telemetry-console {
             background: transparent !important;
             border: none !important;
             border-radius: 0 !important;
             box-shadow: none !important;
             box-sizing: border-box !important;
             overflow: visible !important;
-        }
-
-        html body main #screen-command .telemetry-console {
             width: 100% !important;
             min-width: 0 !important;
             padding: 0 !important;
-            overflow: visible !important;
-        }
-
-        /* Borderless telemetry console: one native grid surface, ready for the mockup framework. */
-        html body main #screen-command .telemetry-console > .bb-mockup-holder {
-            width: 100% !important;
-            min-width: 0 !important;
-            min-height: 320px !important;
-            margin: 0 !important;
-            padding: 32px 0 0 !important;
-            box-sizing: border-box !important;
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-
-        /* Terminal workspace console: sovereign benchmarking script visualizer. */
-        .bb-terminal-workspace-panel {
-            background: rgba(255, 255, 255, 0.01) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.04) !important;
-            border-radius: 8px !important;
-            padding: 24px !important;
-            height: 75vh !important;
-            overflow: hidden !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-            display: flex !important;
-            flex-direction: column !important;
-        }
-
-        .bb-terminal-workspace-panel .bb-screenshot-chrome {
-            margin: -24px -24px 20px !important;
-            width: calc(100% + 48px) !important;
-        }
-
-        .bb-terminal-code {
-            flex: 1 !important;
-            margin: 0 !important;
-            overflow: hidden !important;
-            font-family: 'JetBrains Mono', monospace !important;
-            font-size: 12px !important;
-            line-height: 1.6 !important;
-            color: rgba(255, 255, 255, 0.4) !important;
-            white-space: pre-wrap !important;
-            word-break: break-word !important;
-        }
-
-        .bb-code-comment {
-            color: rgba(255, 255, 255, 0.28) !important;
-        }
-
-        .bb-code-fn {
-            color: rgba(255, 255, 255, 0.85) !important;
-        }
-
-        .bb-code-key {
-            color: rgba(255, 255, 255, 0.55) !important;
-        }
-
-        .bb-code-str,
-        .bb-code-num {
-            color: rgba(255, 255, 255, 0.65) !important;
-        }
-
-        .bb-code-ok {
-            color: #ffffff !important;
-            font-weight: 700 !important;
         }
 
         /* Last-resort cascade lock for the final legacy declarations. */
@@ -994,10 +921,79 @@
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
-            justify-content: center !important;
+            justify-content: flex-start !important;
             gap: 20px !important;
             background: transparent !important;
             border: none !important;
+        }
+
+        /* Static reference card mirroring the "+ WHAT IT DOES / + HOW TO INTEGRATE"
+           bento-cards from page 1 (screen-command), so the category slides read as
+           the same product rather than a plainer, unrelated layout. */
+        .bb-endpoint-reference {
+            width: 100% !important;
+            max-width: 620px !important;
+            box-sizing: border-box !important;
+            padding: 24px 28px !important;
+            border: 1px solid rgba(255, 255, 255, 0.06) !important;
+            border-radius: 14px !important;
+            background: rgba(10, 10, 12, 0.5) !important;
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            font-family: 'JetBrains Mono', monospace !important;
+        }
+
+        .bb-endpoint-ref-title {
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            margin: 0 0 18px 0 !important;
+        }
+
+        .bb-endpoint-ref-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 16px !important;
+        }
+
+        .bb-endpoint-ref-row {
+            padding-top: 16px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+        }
+
+        .bb-endpoint-ref-row:first-child {
+            padding-top: 0 !important;
+            border-top: none !important;
+        }
+
+        .bb-endpoint-ref-top {
+            display: flex !important;
+            align-items: baseline !important;
+            justify-content: space-between !important;
+            gap: 12px !important;
+            flex-wrap: wrap !important;
+        }
+
+        .bb-endpoint-ref-name {
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            letter-spacing: 0.02em !important;
+        }
+
+        .bb-endpoint-ref-path {
+            font-size: 11px !important;
+            color: #00d2ff !important;
+        }
+
+        .bb-endpoint-ref-desc {
+            font-size: 12.5px !important;
+            line-height: 1.6 !important;
+            color: #94a3b8 !important;
+            margin: 6px 0 0 0 !important;
+            font-family: Inter, sans-serif !important;
         }
 
         /* Reveal panel: reserves fixed vertical space below the mockup card so
@@ -1208,326 +1204,6 @@
             margin-top: 8px !important;
         }
 
-        .bb-visual-mockup-frame {
-            width: 100% !important;
-            max-width: 620px !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 24px !important;
-            padding: 32px !important;
-            background: transparent !important;
-            border: 1px solid rgba(255, 255, 255, 0.04) !important;
-            border-radius: 12px !important;
-            box-sizing: border-box !important;
-        }
-
-        .bb-product-screenshot-mockup {
-            gap: 0 !important;
-            padding: 0 !important;
-            background: rgba(255, 255, 255, 0.01) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.04) !important;
-            overflow: hidden !important;
-        }
-
-        .bb-screenshot-chrome {
-            width: 100% !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 7px !important;
-            padding: 12px 16px !important;
-            box-sizing: border-box !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
-        }
-
-        .bb-screenshot-dot {
-            width: 8px !important;
-            height: 8px !important;
-            border-radius: 50% !important;
-            background: rgba(255, 255, 255, 0.14) !important;
-            display: inline-block !important;
-        }
-
-        .bb-screenshot-title {
-            font-family: 'JetBrains Mono', monospace !important;
-            font-size: 10px !important;
-            color: rgba(255, 255, 255, 0.35) !important;
-            letter-spacing: 0.04em !important;
-            margin-left: 8px !important;
-        }
-
-        .bb-screenshot-body {
-            width: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 18px !important;
-            padding: 32px 34px !important;
-            box-sizing: border-box !important;
-        }
-
-        .bb-screenshot-table {
-            width: 100% !important;
-            border-collapse: collapse !important;
-            font-family: 'JetBrains Mono', monospace !important;
-            font-size: 11px !important;
-        }
-
-        .bb-screenshot-table th {
-            text-align: left !important;
-            color: rgba(255, 255, 255, 0.35) !important;
-            font-weight: 500 !important;
-            letter-spacing: 0.06em !important;
-            padding: 0 0 8px 0 !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-        }
-
-        .bb-screenshot-table td {
-            color: rgba(255, 255, 255, 0.72) !important;
-            padding: 8px 0 !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
-        }
-
-        .bb-screenshot-table tr:last-child td {
-            border-bottom: none !important;
-        }
-
-        .bb-screenshot-terminal {
-            width: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 10px !important;
-            font-family: 'JetBrains Mono', monospace !important;
-            font-size: 12.5px !important;
-        }
-
-        .bb-terminal-line {
-            color: rgba(255, 255, 255, 0.5) !important;
-        }
-
-        .bb-terminal-success {
-            color: #ffffff !important;
-            font-weight: 700 !important;
-            letter-spacing: 0.04em !important;
-        }
-
-        /* Slide 1 mockup: before/after diff card (Privacy & PII) — replaces the terminal
-           look with a raw-vs-sanitized comparison to make the proof visually distinct. */
-        .bb-mock-diff {
-            width: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: stretch !important;
-            gap: 10px !important;
-            font-family: 'JetBrains Mono', monospace !important;
-        }
-
-        .bb-mock-diff-row {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 6px !important;
-            padding: 12px 14px !important;
-            border-radius: 6px !important;
-            border: 1px solid rgba(255, 255, 255, 0.06) !important;
-        }
-
-        .bb-mock-diff-row--before {
-            background: rgba(255, 255, 255, 0.02) !important;
-        }
-
-        .bb-mock-diff-row--before .bb-mock-diff-value {
-            color: rgba(255, 255, 255, 0.35) !important;
-            text-decoration: line-through !important;
-            text-decoration-color: rgba(255, 255, 255, 0.2) !important;
-        }
-
-        .bb-mock-diff-row--after {
-            background: rgba(0, 210, 255, 0.05) !important;
-            border-color: rgba(0, 210, 255, 0.2) !important;
-        }
-
-        .bb-mock-diff-row--after .bb-mock-diff-value {
-            color: #ffffff !important;
-        }
-
-        .bb-mock-diff-label {
-            font-size: 10px !important;
-            letter-spacing: 0.08em !important;
-            color: rgba(255, 255, 255, 0.4) !important;
-            text-transform: uppercase !important;
-        }
-
-        .bb-mock-diff-value {
-            font-size: 12px !important;
-            line-height: 1.4 !important;
-            word-break: break-word !important;
-        }
-
-        .bb-mock-diff-arrow {
-            align-self: center !important;
-            color: #00d2ff !important;
-            font-size: 14px !important;
-        }
-
-        .bb-mock-diff-tag {
-            margin-top: 4px !important;
-            font-size: 11.5px !important;
-            font-weight: 700 !important;
-            letter-spacing: 0.04em !important;
-            color: #ffffff !important;
-            text-align: center !important;
-        }
-
-        /* Slide 2 mockup: sequential verification checklist (Security & Link Integrity)
-           ending in a seal, standing in for a plain terminal output. */
-        .bb-mock-checklist {
-            width: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 10px !important;
-            font-family: 'JetBrains Mono', monospace !important;
-        }
-
-        .bb-mock-check-item {
-            display: flex !important;
-            align-items: center !important;
-            gap: 10px !important;
-            font-size: 12.5px !important;
-            color: rgba(255, 255, 255, 0.7) !important;
-        }
-
-        .bb-mock-check-mark {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            width: 18px !important;
-            height: 18px !important;
-            flex-shrink: 0 !important;
-            border-radius: 50% !important;
-            background: rgba(0, 210, 255, 0.12) !important;
-            color: #00d2ff !important;
-            font-size: 11px !important;
-        }
-
-        .bb-mock-check-seal {
-            margin-top: 8px !important;
-            align-self: center !important;
-            padding: 8px 20px !important;
-            border: 1px solid rgba(0, 210, 255, 0.35) !important;
-            border-radius: 20px !important;
-            font-size: 11px !important;
-            font-weight: 700 !important;
-            letter-spacing: 0.1em !important;
-            color: #00d2ff !important;
-        }
-
-        /* Slide 3 mockup: 2x2 stat grid (Data & Media Utilities) tying each tile back to
-           one of the 4 robots in this category, instead of demoing a single endpoint. */
-        .bb-mock-stat-grid {
-            width: 100% !important;
-            display: grid !important;
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 12px !important;
-            font-family: 'JetBrains Mono', monospace !important;
-        }
-
-        .bb-mock-stat-tile {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 6px !important;
-            padding: 16px !important;
-            border-radius: 6px !important;
-            border: 1px solid rgba(255, 255, 255, 0.06) !important;
-            background: rgba(255, 255, 255, 0.02) !important;
-        }
-
-        .bb-mock-stat-value {
-            font-size: 15px !important;
-            font-weight: 700 !important;
-            color: #00d2ff !important;
-        }
-
-        .bb-mock-stat-label {
-            font-size: 10px !important;
-            letter-spacing: 0.05em !important;
-            color: rgba(255, 255, 255, 0.45) !important;
-            text-transform: uppercase !important;
-        }
-
-        .bb-region-row {
-            width: 100% !important;
-            display: flex !important;
-            flex-wrap: wrap !important;
-            justify-content: center !important;
-            gap: 10px !important;
-        }
-
-        .bb-region-tag {
-            font-family: 'JetBrains Mono', monospace !important;
-            font-size: 10px !important;
-            letter-spacing: 0.04em !important;
-            color: rgba(255, 255, 255, 0.6) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            padding: 5px 10px !important;
-            border-radius: 4px !important;
-        }
-
-        /* Compact live-status readout replacing the previous duplicated tag list —
-           echoes real request telemetry instead of repeating the left-column tags. */
-        .bb-product-screenshot-mockup .bb-mock-status-row {
-            padding: 20px 28px !important;
-            box-sizing: border-box !important;
-            border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
-        }
-
-        .bb-visual-svg {
-            width: 100% !important;
-            height: auto !important;
-            overflow: visible !important;
-        }
-
-        .bb-visual-label {
-            font-family: 'JetBrains Mono', monospace !important;
-            font-size: 11px !important;
-            letter-spacing: 0.06em !important;
-            color: rgba(255, 255, 255, 0.55) !important;
-            text-transform: uppercase !important;
-            text-align: center !important;
-        }
-
-        /* Live-status readout: three short facts (HTTP status, latency band, region)
-           laid out like a small telemetry bar under the terminal mockup. */
-        .bb-mock-status-row {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            width: 100% !important;
-            font-family: 'JetBrains Mono', monospace !important;
-        }
-
-        .bb-mock-status-item {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 3px !important;
-            align-items: center !important;
-            flex: 1 1 0 !important;
-        }
-
-        .bb-mock-status-value {
-            font-size: 13px !important;
-            font-weight: 700 !important;
-            color: #00d2ff !important;
-            letter-spacing: 0.02em !important;
-        }
-
-        .bb-mock-status-label {
-            font-size: 9.5px !important;
-            letter-spacing: 0.08em !important;
-            color: rgba(255, 255, 255, 0.4) !important;
-            text-transform: uppercase !important;
-        }
 
         @media (max-width: 900px) {
             .bb-horizontal-slide {
@@ -1548,27 +1224,6 @@
                 flex: 0 0 auto !important;
                 max-width: 100% !important;
                 height: auto !important;
-            }
-
-            .bb-visual-mockup-frame {
-                padding: 20px !important;
-                gap: 16px !important;
-            }
-
-            .bb-product-screenshot-mockup {
-                padding: 0 !important;
-            }
-
-            .bb-screenshot-body {
-                padding: 18px 20px !important;
-            }
-
-            .bb-product-screenshot-mockup .bb-mock-status-row {
-                padding: 16px 20px !important;
-            }
-
-            .bb-mock-status-value {
-                font-size: 11px !important;
             }
 
             .bb-slide-specs {
@@ -3526,120 +3181,6 @@ html body main #screen-command #sidebar-categories {
     .bb-pricing-grid {
         grid-template-columns: 1fr;
     }
-}
-
-/* 🪙 CATEGORY // 02 (SECURITY & LINK INTEGRITY) — right-side mockup removed to give
-   the crypto_verify multi-chain description more room; copy takes the full row. */
-/* 🔒 CATEGORY // 02 (SECURITY & LINK INTEGRITY) — right-side mockup removed;
-   copy takes the full row; tag-detail goes below. */
-#category-slide-security .bb-horizontal-slide-inner {
-    flex-direction: column !important;
-}
-
-#category-slide-security .bb-horizontal-slide-mock {
-    display: flex !important;
-    flex-direction: column !important;
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-#category-slide-security .bb-visual-mockup-frame {
-    display: none !important;
-}
-
-#category-slide-security .bb-horizontal-slide-copy {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
-}
-
-/* Ensure tag-detail stays visible even when mockup visual is hidden */
-#category-slide-security .bb-slide-tag-detail {
-    display: flex !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-top: 20px !important;
-}
-
-/* 🔒 CATEGORY // 01 (PRIVACY & PII PROTECTION) — right-side mockup removed for the
-   same reason; copy takes the full row; tag-detail goes below. */
-#category-slide-pii .bb-horizontal-slide-inner {
-    flex-direction: column !important;
-}
-
-#category-slide-pii .bb-horizontal-slide-mock {
-    display: flex !important;
-    flex-direction: column !important;
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-#category-slide-pii .bb-visual-mockup-frame {
-    display: none !important;
-}
-
-#category-slide-pii .bb-horizontal-slide-copy {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
-}
-
-/* Ensure tag-detail stays visible even when mockup visual is hidden */
-#category-slide-pii .bb-slide-tag-detail {
-    display: flex !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-top: 20px !important;
-}
-
-/* Ensure tag-detail stays visible even when mockup visual is hidden */
-#category-slide-pii .bb-slide-tag-detail {
-    display: flex !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-top: 20px !important;
-}
-
-/* 📦 CATEGORY // 03 (DATA & MEDIA UTILITIES) — right-side mockup removed for the
-   same reason; copy takes the full row. */
-#category-slide-data .bb-horizontal-slide-mock {
-    display: flex !important;
-    flex-direction: column !important;
-}
-
-#category-slide-data .bb-visual-mockup-frame {
-    display: none !important;
-}
-
-/* 🔒 CATEGORY // 03 (DATA & MEDIA UTILITIES) — right-side mockup removed; copy 
-   takes the full row; tag-detail goes below. */
-#category-slide-data .bb-horizontal-slide-inner {
-    flex-direction: column !important;
-}
-
-#category-slide-data .bb-horizontal-slide-mock {
-    display: flex !important;
-    flex-direction: column !important;
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-#category-slide-data .bb-visual-mockup-frame {
-    display: none !important;
-}
-
-#category-slide-data .bb-horizontal-slide-copy {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
-}
-
-/* Ensure tag-detail stays visible even when mockup visual is hidden */
-#category-slide-data .bb-slide-tag-detail {
-    display: flex !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-top: 20px !important;
 }
 
 /* 📱 MOBILE RESPONSIVE FIXES — logo positioning and scroll indicator tweaks */
