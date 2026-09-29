@@ -329,10 +329,15 @@
             border: none !important;
             font-family: 'JetBrains Mono', monospace !important;
             box-shadow: none !important;
+        }
+
+        /* Scoped to the button itself (not the wrapper) so hovering the open
+           dropdown menu — a sibling inside the same wrapper — never dims it. */
+        #screen-command #hero-content > .bb-header-top-line > #header-live-badge > #bb-nav-menu-btn {
             transition: opacity 0.2s ease !important;
         }
 
-        #screen-command #hero-content > .bb-header-top-line > #header-live-badge:hover {
+        #screen-command #hero-content > .bb-header-top-line > #header-live-badge > #bb-nav-menu-btn:hover {
             opacity: 0.75 !important;
         }
 
