@@ -3397,6 +3397,15 @@ html body main #screen-command #sidebar-categories {
         height: auto !important;
     }
 
+    /* The 3 category tabs (now the exact same pill buttons as desktop — see
+       initializeApp() in index.html, no more separate mobile <select>) overflow
+       a phone's width and rely on horizontal scroll. Fade the right edge so it
+       reads as "more tabs this way" instead of a hard, easy-to-miss clip. */
+    #screen-command #sidebar-categories {
+        mask-image: linear-gradient(to right, #000 85%, transparent 100%) !important;
+        -webkit-mask-image: linear-gradient(to right, #000 85%, transparent 100%) !important;
+    }
+
     .sidebar-header {
         padding: 12px 16px 12px 6px !important;
         justify-content: flex-start !important;
