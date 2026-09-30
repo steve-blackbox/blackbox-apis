@@ -482,9 +482,15 @@
         }
 
         @media (max-width: 700px) {
+            /* Pull the logo (and hamburger) closer to both screen edges on phones —
+               the desktop 32px side padding here, stacked with .sidebar-header's own
+               left padding below, was pushing the wordmark ~66px in from the edge,
+               leaving an oversized empty gutter on a ~375-430px viewport. */
             #screen-command #hero-content > .bb-header-top-line {
                 flex-wrap: nowrap !important;
                 gap: 12px !important;
+                padding-left: 8px !important;
+                padding-right: 8px !important;
             }
 
             #screen-payment #cash-content > #license-ingress {
@@ -1259,6 +1265,60 @@
 
             .bb-slide-spec-item {
                 padding: 0 12px !important;
+            }
+        }
+
+        /* 📱 Put "Hover or tap a robot" right under the 4-robot list on phones.
+           On tablets/desktop, .bb-horizontal-slide-copy (text) and -mock (endpoint
+           card + reveal panel) sit side-by-side, so the reveal panel is always
+           next to the robot grid. Once the ≤900px rule above stacks them into a
+           single column, the reveal panel used to land dead last — after the
+           whole copy block AND the endpoint reference card — forcing a scroll
+           just to see what a tapped robot does. display:contents flattens both
+           wrapper divs into the same flex column as .bb-horizontal-slide-inner,
+           so `order` can reshuffle just the 3 "mock" children: the reveal panel
+           now renders right after the robot grid (untouched, default order:0),
+           then the reference card, then the live-test widget. */
+        @media (max-width: 600px) {
+            .bb-horizontal-slide-inner {
+                align-items: stretch !important;
+                gap: 20px !important;
+            }
+
+            .bb-horizontal-slide-copy,
+            .bb-horizontal-slide-mock {
+                display: contents !important;
+            }
+
+            .bb-slide-tag-detail {
+                order: 1 !important;
+            }
+
+            .bb-endpoint-reference {
+                order: 2 !important;
+            }
+
+            .bb-live-test {
+                order: 3 !important;
+            }
+
+            /* The existing "← SWIPE ←" hint (.bb-horizontal-slide::after, further
+               below) only becomes visible after scrolling through this whole
+               ~2400px-tall stacked column — by then a visitor is more likely to
+               keep scrolling vertically into page 3 than to swipe sideways. Echo
+               the same hint right under the kicker too, so it's on-screen the
+               instant a category slide opens, before any scrolling happens. */
+            .bb-horizontal-slide-kicker::after {
+                content: '← swipe for next category →' !important;
+                display: block !important;
+                margin-top: 6px !important;
+                font-size: 10px !important;
+                letter-spacing: 0.08em !important;
+                color: rgba(255, 255, 255, 0.4) !important;
+                text-transform: none !important;
+                font-weight: 500 !important;
+                text-shadow: none !important;
+                animation: bb-pulse-indicator 2s ease-in-out infinite !important;
             }
         }
 
@@ -3079,11 +3139,33 @@ html body main #screen-command #sidebar-categories {
     }
 }
 
+/* Keep the slow-spinning dashed shapes on mobile too (they were fully hidden
+   before, making the mobile background feel static/flat compared to desktop),
+   just scaled down so they read as a corner accent instead of dwarfing a
+   375-430px viewport. `html { overflow-x: hidden }` already clips any bleed
+   from the negative top/right/bottom/left offsets, so this can't cause a
+   horizontal scrollbar. Scan corners stay hidden — purely static/cosmetic,
+   not part of the "dynamic background" ask, and crowd the edges on small screens. */
 @media (max-width: 700px) {
-    .screen-section::before,
-    .screen-section::after {
-        display: none !important;
+    .screen-section::before {
+        width: 300px !important;
+        height: 300px !important;
+        top: -90px !important;
+        right: -110px !important;
     }
+
+    .screen-section::after {
+        width: 200px !important;
+        height: 200px !important;
+        bottom: -70px !important;
+        left: -70px !important;
+    }
+
+    #screen-playground::before {
+        top: -120px !important;
+        right: -120px !important;
+    }
+
     .screen-section .bb-scan-corner {
         display: none !important;
     }
@@ -3316,7 +3398,7 @@ html body main #screen-command #sidebar-categories {
     }
 
     .sidebar-header {
-        padding: 12px 16px !important;
+        padding: 12px 16px 12px 6px !important;
         justify-content: flex-start !important;
     }
 
@@ -3330,17 +3412,20 @@ html body main #screen-command #sidebar-categories {
         padding: 12px 16px !important;
     }
 
-    /* Update main padding for smaller mobile header */
+    /* NOTE: this used to clear an 80px-tall FIXED `aside` top bar. That aside is
+       now permanently hidden (`body > aside { display: none }` — its content is
+       moved into the in-flow #hero-content header via composeScreenSections()),
+       so the 80px reserved here was pure dead black space above the fold on
+       mobile, with no logo/grid-background showing through it. */
     html body main {
-        padding-top: 80px !important;
+        padding-top: 0 !important;
     }
 
-    /* Hide scroll indicator on very small screens */
-    @media (max-width: 480px) {
-        .bb-horizontal-slide::after {
-            display: none !important;
-        }
-    }
+    /* NOTE: used to hide the "SWIPE" indicator below 480px — but that's nearly
+       every real phone in portrait (iPhone SE/12/13/14, Pixel, Galaxy all sit
+       between 360-430px), so it was silently killing the one hint that tells
+       mobile visitors they can swipe between the 01/02/03 categories. Removed
+       so the shorter "← SWIPE ←" text (set below, max-width:600px) stays visible. */
 }
 
 /* Show scroll indicator on mobile with short text */
