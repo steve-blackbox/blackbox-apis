@@ -1278,8 +1278,12 @@
            wrapper divs into the same flex column as .bb-horizontal-slide-inner,
            so `order` can reshuffle just the 3 "mock" children: the reveal panel
            now renders right after the robot grid (untouched, default order:0),
-           then the reference card, then the live-test widget. */
-        @media (max-width: 600px) {
+           then the reference card, then the live-test widget.
+           Breakpoint matches the ≤900px stacking rule above (not 600px) —
+           anything narrower than 900px is already a single stacked column
+           (e.g. phones in landscape at 667–844px), so the reorder must apply
+           there too or the reveal panel buries itself off-screen again. */
+        @media (max-width: 900px) {
             .bb-horizontal-slide-inner {
                 align-items: stretch !important;
                 gap: 20px !important;
