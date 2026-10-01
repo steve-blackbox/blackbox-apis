@@ -22,9 +22,32 @@
 - BlackBox Labs (12 robots, 3 catégories) est construit et déployé, mais
   **n'a pas encore eu de vrai lancement public / premiers clients réels**.
 - Paddle est encore en mode sandbox (domaine live en attente d'approbation).
-- Priorité absolue actuelle : lancer, obtenir les premiers vrais clients,
-  valider le tunnel d'achat en conditions réelles — **avant** d'investir du
-  temps sur les projets ci-dessous.
+
+> **✅ DÉCISION ACTÉE (01/10)** — Steve clôt la phase de réflexion ouverte
+> plus bas dans ce fichier. Conclusion retenue, qui devient la feuille de
+> route active :
+> 1. **Finir la boucle BlackBox Labs entièrement** — bascule Paddle en
+>    production, circuit d'achat complet et fonctionnel — puis le laisser
+>    tourner en autonome (revenu passif secondaire, plus d'investissement de
+>    temps en croissance/distribution active).
+> 2. **Utiliser BlackBox comme socle technique** (boilerplate
+>    `00_MASTERBOILERPLATE_V6`, patterns d'intégration API/webhook,
+>    expérience Paddle déjà acquise) pour lancer le projet suivant : une
+>    offre d'automatisation IA pour PME, avec le **médical/dentaire comme
+>    premier domaine d'application** (cabinets dentaires/médicaux —
+>    réduction des rendez-vous manqués/no-show).
+> 3. **Concevoir ce premier produit médical pour qu'il soit reproductible**
+>    dans d'autres secteurs PME par la suite (artisans du bâtiment en
+>    second temps, puis au-delà) — un moteur générique + une configuration
+>    par vertical, plutôt qu'un outil jetable à usage unique.
+>
+> Le reste de ce fichier (constat de marché, pistes explorées, journal
+> chronologique daté) documente le raisonnement qui a mené à cette décision
+> — gardé pour mémoire, pas pour relancer le débat à chaque session.
+
+- Priorité absolue actuelle : terminer la bascule Paddle, puis démarrer le
+  premier chantier concret de l'automatisation médicale (démo technique +
+  démarchage de cabinets locaux — détail dans le journal daté 01/10).
 
 ---
 
