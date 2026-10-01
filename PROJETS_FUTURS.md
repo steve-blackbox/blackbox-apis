@@ -382,4 +382,50 @@ articles lus, concurrents repérés, retours clients...)_
   énormément le premier cycle de vente) ; sinon, démarrer directement sur
   la niche artisans du bâtiment par défaut.
 
+  **Mise à jour (01/10, même soirée) — niche réajustée + principe
+  généralisé par Steve** : Steve tranche explicitement pour accélérer — pas
+  question de réinvestir des semaines supplémentaires dans la croissance de
+  BlackBox avant de pivoter. Il confirme vouloir quand même finaliser la
+  bascule Paddle en production pour "avoir vraiment tout le circuit"
+  terminé (cohérent avec la distinction : finir l'administratif, peu
+  coûteux, vs arrêter d'investir du temps de distribution active). Il
+  élargit aussi spontanément les secteurs cibles acceptables au médical/
+  dentaire, au-delà des artisans du bâtiment.
+
+  **Cabinets dentaires/médicaux promus en premier choix** (artisans du
+  bâtiment redevient option de repli) : la réduction des rendez-vous
+  manqués ("no-show") est une douleur déjà bien documentée et chiffrée dans
+  ce secteur (un rendez-vous manqué coûte couramment 50-150€ de revenu
+  perdu par créneau), budget admin plus stable qu'un artisan indépendant,
+  et la même démo technique (rappel automatique SMS/email) s'y applique au
+  moins aussi bien. Démo reframée en conséquence : système de rappel de
+  rendez-vous (J-1 et/ou H-2h avant) plutôt que relance d'appel manqué.
+
+  Steve formule ensuite le principe le plus net de toute cette réflexion :
+  *"m'adresser à des développeurs directement c'est comme si je m'adressais
+  à des concurrents beaucoup plus compétents que moi qui peuvent recréer
+  mon produit sans se fatiguer. Il faut des clients qui ne soient pas de ce
+  domaine."* Ça clôt aussi la piste crypto évoquée entre-temps : même
+  l'endpoint le plus sophistiqué techniquement (`crypto_verify`, checksum
+  réel sur 9+ chaînes) n'échappe pas au problème s'il est vendu à des
+  développeurs/Web3 builders — public parmi les plus techniques qui soient.
+  Vérification concrète faite en session : le package npm gratuit et
+  open-source `multicoin-address-validator` (alias historique
+  `WAValidator`) couvre une bonne partie du même terrain multi-chaînes et
+  était encore republié en juin 2025 — preuve directe qu'un développeur n'a
+  même pas besoin de "recréer" quoi que ce soit, juste de faire
+  `npm install`.
+
+  **Conclusion opérationnelle** : le critère de sélection de niche pour
+  toute nouvelle piste (agence d'automatisation ou autre) est désormais
+  explicite — **le client final ne doit structurellement pas savoir
+  coder**, pas seulement "ne pas être un développeur professionnel". Ça
+  verrouille le choix des cabinets dentaires/médicaux (et des PME non-tech
+  en général) comme cible, et élimine définitivement toute tentation de
+  repositionner BlackBox ou un de ses endpoints vers un public développeur/
+  Web3, même sur la partie la plus technique du produit. Chantiers de
+  distribution active BlackBox (lancements publics, SEO, outreach,
+  pricing...) mis en pause en conséquence — pas supprimés, à reconsidérer
+  si l'agence ne prend pas.
+
 -
