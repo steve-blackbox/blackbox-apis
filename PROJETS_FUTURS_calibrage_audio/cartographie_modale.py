@@ -49,6 +49,21 @@ Principe utilisé, en deux étapes :
 - L'ordre des 13 positions de micro (quelle position = quel siège
   physique) n'est pas documenté dans le fichier : seul Steve, qui a
   déplacé le micro lui-même, peut faire cette correspondance.
+- **Ce module trouve des FRÉQUENCES de résonance probables, jamais les
+  DIMENSIONS physiques de la pièce** (question explicite de Steve,
+  03/10) : le fichier `.liveproject` n'encode nulle part une longueur/
+  largeur/hauteur. Tenter l'inversion (partir d'une fréquence de mode
+  mesurée pour en déduire LA dimension responsable) est mathématiquement
+  ambigu sans contrainte supplémentaire : une même fréquence peut
+  correspondre à plusieurs dimensions différentes (pour des ordres n
+  différents : f = n·c/(2·L)), à plusieurs axes (longueur, largeur OU
+  hauteur), ou à un mode tangentiel/oblique combinant 2-3 dimensions à
+  la fois — `axial_room_modes` (diagnostic_engine.py) ne fonctionne que
+  dans le sens INVERSE (dimensions connues -> fréquences prédites), pas
+  l'inverse. Seule une correspondance partielle redevient possible SI le
+  client fournit en plus les vraies dimensions (RoomInfo, niveau
+  Approfondi) : on peut alors CONFIRMER qu'une fréquence mesurée
+  correspond à un mode axial calculé, pas la DÉCOUVRIR sans cette donnée.
 
 Usage : `python3 cartographie_modale.py "<chemin vers un .liveproject>"`
 """

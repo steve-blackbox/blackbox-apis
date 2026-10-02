@@ -3151,3 +3151,25 @@ articles lus, concurrents repérés, retours clients...)_
   31 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (02/10, suite 35) **📐 Limite formalisée : un .liveproject révèle des
+  fréquences de résonance, jamais les dimensions de la pièce**
+
+  Steve a demandé une vérification directe : "est-ce qu'en analysant un
+  fichier .liveproject tu es capable de déterminer les caractéristiques
+  d'une pièce ?" Réponse : oui pour les FRÉQUENCES de résonance probables
+  (méthode déjà validée, cartographie_modale.py), non pour les
+  DIMENSIONS physiques — raison mathématique précise articulée pour la
+  première fois : l'inversion fréquence mesurée -> dimension est
+  sous-déterminée (plusieurs dimensions/ordres/axes possibles pour une
+  même fréquence), contrairement au sens direct déjà implémenté
+  (axial_room_modes : dimensions connues -> fréquences prédites).
+
+  Cette clarification n'existait nulle part dans le code ; formalisée
+  dans la section "Limites" de `cartographie_modale.py` et comme
+  nouvelle section 31 de `knowledge_base.py` (1 constante), cohérent
+  avec le principe établi de documenter chaque limite au même titre que
+  chaque capacité.
+
+  31 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

@@ -3199,3 +3199,43 @@ DEFAULT_FSISO_HZ = 150.0
 FSISO_OFFICIAL, section 17) réutilisée comme borne haute par défaut de
 F-support High tant qu'aucune valeur personnalisée n'est fournie — pas un
 nouveau choix de prototype, une vraie valeur par défaut Dirac."""
+
+# ---------------------------------------------------------------------------
+# 31. Limite : un fichier .liveproject révèle des fréquences de résonance
+#     probables, jamais les dimensions physiques de la pièce (question
+#     explicite de Steve, 03/10 : "est-ce qu'en analysant un fichier
+#     .liveproject tu es capable de déterminer les caractéristiques d'une
+#     pièce ?"). [Principe acoustique général, domaine public — même
+#     formule déjà utilisée dans axial_room_modes, diagnostic_engine.py]
+# ---------------------------------------------------------------------------
+LIVEPROJECT_CANNOT_REVEAL_ROOM_DIMENSIONS = (
+    "Le fichier .liveproject n'encode nulle part une longueur/largeur/"
+    "hauteur de pièce (confirmé par la cartographie complète du format, "
+    "liveproject_reader.py) : il ne contient que des mesures acoustiques "
+    "(courbes de réponse, flux audio bruts). `cartographie_modale.py` "
+    "peut identifier des FRÉQUENCES de résonance probables (modes de "
+    "pièce) par cohérence spatiale entre les 13 positions de micro et "
+    "corrélation croisée entre enceintes — déjà validé sur le fichier "
+    "réel de Steve (3 modes confirmés ~60, ~110-135, ~235-255 Hz) — mais "
+    "ne peut PAS en déduire la ou les dimensions responsables. "
+    "Raison mathématique précise : la formule des modes axiaux "
+    "(f = n·c/(2·L), déjà utilisée dans axial_room_modes en sens "
+    "direct, dimensions->fréquences) est sous-déterminée en sens "
+    "inverse — une même fréquence mesurée peut correspondre à "
+    "plusieurs dimensions différentes selon l'ordre n (1, 2, 3...), à "
+    "n'importe lequel des 3 axes (longueur, largeur, hauteur), ou à un "
+    "mode tangentiel/oblique combinant 2-3 dimensions à la fois. Sans "
+    "au moins une dimension connue en référence (fournie séparément par "
+    "le client via RoomInfo, niveau Approfondi), l'inversion fréquence "
+    "-> dimension n'a pas de solution unique. Ce qui reste possible avec "
+    "les dimensions fournies : CONFIRMER qu'une fréquence mesurée "
+    "correspond à un mode axial calculé (déjà fait par diagnose_anomaly, "
+    "diagnostic_engine.py), pas la DÉCOUVRIR sans cette donnée "
+    "complémentaire."
+)
+"""[Principe acoustique général, domaine public + déduction logique à
+partir de la formule des modes axiaux déjà citée dans ce fichier et
+déjà implémentée dans axial_room_modes (diagnostic_engine.py)] —
+raisonnement assemblé par nous-mêmes, cohérent avec la nuance
+méthodologique déjà appliquée en section 14 (limites de ce qu'une
+méthode peut/ne peut pas faire)."""
