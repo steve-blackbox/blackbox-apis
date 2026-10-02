@@ -116,6 +116,14 @@ class EvidenceLevel(str, Enum):
         "reformulation tierce ni une estimation"
     )
     STORMAUDIO_OFFICIEL = "Directive officielle StormAudio (doc ART)"
+    CALCUL_DEPUIS_MESURE_REELLE = (
+        "Calcul déterministe et reproductible à partir des points "
+        "RÉELLEMENT mesurés du client, appliquant une règle officielle "
+        "documentée (ex : pas de 0,5 dB et plage légale du Support "
+        "Level) — pas une estimation ni un simple retour d'expérience : "
+        "le résultat est entièrement tracé (quels points mesurés, quel "
+        "calcul) dans le champ `detail` de la recommandation"
+    )
     BREVET_DIRAC_RESEARCH = (
         "Brevet Dirac Research AB lu en texte intégral (ex: US9781510B2) "
         "— source primaire officielle, mais décrit un mécanisme "
@@ -128,12 +136,30 @@ class EvidenceLevel(str, Enum):
 
 
 @dataclass
+class TargetCurveControlPoint:
+    """Un point de contrôle précis à placer sur la courbe cible d'un
+    groupe dans l'éditeur Dirac (clic droit -> 'Add control point to',
+    voir knowledge_base.TARGET_CURVE_EDITOR_MECHANICS). Valeurs en Hz et
+    en dB à VISER du mieux possible : l'éditeur fonctionne par
+    glisser-déposer libre, pas par saisie numérique au dixième de dB
+    (voir la même constante pour la nuance)."""
+
+    freq_hz: float
+    gain_db: float               # relatif à 0 dB = pas de coloration
+    reason: str = ""              # pourquoi ce point précis (mode de pièce, préférence cinéma, etc.)
+    speaker_name: str = ""         # enceinte/groupe concerné, pour regroupement sans parser `reason`
+
+
+@dataclass
 class Recommendation:
     category: str                # ex: "Groupes de support", "Plage de fréquence"
     target: str                  # enceinte(s) ou groupe concerné
     action: str                  # ce qu'il faut faire, en une phrase claire
     evidence: EvidenceLevel
     detail: str = ""             # justification plus longue si utile
+    control_points: list[TargetCurveControlPoint] = field(default_factory=list)
+    precise_value_db: float | None = None   # ex: niveau de support exact, à 0,5 dB près
+    freq_range_hz: tuple[float, float] | None = None  # ex: (F-support Low, F-support High)
 
 
 @dataclass
@@ -146,6 +172,7 @@ class Anomaly:
     amplitude_db: float
     probable_causes: list[str] = field(default_factory=list)
     suggested_action: str = ""
+    is_confirmed_room_mode: bool = False
 
 
 @dataclass

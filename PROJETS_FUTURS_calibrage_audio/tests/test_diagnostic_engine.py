@@ -27,14 +27,20 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from diagnostic_engine import (
     axial_room_modes,
+    calculate_precise_support_level_db,
+    calculate_room_mode_control_points,
+    calculate_support_frequency_range,
     detect_anomalies,
     diagnose_anomaly,
     recommend_support_groups,
+    run_diagnostic,
 )
 from models import (
+    Anomaly,
     MeasurementPoint,
     Role,
     RoomInfo,
+    ServiceLevel,
     Speaker,
     SpeakerMeasurement,
 )
@@ -155,6 +161,136 @@ class TestRecommendSupportGroups(unittest.TestCase):
         ]
         recs = recommend_support_groups(speakers)
         self.assertTrue(len(recs) >= 1)
+
+
+class TestCalculatePreciseSupportLevel(unittest.TestCase):
+    """Couvre calculate_precise_support_level_db : le calcul chiffré
+    demandé par Steve (niveau de support à 0,5 dB près, pas une
+    recommandation qualitative seule)."""
+
+    def setUp(self) -> None:
+        self.main_speaker = Speaker("Surround Right", Role.SURROUND_RIGHT, freq_min_hz=53)
+        self.support_speaker = Speaker(
+            "Surround Back Right", Role.SURROUND_BACK_RIGHT, freq_min_hz=53
+        )
+
+    def test_computes_exact_gap_rounded_to_half_db_step(self) -> None:
+        main_m = SpeakerMeasurement(self.main_speaker, [MeasurementPoint(80, 0.0)])
+        # -7.3 dB d'écart doit arrondir à -7.5 dB (pas de 0,5 dB)
+        support_m = SpeakerMeasurement(self.support_speaker, [MeasurementPoint(80, -7.3)])
+        rec = calculate_precise_support_level_db(main_m, support_m, crossover_hz=80.0)
+        self.assertEqual(rec.precise_value_db, -7.5)
+
+    def test_clamps_to_official_min_db(self) -> None:
+        main_m = SpeakerMeasurement(self.main_speaker, [MeasurementPoint(80, 0.0)])
+        support_m = SpeakerMeasurement(self.support_speaker, [MeasurementPoint(80, -50.0)])
+        rec = calculate_precise_support_level_db(main_m, support_m, crossover_hz=80.0)
+        self.assertEqual(rec.precise_value_db, -24.0)
+
+    def test_clamps_to_official_max_db(self) -> None:
+        main_m = SpeakerMeasurement(self.main_speaker, [MeasurementPoint(80, 0.0)])
+        support_m = SpeakerMeasurement(self.support_speaker, [MeasurementPoint(80, 10.0)])
+        rec = calculate_precise_support_level_db(main_m, support_m, crossover_hz=80.0)
+        self.assertEqual(rec.precise_value_db, -1.0)
+
+    def test_returns_none_precise_value_when_no_point_in_window(self) -> None:
+        main_m = SpeakerMeasurement(self.main_speaker, [MeasurementPoint(500, 0.0)])
+        support_m = SpeakerMeasurement(self.support_speaker, [MeasurementPoint(500, -7.0)])
+        rec = calculate_precise_support_level_db(main_m, support_m, crossover_hz=80.0)
+        self.assertIsNone(rec.precise_value_db)
+
+
+class TestCalculateSupportFrequencyRange(unittest.TestCase):
+    """Couvre calculate_support_frequency_range : F-support Low/High,
+    génériques pour n'importe quelle enceinte ou caisson."""
+
+    def test_non_subwoofer_floor_is_50hz(self) -> None:
+        speaker = Speaker("Petite surround", Role.SURROUND_LEFT, freq_min_hz=35.0)
+        rec = calculate_support_frequency_range(speaker)
+        self.assertEqual(rec.freq_range_hz, (50.0, 150.0))
+
+    def test_non_subwoofer_uses_manufacturer_value_above_floor(self) -> None:
+        speaker = Speaker("Surround", Role.SURROUND_LEFT, freq_min_hz=53.0)
+        rec = calculate_support_frequency_range(speaker)
+        self.assertEqual(rec.freq_range_hz, (53.0, 150.0))
+
+    def test_subwoofer_floor_is_20hz(self) -> None:
+        speaker = Speaker("Caisson", Role.LFE, freq_min_hz=20.0)
+        rec = calculate_support_frequency_range(speaker)
+        self.assertEqual(rec.freq_range_hz, (20.0, 150.0))
+
+    def test_custom_fsiso_changes_high_bound(self) -> None:
+        speaker = Speaker("Surround", Role.SURROUND_LEFT, freq_min_hz=53.0)
+        rec = calculate_support_frequency_range(speaker, fsiso_hz=100.0)
+        self.assertEqual(rec.freq_range_hz, (53.0, 100.0))
+
+
+class TestCalculateRoomModeControlPoints(unittest.TestCase):
+    """Couvre calculate_room_mode_control_points : le principe de
+    prudence est le coeur de cette fonction — jamais de point de boost
+    pour combler un creux de mode de pièce (limite physique déjà
+    documentée section 14)."""
+
+    def test_confirmed_peak_generates_a_control_point(self) -> None:
+        anomalies = [Anomaly("Center", 110.0, "pic", 6.0, is_confirmed_room_mode=True)]
+        points = calculate_room_mode_control_points(anomalies)
+        self.assertEqual(len(points), 1)
+        self.assertEqual(points[0].freq_hz, 110.0)
+        self.assertLess(points[0].gain_db, 0.0)  # toujours une réduction, jamais un boost
+
+    def test_confirmed_dip_generates_no_control_point(self) -> None:
+        """Le test le plus important de cette classe : combler un creux
+        de mode nécessiterait un boost disproportionné et risqué."""
+        anomalies = [Anomaly("Front Left", 60.0, "creux", 9.0, is_confirmed_room_mode=True)]
+        points = calculate_room_mode_control_points(anomalies)
+        self.assertEqual(points, [])
+
+    def test_unconfirmed_peak_generates_no_control_point(self) -> None:
+        anomalies = [Anomaly("Front Left", 200.0, "pic", 5.0, is_confirmed_room_mode=False)]
+        points = calculate_room_mode_control_points(anomalies)
+        self.assertEqual(points, [])
+
+    def test_reduction_is_a_fraction_not_the_full_measured_amplitude(self) -> None:
+        anomalies = [Anomaly("Center", 110.0, "pic", 10.0, is_confirmed_room_mode=True)]
+        points = calculate_room_mode_control_points(anomalies)
+        self.assertGreater(points[0].gain_db, -10.0)  # pas 100% de réduction
+        self.assertLess(points[0].gain_db, 0.0)
+
+
+class TestRunDiagnosticSupportsCustomGrouping(unittest.TestCase):
+    """Vérifie que run_diagnostic s'adapte à N'IMPORTE QUEL schéma de
+    groupage déclaré (pas seulement la hiérarchie standard par rôle) —
+    exigence explicite de Steve."""
+
+    def test_custom_crossed_grouping_produces_a_precise_level(self) -> None:
+        speakers = [
+            Speaker("Surround Right", Role.SURROUND_RIGHT, freq_min_hz=53),
+            Speaker("Surround Back Right", Role.SURROUND_BACK_RIGHT, freq_min_hz=53),
+        ]
+        measurements = [
+            SpeakerMeasurement(speakers[0], [MeasurementPoint(80, 0.0)]),
+            SpeakerMeasurement(speakers[1], [MeasurementPoint(80, -7.0)]),
+        ]
+        report = run_diagnostic(
+            speakers=speakers,
+            measurements=measurements,
+            service_level=ServiceLevel.ESSENTIEL,
+            support_group_assignments=[("Surround Back Right", "Surround Right", 80.0)],
+        )
+        precise_recs = [r for r in report.recommendations if r.precise_value_db is not None]
+        self.assertEqual(len(precise_recs), 1)
+        self.assertEqual(precise_recs[0].precise_value_db, -7.0)
+
+    def test_unknown_speaker_name_in_grouping_adds_a_warning_not_a_crash(self) -> None:
+        speakers = [Speaker("Surround Right", Role.SURROUND_RIGHT, freq_min_hz=53)]
+        measurements = [SpeakerMeasurement(speakers[0], [MeasurementPoint(80, 0.0)])]
+        report = run_diagnostic(
+            speakers=speakers,
+            measurements=measurements,
+            service_level=ServiceLevel.ESSENTIEL,
+            support_group_assignments=[("Nom Inexistant", "Surround Right", 80.0)],
+        )
+        self.assertTrue(any("introuvable" in w for w in report.warnings))
 
 
 if __name__ == "__main__":

@@ -59,6 +59,19 @@ def generate_report(
             lines.append(f"  [{category}]")
             for rec in recs:
                 lines.append(f"    - {rec.target} : {rec.action}")
+                if rec.precise_value_db is not None:
+                    lines.append(f"      ➜ Valeur précise : {rec.precise_value_db:+.1f} dB")
+                if rec.freq_range_hz is not None:
+                    lines.append(
+                        f"      ➜ Plage de fréquence : "
+                        f"{rec.freq_range_hz[0]:.0f} Hz – {rec.freq_range_hz[1]:.0f} Hz"
+                    )
+                if rec.control_points:
+                    for cp in rec.control_points:
+                        lines.append(
+                            f"      ➜ Point de contrôle : {cp.freq_hz:.0f} Hz / "
+                            f"{cp.gain_db:+.1f} dB ({cp.speaker_name})"
+                        )
                 lines.append(f"      Source : {rec.evidence.value}")
                 if rec.detail:
                     lines.append(f"      Détail : {rec.detail}")

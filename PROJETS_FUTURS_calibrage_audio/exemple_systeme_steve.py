@@ -153,6 +153,15 @@ def main() -> None:
             _synthetic_curve(),
         ),
         SpeakerMeasurement(
+            speakers[6],  # Surround Back Droite — mesure ajoutée pour
+            # démontrer le calcul de niveau de support précis ci-dessous
+            # (groupage croisé réellement pratiqué par Steve : "j'ai
+            # regroupé la back right avec la surround right"). base_db
+            # abaissé de 7dB par rapport aux autres (75.0 par défaut)
+            # pour simuler un écart mesuré réaliste entre les deux.
+            _synthetic_curve(base_db=68.0),
+        ),
+        SpeakerMeasurement(
             speakers[7],  # Caisson 1
             _synthetic_curve(peak_at_hz=45.0, peak_db=7.0),
         ),
@@ -171,6 +180,16 @@ def main() -> None:
         measurements=measurements,
         service_level=ServiceLevel.ESSENTIEL,
         support_level_triggers=[],
+        # Groupage croisé RÉEL de Steve (section 18/22) : la Surround Back
+        # Droite supporte la Surround Droite — pas la hiérarchie standard
+        # par défaut. La fréquence de croisement (80 Hz) n'est PAS une
+        # valeur confirmée par Steve, juste un exemple de démonstration
+        # du calcul (voir avertissement dans le rapport).
+        support_group_assignments=[
+            ("Surround Back Droite (Elipson Prestige Facet II 14LCR)",
+             "Surround Droite (Elipson Prestige Facet II 14LCR)",
+             80.0),
+        ],
     )
     print(generate_report(report, client_name="Steve — Marantz CINEMA 30 7.2"))
 

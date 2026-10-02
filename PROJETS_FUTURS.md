@@ -3067,3 +3067,52 @@ articles lus, concurrents repérés, retours clients...)_
   10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (02/10, suite 33) **🧮 Algorithme de calcul chiffré intégré — niveau de
+  support à 0,5dB, plage de fréquence, points de contrôle de courbe
+  cible**
+
+  Steve a demandé un algorithme qui "soit capable de s'adapter à
+  n'importe quelle configuration client" et traite toutes les données
+  "comme un tout", pas séparément. Construction de 3 nouvelles fonctions
+  100% génériques dans `diagnostic_engine.py` :
+  - `calculate_precise_support_level_db` : calcule le Support Level
+    PRÉCIS (pas de 0,5dB confirmé empiriquement, clampé à la plage
+    légale officielle -24/-1dB — correction au passage d'une
+    incohérence interne : -6dB avait été noté par erreur en section 2,
+    alors que la section 17 confirme -1dB) à partir de l'écart RÉEL
+    mesuré entre 2 enceintes groupées, pour N'IMPORTE QUEL schéma de
+    groupage déclaré via le nouveau paramètre `support_group_
+    assignments` (triplets support/principal/crossover) — y compris un
+    groupage croisé personnalisé comme celui de Steve (Surround Back
+    Right supportant Surround Right).
+  - `calculate_support_frequency_range` : F-support Low/High par
+    enceinte (plancher officiel 50Hz non-caisson / 20Hz caisson, borne
+    haute = Fsiso).
+  - `calculate_room_mode_control_points` : points de contrôle de courbe
+    cible (fréquence + dB) UNIQUEMENT pour les pics confirmés comme
+    modes de pièce, JAMAIS pour un creux (limite physique déjà
+    documentée section 14) — réduction prudente de 70% de l'écart
+    mesuré, pas 100% (nouvelle constante `ROOM_MODE_TARGET_REDUCTION_
+    FACTOR`, section 30, explicitement marquée comme choix de prototype
+    motivé, pas une valeur officielle).
+
+  Nouveau niveau `EvidenceLevel.CALCUL_DEPUIS_MESURE_REELLE` (distinct
+  de "retour d'expérience") pour ces calculs déterministes et tracés.
+  `report_generator.py` enrichi pour afficher ces valeurs précises de
+  façon visuellement distincte (➜). 14 nouveaux tests unitaires dédiés
+  (24 au total), dont le plus important vérifie qu'un creux confirmé
+  comme mode de pièce NE génère jamais de point de boost. Testé en bout
+  en bout sur le système de Steve avec son groupage croisé réel
+  (résultat : -7.0dB calculé correctement).
+
+  Tentative parallèle (abandonnée, documentée honnêtement) : calcul de
+  coefficients de diffusion/absorption depuis les flux audio bruts du
+  `.liveproject` — décodage Ogg Vorbis réussi mais déconvolution ESS/
+  Schroeder non validée (118,7% d'erreur sur signal synthétique à RT60
+  connu), non appliquée aux données réelles.
+
+  24 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression. Reste à construire (demande
+  de Steve) : base de données persistante de fiches techniques
+  constructeur, enrichie client après client.
+

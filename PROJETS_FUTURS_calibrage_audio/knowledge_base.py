@@ -253,7 +253,16 @@ façon complémentaire, pas concurrente. Rejoint ABSORPTION_GENERAL_PRINCIPLE
 # ---------------------------------------------------------------------------
 SUPPORT_LEVEL_DEFAULT_DB = -18.0
 SUPPORT_LEVEL_MIN_DB = -24.0   # augmente l'usage du groupe par ART
-SUPPORT_LEVEL_MAX_DB = -6.0    # réduit l'usage du groupe par ART
+SUPPORT_LEVEL_MAX_DB = -1.0    # réduit l'usage du groupe par ART
+"""⚠️ CORRECTION (03/10, suite 32) : la borne -6.0 initialement notée ici
+était une valeur arrondie donnée à titre d'EXEMPLE par le Helpdesk Dirac
+dans un autre article ('How-to: ART Channel Group and Support Settings'),
+pas la vraie borne du curseur. La section 17 de ce fichier
+(ART_PARAMETER_SUPPORT_LEVEL_OFFICIAL_TABLE), trouvée plus tard dans la
+même session via l'article 'Dirac Live Active Room Treatment Setup
+Guide', confirme la plage légale EXACTE du paramètre : -24 dB à -1 dB.
+Corrigé ici pour que les calculs (voir diagnostic_engine.py) utilisent
+la vraie limite officielle, pas l'ancienne approximation."""
 SUPPORT_LEVEL_STEP_DB = 0.5
 """Dirac accepte un pas de 0,5 dB (confirmé empiriquement par Steve sur son
 système [Steve]). ⚠️ Claude reste prudent : le seuil d'audibilité d'un écart
@@ -3148,3 +3157,37 @@ HYPEX_NCX252MP_TECHNICAL_ARCHITECTURE = (
 families/mains-powered-ncorex-family/ncx252mp, lu en entier via le
 navigateur intégré (le module exact intégré par Buckeye dans le
 NCx252MP 8 canaux de Steve, déjà sourcé section 15)."""
+
+# ---------------------------------------------------------------------------
+# 30. Paramètres de calcul de l'algorithme intégré (diagnostic_engine.py) —
+#     choix de PROTOTYPE explicitement motivés, pas des valeurs officielles
+#     Dirac/StormAudio. Séparés du reste pour qu'ils restent faciles à
+#     retrouver et à ajuster si un vrai retour de terrain les contredit.
+# ---------------------------------------------------------------------------
+ROOM_MODE_TARGET_REDUCTION_FACTOR = 0.7
+"""Pour un PIC confirmé comme mode de pièce (jamais pour un creux, voir
+LINEAR_EQ_CANNOT_FIX_NONLINEAR_DISTORTION et la logique déjà présente
+dans diagnose_anomaly : combler un creux de mode nécessiterait un boost
+disproportionné et risqué), le point de contrôle de courbe cible calculé
+vise à réduire SEULEMENT 70% de l'écart mesuré, pas 100%. Justification :
+(1) un mode de pièce n'a pas la même amplitude à toutes les positions de
+micro (section empirique, cartographie_modale.py) — viser 100% sur la
+position la plus affectée risquerait de créer un creux ailleurs dans la
+pièce ; (2) cohérent avec la prudence déjà appliquée pour le Support
+Level (section 17 : laisser ART co-optimiser plutôt que forcer une
+correction totale). ⚠️ Choix de PROTOTYPE motivé par cette logique, PAS
+une valeur officielle Dirac/StormAudio ni une étude scientifique — à
+ajuster si un vrai retour de terrain (plusieurs clients, plusieurs
+pièces) suggère une meilleure fraction."""
+
+SUPPORT_LEVEL_INTERPOLATION_WINDOW_HZ = 10.0
+"""Fenêtre (± Hz autour de la fréquence de croisement déclarée) utilisée
+pour moyenner les points de mesure lors du calcul d'un niveau de support
+précis (voir calculate_precise_support_level_db) — choix de prototype
+pour lisser le bruit de mesure ponctuel, pas une valeur officielle."""
+
+DEFAULT_FSISO_HZ = 150.0
+"""Valeur par défaut officielle du paramètre Fsiso (ART_PARAMETER_
+FSISO_OFFICIAL, section 17) réutilisée comme borne haute par défaut de
+F-support High tant qu'aucune valeur personnalisée n'est fournie — pas un
+nouveau choix de prototype, une vraie valeur par défaut Dirac."""

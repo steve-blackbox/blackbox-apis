@@ -26,6 +26,7 @@ from models import (
     ServiceLevel,
     Speaker,
     SpeakerMeasurement,
+    TargetCurveControlPoint,
 )
 
 SPEED_OF_SOUND_MS = 343.0
@@ -189,6 +190,7 @@ def diagnose_anomaly(
                 "égalisation : tester d'abord un déplacement de l'enceinte "
                 "ou du point d'écoute de 20 à 30 cm, puis ré-égaliser."
             )
+            anomaly.is_confirmed_room_mode = True
             return anomaly
         anomaly.probable_causes = [
             c for c in causes if "mode de la pièce" not in c
@@ -371,7 +373,157 @@ def recommend_support_level(trigger_notes: list[str]) -> Recommendation:
 
 
 # ---------------------------------------------------------------------------
-# 4. Point d'entrée principal
+# 4. Calculs précis chiffrés (fréquence + dB) — 100% génériques : ne
+#    dépendent que des paramètres reçus, jamais d'un système particulier.
+#    Répond à la demande de Steve de produire des valeurs actionnables
+#    (quelle fréquence, quel niveau en dB, quelle plage) plutôt que des
+#    recommandations qualitatives seules.
+# ---------------------------------------------------------------------------
+def _interpolate_spl_at(
+    measurement: SpeakerMeasurement, freq_hz: float, window_hz: float
+) -> float | None:
+    """Moyenne des points mesurés dans une fenêtre [freq_hz-window,
+    freq_hz+window] — lisse le bruit de mesure ponctuel plutôt que de
+    prendre un seul point exact qui pourrait être un artefact. Retourne
+    None si aucun point mesuré ne tombe dans cette fenêtre (plutôt que
+    d'extrapoler/deviner une valeur)."""
+    nearby = [
+        p.spl_db for p in measurement.points
+        if abs(p.freq_hz - freq_hz) <= window_hz
+    ]
+    if not nearby:
+        return None
+    return sum(nearby) / len(nearby)
+
+
+def calculate_precise_support_level_db(
+    main_measurement: SpeakerMeasurement,
+    support_measurement: SpeakerMeasurement,
+    crossover_hz: float,
+    window_hz: float = kb.SUPPORT_LEVEL_INTERPOLATION_WINDOW_HZ,
+) -> Recommendation:
+    """Calcule un niveau de Support Level PRÉCIS (arrondi au pas réel de
+    0,5 dB confirmé empiriquement, clampé dans la plage légale officielle
+    -24 à -1 dB) à partir de l'écart de SPL RÉELLEMENT MESURÉ entre
+    l'enceinte principale et l'enceinte de support, à leur fréquence de
+    croisement déclarée — pas une valeur par défaut générique. Fonctionne
+    pour N'IMPORTE QUELLE paire d'enceintes groupées, y compris un
+    groupage personnalisé/croisé (ex. Surround Back supportant Surround,
+    comme pratiqué par Steve)."""
+    main_spl = _interpolate_spl_at(main_measurement, crossover_hz, window_hz)
+    support_spl = _interpolate_spl_at(support_measurement, crossover_hz, window_hz)
+
+    if main_spl is None or support_spl is None:
+        return Recommendation(
+            category="Niveau de support (précis)",
+            target=f"{support_measurement.speaker.name} -> {main_measurement.speaker.name}",
+            action=(
+                f"Pas assez de points mesurés autour de {crossover_hz:.0f} Hz "
+                f"pour calculer une valeur précise : garder la valeur par "
+                f"défaut ({kb.SUPPORT_LEVEL_DEFAULT_DB} dB) en attendant une "
+                f"mesure plus dense à cette fréquence."
+            ),
+            evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+        )
+
+    raw_level_db = support_spl - main_spl
+    stepped = round(raw_level_db / kb.SUPPORT_LEVEL_STEP_DB) * kb.SUPPORT_LEVEL_STEP_DB
+    clamped = max(kb.SUPPORT_LEVEL_MIN_DB, min(kb.SUPPORT_LEVEL_MAX_DB, stepped))
+
+    return Recommendation(
+        category="Niveau de support (précis)",
+        target=f"{support_measurement.speaker.name} -> {main_measurement.speaker.name}",
+        action=(
+            f"Régler le Support Level à {clamped:+.1f} dB (pas de "
+            f"{kb.SUPPORT_LEVEL_STEP_DB} dB)."
+        ),
+        evidence=EvidenceLevel.CALCUL_DEPUIS_MESURE_REELLE,
+        precise_value_db=clamped,
+        detail=(
+            f"Calculé à partir de l'écart RÉEL mesuré à {crossover_hz:.0f} Hz "
+            f"± {window_hz:.0f} Hz : {support_measurement.speaker.name} = "
+            f"{support_spl:.1f} dB SPL, {main_measurement.speaker.name} = "
+            f"{main_spl:.1f} dB SPL, écart brut = {raw_level_db:+.1f} dB, "
+            f"arrondi au pas réel puis clampé dans la plage officielle "
+            f"[{kb.SUPPORT_LEVEL_MIN_DB}, {kb.SUPPORT_LEVEL_MAX_DB}] dB "
+            f"(ART_PARAMETER_SUPPORT_LEVEL_OFFICIAL_TABLE, section 17)."
+        ),
+    )
+
+
+def calculate_support_frequency_range(
+    speaker: Speaker, fsiso_hz: float = kb.DEFAULT_FSISO_HZ
+) -> Recommendation:
+    """F-support Low = la plus haute entre la limite basse constructeur
+    et le plancher officiel (50 Hz pour une enceinte non-caisson, 20 Hz
+    pour un caisson — ART_PARAMETER_F_SUPPORT_LOW_HIGH_OFFICIAL, section
+    17). F-support High = Fsiso par défaut (point de départ officiel : la
+    doc Dirac indique de partir haut puis de redescendre SEULEMENT si une
+    enceinte de support devient localisable — processus itératif, pas un
+    calcul unique)."""
+    floor_hz = 20.0 if speaker.is_subwoofer else kb.DIRAC_DEFAULT_LOW_FLOOR_HZ
+    f_support_low = max(speaker.freq_min_hz, floor_hz)
+    f_support_high = fsiso_hz
+
+    return Recommendation(
+        category="Plage de fréquence de support",
+        target=speaker.name,
+        action=(
+            f"F-support Low = {f_support_low:.0f} Hz, F-support High = "
+            f"{f_support_high:.0f} Hz (point de départ ; à redescendre "
+            f"progressivement seulement si {speaker.name} devient "
+            f"localisable individuellement dans le résultat)."
+        ),
+        evidence=EvidenceLevel.MARANTZ_DIRAC_OFFICIEL,
+        freq_range_hz=(round(f_support_low, 1), round(f_support_high, 1)),
+        detail=(
+            f"F-support Low basé sur la fiche constructeur "
+            f"({speaker.freq_min_hz:.0f} Hz) plafonné au plancher officiel "
+            f"({floor_hz:.0f} Hz pour "
+            f"{'un caisson' if speaker.is_subwoofer else 'une enceinte non-caisson'}"
+            f"). F-support High part de Fsiso ({fsiso_hz:.0f} Hz, valeur par "
+            f"défaut officielle ou personnalisée si réglée) — plage légale "
+            f"F-support Low à Fsiso."
+        ),
+    )
+
+
+def calculate_room_mode_control_points(
+    anomalies: list[Anomaly],
+) -> list[TargetCurveControlPoint]:
+    """Calcule des points de contrôle de courbe cible UNIQUEMENT pour les
+    PICS confirmés comme modes de pièce (jamais pour un creux : limite
+    physique déjà documentée, LINEAR_EQ_CANNOT_FIX_NONLINEAR_DISTORTION
+    section 14 — combler un creux profond de mode nécessiterait un boost
+    disproportionné et risqué pour le haut-parleur). Réduit seulement une
+    fraction prudente de l'écart mesuré (ROOM_MODE_TARGET_REDUCTION_
+    FACTOR, section 30) plutôt que 100%, car un mode n'a pas la même
+    amplitude à toutes les positions d'écoute."""
+    points: list[TargetCurveControlPoint] = []
+    for a in anomalies:
+        if a.is_confirmed_room_mode and a.kind == "pic":
+            reduction_db = round(
+                a.amplitude_db * kb.ROOM_MODE_TARGET_REDUCTION_FACTOR, 1
+            )
+            points.append(
+                TargetCurveControlPoint(
+                    freq_hz=a.freq_hz,
+                    gain_db=-reduction_db,
+                    speaker_name=a.speaker_name,
+                    reason=(
+                        f"Pic de mode de pièce confirmé à {a.freq_hz:.0f} Hz "
+                        f"(+{a.amplitude_db:.1f} dB mesuré sur "
+                        f"{a.speaker_name}) — réduction de "
+                        f"{int(kb.ROOM_MODE_TARGET_REDUCTION_FACTOR * 100)}% "
+                        f"de l'écart, pas 100%."
+                    ),
+                )
+            )
+    return points
+
+
+# ---------------------------------------------------------------------------
+# 5. Point d'entrée principal
 # ---------------------------------------------------------------------------
 def run_diagnostic(
     speakers: list[Speaker],
@@ -379,7 +531,17 @@ def run_diagnostic(
     service_level: ServiceLevel,
     room: RoomInfo | None = None,
     support_level_triggers: list[str] | None = None,
+    support_group_assignments: list[tuple[str, str, float]] | None = None,
+    fsiso_hz: float = kb.DEFAULT_FSISO_HZ,
 ) -> DiagnosticReport:
+    """`support_group_assignments` est volontairement une liste libre de
+    triplets (nom enceinte support, nom enceinte principale, fréquence de
+    croisement en Hz) plutôt qu'une règle déduite automatiquement du rôle
+    : ceci permet de représenter N'IMPORTE QUEL schéma de groupage choisi
+    par le client, standard OU personnalisé/croisé (ex. Surround Back
+    Right supportant Surround Right, comme pratiqué par Steve), condition
+    nécessaire pour que l'algorithme s'adapte à n'importe quelle
+    configuration cliente plutôt qu'à un seul cas particulier."""
     report = DiagnosticReport(service_level=service_level)
 
     if service_level == ServiceLevel.ESSENTIEL and room is not None:
@@ -404,6 +566,52 @@ def run_diagnostic(
     report.recommendations.append(
         recommend_support_level(support_level_triggers or [])
     )
+
+    # Calculs précis génériques : plage de fréquence par enceinte.
+    for speaker in speakers:
+        report.recommendations.append(
+            calculate_support_frequency_range(speaker, fsiso_hz=fsiso_hz)
+        )
+
+    # Calculs précis génériques : niveau de support à 0,5 dB près, pour
+    # CHAQUE relation support->principal déclarée par le client (quelle
+    # qu'elle soit, standard ou personnalisée).
+    measurements_by_name = {m.speaker.name: m for m in measurements}
+    for support_name, main_name, crossover_hz in (support_group_assignments or []):
+        support_m = measurements_by_name.get(support_name)
+        main_m = measurements_by_name.get(main_name)
+        if support_m is None or main_m is None:
+            report.warnings.append(
+                f"Groupage déclaré '{support_name}' -> '{main_name}' ignoré : "
+                f"mesure introuvable pour l'un des deux noms."
+            )
+            continue
+        report.recommendations.append(
+            calculate_precise_support_level_db(main_m, support_m, crossover_hz)
+        )
+
+    # Calculs précis génériques : points de contrôle de courbe cible pour
+    # les pics confirmés comme modes de pièce (jamais pour un creux).
+    control_points = calculate_room_mode_control_points(report.anomalies)
+    if control_points:
+        report.recommendations.append(
+            Recommendation(
+                category="Points de contrôle courbe cible (modes de pièce)",
+                target=", ".join(sorted({p.speaker_name for p in control_points if p.speaker_name})) or "voir détail",
+                action="; ".join(
+                    f"{p.freq_hz:.0f} Hz : {p.gain_db:+.1f} dB" for p in control_points
+                ),
+                evidence=EvidenceLevel.HYPOTHESE_A_TESTER,
+                control_points=control_points,
+                detail=(
+                    "Rappel important (section 26) : si Bass Control est "
+                    "actif, la partie basse fréquence de la courbe cible est "
+                    "COMMUNE à tout le système — un point sous le crossover "
+                    "du groupe affecte tous les groupes, pas seulement "
+                    "l'enceinte visée ici. " + " | ".join(p.reason for p in control_points)
+                ),
+            )
+        )
 
     if service_level == ServiceLevel.APPROFONDI and room is not None:
         report.recommendations.append(
