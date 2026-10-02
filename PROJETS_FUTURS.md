@@ -3040,3 +3040,30 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès : aucune régression. Construction de l'algorithme
   de calcul intégré (diagnostic_engine.py) en cours.
 
+- (02/10, suite 32) **⚡ Électronique des amplificateurs : fondamentaux
+  généraux + architecture réelle du module Hypex NCx252MP**
+
+  Steve a demandé des connaissances solides sur l'électronique des
+  amplis "pour mieux comprendre et optimiser leur fonctionnement en les
+  respectant", puis a précisé vouloir aussi les fondamentaux généraux
+  (pas seulement le matériel de Steve) — comble un trou déjà identifié
+  dans le README. Recherche sur le site du fabricant du module (Hypex,
+  pas seulement Buckeye qui l'intègre) + Wikipedia pour les principes
+  généraux.
+
+  Découvertes : principe Class D (commutation MOSFET tout-ou-rien,
+  rendement >90%) et damping factor (ratio impédance enceinte/impédance
+  de sortie ampli, contrôle mécanique du woofer) documentés comme
+  fondamentaux généraux de domaine public. Fiche Hypex NCx252MP : gain
+  de boucle de contre-réaction >60dB ("NCOREx"), conçu pour une
+  opération stable sur impédance de charge variable (pertinent pour les
+  Elipson dont l'impédance mesurée descend sous leur valeur nominale à
+  certaines fréquences), et surtout les 4 protections actives listées
+  officiellement (surintensité, DC, surchauffe, court-circuit) plus une
+  **indication d'écrêtage exploitable pendant la calibration** — lien
+  direct avec le sujet headroom déjà documenté section 27.
+
+  Nouvelle section 29 de `knowledge_base.py` (3 constantes).
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

@@ -3063,3 +3063,88 @@ ELIPSON_TWEETER_HETEROGENEITY_IMPLICATION = (
 """[Déduction logique à partir de 2 faits constructeur officiels déjà
 sourcés ci-dessus] — assemblage par nous-mêmes, cohérent avec la
 nuance méthodologique déjà appliquée en section 14."""
+
+# ---------------------------------------------------------------------------
+# 29. Électronique des amplificateurs — fondamentaux généraux + specs
+#     réelles du module Hypex NCx252MP de Steve (demande de Steve :
+#     "connaissances solides sur l'électronique pour mieux comprendre et
+#     optimiser leur fonctionnement en les respectant" + "sur
+#     l'électronique aussi de manière générale"). Comble un des "trous
+#     identifiés mais non comblés" du README (électronique de
+#     l'amplificateur). [Principe électronique général, domaine public
+#     (Wikipedia) + Fiche constructeur officielle pour le matériel réel]
+# ---------------------------------------------------------------------------
+CLASS_D_AMPLIFIER_PRINCIPLE = (
+    "Principe général des amplificateurs Class D (switching amplifiers), "
+    "technologie du Buckeye NCx252MP de Steve : les transistors "
+    "amplificateurs (MOSFETs) fonctionnent comme des interrupteurs "
+    "tout-ou-rien (ON/OFF), PAS comme des dispositifs à gain linéaire "
+    "(contrairement aux classes A/AB traditionnelles). La modulation "
+    "(PWM ou PDM) encode le signal audio dans un train d'impulsions ; un "
+    "filtre passe-bas en sortie retire ensuite le résidu de commutation "
+    "haute fréquence pour ne laisser que le signal audio analogique "
+    "final vers le haut-parleur. Comme les transistors sont presque "
+    "toujours soit totalement ouverts soit totalement fermés, très peu "
+    "d'énergie est dissipée en chaleur dans les transistors eux-mêmes : "
+    "le rendement peut dépasser 90% (contre ~50-60% pour une Class AB "
+    "classique) — c'est ce qui permet à un module aussi compact que le "
+    "NCx252MP de délivrer 150-250W/canal sans dissipateur thermique "
+    "massif."
+)
+"""[Principe électronique général, domaine public] —
+en.wikipedia.org/wiki/Class-D_amplifier"""
+
+DAMPING_FACTOR_PRINCIPLE = (
+    "Principe général du 'facteur d'amortissement' (damping factor) : "
+    "ratio entre l'impédance nominale du haut-parleur (souvent 8 ohms "
+    "par convention) et l'impédance de SORTIE de l'amplificateur "
+    "(incluant l'impédance du câble de liaison ampli→enceinte). Plus ce "
+    "facteur est ÉLEVÉ (= impédance de sortie de l'ampli très faible), "
+    "mieux l'ampli peut électriquement 'freiner' les mouvements "
+    "résiduels du cône du haut-parleur après l'arrêt du signal "
+    "électrique (contrôle mécanique du woofer, évite un rendu de "
+    "basses 'floues'/non amorties). Les amplis à transistors modernes "
+    "ont généralement un damping factor BIEN supérieur à celui des "
+    "amplis à tubes (jugé 'indésirable' pour ces derniers par la source "
+    "elle-même). Point important : ce facteur VARIE avec la fréquence "
+    "(souvent maximal en basse fréquence, décroît en aigu pour les "
+    "amplis solid-state) — pertinent pour le réglage des caissons de "
+    "Steve, zone où un bon contrôle du woofer importe le plus."
+)
+"""[Principe électronique général, domaine public] —
+en.wikipedia.org/wiki/Damping_factor"""
+
+HYPEX_NCX252MP_TECHNICAL_ARCHITECTURE = (
+    "Fiche technique officielle du MODULE ampli exact utilisé par "
+    "Buckeye dans le NCx252MP de Steve (fabricant du module : Hypex, "
+    "Pays-Bas — Buckeye intègre 4 de ces modules dans son châssis "
+    "8 canaux) : technologie 'NCOREx® Class D', avec alimentation à "
+    "découpage intégrée ('high efficiency switch mode power supply', "
+    "conforme à la norme européenne de consommation en veille '2013 ERP "
+    "Lot 6', <0,5W en veille). "
+    "Explication officielle du principe NCOREx : 'builds on the proven "
+    "NCORE® architecture with a redesigned loop filter that increases "
+    "loop gain across the audio band. This results in over 60 dB of "
+    "error correction, further reducing distortion, improving "
+    "linearity, and lowering output impedance' — un GAIN DE BOUCLE DE "
+    "CONTRE-RÉACTION élevé (>60dB de correction d'erreur) sur toute la "
+    "bande audio, qui réduit la distorsion ET abaisse l'impédance de "
+    "sortie (donc AUGMENTE le damping factor, cohérent avec le THD "
+    "'very low, frequency independent' déjà confirmé en section 15). "
+    "Conçu explicitement pour 'stable operation across varying load "
+    "impedances' — pertinent car les 3 modèles Elipson de Steve ont "
+    "tous une impédance minimale sous leur valeur nominale à certaines "
+    "fréquences (4,5-4,6 ohms min, déjà documenté section 15). "
+    "**Protections listées officiellement** (pour 'respecter' "
+    "l'électronique comme demandé par Steve) : surintensité avancée, "
+    "protection DC (offset continu en sortie, dangereux pour les "
+    "haut-parleurs), surchauffe, court-circuit — plus une 'indication "
+    "d'écrêtage' (clip indication) EXPLOITABLE PENDANT LA CALIBRATION : "
+    "un signal visuel qui permet de savoir en temps réel si le niveau "
+    "de mesure choisi (section 27, headroom) fait déjà écrêter l'ampli, "
+    "AVANT même de lancer la mesure Dirac."
+)
+"""[Fiche constructeur officielle] — hypex.nl/products/amplifier-
+families/mains-powered-ncorex-family/ncx252mp, lu en entier via le
+navigateur intégré (le module exact intégré par Buckeye dans le
+NCx252MP 8 canaux de Steve, déjà sourcé section 15)."""
