@@ -31,6 +31,7 @@ from diagnostic_engine import (
     calculate_room_mode_control_points,
     calculate_support_frequency_range,
     detect_anomalies,
+    detect_dangerous_gain_anomalies,
     diagnose_anomaly,
     recommend_support_groups,
     run_diagnostic,
@@ -238,15 +239,27 @@ class TestCalculateRoomModeControlPoints(unittest.TestCase):
         self.assertEqual(points[0].freq_hz, 110.0)
         self.assertLess(points[0].gain_db, 0.0)  # toujours une réduction, jamais un boost
 
-    def test_confirmed_dip_generates_no_control_point(self) -> None:
-        """Le test le plus important de cette classe : combler un creux
-        de mode nécessiterait un boost disproportionné et risqué."""
+    def test_confirmed_dip_generates_a_lowering_control_point_never_a_boost(self) -> None:
+        """Le test le plus important de cette classe, mis à jour suite au
+        cas réel vécu par Steve (gains jusqu'à 12dB ayant fait chauffer
+        son ampli, section 33) : un creux confirmé comme mode GÉNÈRE
+        maintenant un point de contrôle, mais celui-ci ABAISSE toujours
+        la cible (jamais un boost positif) — c'est précisément ce qui
+        empêche Dirac de tenter de combler le creux par un gain massif."""
         anomalies = [Anomaly("Front Left", 60.0, "creux", 9.0, is_confirmed_room_mode=True)]
         points = calculate_room_mode_control_points(anomalies)
-        self.assertEqual(points, [])
+        self.assertEqual(len(points), 1)
+        self.assertEqual(points[0].freq_hz, 60.0)
+        self.assertLess(points[0].gain_db, 0.0)  # invariant de sécurité : jamais un boost
+        self.assertIn("ABAISSÉE", points[0].reason)
 
     def test_unconfirmed_peak_generates_no_control_point(self) -> None:
         anomalies = [Anomaly("Front Left", 200.0, "pic", 5.0, is_confirmed_room_mode=False)]
+        points = calculate_room_mode_control_points(anomalies)
+        self.assertEqual(points, [])
+
+    def test_unconfirmed_dip_generates_no_control_point(self) -> None:
+        anomalies = [Anomaly("Front Left", 200.0, "creux", 5.0, is_confirmed_room_mode=False)]
         points = calculate_room_mode_control_points(anomalies)
         self.assertEqual(points, [])
 
@@ -255,6 +268,43 @@ class TestCalculateRoomModeControlPoints(unittest.TestCase):
         points = calculate_room_mode_control_points(anomalies)
         self.assertGreater(points[0].gain_db, -10.0)  # pas 100% de réduction
         self.assertLess(points[0].gain_db, 0.0)
+
+    def test_no_control_point_ever_boosts_the_target_curve(self) -> None:
+        """Invariant de sécurité global, directement motivé par le cas
+        réel de surchauffe vécu par Steve : qu'il s'agisse d'un pic ou
+        d'un creux, calculate_room_mode_control_points ne doit JAMAIS
+        retourner un gain_db positif."""
+        anomalies = [
+            Anomaly("A", 60.0, "creux", 15.0, is_confirmed_room_mode=True),
+            Anomaly("B", 120.0, "pic", 15.0, is_confirmed_room_mode=True),
+        ]
+        points = calculate_room_mode_control_points(anomalies)
+        self.assertEqual(len(points), 2)
+        self.assertTrue(all(p.gain_db < 0.0 for p in points))
+
+
+class TestDetectDangerousGainAnomalies(unittest.TestCase):
+    """Couvre detect_dangerous_gain_anomalies — directement motivé par
+    le cas réel vécu par Steve (gains jusqu'à 12dB ayant fait chauffer
+    son ampli, section 33)."""
+
+    def test_amplitude_above_threshold_triggers_a_warning(self) -> None:
+        anomalies = [Anomaly("Front Left", 60.0, "creux", 12.0, is_confirmed_room_mode=True)]
+        warnings = detect_dangerous_gain_anomalies(anomalies)
+        self.assertEqual(len(warnings), 1)
+        self.assertIn("Front Left", warnings[0])
+        self.assertIn("60", warnings[0])
+
+    def test_amplitude_below_threshold_triggers_no_warning(self) -> None:
+        anomalies = [Anomaly("Front Left", 60.0, "creux", 4.0, is_confirmed_room_mode=True)]
+        self.assertEqual(detect_dangerous_gain_anomalies(anomalies), [])
+
+    def test_applies_even_to_unconfirmed_anomalies(self) -> None:
+        """Même un creux non confirmé comme mode de pièce (local,
+        proximité mur/meuble) peut inciter Dirac à un gain dangereux."""
+        anomalies = [Anomaly("Front Left", 200.0, "creux", 11.0, is_confirmed_room_mode=False)]
+        warnings = detect_dangerous_gain_anomalies(anomalies)
+        self.assertEqual(len(warnings), 1)
 
 
 class TestRunDiagnosticSupportsCustomGrouping(unittest.TestCase):

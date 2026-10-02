@@ -3198,3 +3198,34 @@ articles lus, concurrents repérés, retours clients...)_
   31 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (03/10, suite 37) **🔥 Cas réel de surchauffe d'ampli (gains jusqu'à
+  12dB) — l'algorithme prévient désormais activement ce risque**
+
+  Steve a partagé un cas vécu avec Gemini : un problème de chaleur sur
+  son ampli Buckeye, dont la cause racine était des gains de correction
+  Dirac massifs (jusqu'à 12dB, soit ≈x15,85 en puissance électrique,
+  calcul vérifié : P2/P1 = 10^(dB/10)). Confirme concrètement un risque
+  jusqu'ici seulement anticipé en théorie (sections 14, 27, 29).
+
+  Nouvelle section 33 de `knowledge_base.py` (2 constantes). Lacune
+  comportementale corrigée dans `diagnostic_engine.py` :
+  - `calculate_room_mode_control_points` traite désormais AUSSI les
+    creux confirmés comme modes de pièce (plus seulement les pics) : au
+    lieu de ne rien recommander (prudence passive), elle recommande
+    ACTIVEMENT d'abaisser la cible (jamais de la remonter) pour empêcher
+    Dirac de tenter un boost automatique massif — le correctif direct du
+    problème vécu par Steve.
+  - Nouvelle fonction `detect_dangerous_gain_anomalies` : avertissement
+    explicite pour toute anomalie (confirmée comme mode ou non)
+    dépassant 10dB, avec le calcul du ratio de puissance électrique
+    affiché directement dans le message.
+
+  5 tests mis à jour/ajoutés (36 au total), dont un invariant de
+  sécurité explicite : `calculate_room_mode_control_points` ne retourne
+  JAMAIS un gain positif, quel que soit le cas. Validé en bout en bout
+  avec un cas de test simulant un creux de -13dB (affiche bien
+  "≈x20.0 en puissance électrique... au-delà du seuil de prudence").
+
+  36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

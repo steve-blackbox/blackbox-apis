@@ -514,35 +514,82 @@ def calculate_support_frequency_range(
 def calculate_room_mode_control_points(
     anomalies: list[Anomaly],
 ) -> list[TargetCurveControlPoint]:
-    """Calcule des points de contrôle de courbe cible UNIQUEMENT pour les
-    PICS confirmés comme modes de pièce (jamais pour un creux : limite
-    physique déjà documentée, LINEAR_EQ_CANNOT_FIX_NONLINEAR_DISTORTION
-    section 14 — combler un creux profond de mode nécessiterait un boost
-    disproportionné et risqué pour le haut-parleur). Réduit seulement une
-    fraction prudente de l'écart mesuré (ROOM_MODE_TARGET_REDUCTION_
-    FACTOR, section 30) plutôt que 100%, car un mode n'a pas la même
-    amplitude à toutes les positions d'écoute."""
+    """Calcule des points de contrôle de courbe cible pour les PICS et
+    les CREUX confirmés comme modes de pièce — jamais en BOOSTANT, dans
+    aucun des deux cas (limite physique déjà documentée, section 14, et
+    confirmée par un cas RÉEL vécu par Steve : des gains de correction
+    automatique jusqu'à 12dB — soit environ x15,85 en puissance
+    électrique — ont fait chauffer dangereusement son ampli, section 33).
+    Pour un PIC : abaisser la cible réduit l'agressivité de la correction
+    automatique. Pour un CREUX : abaisser la cible (PAS la remonter)
+    permet à la cible de suivre partiellement le creux naturel, ce qui
+    EMPÊCHE Dirac de tenter un boost automatique massif pour le combler
+    — c'est le correctif direct du problème vécu par Steve. Dans les
+    deux cas, seule une fraction prudente de l'écart mesuré est visée
+    (ROOM_MODE_TARGET_REDUCTION_FACTOR, section 30), pas 100%, car un
+    mode n'a pas la même amplitude à toutes les positions d'écoute."""
     points: list[TargetCurveControlPoint] = []
     for a in anomalies:
-        if a.is_confirmed_room_mode and a.kind == "pic":
-            reduction_db = round(
-                a.amplitude_db * kb.ROOM_MODE_TARGET_REDUCTION_FACTOR, 1
+        if not a.is_confirmed_room_mode:
+            continue
+        reduction_db = round(a.amplitude_db * kb.ROOM_MODE_TARGET_REDUCTION_FACTOR, 1)
+        if a.kind == "pic":
+            reason = (
+                f"Pic de mode de pièce confirmé à {a.freq_hz:.0f} Hz "
+                f"(+{a.amplitude_db:.1f} dB mesuré sur {a.speaker_name}) — "
+                f"cible abaissée de {reduction_db:.1f} dB "
+                f"({int(kb.ROOM_MODE_TARGET_REDUCTION_FACTOR * 100)}% de "
+                f"l'écart, pas 100%) pour réduire l'agressivité de la "
+                f"correction automatique."
             )
-            points.append(
-                TargetCurveControlPoint(
-                    freq_hz=a.freq_hz,
-                    gain_db=-reduction_db,
-                    speaker_name=a.speaker_name,
-                    reason=(
-                        f"Pic de mode de pièce confirmé à {a.freq_hz:.0f} Hz "
-                        f"(+{a.amplitude_db:.1f} dB mesuré sur "
-                        f"{a.speaker_name}) — réduction de "
-                        f"{int(kb.ROOM_MODE_TARGET_REDUCTION_FACTOR * 100)}% "
-                        f"de l'écart, pas 100%."
-                    ),
-                )
+        else:  # creux
+            reason = (
+                f"Creux de mode de pièce confirmé à {a.freq_hz:.0f} Hz "
+                f"(-{a.amplitude_db:.1f} dB mesuré sur {a.speaker_name}) — "
+                f"cible ABAISSÉE (pas remontée) de {reduction_db:.1f} dB "
+                f"pour que Dirac n'essaie PAS de forcer un boost massif "
+                f"ici : un creux de mode est une annulation acoustique, "
+                f"la combler électriquement demanderait un gain "
+                f"disproportionné sans régler la cause physique — cas "
+                f"RÉEL vécu par Steve (gains jusqu'à 12dB ayant fait "
+                f"chauffer son ampli, section 33)."
             )
+        points.append(
+            TargetCurveControlPoint(
+                freq_hz=a.freq_hz,
+                gain_db=-reduction_db,
+                speaker_name=a.speaker_name,
+                reason=reason,
+            )
+        )
     return points
+
+
+def detect_dangerous_gain_anomalies(anomalies: list[Anomaly]) -> list[str]:
+    """Génère un avertissement pour TOUTE anomalie (pic ou creux, mode de
+    pièce confirmé ou non) dont l'amplitude mesurée dépasse le seuil de
+    prudence (DANGEROUS_EQ_GAIN_THRESHOLD_DB, section 33) — directement
+    motivé par le cas réel vécu par Steve (gains jusqu'à 12dB ayant fait
+    chauffer son ampli). S'applique à TOUTES les anomalies, pas
+    seulement celles confirmées comme modes de pièce : même un creux
+    local (proximité mur/meuble, SBIR) peut inciter Dirac à tenter un
+    gain de correction tout aussi dangereux."""
+    warnings: list[str] = []
+    for a in anomalies:
+        if a.amplitude_db >= kb.DANGEROUS_EQ_GAIN_THRESHOLD_DB:
+            power_ratio = 10 ** (a.amplitude_db / 10)
+            warnings.append(
+                f"⚠️ {a.speaker_name} à {a.freq_hz:.0f} Hz : écart mesuré de "
+                f"{a.amplitude_db:.1f} dB (≈x{power_ratio:.1f} en puissance "
+                f"électrique si Dirac tentait de le combler entièrement) — "
+                f"au-delà du seuil de prudence de "
+                f"{kb.DANGEROUS_EQ_GAIN_THRESHOLD_DB:.0f} dB. Vérifier "
+                f"qu'un point de contrôle de courbe cible limite bien la "
+                f"correction automatique à cette fréquence (voir "
+                f"STEVE_AMPLIFIER_OVERHEATING_FROM_MASSIVE_EQ_GAIN, "
+                f"section 33 — cas réel de surchauffe ampli)."
+            )
+    return warnings
 
 
 # ---------------------------------------------------------------------------
@@ -582,6 +629,8 @@ def run_diagnostic(
     for measurement in measurements:
         for anomaly in detect_anomalies(measurement):
             report.anomalies.append(diagnose_anomaly(anomaly, room))
+
+    report.warnings.extend(detect_dangerous_gain_anomalies(report.anomalies))
 
     report.recommendations.extend(recommend_support_groups(speakers))
     report.recommendations.extend(recommend_frequency_ranges(speakers))

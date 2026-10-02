@@ -3270,3 +3270,52 @@ SUPPORT_LEVEL_SCALE_IS_COUNTERINTUITIVE = (
 vigilance signalé explicitement par Steve] — reformulation pédagogique
 explicite pour éviter toute confusion dans les textes générés."""
 
+# ---------------------------------------------------------------------------
+# 33. Retour d'expérience RÉEL de Steve : surchauffe d'ampli causée par des
+#     gains de correction massifs (jusqu'à 12dB). Confirme concrètement,
+#     par un cas vécu et chiffré, la limite déjà anticipée en théorie en
+#     sections 14, 27 et 29 (distorsion non-linéaire, headroom,
+#     protections thermiques du Hypex NCx252MP de Steve).
+# ---------------------------------------------------------------------------
+STEVE_AMPLIFIER_OVERHEATING_FROM_MASSIVE_EQ_GAIN = (
+    "Steve a vécu un problème RÉEL de chaleur excessive sur son ampli de "
+    "puissance (Buckeye NCx252MP), diagnostiqué avec Gemini : la cause "
+    "racine identifiée était que Dirac demandait des gains de correction "
+    "MASSIFS pour combler certains points de ses courbes, 'pouvant aller "
+    "jusqu'à 12dB'. Calcul physique de vérification (domaine public, "
+    "conversion standard dB -> ratio de puissance électrique, "
+    "P2/P1 = 10^(dB/10)) : +12 dB représente environ **×15,85 la "
+    "puissance électrique** nécessaire à cette fréquence précise, par "
+    "rapport à ce qui aurait suffi sans cette correction — une "
+    "amplification considérable concentrée sur une bande étroite, "
+    "cohérente avec le déclenchement possible de la protection "
+    "'Over temperature protection' déjà documentée officiellement pour "
+    "ce module (HYPEX_NCX252MP_TECHNICAL_ARCHITECTURE, section 29). "
+    "Ce cas vécu CONFIRME de façon concrète et chiffrée ce qui n'était "
+    "jusqu'ici qu'un risque théorique anticipé dans cette base : la "
+    "limite physique de la correction linéaire (section 14) et le "
+    "principe de prudence déjà appliqué dans l'algorithme (ne jamais "
+    "recommander de combler un creux de mode à 100%, "
+    "ROOM_MODE_TARGET_REDUCTION_FACTOR, section 30) — mais révèle une "
+    "lacune comportementale : jusqu'ici, l'algorithme se contentait de "
+    "NE RIEN recommander pour un creux de mode (prudence passive), sans "
+    "recommander ACTIVEMENT d'abaisser la courbe cible pour EMPÊCHER "
+    "Dirac de tenter cette correction massive automatiquement — corrigé "
+    "dans la foulée de cette section (voir "
+    "calculate_room_mode_control_points, diagnostic_engine.py)."
+)
+"""[Retour d'expérience Steve, diagnostiqué avec Gemini] — vérifié par un
+calcul physique de domaine public (conversion dB -> ratio de puissance)
+et cross-référencé aux protections officielles déjà documentées du
+matériel réel de Steve (section 29)."""
+
+DANGEROUS_EQ_GAIN_THRESHOLD_DB = 10.0
+"""Seuil d'alerte choisi en cohérence avec le retour d'expérience de
+Steve (jusqu'à 12dB = x15,85 en puissance a causé une surchauffe réelle)
+: tout gain de correction nécessaire estimé à 10dB ou plus (x10 en
+puissance électrique) déclenche désormais un AVERTISSEMENT explicite
+dans le rapport, qu'il s'agisse d'un creux confirmé comme mode de pièce
+ou de toute autre anomalie détectée — pas une valeur officielle Dirac,
+un seuil de prudence choisi à partir d'un cas réel vécu, à ajuster si
+d'autres retours de terrain le suggèrent."""
+
