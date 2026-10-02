@@ -1568,3 +1568,110 @@ suite 15, voir PROJETS_FUTURS.md) et ne sont pas dupliqués ici. Le
 manuel Marantz CINEMA 30 reste sourcé séparément sous
 EvidenceLevel.MARANTZ_DIRAC_OFFICIEL (section 1) : cette liste couvre
 le matériel qui n'avait PAS encore de source officielle."""
+
+# ---------------------------------------------------------------------------
+# 16. Confirmations officielles directes dirac.com + stormaudio.com (demande
+#     de Steve : "prend en compte toutes les notes sur le site de dirac et
+#     de storm"). Navigateur intégré utilisé (web_fetch avait échoué sur
+#     dirac.com par le passé, erreur 429 — voir suite 15). Pages lues :
+#     dirac.com/products/art (+ 3 accordéons et 6 "features" cliqués),
+#     dirac.com/resources/quickstart, dirac.com/brands (liste complète),
+#     dirac.com/brands/marantz, dirac.com/products/marantz-cinema-30,
+#     stormaudio.com/room-calibration/. [Documentation officielle Dirac] /
+#     [Documentation officielle StormAudio]
+# ---------------------------------------------------------------------------
+ART_OFFICIAL_MECHANISM_CANCELLATION_SIGNALS = (
+    "Formulation officielle exacte de dirac.com/products/art, qui confirme "
+    "en langage produit (pas juste brevet) le mécanisme primaire+support "
+    "déjà déduit des brevets : 'ART configures your system to generate "
+    "cancellation signals using all available speakers. These signals are "
+    "applied in real time during playback.' Et dans 'What it does' : "
+    "'It uses the strengths of each speaker to create an ideal sound "
+    "field, where negative effects like resonances are blocked before "
+    "they even occur.' Sur la page produit spécifique au CINEMA 30 "
+    "(dirac.com/products/marantz-cinema-30), ART est décrit comme "
+    "'Speaker cooperation add-on' avec 3 bénéfices listés : 'Coordinates "
+    "speakers to work together', 'Delivers the ultimate immersive "
+    "sound', 'Tames resonances and decay times'."
+)
+"""[Documentation officielle Dirac] — dirac.com/products/art, sections
+'What it does' et accordéon 'How to calibrate and set it up' cliqué ;
+dirac.com/products/marantz-cinema-30, liste de caractéristiques du
+produit '03 ART' spécifique à ce modèle. Lu directement via le
+navigateur intégré (readPage + clickElement)."""
+
+ART_OFFICIAL_DECAY_TIME_AND_BASS_FOCUS = (
+    "Point concret et actionnable confirmé par DEUX sources officielles "
+    "indépendantes (Dirac ET StormAudio) : ART ne corrige pas qu'une "
+    "courbe de gain en fréquence, il agit explicitement sur le TEMPS DE "
+    "DÉCROISSANCE du son dans la pièce, avec un focus particulier sur "
+    "les graves qui 'traînent'. Dirac (feature 'Decay Time Management') : "
+    "'ART ensures sound doesn't linger for as long in your room, "
+    "improving clarity and preventing muddiness.' StormAudio (plus "
+    "explicite encore) : ART 'uses each speaker's strengths to reduce "
+    "room decay time, efficiently canceling out **lingering bass**, "
+    "leading to unmatched clarity.' Cohérent avec les 3 zones de modes "
+    "de pièce confirmées empiriquement sur le système réel de Steve "
+    "(toutes situées dans les graves/bas-médium, 45-255 Hz) : c'est "
+    "précisément la zone où ART est sensé être le plus utile selon ces "
+    "deux sources officielles."
+)
+"""[Documentation officielle Dirac + StormAudio] — dirac.com/products/art,
+feature 'Decay Time Management' cliquée ; stormaudio.com/room-
+calibration/, section 'Dirac Live Active Room Treatment'. Lu directement
+via le navigateur intégré."""
+
+ART_REUSES_EXISTING_MEASUREMENTS = (
+    "Information pratique officielle StormAudio, utile si Steve "
+    "réactive/reconfigure ART plus tard : passer de Room Correction/Bass "
+    "Control à ART 'will maintain your existing configurations and audio "
+    "profiles... If sufficient measurements were previously taken, they "
+    "can be used to activate Dirac ART quickly' — pas besoin de "
+    "systématiquement tout re-mesurer depuis zéro si les mesures "
+    "existantes sont jugées suffisantes par le logiciel."
+)
+"""[Documentation officielle StormAudio] — stormaudio.com/room-
+calibration/, section 'Dirac Live Active Room Treatment', 2e
+paragraphe."""
+
+STORMAUDIO_EXPERT_BASS_MANAGEMENT_NOT_CONFIRMED_ON_MARANTZ = (
+    "⚠️ Point de vigilance important, à ne pas confondre : StormAudio "
+    "annonce sur son propre site un système 'Expert Bass Management' "
+    "EXCLUSIF à sa gamme de processeurs ('we have also created our own "
+    "exclusive Expert Bass Management system'), gérant jusqu'à 6 zones de "
+    "graves indépendantes avec routage par canal. Cette fonctionnalité "
+    "est présentée comme un AJOUT PROPRIÉTAIRE StormAudio, EN PLUS de "
+    "Dirac Live Bass Control — rien ne confirme qu'elle existe sur le "
+    "Marantz CINEMA 30 de Steve, qui utilise Dirac Live Bass Control "
+    "'nu' (sans la couche StormAudio). Ne pas recommander cette "
+    "fonctionnalité à 6 zones à Steve sans vérifier d'abord si elle "
+    "existe réellement dans le menu de son CINEMA 30 : toutes les "
+    "règles de cette base de connaissances héritées de la documentation "
+    "StormAudio (sections 1 à 9, hiérarchie de support, niveaux de "
+    "support) viennent de pages décrivant le fonctionnement GÉNÉRIQUE "
+    "d'ART sous licence Dirac (applicable à Marantz), mais celle-ci "
+    "semble spécifiquement présentée comme un plus StormAudio."
+)
+"""[Documentation officielle StormAudio] — stormaudio.com/room-
+calibration/, section 'Expert Bass Management'. Contradiction
+secondaire notée : la même page affirme aussi 'StormAudio products
+range is for now the only brand including this technology [ART]',
+alors que dirac.com/brands/marantz confirme ART 'Available' sur
+plusieurs modèles Marantz dont le CINEMA 30 — probablement une
+affirmation marketing StormAudio devenue obsolète (ART étendu à
+d'autres marques depuis), signalée ici honnêtement plutôt que
+silencieusement ignorée."""
+
+DIRAC_COMPATIBLE_BRANDS_LIST = [
+    "ARCAM", "AudioControl", "Bluesound", "BRYSTON", "Datasat", "Denon",
+    "Dynaudio", "Emotiva", "FOCAL", "Integra", "JBL", "JBL Synthesis",
+    "Klipsch", "Lexicon", "Marantz", "McIntosh", "miniDSP", "Monoprice",
+    "NAD", "Onkyo", "Pioneer", "Pioneer/Elite", "Primare", "Rotel",
+    "Sonoro", "StormAudio", "Theta Digital", "Tonewinner", "Model M1",
+]
+"""[Documentation officielle Dirac] — dirac.com/brands, liste complète
+des 29 marques listées comme ayant au moins un appareil compatible
+Dirac Live (lue directement). Buckeye (l'ampli de puissance de Steve)
+n'y figure pas — cohérent : c'est un ampli de puissance externe piloté
+en analogique (XLR) par le CINEMA 30, pas un appareil qui exécute
+lui-même Dirac Live."""
