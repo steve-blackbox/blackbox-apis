@@ -2808,3 +2808,37 @@ articles lus, concurrents repérés, retours clients...)_
   10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès après chaque ajout : aucune régression.
 
+- (03/10, suite 26) **🎬 Standards des vrais cinémas (X-Curve) et
+  découverte d'une correspondance avec "courbe maison" de Steve**
+
+  Steve a demandé des recherches sur les réglages de courbe dans les
+  VRAIS cinémas, précisant que son objectif est "le rendu des voix du
+  cinéma". Recherche menée via le navigateur intégré (web_fetch bloqué
+  par Google comme d'habitude) : article de référence mkpereport.com
+  ("X-Curve Is Not An EQ Curve") lu en entier — mise en garde
+  essentielle : la X-Curve (SMPTE ST202) n'est PAS une courbe à
+  reproduire mais une fenêtre de mesure compensant la réverbération et
+  l'absorption atmosphérique des GRANDES salles (jusqu'à -5dB à 10kHz
+  sur 30m) ; la traiter comme une cible d'égalisation est une erreur
+  reconnue par les professionnels, menant à une sur-égalisation.
+
+  **Découverte clé** : le standard prévoit une variante "small room
+  X-curve" pour les petites salles (<150m³), avec une pente bien plus
+  douce (1,5 dB/octave au-dessus de 2kHz, contre 3dB/octave pour la
+  grande salle) — confirmée par 4 sources indépendantes convergentes
+  (Lafont Audio, francis.audio, Elliott Sound Products, AVS Forum).
+  **Comparaison chiffrée avec "courbe maison.targetcurve" de Steve** :
+  à 17723 Hz, la small-room X-curve prédit -4,72 dB contre -5,00 dB
+  mesurés dans son fichier — quasi identique. Hypothèse plausible (non
+  confirmée) : son ajustement personnalisé s'inspire peut-être de ce
+  standard professionnel adapté aux petites salles, plutôt que d'être
+  arbitraire.
+
+  Limite honnête documentée : aucune source lue ne traite spécifiquement
+  du traitement du canal CENTRAL/dialogue en cinéma pro — la (small
+  room) X-Curve est une calibration globale de salle, pas un réglage
+  ciblé voix. Nouvelle section 19 de `knowledge_base.py` (4 constantes).
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

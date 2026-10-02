@@ -2059,3 +2059,117 @@ SERVICE_VALUE_PROPOSITION_VS_AUTOMATIC = (
 )
 """[Steve] — proposition de valeur du service, formulée explicitement
 par Steve, recoupée avec les sections déjà sourcées de ce fichier."""
+
+# ---------------------------------------------------------------------------
+# 19. Standards professionnels des VRAIS cinémas (demande de Steve :
+#     "fais des recherches pour savoir comment sont les reglages des
+#     courbes dans les vrais cinemas", puis précision : "le rendu des
+#     voix du cinema c'est ce que j'aimerais avoir chez moi"). Sources
+#     lues directement via le navigateur intégré (web_fetch bloqué sur
+#     Google comme d'habitude) : article technique mkpereport.com
+#     ("X-Curve Is Not An EQ Curve"), confirmé par plusieurs sources
+#     indépendantes convergentes sur les valeurs chiffrées (Lafont Audio,
+#     francis.audio, Elliott Sound Products/sound-au.com, fils AVS
+#     Forum). [Acoustique générale] / [Standard professionnel cinéma]
+# ---------------------------------------------------------------------------
+X_CURVE_IS_NOT_AN_EQ_CURVE = (
+    "Mise en garde professionnelle essentielle, à ne jamais perdre de "
+    "vue : la 'X-Curve' (standard SMPTE ST202 / ISO 2969) utilisée dans "
+    "les VRAIS cinémas commerciaux N'EST PAS une courbe d'égalisation à "
+    "reproduire — c'est une FENÊTRE DE MESURE conçue pour permettre à un "
+    "technicien, avec un analyseur de spectre standard, de retrouver "
+    "approximativement ce qu'entendait le réalisateur dans sa salle de "
+    "mixage, EN COMPENSANT les effets de la réverbération de la GRANDE "
+    "salle et l'absorption atmosphérique sur de longues distances "
+    "(jusqu'à -5 dB à 10 kHz sur 30 mètres, selon température/"
+    "conditions). La source elle-même (un ingénieur spécialisé cinéma, "
+    "mkpereport.com) signale que la méprise la plus commune est "
+    "justement de traiter la X-Curve comme une 'cible à atteindre "
+    "exactement', ce qui mène à une SUR-ÉGALISATION et pas "
+    "nécessairement au meilleur son. Conséquence directe pour Steve : "
+    "copier la X-Curve des grandes salles telle quelle chez lui serait "
+    "une erreur reconnue par les professionnels eux-mêmes — sa pièce "
+    "n'a ni les dizaines de mètres de distance d'écoute, ni l'écran "
+    "perforé, ni la réverbération d'une salle de centaines de places."
+)
+"""[Acoustique générale / standard professionnel] — mkpereport.com,
+'X-Curve Is Not An EQ Curve' (2012), article technique signé par un
+ingénieur spécialisé en son de cinéma (blog mkpeReport, couverture
+cinéma numérique/3D/HFR). Lu en entier via le navigateur intégré."""
+
+X_CURVE_STANDARD_VALUES = (
+    "Valeurs chiffrées de la X-Curve STANDARD (grandes salles de cinéma "
+    "commerciales), confirmées par plusieurs discussions techniques "
+    "indépendantes (AVS Forum, Gearspace) : la courbe reste plate "
+    "jusqu'à 2 kHz, puis descend à 3 dB par octave au-dessus — soit "
+    "environ -6 dB à 8 kHz et -9 dB à 16 kHz par rapport au niveau de "
+    "référence à 2 kHz. Cette pente compense spécifiquement "
+    "l'atténuation de l'air sur de grandes distances (voir "
+    "X_CURVE_IS_NOT_AN_EQ_CURVE) : plus la salle est grande, plus "
+    "l'atténuation naturelle de l'aigu par l'air est importante, donc "
+    "plus il faut 'pré-booster' l'aigu à la source (dans le mixage "
+    "studio) pour qu'il survive au trajet jusqu'au fond de la salle — "
+    "la X-Curve en salle de mixage est donc l'INVERSE compensatoire de "
+    "ce qui sera réellement perdu en salle de projection."
+)
+"""[Acoustique générale / standard professionnel] — discussions
+techniques recoupées : AVS Forum ('Pro Cinema Speakers, the X-Curve,
+and other Target Curves at Home', fil de 2014) et Gearspace ('Those
+mixing on near/midfields for theater: X-curve?'). Valeurs non
+officielles du texte intégral SMPTE ST202 (document payant, non
+consulté), mais cohérentes entre elles sur 2 sources indépendantes."""
+
+SMALL_ROOM_X_CURVE_VALUES = (
+    "Point le plus directement pertinent pour Steve : le standard "
+    "lui-même prévoit une VARIANTE 'small room X-curve' pour les salles "
+    "de PETITE taille (moins de 150 m³ selon une source), avec une "
+    "pente BEAUCOUP PLUS DOUCE : 1,5 dB par octave au-dessus de 2 kHz "
+    "(au lieu de 3 dB/octave pour la grande salle) — soit environ "
+    "-3 dB à 8 kHz et -4,5 dB à 16 kHz. Cette variante existe "
+    "précisément parce que l'atténuation atmosphérique de l'aigu, "
+    "proportionnelle à la distance, est beaucoup plus faible sur "
+    "quelques mètres (salle de petite taille/salon) que sur 30+ mètres "
+    "(grande salle de cinéma) : la correction nécessaire est donc "
+    "logiquement moins marquée. **Comparaison chiffrée avec 'courbe "
+    "maison.targetcurve' de Steve** (créée directement sur son CINEMA "
+    "30, voir note de prudence ci-dessous) : à 17723 Hz, la small-room "
+    "X-curve prédit mathématiquement -4,72 dB (en prenant 2 kHz comme "
+    "point de départ), contre -5,00 dB mesurés dans le fichier de Steve "
+    "— quasi identique. À 6060 Hz, la prédiction donne -2,40 dB contre "
+    "-3,83 dB observés — du même ordre de grandeur, un peu plus marqué. "
+    "Hypothèse plausible (NON confirmée par Steve) : son ajustement "
+    "pourrait s'inspirer de cette 'small-room X-curve', le standard "
+    "professionnel le plus proche de son cas d'usage réel (home cinéma, "
+    "petite salle), plutôt qu'être une courbe arbitraire."
+)
+"""[Acoustique générale / standard professionnel] — 4 sources
+indépendantes convergentes sur la valeur 1,5 dB/octave à partir de
+2 kHz : lafontaudio.com/courbe-X.htm (français), francis.audio (site
+francophone, page '7.2 Quelle courbe de réponse cible ?'),
+sound-au.com/articles/cinema-sound.htm (Elliott Sound Products,
+référence technique reconnue), fil AVS Forum 2014 cité ci-dessus.
+Calcul de comparaison avec 'courbe maison.targetcurve' effectué par
+nous-mêmes (formule : -1,5 × log2(f/2000) dB au-dessus de 2 kHz), pas
+une affirmation directe d'une des sources."""
+
+CINEMA_DIALOGUE_RENDERING_CAVEAT = (
+    "⚠️ Limite honnête importante avant de conclure quoi que ce soit sur "
+    "le rendu des VOIX spécifiquement (la demande précise de Steve) : "
+    "aucune des sources lues dans cette section ne traite spécifiquement "
+    "du traitement du canal CENTRAL/dialogue en cinéma professionnel — "
+    "la X-Curve et sa variante 'small room' sont des courbes de "
+    "calibration GLOBALES de la salle (toutes enceintes), pas des "
+    "ajustements ciblés sur les dialogues. Le rendu des voix au cinéma "
+    "dépend de bien d'autres facteurs non couverts ici : le niveau de "
+    "référence (déjà documenté, CINEMA_REFERENCE_LEVEL_PRINCIPLE, "
+    "section 10), la qualité du mixage lui-même (hors de notre contrôle "
+    "une fois le film produit), la directivité du haut-parleur central "
+    "et son intégration avec l'écran (non applicable à un vrai écran "
+    "acoustiquement transparent chez Steve), et la clarté apportée par "
+    "ART via la réduction du temps de décroissance (section 18, déjà "
+    "documentée). Ne pas présenter la 'small-room X-curve' comme LA "
+    "solution du rendu voix cinéma : c'est une piste cohérente et "
+    "sourcée, pas une certitude validée pour ce cas d'usage précis."
+)
+"""Synthèse de prudence rédigée par nous-mêmes à partir des limites
+identifiées dans les sources ci-dessus — pas une citation directe."""
