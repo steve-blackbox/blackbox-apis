@@ -2479,3 +2479,58 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès après ces ajouts à `knowledge_base.py` : aucune
   régression.
 
+- (03/10, suite 20) **📜 Troisième et dernier brevet Dirac Research lu
+  en texte intégral — toutes les pistes connues sont désormais résolues**
+
+  Steve a demandé explicitement de télécharger "le brevet laissé en
+  piste ouverte" (US9426600B2, mentionné en fin de suite 19 mais jamais
+  lu). Navigation directe sur la page Google Patents déjà partagée,
+  identification du lien PDF officiel, téléchargement (29 pages),
+  extraction du texte intégral (PyMuPDF) et lecture complète : abstract,
+  background, summary, detailed description, modélisation mathématique
+  complète du critère LQG, exemple expérimental chiffré, revendications
+  1 à 22.
+
+  **Brevet exploité : US9426600B2** "Audio precompensation controller
+  design with pairwise loudspeaker channel similarity", Adrian Bahne /
+  Lars-Johan Brännmark / Anders Ählén (Uppsala), provisoire 2012, PCT
+  2013, accordé 2016, assigné Dirac Research AB. Ajouté à
+  `knowledge_base.py` (nouvelle section 13, 4 constantes `PLS_*` +
+  entrée `CitedPatent`) :
+  - **Pourquoi l'égalisation seule ne suffit pas** : égaliser chaque
+    enceinte séparément vers la même cible n'obtient la similarité
+    gauche/droite "que comme sous-produit, idéalement" — et seulement
+    si la pièce est parfaitement symétrique par rapport à la paire
+    d'enceintes et que les enceintes sont identiques. Le brevet
+    affirme explicitement que ce n'est "pas un résultat réaliste" dans
+    un salon ordinaire. D'où l'ajout d'un terme de symétrie EXPLICITE
+    dans le critère d'optimisation.
+  - **Mécanisme précis** : la fonction de critère combine un terme
+    d'écart à la cible (classique) et un terme de similarité entre les
+    réponses égalisées d'une paire d'enceintes symétriques (via une
+    matrice de permutation qui aligne les positions miroir), les deux
+    résolus ENSEMBLE via LQG — même socle mathématique que les deux
+    autres brevets Dirac déjà intégrés, confirmation que ce n'est pas
+    une coïncidence isolée.
+  - **Preuve chiffrée donnée par le brevet lui-même** (FIG. 13, 64
+    positions mesurées) : activer la similarité de paire avec 6
+    enceintes de support bat, en qualité d'image stéréo, le fait
+    d'ajouter 16 enceintes de support sans ce critère. Un seul point de
+    contrôle de similarité suffit déjà à rendre les réponses
+    gauche/droite "presque identiques" entre 70 et 800 Hz.
+  - **Recommandation M > N confirmée** : le nombre de positions de
+    mesure doit dépasser le nombre d'enceintes — avec 13 positions pour
+    9 enceintes au total (7 + 2 caissons), Steve respecte déjà ce ratio.
+
+  Ce troisième brevet est complémentaire (pas redondant) aux deux
+  précédents : le premier (US9781510B2) pose le mécanisme primaire/
+  support, le second (US8213637B2) traite des zones d'écoute multiples
+  et de l'optimisation jointe égaliseur/crossover/up-mixing, le
+  troisième (US9426600B2) ajoute la symétrie explicite de paire
+  gauche/droite. **Aucune piste de brevet Dirac Research connue ne
+  reste ouverte** à ce stade.
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès après ces ajouts à `knowledge_base.py` : aucune
+  régression.
+

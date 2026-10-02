@@ -821,22 +821,23 @@ mesuré par une étude contrôlée)."""
 #     du code de Dirac pour nos connaissances personnelles"). Ligne rouge
 #     rappelée : le LOGICIEL Dirac Live est propriétaire et fermé — aucune
 #     décompilation ni rétro-ingénierie n'a été tentée ou ne sera tentée.
-#     Les seules sources techniques "internes" légitimes ici sont deux
+#     Les seules sources techniques "internes" légitimes ici sont trois
 #     VRAIS brevets déposés par Dirac Research AB, documents de divulgation
 #     publique complète (c'est la contrepartie légale de la protection par
 #     brevet), lus en texte intégral (extraction réelle du texte, pas une
 #     supposition) : le premier (US9781510B2) a été fourni en PDF par Steve
-#     lui-même ; le second (US8213637B2, famille EP2257083B1) a été
-#     identifié via la page Google Patents que Steve a partagée dans son
-#     navigateur, puis téléchargé directement depuis le stockage PDF public
-#     officiel de Google Patents (même source finale que si Steve l'avait
-#     fourni directement — aucun contenu tiers ou résumé non vérifié).
-#     Référence complète dans CITED_PATENTS ci-dessous. Un troisième
-#     fichier PDF fourni par Steve au même moment que le premier
-#     (US9415102) s'est avéré être un brevet pharmaceutique d'Alexion
-#     Pharmaceuticals sur des anticorps anti-C5, sans aucun rapport avec
-#     l'audio ou Dirac — vérifié par lecture réelle du texte, signalé
-#     honnêtement plutôt qu'ignoré, et non utilisé ici.
+#     lui-même ; le second (US8213637B2, famille EP2257083B1) et le
+#     troisième (US9426600B2) ont été identifiés via les pages Google
+#     Patents que Steve a partagées dans son navigateur, puis téléchargés
+#     directement depuis le stockage PDF public officiel de Google Patents
+#     (même source finale que si Steve les avait fournis directement —
+#     aucun contenu tiers ou résumé non vérifié). Référence complète dans
+#     CITED_PATENTS ci-dessous. Un quatrième fichier PDF fourni par Steve
+#     au même moment que le premier (US9415102) s'est avéré être un brevet
+#     pharmaceutique d'Alexion Pharmaceuticals sur des anticorps anti-C5,
+#     sans aucun rapport avec l'audio ou Dirac — vérifié par lecture
+#     réelle du texte, signalé honnêtement plutôt qu'ignoré, et non
+#     utilisé ici.
 # ---------------------------------------------------------------------------
 ART_PRIMARY_SUPPORT_MECHANISM = (
     "Le brevet US9781510B2 définit formellement le mécanisme que le "
@@ -1090,6 +1091,101 @@ SFC_MATHIAS_JOHANSSON_CONFIRMED_COINVENTOR = (
 inventeurs). Recoupement avec le travail de recherche académique du
 segment précédent (checkpoint sur la thèse de Viktor Gunnarsson)."""
 
+# ---------------------------------------------------------------------------
+# 13. Troisième brevet Dirac Research : la symétrie de PAIRE d'enceintes
+#     (ex : front gauche/droite, surround gauche/droite). Identifié comme
+#     piste ouverte à la fin de la section 12 (US9426600B2, jamais lu à
+#     l'époque), puis explicitement demandé par Steve ("télécharge le
+#     brevet que tu as laissé en piste ouverte"). Texte intégral téléchargé
+#     depuis le stockage PDF public officiel de Google Patents (même
+#     méthode que pour US8213637B2) et lu en entier (29 pages : abstract,
+#     background, summary, detailed description, modélisation
+#     mathématique complète du critère LQG, exemple expérimental chiffré,
+#     revendications 1 à 22).
+# ---------------------------------------------------------------------------
+PLS_SYMMETRY_NOT_AUTOMATIC_FROM_EQUALIZATION = (
+    "Point de départ du brevet, qui explique pourquoi un simple réglage "
+    "ART 'par enceinte' ne suffit pas forcément à garantir une bonne "
+    "image stéréo/surround : la similarité entre les réponses de salle "
+    "(RTF) de deux enceintes symétriques (front gauche/droite, surround "
+    "gauche/droite) est décrite comme une 'exigence de base' pour une "
+    "reproduction sonore correcte. Le brevet souligne qu'égaliser "
+    "séparément chaque enceinte vers LA MÊME cible n'obtient cette "
+    "similarité 'que comme sous-produit, idéalement' — et seulement SI "
+    "la pièce est parfaitement symétrique par rapport à la paire "
+    "d'enceintes ET que les enceintes sont identiques. Le brevet affirme "
+    "explicitement que ce n'est 'pas un résultat réaliste' dans un salon "
+    "ordinaire (asymétries dues au mobilier, aux murs, aux ouvertures). "
+    "D'où l'idée centrale des inventeurs : il faut un critère "
+    "d'optimisation qui exige EXPLICITEMENT cette symétrie, en plus de "
+    "l'égalisation de chaque canal vers sa cible — et la placer dans la "
+    "MÊME optimisation plutôt que de la traiter après coup."
+)
+"""[Brevet Dirac Research] — US9426600B2 "Audio precompensation
+controller design with pairwise loudspeaker channel similarity",
+inventeurs Adrian Bahne, Lars-Johan Brännmark, Anders Ählén (Uppsala,
+Suède), demande PCT déposée 20/06/2013 (priorité provisoire 06/07/2012),
+accordé 23/08/2016, assigné à Dirac Research AB. Sections 'Background of
+the Invention' et 'Summary of the Invention'. Texte intégral lu."""
+
+PLS_CRITERION_FUNCTION_MECHANISM = (
+    "Mécanisme technique précis (revendication 1, indépendante) : la "
+    "fonction de critère optimisée par le contrôleur combine DEUX termes "
+    "en même temps, sous la même contrainte de stabilité : (1) une somme "
+    "pondérée des écarts entre les réponses impulsionnelles compensées "
+    "et les réponses cibles à chaque position de mesure (l'égalisation "
+    "classique, déjà connue des deux autres brevets) ; (2) une somme "
+    "pondérée et PERMUTÉE des écarts entre les réponses égalisées d'AU "
+    "MOINS UNE PAIRE d'enceintes symétriques — une matrice de "
+    "permutation réarrange les positions de mesure d'un canal pour les "
+    "aligner avec les positions miroir symétriques de l'autre canal de "
+    "la paire. Les deux termes sont résolus ENSEMBLE via la même méthode "
+    "d'optimisation LQG (Linear Quadratic Gaussian) que les deux autres "
+    "brevets Dirac déjà intégrés ici — confirmation supplémentaire que "
+    "LQG est le socle mathématique commun et récurrent des 3 brevets "
+    "Dirac Research lus à ce jour, pas une coïncidence isolée."
+)
+"""[Brevet Dirac Research] — même brevet US9426600B2, revendication 1 et
+section 'Detailed Description' (équations (11) et (17), définition de la
+matrice de permutation P). Texte intégral lu."""
+
+PLS_EXPERIMENTAL_PROOF_SUPPORT_VS_SYMMETRY = (
+    "Preuve chiffrée donnée par le brevet lui-même (section 'An "
+    "Illustrative Example', FIG. 13, mesures réelles sur 64 positions) : "
+    "'la corrélation croisée pour une conception de précompensateur avec "
+    "similarité [de paire] pour SIX enceintes [de support] est plus "
+    "élevée que la corrélation croisée pour une conception sans "
+    "similarité avec SEIZE enceintes [de support]' (traduction littérale "
+    "d'une phrase du brevet). Autrement dit, selon cette expérience des "
+    "inventeurs eux-mêmes, activer le critère de symétrie explicite avec "
+    "seulement 6 enceintes de support bat, en qualité d'image stéréo, le "
+    "fait d'ajouter 16 enceintes de support SANS ce critère. Dans le "
+    "même exemple, un seul point de contrôle de similarité suffit déjà à "
+    "rendre les réponses en fréquence des deux canaux (gauche/droite) "
+    "'presque identiques' dans la bande 70-800 Hz. Limite honnête : ceci "
+    "est l'exemple expérimental du brevet (preuve de concept des "
+    "inventeurs), pas une mesure indépendante, et rien ne garantit que "
+    "le produit commercial Dirac Live ART utilise exactement ces mêmes "
+    "proportions sur le système réel de Steve."
+)
+"""[Brevet Dirac Research] — même brevet US9426600B2, section 'An
+Illustrative Example', description de la FIG. 13. Texte intégral lu."""
+
+PLS_MEASUREMENT_POSITIONS_RECOMMENDATION = (
+    "Recommandation générale explicite du brevet, directement comparable "
+    "au protocole de mesure de Steve : 'il est recommandé que le nombre "
+    "de positions de mesure M soit supérieur au nombre d'enceintes N' "
+    "(section 'Acoustic Modeling'). Avec 13 positions de mesure pour un "
+    "système 7.2 de 9 enceintes au total (7 enceintes + 2 caissons), "
+    "Steve respecte déjà ce ratio M > N recommandé par le brevet. "
+    "Limite honnête : le brevet ne donne pas de ratio minimal "
+    "chiffré (ex : '1.5x' ou '2x') au-delà de cette inégalité stricte "
+    "M > N, donc on ne peut pas en tirer une conclusion plus précise sur "
+    "le caractère 'optimal' ou non du nombre exact 13."
+)
+"""[Brevet Dirac Research] — même brevet US9426600B2, section 'Detailed
+Description', sous-section 'Acoustic Modeling'. Texte intégral lu."""
+
 CITED_PATENTS: list[CitedPatent] = [
     CitedPatent(
         patent_number="US9781510B2",
@@ -1137,9 +1233,37 @@ CITED_PATENTS: list[CitedPatent] = [
         "JOHANSSON_CONFIRMED_COINVENTOR ci-dessus. Ne décrit pas non "
         "plus le nom commercial 'ART'.",
     ),
+    CitedPatent(
+        patent_number="US9426600B2",
+        title="Audio precompensation controller design with pairwise "
+        "loudspeaker channel similarity",
+        inventors="Adrian Bahne, Lars-Johan Brännmark, Anders Ählén "
+        "(Uppsala, Suède)",
+        assignee="Dirac Research AB",
+        priority_date="2012-07-06 provisoire, PCT déposé 2013-06-20 "
+        "(accordé 2016-08-23)",
+        source_url="https://patents.google.com/patent/US9426600B2/en "
+        "(PDF officiel téléchargé depuis le stockage public Google "
+        "Patents)",
+        verification="Texte intégral lu (29 pages : abstract, "
+        "background, summary, detailed description, modélisation "
+        "mathématique complète du critère LQG, exemple expérimental "
+        "chiffré, revendications 1 à 22) via extraction réelle du PDF, "
+        "pas un résumé de tiers.",
+        takeaway="Brevet complémentaire (pas concurrent) aux deux "
+        "autres : il traite spécifiquement de la SYMÉTRIE entre une "
+        "PAIRE d'enceintes (ex : front gauche/droite), en ajoutant un "
+        "terme de similarité explicite à la fonction de critère "
+        "optimisée. Voir PLS_SYMMETRY_NOT_AUTOMATIC_FROM_EQUALIZATION, "
+        "PLS_CRITERION_FUNCTION_MECHANISM, PLS_EXPERIMENTAL_PROOF_"
+        "SUPPORT_VS_SYMMETRY et PLS_MEASUREMENT_POSITIONS_"
+        "RECOMMENDATION ci-dessus. Ne décrit pas non plus le nom "
+        "commercial 'ART'.",
+    ),
 ]
-"""Piste restante, identifiée mais NON encore lue en texte intégral
-(donc non ajoutée à CITED_PATENTS) : le brevet US9426600B2 (Adrian
-Bahne, variante 'pairwise loudspeaker channel'), si Steve souhaite
-approfondir davantage cette piste au-delà des deux brevets déjà
-intégrés ci-dessus."""
+"""Les trois brevets Dirac Research identifiés à ce jour ont maintenant
+tous été lus en texte intégral et intégrés ci-dessus. Aucune piste de
+brevet Dirac Research connue ne reste ouverte à ce stade ; un
+approfondissement supplémentaire nécessiterait une nouvelle recherche
+(ex : Google Patents, requête 'assignee:Dirac Research AB') que Steve
+n'a pas demandée pour l'instant."""
