@@ -3173,3 +3173,28 @@ articles lus, concurrents repérés, retours clients...)_
   31 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (03/10, suite 36) **⚠️ Échelle contre-intuitive du Support Level —
+  clarification explicite dans tous les textes générés**
+
+  Steve a signalé un point important pour ART : "l'inversement de
+  l'échelle de valeur des niveaux de support. -24db est supérieur à
+  -6db par exemple." Déjà correctement documenté en section 17
+  (contribution MAXIMALE à -24dB, MINIMALE à -1dB) et dans les
+  commentaires de code (`# augmente l'usage` / `# réduit l'usage`),
+  mais audit complet effectué : les textes générés par
+  `recommend_support_level` et `calculate_precise_support_level_db`
+  (ajoutés lors de la suite 33) affichaient "plage utile -24.0 à -1.0
+  dB" sans préciser le sens de l'effet — ambigu pour un lecteur qui
+  pourrait assumer l'intuition numérique standard.
+
+  Corrections : nouvelle section 32 de `knowledge_base.py`
+  (`SUPPORT_LEVEL_SCALE_IS_COUNTERINTUITIVE`, reformulation pédagogique
+  explicite) ; les deux fonctions de `diagnostic_engine.py` précisent
+  désormais systématiquement "contribution MAXIMALE"/"contribution
+  MINIMALE" à côté de chaque valeur en dB, avec une note explicite
+  quand un clamp a été appliqué (dans quel sens). Audit exhaustif du
+  reste du fichier : aucune autre formulation ambiguë trouvée.
+
+  31 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

@@ -350,9 +350,13 @@ def recommend_support_level(trigger_notes: list[str]) -> Recommendation:
             target="ensemble du système",
             action=(
                 f"Affiner par pas de {kb.SUPPORT_LEVEL_STEP_DB} dB autour de "
-                f"{kb.SUPPORT_LEVEL_DEFAULT_DB} dB (plage utile "
-                f"{kb.SUPPORT_LEVEL_MIN_DB} à {kb.SUPPORT_LEVEL_MAX_DB} dB), "
-                f"en comparant les filtres calculés à chaque pas."
+                f"{kb.SUPPORT_LEVEL_DEFAULT_DB} dB (plage légale "
+                f"{kb.SUPPORT_LEVEL_MIN_DB} dB = contribution MAXIMALE à "
+                f"{kb.SUPPORT_LEVEL_MAX_DB} dB = contribution MINIMALE — "
+                f"⚠️ échelle contre-intuitive : {kb.SUPPORT_LEVEL_MIN_DB} dB "
+                f"a PLUS d'effet que {kb.SUPPORT_LEVEL_MAX_DB} dB, malgré "
+                f"un nombre numériquement plus négatif), en comparant les "
+                f"filtres calculés à chaque pas."
             ),
             evidence=EvidenceLevel.RETOUR_EXPERIENCE_STEVE,
             detail=(
@@ -360,7 +364,8 @@ def recommend_support_level(trigger_notes: list[str]) -> Recommendation:
                 ". Rappel : le seuil d'audibilité d'un écart de niveau est "
                 "généralement cité autour de 1 dB — un réglage à 0,5 dB près "
                 "n'a d'effet garanti que sur les filtres calculés, pas "
-                "forcément à l'oreille."
+                "forcément à l'oreille. Voir SUPPORT_LEVEL_SCALE_IS_"
+                "COUNTERINTUITIVE (section 32) pour l'échelle inversée."
             ),
         )
     return Recommendation(
@@ -430,12 +435,27 @@ def calculate_precise_support_level_db(
     stepped = round(raw_level_db / kb.SUPPORT_LEVEL_STEP_DB) * kb.SUPPORT_LEVEL_STEP_DB
     clamped = max(kb.SUPPORT_LEVEL_MIN_DB, min(kb.SUPPORT_LEVEL_MAX_DB, stepped))
 
+    clamp_note = ""
+    if clamped != stepped:
+        if clamped == kb.SUPPORT_LEVEL_MIN_DB:
+            clamp_note = (
+                f" (écart brut hors plage légale, plafonné à "
+                f"{kb.SUPPORT_LEVEL_MIN_DB} dB = contribution MAXIMALE "
+                f"autorisée)"
+            )
+        else:
+            clamp_note = (
+                f" (écart brut hors plage légale, plafonné à "
+                f"{kb.SUPPORT_LEVEL_MAX_DB} dB = contribution MINIMALE "
+                f"autorisée)"
+            )
+
     return Recommendation(
         category="Niveau de support (précis)",
         target=f"{support_measurement.speaker.name} -> {main_measurement.speaker.name}",
         action=(
             f"Régler le Support Level à {clamped:+.1f} dB (pas de "
-            f"{kb.SUPPORT_LEVEL_STEP_DB} dB)."
+            f"{kb.SUPPORT_LEVEL_STEP_DB} dB){clamp_note}."
         ),
         evidence=EvidenceLevel.CALCUL_DEPUIS_MESURE_REELLE,
         precise_value_db=clamped,
@@ -445,8 +465,11 @@ def calculate_precise_support_level_db(
             f"{support_spl:.1f} dB SPL, {main_measurement.speaker.name} = "
             f"{main_spl:.1f} dB SPL, écart brut = {raw_level_db:+.1f} dB, "
             f"arrondi au pas réel puis clampé dans la plage officielle "
-            f"[{kb.SUPPORT_LEVEL_MIN_DB}, {kb.SUPPORT_LEVEL_MAX_DB}] dB "
-            f"(ART_PARAMETER_SUPPORT_LEVEL_OFFICIAL_TABLE, section 17)."
+            f"[{kb.SUPPORT_LEVEL_MIN_DB} dB = contribution MAXIMALE, "
+            f"{kb.SUPPORT_LEVEL_MAX_DB} dB = contribution MINIMALE] "
+            f"(ART_PARAMETER_SUPPORT_LEVEL_OFFICIAL_TABLE, section 17 — "
+            f"⚠️ échelle contre-intuitive, voir SUPPORT_LEVEL_SCALE_IS_"
+            f"COUNTERINTUITIVE, section 32)."
         ),
     )
 

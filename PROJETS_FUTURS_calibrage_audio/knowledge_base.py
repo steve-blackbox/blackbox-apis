@@ -3239,3 +3239,34 @@ déjà implémentée dans axial_room_modes (diagnostic_engine.py)] —
 raisonnement assemblé par nous-mêmes, cohérent avec la nuance
 méthodologique déjà appliquée en section 14 (limites de ce qu'une
 méthode peut/ne peut pas faire)."""
+
+# ---------------------------------------------------------------------------
+# 32. Échelle du Support Level : contre-intuitive, piège de confusion
+#     signalé explicitement par Steve (03/10) : "un point important pour
+#     ART est l'inversement de l'échelle de valeur des niveaux de
+#     support. -24db est supérieur à -6db par exemple." Déjà correctement
+#     noté en section 17 (ART_PARAMETER_SUPPORT_LEVEL_OFFICIAL_TABLE),
+#     mais pas assez explicité dans les textes générés par
+#     diagnostic_engine.py — corrigé dans la foulée de cette section.
+# ---------------------------------------------------------------------------
+SUPPORT_LEVEL_SCALE_IS_COUNTERINTUITIVE = (
+    "L'échelle du paramètre Support Level ne suit PAS l'intuition "
+    "numérique habituelle ('plus grand nombre = plus d'effet') : "
+    "-24 dB (la valeur la PLUS négative, numériquement la plus 'petite') "
+    "correspond à la contribution MAXIMALE du haut-parleur de support, "
+    "tandis que -1 dB (la valeur la MOINS négative, numériquement la "
+    "plus 'grande') correspond à la contribution MINIMALE (confirmé "
+    "officiellement, ART_PARAMETER_SUPPORT_LEVEL_OFFICIAL_TABLE, section "
+    "17). Autrement dit, EN TERME D'EFFET (pas en valeur numérique "
+    "signée), -24 dB est 'supérieur' à -6 dB, qui est lui-même "
+    "'supérieur' à -1 dB — l'inverse de l'ordre numérique standard "
+    "(-24 < -6 < -1). Piège de confusion identifié explicitement par "
+    "Steve : toute formulation du type 'augmenter'/'réduire'/'plus "
+    "élevé' à propos de ce paramètre DOIT systématiquement préciser si "
+    "elle parle de l'EFFET (contribution du support) ou de la VALEUR "
+    "NUMÉRIQUE SIGNÉE, car les deux sens sont opposés l'un à l'autre."
+)
+"""[Confirmation officielle Dirac déjà citée section 17, point de
+vigilance signalé explicitement par Steve] — reformulation pédagogique
+explicite pour éviter toute confusion dans les textes générés."""
+
