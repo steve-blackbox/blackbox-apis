@@ -233,6 +233,14 @@
 > projets en cours. Détail complet dans l'entrée "02/10, suite 13" tout
 > en bas.
 >
+> ✅ **Validation étendue (02/10, suite 14)** : les 8 fichiers
+> `.liveproject` restants (sur 10 au total) testés avec
+> `liveproject_reader.py` — **résultat identique sur les 10/10** (même
+> version logicielle, 13 flux audio bien formés, 104 blocs de mesure en
+> 13 groupes), aucun crash. Le format est confirmé stable pour la version
+> de Dirac Live de Steve, pas une coïncidence observée sur 2 fichiers
+> seulement. Détail dans l'entrée "02/10, suite 14" tout en bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
@@ -2073,4 +2081,26 @@ articles lus, concurrents repérés, retours clients...)_
   en sa faveur. Prochaine étape si Steve veut avancer : décider laquelle
   des 4 pistes "faisables" ci-dessus mérite un premier prototype testé
   sur un vrai client (lui-même ou un proche), avant toute mise en vente.
+
+- (02/10, suite 14) **✅ Validation complémentaire : les 8 fichiers
+  `.liveproject` restants testés, format confirmé robuste sur 10/10**
+
+  Après la synthèse commerciale (suite 13), vérification complémentaire
+  de robustesse plutôt que de s'arrêter aux 2 fichiers déjà testés en
+  suite 12 : les **8 autres fichiers `.liveproject`** archivés dans
+  `~/Desktop/DIRAC/PERSO/` (`ART PRO FINAL`, `ART_VOIX-CINEMA`, `FULL IA`,
+  `IA+reglage sub`, `V1.0.2`, `centrale cinema`, `nouveau reglage ia`,
+  `v1.0.2 -3db 17hz` — 109 Mo à 254 Mo chacun, noms suggérant des
+  tentatives de calibration successives entre août et septembre 2026) ont
+  été passés dans `liveproject_reader.py`. **Résultat : les 10 fichiers
+  sur 10 donnent une structure rigoureusement identique** — même version
+  logicielle ("7.2.0ch"), 13 flux audio tous bien formés, 104 blocs de
+  mesure regroupés en 13 groupes à chaque fois, même ampli détecté
+  ("CINEMA 30") — aucun crash, aucune incohérence. Documentation du
+  module mise à jour en conséquence (toutes les mentions "validé sur 2
+  fichiers" remplacées par "validé sur 10 fichiers"). Cette preuve de
+  robustesse plus large ne change aucune conclusion de suite 12/13, elle
+  les renforce simplement : le format peut être considéré comme stable
+  pour la version de Dirac Live utilisée par Steve, pas seulement comme
+  une coïncidence observée sur un échantillon de 2.
 

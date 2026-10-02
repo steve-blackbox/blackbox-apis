@@ -4,11 +4,15 @@ liveproject_reader.py — Lecteur du format binaire natif Dirac Live (.liveproje
 ⚠️ CECI EST UN OUTIL DE RECHERCHE / RÉTRO-INGÉNIERIE, PAS UN MODULE DE
 PRODUCTION comme `image_reader.py`. Tout ce qui est documenté ci-dessous a
 été **validé empiriquement** (lecture binaire directe, calculs reproductibles)
-sur 2 fichiers `.liveproject` réels fournis par Steve (104 Mo et 254 Mo,
-voir `~/Desktop/DIRAC/PERSO/`, hors dépôt). Le format est cohérent entre les
-deux fichiers malgré leur différence de taille — ce n'est donc pas un
-artefact d'un seul fichier, mais rien ne garantit qu'il n'existe pas de
-variantes selon la version du logiciel Dirac Live.
+sur **les 10 fichiers `.liveproject` réels fournis par Steve** (109 Mo à
+254 Mo, voir `~/Desktop/DIRAC/PERSO/`, hors dépôt — noms de fichiers
+suggérant des tentatives de calibration successives entre août et
+septembre 2026). Le format est rigoureusement identique sur les 10 (même
+version logicielle "7.2.0ch", 13 flux audio bien formés, 104 blocs de
+mesure regroupés en 13 groupes à chaque fois, aucune exception ni crash) —
+ce n'est donc pas un artefact d'un seul fichier, mais rien ne garantit
+qu'il n'existe pas de variantes selon une autre version du logiciel Dirac
+Live que celle utilisée par Steve.
 
 Comment ce fichier a été lu : aucune documentation officielle Dirac n'a été
 utilisée. Tout provient de lecture hexadécimale/binaire directe
@@ -17,7 +21,7 @@ fichiers de Steve. Chaque affirmation ci-dessous est reproductible avec le
 code de ce module.
 
 ────────────────────────────────────────────────────────────────────────
-CARTE DU FICHIER (validée sur 2 fichiers, offsets en % de la taille totale)
+CARTE DU FICHIER (validée sur les 10 fichiers, offsets en % de la taille totale)
 ────────────────────────────────────────────────────────────────────────
 
 1. **Début (~0-7 %)** : métadonnées en clair (encodage Qt-like : chaque
@@ -85,7 +89,7 @@ CARTE DU FICHIER (validée sur 2 fichiers, offsets en % de la taille totale)
 
 5. **Blocs de mesure déconvoluée (~96-100 %)** : voir
    `read_measurement_blocks()`. **104 blocs** identiques trouvés dans les
-   2 fichiers testés (= 13 groupes de 8 exactement, pas de reste), chacun
+   10 fichiers testés (= 13 groupes de 8 exactement, pas de reste), chacun
    précédé du marqueur `BLOCK_MARKER` (8 octets). Structure confirmée par
    `struct.unpack` exact (vérifiée octet par octet, taille de bloc
    32 792 octets validée par calcul) :
@@ -163,13 +167,13 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 # Marqueur de section des blocs de mesure fréquence/magnitude (8 octets),
-# trouvé par recherche binaire répétée — valeur confirmée sur 2 fichiers.
+# trouvé par recherche binaire répétée — valeur confirmée sur 10 fichiers.
 BLOCK_MARKER = bytes.fromhex("9abcdef012345678"[:16])
 
 # Magic number standard du conteneur Ogg (RFC 3533), utilisé tel quel.
 OGG_MAGIC = b"OggS"
 
-# Liste des noms de canaux trouvés en clair dans les 2 fichiers testés
+# Liste des noms de canaux trouvés en clair dans les 10 fichiers testés
 # (encodage UTF-16BE, voir carte du fichier ci-dessus, point 4). Ordre
 # d'apparition dans le fichier, PAS forcément l'ordre de mesure réel.
 SPEAKER_NAMES_KNOWN = [
@@ -268,7 +272,7 @@ def _read_utf16be_qt_strings(data: bytes) -> List[Tuple[int, str]]:
     caractères UTF-16BE). Retourne (offset, texte) pour chaque chaîne
     plausible (longueur raisonnable, texte décodable). Best-effort : ce
     n'est pas un vrai parseur de la structure Qt complète (pas de schéma
-    documenté), juste une heuristique validée visuellement sur les 2
+    documenté), juste une heuristique validée visuellement sur les 10
     fichiers testés.
     """
     results: List[Tuple[int, str]] = []
@@ -292,7 +296,7 @@ def _read_utf16be_qt_strings(data: bytes) -> List[Tuple[int, str]]:
 def read_metadata(data: bytes, search_limit: int = 70_000_000) -> ProjectMetadata:
     """Extrait les métadonnées en clair trouvées dans les premiers
     `search_limit` octets (par défaut 70 Mo, large marge au-delà du
-    ~63-64 Mo observé sur les 2 fichiers testés pour la zone de
+    ~63-64 Mo observé sur les 10 fichiers testés pour la zone de
     métadonnées — ajuster si un fichier plus gros ne donne rien).
 
     Approche volontairement simple (recherche de sous-chaînes connues),
@@ -437,7 +441,7 @@ def read_measurement_blocks(
     data: bytes, blocks_per_group: int = 8
 ) -> List[MeasurementBlock]:
     """Trouve et décode tous les blocs de mesure fréquence/magnitude du
-    fichier (104 attendus sur les 2 fichiers testés : 13 groupes de 8
+    fichier (104 attendus sur les 10 fichiers testés : 13 groupes de 8
     exactement, voir correction documentée au point 5 de l'en-tête de
     module).
 
