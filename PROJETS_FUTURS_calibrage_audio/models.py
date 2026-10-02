@@ -99,6 +99,10 @@ class EvidenceLevel(str, Enum):
     explicite notée dans PROJETS_FUTURS.md : 'citer sa source à chaque
     recommandation' plutôt que produire une réponse à l'aveugle."""
 
+    MARANTZ_DIRAC_OFFICIEL = (
+        "Manuel officiel Marantz / Dirac Live (manuals.marantz.com, lu "
+        "directement, pas une reformulation tierce)"
+    )
     STORMAUDIO_OFFICIEL = "Directive officielle StormAudio (doc ART)"
     PRINCIPE_ACOUSTIQUE = "Principe acoustique général (domaine public)"
     RETOUR_EXPERIENCE_STEVE = "Retour d'expérience Steve — à valider par test"

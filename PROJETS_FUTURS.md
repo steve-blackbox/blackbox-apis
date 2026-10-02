@@ -241,6 +241,26 @@
 > de Dirac Live de Steve, pas une coïncidence observée sur 2 fichiers
 > seulement. Détail dans l'entrée "02/10, suite 14" tout en bas.
 >
+> 📘 **Réglages Dirac ART sourcés officiellement (03/10, suite 15)** —
+> après un échec initial de vérification web (dirac.com bloqué, moteurs
+> de recherche sans rendu JS, navigateur intégré en timeout), découverte
+> que `manuals.marantz.com` héberge en HTML simple le manuel complet du
+> **Marantz CINEMA 30** (l'ampli réel de Steve) et un manuel "Dirac Live"
+> dédié. Faits officiels retenus : **ART fonctionne de 20 Hz à 150 Hz**
+> (borne basse absente de la doc StormAudio déjà citée), **le croisement
+> classique ne peut plus être réglé une fois un filtre ART actif** (ART
+> le remplace par ses propres paramètres, calculés automatiquement par
+> défaut), microphone **UMIK-1 explicitement recommandé** par Marantz, et
+> deux pièges opérationnels (changer le "Speaker Layout" supprime les
+> filtres Dirac stockés ; le menu reste nommé "Audyssey® Setup" même avec
+> Dirac actif). `knowledge_base.py` et `models.py` mis à jour avec une
+> nouvelle source traçable `[Marantz/Dirac officiel]`, en respectant la
+> ligne rouge déjà posée (faits reformulés, jamais le manuel copié tel
+> quel). Fiches SVS 3000 Micro R|Evolution confirmées en complément ;
+> fiches Elipson (Legacy 3220, Facet 2.0) restent **non vérifiées**
+> malgré plusieurs tentatives — limite assumée plutôt qu'une valeur
+> inventée. Détail complet dans l'entrée "03/10, suite 15" tout en bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
@@ -2103,4 +2123,96 @@ articles lus, concurrents repérés, retours clients...)_
   les renforce simplement : le format peut être considéré comme stable
   pour la version de Dirac Live utilisée par Steve, pas seulement comme
   une coïncidence observée sur un échantillon de 2.
+
+- (03/10, suite 15) **📘 Réglages Dirac ART : échec de vérification web
+  initial, puis découverte des manuels officiels Marantz/Dirac Live en
+  HTML — mise à jour de `knowledge_base.py` avec des faits sourcés
+  officiellement**
+
+  Question de Steve : quelles valeurs régler dans Dirac pour exploiter
+  ART au maximum ? Première tentative de vérification externe
+  (dirac.com, Google/Bing/DuckDuckGo, AVSForum, StormAudio,
+  readPage/navigatePage sur les pages partagées) : **échec quasi total**
+  — dirac.com renvoie systématiquement une erreur 429, les moteurs de
+  recherche grand public ne rendent pas assez de JS pour que le fetcher
+  texte récupère de vrais résultats, AVSForum est inaccessible, et le
+  navigateur intégré (`readPage`/`openBrowserPage`) échoue avec un
+  timeout de connexion CDP à chaque tentative. Réponse donnée à Steve
+  dans un premier temps avec transparence totale sur cette limite,
+  construite sur des connaissances générales non vérifiées fraîchement.
+
+  Steve a ensuite partagé la liste exacte de son matériel (ampli-
+  processeur **Marantz CINEMA 30**, câblage Buckeye RCA/XLR, ampli de
+  puissance **Buckeye NCx252MP 8 canaux**, façades **Elipson Legacy
+  3220** ×2, centrale **Elipson Facet 2.0 14C**, 4 enceintes **Elipson
+  Facet 2.0 LCR** en surround/surround back, 2 caissons **SVS 3000 Micro
+  R|Evolution**) et demandé explicitement de s'appuyer sur les manuels
+  constructeurs plutôt que d'improviser — soit une config confirmée en
+  **7.2** (pas de canaux de hauteur Atmos actifs).
+
+  Recherche web relancée avec cette contrainte. Nouvel échec sur les
+  fiches techniques Elipson (site Wix sans tableau de specs exploitable
+  en HTML statique, moteur de recherche interne en JS, résultats de
+  recherche externes tous bloqués ou vides) : **non résolu**, à traiter
+  comme limite assumée plutôt que par une valeur inventée. En revanche,
+  découverte clé : **`manuals.marantz.com` héberge le manuel utilisateur
+  complet du CINEMA 30 en HTML simple, paginé, sans protection
+  anti-bot**, avec un manuel "Dirac Live" dédié
+  (`manuals.marantz.com/DiracLive/ALL/EN/`) distinct du manuel général.
+  Lecture directe de la table des matières (structure à 2 niveaux) puis
+  des pages pertinentes (FAQ Dirac Live, FAQ Active Room Treatment,
+  Crossovers, Distances, Subwoofer Mode/Layout, licences).
+
+  Faits confirmés officiellement et absents de la documentation
+  StormAudio déjà citée dans ce fichier :
+  - **Plage de fonctionnement d'ART précisée : 20 Hz à 150 Hz** (la
+    documentation StormAudio ne donnait que la borne haute, 150 Hz).
+  - **Une fois un filtre ART actif, la fréquence de croisement classique
+    ne peut plus être réglée** : ART calcule ses propres paramètres par
+    enceinte/groupe à la place, et "aucun réglage manuel n'est
+    nécessaire" selon l'éditeur — un réglage manuel des paramètres ART
+    reste possible mais n'est présenté que comme une option avancée.
+  - Règle de sécurité confirmée telle quelle : si des paramètres ART
+    sont réglés manuellement, ne jamais descendre sous la fréquence de
+    lecture réelle de l'enceinte.
+  - Système minimal pour ART : 2 enceintes (stéréo) ; pièce idéale
+    documentée entre 12 et 100 m² environ.
+  - Paliers de licence Dirac Live : Room Correction seule, ou + Bass
+    Control (nécessite un caisson déclaré), ou + Bass Control + ART (le
+    palier complet, celui qui s'applique au système de Steve puisqu'il a
+    des caissons).
+  - Microphone explicitement recommandé par Marantz pour la calibration
+    via l'app mobile : le **miniDSP UMIK-1**, celui déjà utilisé par
+    Steve.
+  - Deux pièges opérationnels à connaître : modifier le "Speaker Layout"
+    après calibration **supprime automatiquement** le(s) filtre(s) Dirac
+    stocké(s) sur l'ampli ; et le menu de calibration auto reste
+    intitulé "Audyssey® Setup" dans l'interface même quand Dirac Live
+    est le moteur réellement utilisé (confusion possible, pas un bug).
+  - Valeurs de crossover manuel disponibles sur le CINEMA 30 (hors ART,
+    ou pour les enceintes non couvertes par un filtre ART) : 40 / 60 /
+    70 / 80 / 90 / 100 / 110 / 120 / 150 / 180 / 200 / 250 Hz, réglage
+    usine par défaut Front = Full Range, autres = 80 Hz.
+
+  Fiche SVS 3000 Micro R|Evolution également confirmée directement sur
+  `svsound.com` (après avoir déjoué un sitemap d'agent de commerce
+  automatisé non pertinent, `agents.md`, volontairement ignoré) :
+  extension annoncée jusqu'à 20 Hz, deux drivers actifs de 9 pouces,
+  caisson compact de 11 pouces, amplification 1200 W RMS / 4000 W+ crête.
+
+  ⚠️ **Ligne rouge respectée** : conformément à la règle déjà posée dans
+  l'en-tête de `knowledge_base.py` (ne jamais reproduire un manuel
+  constructeur tel quel), seuls des faits non soumis au droit d'auteur
+  (valeurs numériques, existence d'une fonction, plage de réglage) ont
+  été repris, reformulés avec nos propres mots, jamais copiés
+  verbatim — nouvelle source `[Marantz/Dirac officiel]` ajoutée à
+  `EvidenceLevel` (`models.py`) et à `knowledge_base.py`, strictement
+  distincte de `[StormAudio]` (reformulation d'un éditeur tiers) parce
+  qu'il s'agit ici du manuel du modèle d'ampli réellement utilisé par
+  Steve. 10 nouvelles constantes ajoutées à `knowledge_base.py`
+  (`ART_LOWER_BOUND_HZ`, `ART_REPLACES_MANUAL_CROSSOVER`,
+  `MANUAL_CROSSOVER_FREQUENCIES_HZ`, `ART_LICENSE_TIERS`,
+  `OFFICIAL_RECOMMENDED_MIC`, `DIRAC_FILTERS_DELETED_ON_LAYOUT_CHANGE`,
+  etc.). Les 10 tests unitaires et `example_run.py` repassés avec succès
+  après ces ajouts : aucune régression.
 

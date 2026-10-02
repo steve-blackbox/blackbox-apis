@@ -13,6 +13,15 @@ constante cite sa source réelle :
     conversation Claude source (PROJETS_FUTURS.md, messages 39-40/52).
     Sources : https://support-stormaudio.atlassian.net/wiki/spaces/SUP/pages/359923716/ART+-+Advanced+guidelines+tips
               https://www.ce-sphere.com/home/setting-up-dirac-live-art-with-stormaudio-isr-fusion-20-44824441
+  - [Marantz/Dirac officiel] = reformulation avec nos propres mots (jamais
+    de copie du texte original) de FAITS lus directement dans le manuel
+    en ligne officiel du Marantz CINEMA 30 et du manuel dédié "Dirac Live"
+    de Marantz — le modèle d'ampli réellement utilisé par Steve. Seuls des
+    faits non soumis au droit d'auteur sont repris (valeurs numériques,
+    existence d'une fonction, plage de réglage) ; aucune phrase du manuel
+    n'est reproduite telle quelle, conformément à la ligne rouge ci-dessus.
+    Sources : https://manuals.marantz.com/CINEMA30/EU/EN/index.php
+              https://manuals.marantz.com/DiracLive/ALL/EN/index.php
   - [Acoustique générale] = physique du son / psychoacoustique de base,
     savoir scientifique public (pas une œuvre soumise à droit d'auteur) :
     modes propres d'une pièce rectangulaire, effet de précédence (Haas),
@@ -45,7 +54,19 @@ ART_UPPER_BOUND_HZ = 150.0
 des réflexions de la pièce avec l'aide d'autres enceintes (traitement
 multi-enceintes). Au-dessus, c'est la correction Dirac Live classique
 (mono-enceinte). Ce n'est ni un filtre de croisement ni une gestion de
-graves traditionnelle. [StormAudio]"""
+graves traditionnelle. [StormAudio]
+
+Confirmé et précisé par [Marantz/Dirac officiel] (FAQ "About Dirac Live
+Active Room Treatment" du manuel Dirac Live dédié) : la borne haute
+officiellement documentée est bien 150 Hz, voir ART_LOWER_BOUND_HZ
+ci-dessous pour la borne basse, absente de la documentation StormAudio
+consultée initialement."""
+
+ART_LOWER_BOUND_HZ = 20.0
+"""Borne basse officielle de la plage de fonctionnement d'ART, absente de
+la documentation StormAudio consultée initialement — ajoutée après lecture
+du manuel Dirac Live dédié de Marantz, qui indique une plage de
+fonctionnement allant de 20 Hz à 150 Hz. [Marantz/Dirac officiel]"""
 
 DIRAC_DEFAULT_LOW_FLOOR_HZ = 50.0
 """Dirac ne propose pas de borne basse sous cette valeur par défaut — déjà
@@ -60,6 +81,84 @@ lisse. [StormAudio]"""
 MAX_FULL_RANGE_SUPPORT_HZ = 150.0
 """Une enceinte capable de descendre suffisamment peut servir de support
 jusqu'à cette fréquence. [StormAudio]"""
+
+ART_REPLACES_MANUAL_CROSSOVER = True
+"""Fait confirmé par lecture directe du manuel Dirac Live (FAQ) : une fois
+qu'un filtre ART est actif, il n'est plus possible de régler une fréquence
+de croisement (crossover) classique dans le menu de l'ampli — ART calcule
+et applique ses propres paramètres à la place, par enceinte ou groupe
+d'enceintes. [Marantz/Dirac officiel]"""
+
+ART_NO_MANUAL_TUNING_NEEDED_BY_DEFAULT = True
+"""Fait confirmé par lecture directe du manuel Dirac Live (page "Measuring
+with Dirac Live software") : le logiciel attribue automatiquement la
+valeur optimale de chaque paramètre ART d'après les résultats de mesure ;
+aucun réglage manuel n'est nécessaire pour un résultat correct. Un réglage
+manuel des paramètres ART reste possible (via le guide du support Dirac)
+mais n'est présenté par l'éditeur que comme une option avancée, jamais
+comme une étape requise. [Marantz/Dirac officiel]"""
+
+ART_MIN_SPEAKER_COUNT = 2
+"""Système minimal documenté pour utiliser ART : deux enceintes ou plus
+(stéréo au minimum, pas d'utilisation mono-enceinte). [Marantz/Dirac
+officiel]"""
+
+ART_IDEAL_ROOM_AREA_M2 = (12.0, 100.0)
+"""Plage de surface de pièce pour laquelle ART est documenté comme
+fonctionnant de façon optimale (environ 130 à 1100 pieds carrés), incluant
+salons, home cinémas dédiés et régies de studio. Donnée indicative, pas
+une limite stricte. [Marantz/Dirac officiel]"""
+
+MANUAL_CROSSOVER_FREQUENCIES_HZ = [
+    40, 60, 70, 80, 90, 100, 110, 120, 150, 180, 200, 250,
+]
+"""Valeurs de fréquence de croisement sélectionnables dans le menu Setup
+manuel du Marantz CINEMA 30 (hors ART, ou avant d'activer un filtre ART).
+Par défaut, les enceintes Front sont réglées en 'Full Range' (pleine
+bande, pas de croisement) et toutes les autres enceintes à 80 Hz. Cette
+liste reste pertinente même avec ART : Dirac ne mesure pas automatiquement
+le croisement, il doit être réglé manuellement dans ce menu avant ou après
+la mesure, pour les enceintes non couvertes par un filtre ART.
+[Marantz/Dirac officiel]"""
+
+MANUAL_CROSSOVER_DEFAULT_FRONT = "Full Range"
+MANUAL_CROSSOVER_DEFAULT_OTHERS_HZ = 80.0
+"""Valeurs par défaut d'usine du Marantz CINEMA 30. [Marantz/Dirac
+officiel]"""
+
+ART_LICENSE_TIERS = [
+    "Dirac Live Room Correction (seule, sans option)",
+    "Dirac Live Room Correction + Bass Control (nécessite un ou plusieurs "
+    "caissons déclarés)",
+    "Dirac Live Room Correction + Bass Control + ART (palier le plus "
+    "complet, celui qui s'applique à un système avec caisson(s) comme "
+    "celui de Steve)",
+]
+"""Paliers de licence Dirac Live documentés officiellement : sans caisson,
+seules 'Room Correction' et 'Room Correction + ART' existent ; avec un ou
+plusieurs caissons déclarés, un palier intermédiaire 'Bass Control' existe
+avant le palier complet avec ART. [Marantz/Dirac officiel]"""
+
+OFFICIAL_RECOMMENDED_MIC = "miniDSP UMIK-1 (ou équivalent USB)"
+"""Microphone de mesure explicitement cité par le manuel Marantz pour la
+calibration via l'application mobile Dirac Live (le micro intégré du
+téléphone n'est pas accepté dans ce cas) — celui déjà utilisé par Steve.
+[Marantz/Dirac officiel]"""
+
+DIRAC_FILTERS_DELETED_ON_LAYOUT_CHANGE = True
+"""Piège opérationnel confirmé par le manuel : modifier le "Speaker
+Layout" de l'ampli après une calibration Dirac supprime automatiquement
+le ou les filtres Dirac déjà stockés sur l'ampli. Un filtre existant ne
+fonctionne que pour la configuration d'enceintes avec laquelle il a été
+calculé. [Marantz/Dirac officiel]"""
+
+MENU_LABEL_STILL_SAYS_AUDYSSEY = True
+"""Point de confusion possible dans l'interface du CINEMA 30 : l'entrée de
+menu pour lancer la calibration automatique (quel que soit le moteur
+réellement utilisé) reste intitulée "Audyssey® Setup" dans le manuel et
+probablement dans le menu à l'écran, même lorsque Dirac Live est le moteur
+réellement actif sur l'appareil. Ne pas confondre avec une calibration
+Audyssey réelle. [Marantz/Dirac officiel]"""
 
 # ---------------------------------------------------------------------------
 # 2. Niveaux de support : une limite de liberté, pas un réglage 1:1 [StormAudio]
