@@ -2953,3 +2953,22 @@ articles lus, concurrents repérés, retours clients...)_
   10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (02/10, suite 30) **🎬 Synthèse du rôle fonctionnel de chaque canal
+  dans un mix cinéma (vérification de compréhension demandée par Steve)**
+
+  Steve a demandé une vérification directe : "as-tu bien compris le rôle
+  de chaque enceinte dans la retranscription d'une bande son de film ?"
+  Réponse donnée canal par canal (trio frontal porteur d'image, surrounds
+  d'ambiance, distinction LFE/bass management, lien MIMO/ART), puis
+  formalisée dans la base de connaissances car elle consolide pour la
+  première fois en un seul endroit des faits jusqu'ici dispersés
+  (sections 10, 17, 20, 21, 23), sans introduire de nouvelle source
+  externe — les rôles de canaux eux-mêmes sont une convention standard
+  de l'industrie (ITU-R BS.775, documentation Dolby/DTS), donc du
+  domaine public, cross-référencée aux constantes déjà sourcées
+  individuellement.
+
+  Nouvelle section 24 de `knowledge_base.py` (1 constante de synthèse).
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

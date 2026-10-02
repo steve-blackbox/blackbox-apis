@@ -2645,3 +2645,59 @@ GRIMANI_SYSTEMS_PROPRIETARY_HARDWARE_RESERVE = (
 matérielle d'une marque tierce, À NE PAS transposer directement aux
 réglages logiciels de Steve] — Anthony Grimani avec Shane Lee,
 discussion sur Grimani Systems (grimanisystems.com)."""
+
+# ---------------------------------------------------------------------------
+# 24. Synthèse — rôle fonctionnel de chaque canal dans un mix cinéma 7.1,
+#     appliqué à la config réelle de Steve (demande de Steve : vérifier
+#     que le rôle de chaque enceinte dans la retranscription d'une bande
+#     son de film est bien compris). Ceci consolide en un seul endroit
+#     des faits déjà sourcés séparément (sections 10, 17, 20-23) plutôt
+#     que d'introduire une nouvelle source externe — les rôles de canaux
+#     eux-mêmes (trio frontal porteur d'image, surrounds d'ambiance, LFE
+#     discret) sont une convention standard de l'industrie du cinéma
+#     numérique (ITU-R BS.775, documentation Dolby/DTS grand public),
+#     donc du domaine public. [Principe acoustique général / convention
+#     d'industrie, domaine public — synthèse interne croisant des
+#     sources déjà citées individuellement]
+# ---------------------------------------------------------------------------
+FILM_MIX_CHANNEL_ROLES_SYNTHESIS = (
+    "Rôle fonctionnel standard de chaque canal dans un mix cinéma, "
+    "appliqué à la config 7.2 réelle de Steve : "
+    "(1) TRIO FRONTAL, porteur de l'image sonore ancrée à l'écran — "
+    "Centrale : canal quasi-exclusif du dialogue, ancre la source "
+    "sonore sur l'écran indépendamment de la position d'écoute (sans "
+    "quoi une image reconstituée par L/R seuls se déplacerait avec le "
+    "siège, cf. GRIMANI_PHANTOM_CENTER_EQ_RECOMMENDATION, section 20) ; "
+    "porte le PLUS d'énergie de tout le système (référence 0dB, "
+    "GRIMANI_CENTER_CHANNEL_ENERGY_DISTRIBUTION). Façades Gauche/Droite : "
+    "musique et effets qui suivent visuellement l'action latérale à "
+    "l'écran, -3dB sous le Centre. "
+    "(2) CANAUX PÉRIPHÉRIQUES, immersion sans ancrage visuel — Surround "
+    "Gauche/Droite (latéraux) : ambiance venant des côtés de la salle "
+    "(pas de l'écran), -6dB sous le Centre. Surround Back Gauche/Droite "
+    "(arrière) : enveloppement à 360°, -9dB sous le Centre (le niveau "
+    "le plus faible du système) ; soumis à la contrainte psychoacoustique "
+    "du 'Psychoacoustic Reversal' (GRIMANI_PSYCHOACOUSTIC_REVERSAL_"
+    "MECHANISM, section 23) — au-delà de ~30° d'écart entre les deux "
+    "enceintes arrière, le cerveau peut percevoir le son comme venant "
+    "de l'avant plutôt que de l'arrière. "
+    "(3) CANAL(AUX) DE GRAVES — ni purement 'LFE' ni purement "
+    "'subwoofer' : le signal réellement reproduit par les 2 caissons de "
+    "Steve est un COMPOSITE du canal LFE discret du mix (effets "
+    "ponctuels encodés séparément, 20-120Hz, +10dB conventionnel) et des "
+    "graves de TOUTES les 7 autres enceintes redirigées par le bass "
+    "management/crossover (LFE_VS_SUBWOOFER_CHANNEL_DISTINCTION et "
+    "BASS_MANAGEMENT_CROSSOVER_PRINCIPLE, section 10) — jamais le LFE "
+    "brut seul. "
+    "(4) TRAITEMENT GLOBAL PAR LE DSP — contrairement à un traitement "
+    "canal par canal indépendant, Dirac Live ART traite ces 9 canaux "
+    "SIMULTANÉMENT en connaissant leurs rôles respectifs et leurs "
+    "interactions spatiales ('Loudspeaker Co-Optimization', section 21), "
+    "ce qui est fondamentalement différent d'une égalisation appliquée "
+    "séparément à chaque enceinte sans tenir compte des autres."
+)
+"""[Principe acoustique général / convention d'industrie, domaine public
+— synthèse croisant des sources déjà citées] — rôles de canaux standard
+(ITU-R BS.775, documentation Dolby/DTS) ; faits chiffrés spécifiques
+cross-référencés vers les constantes déjà sourcées individuellement
+dans ce fichier (sections 10, 17, 20, 21, 23)."""
