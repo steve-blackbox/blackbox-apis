@@ -78,6 +78,23 @@
 > humain** à la mise en conformité (pas vendre un logiciel — déjà pris par
 > Pennylane/LegalPlace), **combinable avec le projet agent IA BTP** déjà en
 > cours (même client, argument de vente plus fort car obligation légale).
+>
+> ✅ **Mise à jour (02/10, suite 2)** : deux nouvelles pistes réglementaires
+> proposées par Claude, **toutes les deux vérifiées et confirmées par des
+> sources officielles françaises/européennes de premier rang** (pas des
+> blogs commerciaux) : (1) l'**AI Act impose depuis août 2026** que tout
+> système IA conversationnel (donc un agent vocal) signale à l'appelant
+> qu'il parle à une machine ; (2) le **démarchage téléphonique B2C est
+> passé en opt-in depuis le 11 août 2026** (fin de Bloctel), avec une
+> exception confirmée de 5 jours ouvrables pour rappeler suite à une
+> demande explicite (ex: devis). **Ces trois obligations légales
+> (facturation électronique + transparence IA + consentement démarchage)
+> convergent vers un même positionnement** : être "l'agent vocal BTP
+> conforme par défaut", pas juste un agent vocal de plus. Vérification
+> terrain (VOKAI) : aucune communication trouvée sur ce sujet côté
+> concurrents — fenêtre probablement encore ouverte. Détail complet et
+> guide d'entretien terrain mis à jour dans l'entrée du journal datée
+> "02/10, suite 2" plus bas.
 > Détail complet dans l'entrée du journal datée "02/10, suite" plus bas.
 >
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
@@ -862,4 +879,178 @@ articles lus, concurrents repérés, retours clients...)_
   appels de validation terrain déjà prévus (sont-ils déjà en conformité
   réception ? savent-ils qu'émettre sera bientôt obligatoire aussi ?
   qui s'en occupe pour eux actuellement ?).
+
+- (02/10, suite 2) **✅ Deux nouvelles obligations légales vérifiées à la
+  source officielle — convergence vers un positionnement "conforme par
+  défaut"**
+
+  **Origine** : Steve a reposé à Claude la même question ("quels problèmes
+  futurs créent une niche"). Claude a répondu avec deux pistes
+  réglementaires précises, que j'ai vérifiées une par une directement aux
+  sources officielles plutôt que de les prendre pour acquises (Claude
+  lui-même citait des sources à intérêt commercial pour l'une d'elles).
+
+  **1. AI Act — obligation de transparence IA (confirmé officiellement)**
+  - **Source vérifiée directement : digital-strategy.ec.europa.eu** (site
+    officiel de la Commission européenne, pas un blog tiers).
+  - Confirmé texto : *"The transparency rules of the AI Act will come
+    into effect in August 2026"* — le mois est officiellement confirmé.
+    Le jour exact ("2 août 2026") cité par Claude via un site tiers
+    (regulation-ai.eu) n'a pas pu être reconfirmé mot pour mot sur la
+    page officielle, mais le mois concorde.
+  - Confirmé aussi, section "Transparency risk" de la même page
+    officielle : *"when using AI systems such as chatbots, humans should
+    be made aware that they are interacting with a machine so they can
+    take an informed decision"* — ceci couvre bien les systèmes IA
+    conversationnels, donc un agent vocal téléphonique rentre clairement
+    dans le champ visé, même si la page ne détaille pas spécifiquement
+    "agent vocal" (elle parle de chatbots comme exemple).
+  - **Non reconfirmé indépendamment** : le montant exact des sanctions
+    (15M€ ou 3% du CA mondial cité par Claude) — plausible au vu de la
+    structure connue des paliers de sanctions de l'AI Act, mais pas
+    retrouvé verbatim sur une source officielle dans cette recherche.
+  - **Nuance importante vs l'entrée précédente (02/10, suite)** : cette
+    entrée avait classé l'AI Act comme "vise plutôt des PME/ETI
+    technologiquement avancées... pas pour la niche BTP actuelle" — mais
+    cela concernait les obligations **haut risque** (2 décembre 2027,
+    recrutement/scoring crédit). L'obligation de **transparence** (août
+    2026) est différente : elle s'applique à n'importe quel système IA
+    conversationnel, quelle que soit la taille de l'entreprise qui
+    l'utilise. Elle est donc directement pertinente pour un agent vocal
+    BTP, contrairement à ce que l'entrée précédente laissait penser.
+
+  **2. Démarchage téléphonique B2C passé en opt-in (confirmé officiellement)**
+  - **Sources vérifiées directement : bloctel.gouv.fr et la page DGCCRF
+    dédiée** (economie.gouv.fr) — sites gouvernementaux français de
+    premier rang, pas les blogs Ringover/LegalPlace cités initialement
+    par Claude (sources à intérêt commercial, donc à bon droit mises en
+    doute avant vérification).
+  - **Confirmé texto (bloctel.gouv.fr)** : *"Le service Bloctel a pris
+    fin avec l'entrée en vigueur au 11 août 2026 du régime de démarchage
+    téléphonique fondé sur le recueil préalable du consentement du
+    consommateur, conformément à la loi du 30 juin 2025."* — la date du
+    11 août 2026 est donc bien confirmée officiellement, ce n'était pas
+    une approximation de blog.
+  - **Détails précis trouvés (page DGCCRF), qui précisent/corrigent ce
+    que Claude avait laissé en suspens** :
+    - Le consentement doit être **actif, éclairé (identité + objet précis
+      + durée max 1 an), révocable à tout moment** (y compris à l'oral
+      pendant un appel).
+    - **Point clé qui lève la "zone grise" que Claude n'arrivait pas à
+      trancher** : *"un professionnel peut vous contacter si vous avez
+      fait une demande explicite, par exemple dans le cadre d'une demande
+      de devis, dans les 5 jours ouvrables."* → la relance d'un devis
+      dans les 5 jours ouvrables suivant la demande est donc explicitement
+      autorisée sans consentement préalable distinct. Au-delà de ce
+      délai, il faut le consentement classique (actif/éclairé/révocable).
+    - Horaires stricts : démarchage autorisé seulement du lundi au
+      vendredi, 10h-13h et 14h-20h, 4 appels maximum par mois.
+    - Sanctions : jusqu'à 75 000€ par appel (personne physique) ou
+      375 000€ (entreprise), publication systématique sur le site de la
+      DGCCRF. Abus de faiblesse (ciblage personnes vulnérables) : jusqu'à
+      5 ans de prison et 500 000€ ou 10% du CA.
+    - Preuve de consentement à conserver 3 ans, à communiquer sur demande.
+    - **Information utile non demandée par Steve mais découverte en
+      vérifiant, à noter pour éviter un piège futur** : certains secteurs
+      restent **interdits au démarchage même avec consentement** —
+      rénovation énergétique, adaptation du logement (personnes âgées/
+      handicap), utilisation du CPF. **Si jamais un sous-segment BTP
+      "rénovation énergétique/panneaux solaires" était envisagé plus
+      tard, le démarchage/la relance y serait totalement impossible, même
+      en respectant toutes les règles de consentement.** À exclure
+      d'emblée de toute extension de la niche BTP.
+    - **Important à bien distinguer pour ne pas se faire peur inutilement** :
+      cette loi vise le **démarchage sortant** (appels commerciaux non
+      sollicités). La fonction principale de l'agent IA envisagé (décrocher
+      les appels **entrants** des clients qui appellent l'artisan) n'est
+      **pas du démarchage** et n'est donc pas concernée. Seule la fonction
+      de **relance** (rappeler un prospect après coup pour un devis non
+      signé) tombe dans le champ de cette loi.
+
+  **Vérification complémentaire faite (VOKAI, page d'accueil)** : aucune
+  mention trouvée d'annonce de transparence IA, de consentement ou de
+  conformité réglementaire sur son site public. Pas une preuve de
+  non-conformité (ça peut être géré en coulisse), mais **aucun concurrent
+  vérifié n'en fait un argument de vente** — la fenêtre pour se positionner
+  comme "l'agent vocal BTP conforme par défaut" semble réellement ouverte.
+  Note en passant : VOKAI liste "panneau solaire" parmi ses 24 secteurs
+  couverts — potentiellement en zone à risque vu l'interdiction totale de
+  démarchage sur la rénovation énergétique mentionnée plus haut (son
+  problème, pas le nôtre, mais ça confirme que peu d'acteurs du secteur
+  semblent avoir audité ces nouvelles règles en détail).
+
+  **Synthèse stratégique — pourquoi ces 3 pistes légales se rejoignent** :
+  facturation électronique (02/10, suite), transparence IA (ici) et
+  consentement démarchage (ici) sont trois obligations légales distinctes,
+  mais **elles pointent toutes vers le même positionnement commercial** :
+  vendre aux artisans un service qui respecte par construction des règles
+  que la plupart des concurrents ignorent ou découvriront après coup (par
+  une sanction ou un contrôle). C'est un argument de vente concret
+  ("on s'occupe de votre conformité, pas seulement de décrocher le
+  téléphone") et une barrière à l'entrée réelle (ça demande du travail de
+  veille juridique que les petits acteurs locaux ne feront probablement
+  pas), plutôt qu'une simple promesse marketing.
+
+  **Évaluation honnête des 4 analyses de marché non vérifiées proposées
+  par Claude dans la même réponse** (lui-même les qualifie de "mon
+  analyse, non vérifiée" — à traiter comme hypothèses à tester, pas comme
+  des faits) :
+  1. *"Chaîne appel → devis → relance non couverte par les concurrents"* —
+     plausible et cohérent avec ce qu'on a vérifié nous-mêmes des offres
+     concurrentes (elles s'arrêtent à la qualification/RDV/résumé SMS),
+     mais **non vérifié de façon exhaustive** qu'aucun concurrent ne le
+     fait déjà. À tester en priorité via les appels terrain déjà prévus.
+  2. *"Risque que Obat/Tolteck (éditeurs de devis BTP) ajoutent la
+     fonction"* — risque générique réel pour toute agence qui construit
+     sur un angle qu'une plateforme plus grosse pourrait absorber. Bonne
+     vigilance à garder, mais pas un fait vérifié, juste un risque
+     structurel à surveiller.
+  3. *"Les chiffres de perte/ROI sont des simulations, pas des mesures
+     réelles"* — cohérent avec ce qu'on a vu dans la réponse même de
+     Claude (fourchettes très larges 1750€ à 3200€/mois selon le site,
+     "étude CAPEB" citée sans lien vérifiable). Confirme qu'il faudra
+     construire sa propre preuve chiffrée avec les premiers clients
+     plutôt que de réutiliser ces chiffres flous.
+  4. *"Le goulot est la distribution (comptables/négoces/assureurs/
+     éditeurs de devis) plus que la technologie"* — hypothèse plausible
+     et cohérente avec le modèle SOS Assistant Numérique (agence locale),
+     mais non vérifiée. À tester concrètement : est-ce qu'un comptable ou
+     un négoce de matériaux accepterait de recommander le service à ses
+     clients artisans, et à quelles conditions (commission, partenariat) ?
+
+  **🛠️ Guide d'entretien terrain consolidé (artisans)** — toutes les
+  questions de validation accumulées dans ce fichier regroupées en un
+  seul script, prêt à être utilisé pour les appels/visites déjà prévus
+  (todo `local-outreach`) :
+  1. Comment gérez-vous aujourd'hui les appels manqués/en dehors des
+     heures de chantier ? Un outil est-il déjà en place ?
+  2. Connaissez-vous ou utilisez-vous VOKAI, Eliocall, Callsens, SOS
+     Assistant Numérique ou un équivalent ? Si oui, qu'est-ce qui ne vous
+     convainc pas totalement (prix, rigidité, manque de suivi commercial
+     après le premier contact) ?
+  3. Qu'est-ce qui vous fait le plus perdre un chantier selon vous : un
+     appel manqué, un devis envoyé puis jamais relancé, autre chose ?
+  4. Si un outil relançait automatiquement vos devis non signés, seriez-
+     vous à l'aise à l'idée que ce soit un système automatique qui
+     rappelle, du moment que c'est fait proprement et légalement ?
+  5. Savez-vous que vous devez déjà être en mesure de recevoir des
+     factures électroniques structurées depuis le 1er septembre 2026 ?
+     Qui s'en occupe pour vous aujourd'hui ?
+  6. Travaillez-vous avec un comptable, un négoce de matériaux ou un
+     assureur en particulier ? Accepteraient-ils selon vous de recommander
+     un outil comme celui-ci à d'autres artisans ?
+
+  **📞 Protocole de test anonyme concurrent (optionnel, rapide)** — pour
+  vérifier concrètement si un concurrent s'annonce comme IA (test de
+  conformité Article 50 "en vrai") : appeler VOKAI/Eliocall/Callsens en
+  tant que faux prospect, noter si l'agent se présente explicitement comme
+  IA dès le début de l'appel ou laisse planer le doute, et si une relance
+  de devis est proposée/mentionnée.
+
+  **Prochaine étape suggérée** : passer à l'exécution du guide d'entretien
+  ci-dessus avec de vrais artisans (3-5 appels/visites), en parallèle
+  (ou après) la fin de la bascule Paddle déjà en cours. Mettre à jour ce
+  fichier avec les retours réels dès qu'ils arrivent — c'est la première
+  fois dans cette réflexion qu'on aurait de la donnée terrain plutôt que
+  de la recherche documentaire.
 
