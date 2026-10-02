@@ -3319,3 +3319,152 @@ ou de toute autre anomalie détectée — pas une valeur officielle Dirac,
 un seuil de prudence choisi à partir d'un cas réel vécu, à ajuster si
 d'autres retours de terrain le suggèrent."""
 
+# ---------------------------------------------------------------------------
+# 34. Tentative de recherche de fichiers .liveproject publics (demande de
+#     Steve : Gemini aurait "réussi à se créer une base de données avec
+#     des fichiers Dirac trouvés sur Internet et laissés en libre accès
+#     par des possesseurs de licence Dirac"). Tentative NON concluante,
+#     documentée honnêtement plutôt que passée sous silence.
+# ---------------------------------------------------------------------------
+PUBLIC_LIVEPROJECT_SEARCH_ATTEMPT_INCONCLUSIVE = (
+    "3 recherches tentées via le navigateur intégré pour trouver des "
+    "fichiers .liveproject publics (dans le but de généraliser la "
+    "compréhension du format au-delà des 10 fichiers de Steve, "
+    "notamment pour tenter de résoudre le verrou slot<->enceinte non "
+    "résolu pour 6/8 canaux, liveproject_reader.py) : "
+    "(1) Google 'filetype:liveproject dirac live' -> 'Aucun document ne "
+    "correspond aux termes de recherche spécifiés' ; "
+    "(2) Google '\".liveproject\" dirac forum download/share/upload' -> "
+    "résultats pertinents mais SANS fichier téléchargeable (une "
+    "discussion technique du forum officiel miniDSP confirme juste la "
+    "nature du format : 'That is a Dirac Live save file', aucun lien de "
+    "partage de données réel) ; "
+    "(3) recherche de dépôts GitHub 'liveproject dirac' -> '0 results'. "
+    "**Conclusion honnête** : je n'ai pas pu reproduire ce que Gemini "
+    "aurait réussi à faire avec les outils de recherche disponibles ici "
+    "(navigateur intégré + recherche Google/GitHub). Hypothèse plausible "
+    "mais NON vérifiée : Gemini a pu accéder à des sources non indexées "
+    "par ces moteurs (groupes privés, Discord, liens de partage directs "
+    "dans des discussions non publiques) — à ne pas confondre avec une "
+    "preuve que de tels fichiers n'existent pas publiquement. Si Steve "
+    "dispose de liens précis utilisés par Gemini, les fournir "
+    "directement permettrait de reprendre cette piste utilement."
+)
+"""[Recherche web tentée, non concluante] — google.com (3 requêtes),
+github.com/search, minidsp.com/community (lu en entier), via le
+navigateur intégré. Documenté par honnêteté méthodologique, cohérent
+avec la tentative RT60/absorption déjà documentée comme non concluante
+(suite 32)."""
+
+# ---------------------------------------------------------------------------
+# 35. Découverte majeure : un outil tiers open-source (Room Correction
+#     Helper / "RCH", myrch.fr, par l'utilisateur "Sangoku") sait
+#     reconstruire les réponses impulsionnelles depuis un .liveproject
+#     et retrouver la correspondance canal/position (exactement le
+#     problème sur lequel notre propre tentative a échoué, section 32,
+#     et le verrou slot<->enceinte non résolu de liveproject_reader.py).
+#     Trouvé en suivant la piste suggérée par Steve (AVS Forum, HCFR).
+# ---------------------------------------------------------------------------
+RCH_TOOL_CONFIRMS_DECONVOLUTION_IS_THE_RIGHT_METHOD = (
+    "Documentation officielle de l'outil (myrch.fr/doc/en.html, section "
+    "'Dirac Live import (.liveproject file)'), lue en entier : 'Unlike "
+    "an ADY, a .liveproject does not contain ready-to-use impulse "
+    "responses. RCH reconstructs the true impulse responses (with "
+    "phase and inter-channel delays) from the raw microphone recordings "
+    "stored in the file, by deconvolution.' CONFIRME EXACTEMENT ce "
+    "qu'on avait déjà déduit par rétro-ingénierie (liveproject_reader.py "
+    ": 13 flux audio Ogg Vorbis contenant un sweep ESS/Farina) : la "
+    "méthode de déconvolution est la bonne approche, pas une impasse. "
+    "Détail technique NOUVEAU et important pour une éventuelle future "
+    "tentative : 'The microphone calibration embedded in the project is "
+    "already applied during reconstruction : do not load a microphone "
+    "calibration file into REW for these measurements, or you will "
+    "double-correct the treble.' — le fichier de calibration du micro "
+    "repéré dans les métadonnées (point 1 de la carte du format, "
+    "liveproject_reader.py, '~0-7%, chemin du fichier de calibration du "
+    "micro') est PROBABLEMENT DÉJÀ APPLIQUÉ aux enregistrements bruts "
+    "avant leur écriture dans le fichier, pas à appliquer une 2e fois "
+    "manuellement — point à vérifier si la déconvolution est retentée."
+)
+"""[Documentation d'un outil tiers open-source, réputé dans la
+communauté — pas le code source lui-même vérifié directement] —
+myrch.fr/doc/en.html, lu en entier via le navigateur intégré. Piste
+trouvée en suivant la suggestion de Steve de chercher sur AVS Forum/
+HCFR/Facebook : fil 'Sangoku Room Correction Helper', AVS Forum."""
+
+RCH_CHANNEL_CORRESPONDENCE_LIKELY_NEEDS_LIVE_AVR_CONNECTION = (
+    "Découverte qui EXPLIQUE probablement pourquoi notre propre verrou "
+    "slot<->enceinte n'a pu être résolu qu'à 2/8 canaux (liveproject_"
+    "reader.py) : la documentation RCH précise, de façon répétée et "
+    "explicite, que 'the receiver configuration (model, MultEQ version, "
+    "amp assignment, detected channels) comes from the AVR, read "
+    "through the bridge — never from a measurement file. The .ady, "
+    ".mqx, .liveproject and .mdat files only provide measurements.' "
+    "Autrement dit : MÊME CET OUTIL, qui sait pourtant nommer chaque "
+    "mesure 'by channel and position' lors d'un import .liveproject, "
+    "semble s'appuyer sur une CONNEXION EN DIRECT à l'ampli/processeur "
+    "(leur 'RCH Bridge', un petit programme local) pour CONNAÎTRE "
+    "l'ordre réel des canaux détectés — PAS sur une déduction purement "
+    "interne au fichier .liveproject isolé. ⚠️ Nuance IMPORTANTE : la "
+    "documentation ne confirme PAS explicitement si cette correspondance "
+    "fonctionne aussi SANS connexion live pour un import .liveproject "
+    "autonome (le texte dit juste que 'RCH recovers all of them and "
+    "names each measurement by channel and position' sans préciser la "
+    "source de cette info pour ce cas précis) — reste une zone grise "
+    "non résolue avec certitude, pas une confirmation ni une infirmation "
+    "définitive de notre propre limite documentée. Piste concrète à "
+    "explorer si on reprend ce sujet : vérifier si l'ORDRE des 9 noms "
+    "de canaux dans les métadonnées (déjà extrait, liveproject_reader."
+    "py) suit une convention standard (ITU-R BS.775, section 24) qui "
+    "permettrait de lever l'ambiguïté sans connexion live."
+)
+"""[Documentation d'un outil tiers, nuance explicitement signalée]
+— myrch.fr/doc/en.html, même page que ci-dessus. Prudence
+méthodologique : absence de preuve que le fichier seul suffit, pas
+preuve du contraire non plus."""
+
+RCH_MIDRANGE_BASS_DECAY_SCORING_THRESHOLDS = (
+    "Système de notation A/B/C/D de l'outil RCH pour le temps de "
+    "décroissance (decay), confirmant et enrichissant ce qui était déjà "
+    "su (SCHROEDER_TRANSITION_CONCEPT) : 'Below roughly 200 Hz, a decay "
+    "time is not the reverberation of the room: it is how long one room "
+    "mode keeps ringing' — distinction RT60 global (au-dessus de la "
+    "fréquence de transition) vs decay MODAL localisé (en dessous), "
+    "déjà documentée dans ce projet, maintenant confirmée par un 2e "
+    "outil indépendant. "
+    "**Midrange decay** (500 Hz-2 kHz) : 'the only time quantity that "
+    "is compared with a listening-room standard' — seuils chiffrés : "
+    "A < 1,3x · B < 1,7x · C < 2,2x · D au-delà, calculés sur un "
+    "'corpus 2026-09-08 (2055 pairs)' (p25=0,93 · médiane=1,20 · "
+    "p75=1,68 · p90=2,11) — PROPRE corpus statistique privé de l'outil, "
+    "PAS une norme officielle ISO/AES. "
+    "**Bass decay** (sous 200 Hz) : exprimé comme un RATIO par rapport "
+    "au midrange decay (pas un temps absolu, faute de référence absolue "
+    "en grave) : 'Above 1, the bass lingers more than the rest.' "
+    "Méthode de normalisation intelligente qui contourne le problème "
+    "déjà identifié dans ce projet (pas de valeur absolue universelle "
+    "pour le decay des graves)."
+)
+"""[Documentation d'un outil tiers, seuils issus d'un corpus privé non
+officiel] — myrch.fr/doc/en.html, section sur les critères de notation.
+À traiter comme une référence comparative utile, pas un standard
+reconnu universellement."""
+
+RCH_GROWING_DATASET_PARALLELS_STEVE_VISION = (
+    "Confirmation indirecte que l'approche envisagée par Steve pour "
+    "notre propre projet ('au fur et à mesure des clients nous aurons "
+    "une source de data qui s'étoffera', section de specs_database.py) "
+    "est une pratique déjà éprouvée dans l'industrie : RCH calibre ses "
+    "propres seuils de notation sur un CORPUS RÉEL ACCUMULÉ au fil du "
+    "temps ('corpus 2026-09-08 (2055 pairs)', daté et versionné), pas "
+    "sur une formule théorique figée one-shot. Argument supplémentaire "
+    "en faveur de l'architecture déjà construite (specs_database.py, "
+    "section liée) : accumuler des données réelles au fil des clients "
+    "pour affiner progressivement les seuils/références du service, "
+    "plutôt que de se reposer uniquement sur des formules théoriques "
+    "ou un seul cas (celui de Steve)."
+)
+"""[Déduction par comparaison avec un outil tiers] — myrch.fr/doc/en.html,
+même section. Observation méthodologique, pas une nouvelle donnée
+technique en soi."""
+

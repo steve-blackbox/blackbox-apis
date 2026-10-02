@@ -3229,3 +3229,44 @@ articles lus, concurrents repérés, retours clients...)_
   36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (03/10, suite 38) **🔍 Découverte majeure : un outil tiers open-source
+  (RCH/Sangoku) a résolu la reconstruction d'IR et le verrou canal/
+  position que nous n'avons pas pu percer**
+
+  Suite à la mention de Steve que Gemini avait trouvé des fichiers Dirac
+  publics, 3 recherches tentées (Google filetype, forums, GitHub) sans
+  résultat concluant (documenté honnêtement, section 34). Steve a alors
+  précisé : "regarde sur avs forums et sur des groupes facebook, hcfr
+  aussi" — recherche recentrée sur AVS Forum avec succès.
+
+  Découverte du fil "Sangoku Room Correction Helper" (AVS Forum) menant
+  à **myrch.fr** ("Room Correction Helper"/RCH), un vrai outil tiers qui
+  importe des fichiers `.liveproject` et reconstruit les réponses
+  impulsionnelles par déconvolution — exactement la méthode tentée sans
+  succès lors de la suite précédente. Documentation officielle (lue en
+  entier) confirmant :
+  - La déconvolution EST la bonne méthode (confirme notre approche),
+    avec un détail technique précieux pour une éventuelle nouvelle
+    tentative : la calibration du micro est DÉJÀ appliquée dans le
+    fichier, à ne pas réappliquer.
+  - La correspondance canal/position nécessite très probablement une
+    CONNEXION LIVE à l'AVR (pas déductible du fichier seul) — explique
+    potentiellement pourquoi notre propre verrou slot<->enceinte n'a pu
+    être résolu qu'à 2/8 canaux. Nuance explicitement signalée : pas de
+    preuve formelle, zone grise non tranchée avec certitude.
+  - Système de notation A/B/C/D pour le "midrange decay" (500Hz-2kHz),
+    calibré sur un corpus réel de 2055 mesures, et le "bass decay"
+    exprimé en RATIO (pas en temps absolu) — méthode de normalisation
+    intelligente pour contourner l'absence de standard absolu en grave.
+  - Parallèle méthodologique : cet outil calibre ses propres seuils sur
+    un corpus accumulé au fil du temps, validant indirectement
+    l'approche "base de données qui s'étoffe" déjà construite
+    (specs_database.py) suite à la demande de Steve.
+
+  Nouvelle section 35 de `knowledge_base.py` (4 constantes), avec le
+  niveau de preuve approprié (documentation d'un outil tiers, pas son
+  code source vérifié directement).
+
+  36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+
