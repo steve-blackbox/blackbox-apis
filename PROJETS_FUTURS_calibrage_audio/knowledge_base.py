@@ -1726,6 +1726,36 @@ ART_PARAMETER_FSISO_OFFICIAL = (
 Active Room Treatment Setup Guide', section 'ART Parameters', tableau
 détaillé du paramètre 'Fsiso'."""
 
+ART_OFFICIAL_FIGURES_1_2_3_CONFIRMED = (
+    "Les 3 figures officielles de l'article 'How-to: ART Channel Group "
+    "and Support Settings' ont été capturées visuellement (le navigateur "
+    "intégré ne restitue que le texte/accessibilité, pas les images "
+    "elles-mêmes — `screenshotPage` ciblé sur chaque conteneur d'image a "
+    "permis de les voir). Elles confirment ET précisent le texte déjà "
+    "lu : **Figure 1** montre le groupement DE BASE (Group 1 = Left "
+    "Front + Right Front ENSEMBLE ; Group 2 = Center Front seul ; "
+    "Group 3 = Left Surround + Right Surround ENSEMBLE ; Group 4 = LFE/"
+    "caisson(s)), avec une flèche indiquant où décocher le support d'un "
+    "groupe vers le LFE. **Figure 2** montre la variante AVANCÉE décrite "
+    "en texte ('Direction of arrival') : Left Front, Right Front, Left "
+    "Surround et Right Surround sont ici TOUS SÉPARÉS en 5 groupes "
+    "individuels distincts (Group 1 à 5), avec 2 flèches illustrant "
+    "l'asymétrie volontaire des plages de support entre Left Front et "
+    "Right Surround. **Figure 3** revient au groupement de base (comme "
+    "Figure 1) et montre où cliquer ('...') pour ouvrir les paramètres "
+    "avancés du groupe LFE. **Point clé pour Steve** : sa configuration "
+    "actuelle réelle (chaque enceinte dans son propre groupe, voir "
+    "section 15/22) correspond exactement au cas AVANCÉ de la Figure 2 "
+    "(tout séparé), pas au cas de base de la Figure 1/3 (paires "
+    "groupées) — cohérent avec de l'intentionnel si sa position d'écoute "
+    "est effectivement asymétrique par rapport à une paire, mais à "
+    "confirmer avec lui plutôt qu'à supposer automatiquement."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'How-to: ART
+Channel Group and Support Settings', Figures 1, 2 et 3, captées
+visuellement via `screenshotPage` (le texte seul, déjà lu en section 17,
+ne permettait pas de voir leur contenu visuel précis)."""
+
 ART_PARAMETER_SUPPORT_LEVEL_OFFICIAL_TABLE = (
     "Paramètre officiel 'Support Level' (par relation groupe de support "
     "-> groupe principal) : 'détermine à quel point un haut-parleur est "

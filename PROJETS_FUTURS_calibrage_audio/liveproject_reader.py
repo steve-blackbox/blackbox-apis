@@ -168,6 +168,33 @@ CARTE DU FICHIER (validée sur les 10 fichiers, offsets en % de la taille totale
    correspondance 1:1 entre les 7 noms d'enceintes hors-sub et les 6
    slots restants.
 
+   ⚠️ **Tentative de résolution (03/10, suite 25, demande de Steve :
+   simplifier le service à "juste le fichier + la liste du matériel")**
+   : l'ordre RÉEL d'apparition des 9 noms dans le fichier (triés par
+   offset croissant, pas l'ordre arbitraire de `SPEAKER_NAMES_KNOWN`)
+   est confirmé IDENTIQUE et STABLE sur 2 fichiers différents de Steve
+   (`TOP CALIB BASE.liveproject` et `ART PRO FINAL.liveproject`) :
+   Front Left, Center, Front Right, Surround Right, Surround Back
+   Right, Surround Back Left, Surround Left, Subwoofer 1, Subwoofer 2
+   — toujours 9 noms pour 8 slots. Hypothèse testée : si "Surround
+   Left" (7e nom) est celui structurellement absent des slots mesurés,
+   alors slot 0=Front Left, 1=Center, 2=Front Right, 3=Surround Right,
+   4=Surround Back Right, 5=Surround Back Left, 6=Subwoofer 1,
+   7=Subwoofer 2 — cohérent avec les slots 6/7 déjà confirmés par
+   ailleurs. **Résultat du test** (comparaison des fréquences de pics/
+   creux entre la moyenne des 13 positions de chaque slot présumé et la
+   courbe mesurée de la capture d'écran correspondante, sur les 6
+   canaux non-subwoofer) : score de correspondance FAIBLE et
+   INCONSTANT (24 % à 80 % de pics retrouvés à ±5 Hz selon le canal),
+   très inférieur à la correspondance quasi parfaite obtenue pour les 2
+   subwoofers. **Conclusion : cette hypothèse n'est PAS confirmée avec
+   un niveau de confiance suffisant pour les 6 canaux non-subwoofer.**
+   Le verrou reste donc entier pour eux à ce jour — seuls les 2
+   subwoofers ont une correspondance fiable. Ne pas réessayer cette
+   méthode exacte sans une idée nouvelle (ex : comparer plus de
+   fichiers, ou trouver un marqueur distinctif par canal autre que
+   l'ordre des métadonnées).
+
    **Conclusion pratique (répond à "le fichier suffit-il sans les
    captures ?")** : non. Même avec les 2 méthodes ci-dessus, l'attribution
    fiable ne couvre que les 2 subwoofers (et avec un bémol sur lequel est
