@@ -52,13 +52,27 @@
 > redonner la priorité aux artisans du bâtiment. Détail complet dans
 > l'entrée du journal datée "01/10, plus tard dans la soirée" plus bas.
 >
+> 🚨 **Mise à jour (02/10)** : le "terrain libre" espéré pour les artisans
+> du bâtiment n'existe pas non plus — recherche web approfondie (via
+> Claude, vérifiée en partie en direct) : au moins 8-10 acteurs français
+> déjà positionnés sur l'agent vocal IA pour le BTP (VOKAI, Eliocall,
+> Callsens, SOS Assistant Numérique, Vocalis, Ostia, AirAgent, Tala,
+> Fonio.ai, Limova), et pareil pour vétérinaires/avocats/immobilier.
+> **Seul signal d'ouverture relative : les experts-comptables**, moins
+> spécifiquement couverts. **Nouveau critère de décision** : abandonner
+> l'idée d'un marché à zéro concurrent (illusoire pour ce type de produit,
+> boom trop récent) et se concentrer sur la différenciation d'exécution
+> (hyper-local, sous-segment métier précis, ou comptables à creuser).
+> Détail complet dans l'entrée du journal datée "02/10" plus bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
 
-- Priorité absolue actuelle : terminer la bascule Paddle, puis démarrer le
-  premier chantier concret de l'automatisation médicale (démo technique +
-  démarchage de cabinets locaux — détail dans le journal daté 01/10).
+- Priorité absolue actuelle : terminer la bascule Paddle, puis **valider
+  sur le terrain avant de construire quoi que ce soit** — y compris pour
+  le bâtiment, maintenant qu'on sait que la concurrence y est déjà dense
+  (détail dans le journal daté 02/10).
 
 ---
 
@@ -636,4 +650,109 @@ articles lus, concurrents repérés, retours clients...)_
   disponibles) : la validation terrain (appels à 3-5 artisans locaux,
   déjà actée dans l'entrée précédente) reste l'étape qui tranchera pour
   de vrai, pas une recherche web plus poussée.
+
+- (02/10) **🚨 Correction majeure de la carte précédente : le bâtiment
+  n'est PAS un terrain libre — recherche web complète via Claude**
+
+  **Origine** : la carte sectorielle du 01/10 ci-dessus était construite
+  en devinant des noms de domaines un par un (seule méthode disponible
+  dans cet environnement, moteurs de recherche généralistes bloqués).
+  Steve a eu l'idée de faire relayer une vraie recherche web par Claude
+  (accès recherche complet) via un prompt préparé, sur la question
+  précise : qui occupe déjà le créneau "agent IA qui répond au
+  téléphone/qualifie/prend RDV" pour le bâtiment et les autres
+  verticales non confirmées ?
+
+  **Résultat, partiellement re-vérifié en direct (fetch) sur 4 sites** :
+  - **VOKAI** (vokai.fr) : agent "Marc" dédié BTP, confirmé en direct —
+    5 cas d'usage précis et matures (qualification urgence/devis, suivi
+    devis signés avec intégration CRM Extrabat/Batappli/Codial/ProGBat,
+    SAV, filtre démarchage). Produit clairement abouti, pas une coquille
+    vide. 150+ clients et 3000 appels/jour revendiqués (auto-déclarés,
+    non vérifiables).
+  - **SOS Assistant Numérique** (Chabris, Indre) : confirmé en direct —
+    FAQ opérationnelle détaillée (RGPD France, 95%+ précision vocale
+    accents régionaux, délai de mise en place 5-7 jours, démo gratuite
+    sous 24h, résiliable sans frais). **Modèle économique quasi
+    identique à celui envisagé pour Steve** : agence locale (pas éditeur
+    SaaS national), 1500€ HT de setup + 300€ HT/mois, cible exactement
+    plombiers/peintres/électriciens/maçons.
+  - **Eliocall/Elio** : confirmé en direct — site structuré en guide
+    comparatif complet (10 outils), qui cartographie lui-même le marché
+    en 3 segments : spécialistes PME no-code (Tala, Fonio, Limova,
+    AirAgent, Elio — 30 à 150€/mois), plateformes grands comptes sur
+    devis (Yelda, Zaion, Dydu, Reecall, Vocalis), téléphonie cloud avec
+    brique IA (Ringover). Site à prendre avec recul (comparatif
+    "maison" qui se classe lui-même n°1), mais la cartographie du
+    marché en elle-même est cohérente avec les autres sources.
+  - **Vocare** (vocare.fr, multi-professions libérales) : confirmé en
+    direct — démo vocale interactive fonctionnelle directement intégrée
+    à la page d'accueil, échange complet simulé de prise de RDV.
+
+  **Reste de la liste (non re-vérifié individuellement, cité par Claude
+  avec sources)** : Callsens, Vocalis, Ostia, AirAgent, Tala, Fonio.ai,
+  Limova (BTP) ; Aircall AI Voice Agent, Allo, Ringover/Airo Voice,
+  Quadia, Alohria, Agaphone, Wecall (généralistes) ; VetoCall IA, IzyVet,
+  Veto Voice, Télia, alloagent.ai (vétérinaires) ; LexCall.ai, FromKana
+  (avocats) ; Next Call AI, Vocalis AI (immobilier).
+
+  **Seul signal d'ouverture relative trouvé** : les **experts-comptables**
+  — Claude ne cite que des acteurs généralistes multi-professions
+  (Vocare, Alohria) les ciblant, pas de spécialiste dédié comparable à
+  VOKAI pour le BTP. Signal faible, pas une confirmation de vide.
+
+  **Chiffres de marché trouvés, à traiter avec prudence** : CAPEB cite
+  621 803 entreprises artisanales du bâtiment (97% du secteur) ; FFB
+  (2025) cite 450 000 entreprises hors micro-entreprises pures. Les taux
+  d'appels manqués (35-45%) et pertes annuelles (12 000-18 000€) circulant
+  chez les fournisseurs (VOKAI notamment) référencent une "enquête
+  CAPEB 2024" **dont aucun document source n'a été retrouvé** — à traiter
+  comme non vérifié, pas comme un fait établi, tant qu'un lien direct
+  vers l'étude n'est pas trouvé.
+
+  **Analyse — pourquoi ce n'est pas disqualifiant malgré tout** :
+  1. La densité de concurrents est la preuve que la demande existe
+     réellement (personne n'investit dans un marché mort) — c'est
+     l'inverse exact du problème Doctolib, où l'offre native gratuite
+     tuerait la demande avant qu'elle n'existe commercialement.
+  2. Le marché est **fragmenté entre de nombreuses petites structures**,
+     pas consolidé autour d'un acteur national unique comme Doctolib ou
+     Planity — ce n'est pas un marché "winner takes all", il y a
+     structurellement de la place pour plusieurs acteurs qui coexistent.
+  3. **SOS Assistant Numérique valide très concrètement le modèle
+     économique déjà envisagé** (agence locale, setup + abonnement
+     résiliable, installation en quelques jours, pas du self-service
+     SaaS) — preuve directe que ce modèle précis fonctionne pour
+     quelqu'un d'autre, pas juste une hypothèse.
+  4. Pas de standard de prix unique (29€ à 399€/mois selon les sources)
+     → de la place pour se positionner clairement plutôt que de deviner
+     un prix dans le vide.
+
+  **Conclusion opérationnelle — nouveau critère de sélection de niche** :
+  pour ce type de produit (agent vocal IA, boom technologique récent
+  2023-2024), chercher un marché à zéro concurrent est probablement
+  **illusoire** — le marché se remplit trop vite pour qu'un "océan bleu"
+  survive assez longtemps pour être trouvé puis exploité. Le critère
+  "aucun acteur dominant" (valable et confirmé pour Doctolib/médical) ne
+  suffit plus seul ici : il doit être remplacé par un critère de
+  **différenciation d'exécution**, pas d'absence de concurrence :
+  - **Hyper-local** : cibler une seule ville/région précise (comme
+    SOS-AN à Chabris/Indre) plutôt que viser le national dès le
+    départ — moins de concurrence frontale directe, relation de
+    proximité, bouche-à-oreille local, déplacement physique possible
+    pour la démo/mise en place.
+  - **Sous-segment métier encore plus fin** qu'un secteur entier : "BTP"
+    est déjà couvert dans son ensemble par VOKAI, mais un sous-métier
+    précis (ex: uniquement plombiers, ou uniquement un type
+    d'intervention) pourrait rester moins disputé — à vérifier.
+  - **Experts-comptables** à creuser en priorité comme piste alternative
+    la moins couverte trouvée à ce stade.
+
+  **Prochaine étape, renforcée (pas changée dans le principe)** : la
+  validation terrain (appels à des artisans locaux) reste indispensable,
+  mais la question à poser évolue — ne plus seulement demander "avez-vous
+  déjà un outil pour les appels manqués", mais explicitement "connaissez-
+  vous VOKAI/Eliocall/Callsens/SOS Assistant Numérique, les utilisez-vous,
+  qu'est-ce qui ne vous convainc pas" — pour mesurer la vraie pénétration
+  de la concurrence sur le terrain, pas juste son existence sur le web.
 
