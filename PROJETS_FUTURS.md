@@ -172,6 +172,17 @@
 > documenté. Détail complet (chemins exacts) dans l'entrée "02/10,
 > suite 9" tout en bas.
 >
+> 🧪 **Travail d'analyse plus poussé que prévu (02/10, suite 10)** — Steve
+> avait déjà demandé à Gemini d'analyser des **fichiers de calibration
+> Dirac trouvés sur internet (forums, réseaux sociaux)** pour comprendre
+> le fonctionnement réel de Dirac et ce qui est optimisable — une
+> démarche de validation externe plus solide qu'un simple test sur son
+> propre système. **Cette analyse n'a pas été retrouvée en fichier local**
+> (recherche faite) ; elle existe très probablement uniquement dans
+> l'historique de la conversation Gemini elle-même. Steve invité à
+> partager cette conversation plus tard pour la documenter précisément.
+> Détail dans l'entrée "02/10, suite 10" tout en bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
@@ -1672,4 +1683,45 @@ articles lus, concurrents repérés, retours clients...)_
   un espace de sauvegarde personnel (iCloud Drive, disque externe, etc.)
   suffirait ; aucune action engagée tant que Steve n'a pas confirmé le
   canal de sauvegarde souhaité.
+
+  **Autre dossier trouvé pendant cette même recherche** :
+  `~/Desktop/CAPTURE ECRAN COURBES/` → 8 captures d'écran, une par
+  enceinte (`CENTRALE`, `FRONT LEFT`, `FRONT RIGHT`, `SUBWOOFERS`,
+  `SURROUND BACK LEFT/RIGHT`, `SURROUND LEFT/RIGHT`). Très probablement
+  le matériel exact utilisé pour le test Gemini déjà évoqué (plus haut,
+  "suite 7") — donc déjà sécurisé, à ne pas supprimer.
+
+- (02/10, suite 10) **🧪 Travail d'analyse plus poussé que prévu révélé
+  par Steve : Gemini avait constitué une base d'analyse à partir de
+  fichiers de calibration trouvés sur internet**
+
+  Steve a précisé qu'il avait déjà demandé à Gemini de **collecter des
+  fichiers de calibration Dirac disponibles publiquement (forums,
+  réseaux sociaux)** et de les analyser pour comprendre le fonctionnement
+  réel de Dirac et identifier ce qui est réellement optimisable. C'est
+  une information importante : ça répond directement à une des limites
+  de fiabilité notées plus haut (suite 7 : "un seul test sur soi-même,
+  juge et partie, ne suffit pas — tester des cas inconnus tirés de
+  forums"). **Steve avait déjà commencé cette démarche avant même cette
+  session**, avec des cas externes, pas seulement son propre système.
+
+  Recherche effectuée par Copilot sur le Mac de Steve (mêmes dossiers que
+  suite 9, plus recherche large de fichiers `.csv/.xlsx/.json/.db` et de
+  noms contenant "gemini/forum/database/base de") : **aucune trace locale
+  d'un fichier de cette base de données**. Rien d'anormal — Gemini peut
+  très bien avoir produit cette analyse directement dans le fil de
+  conversation (tableaux, constats) sans génération de fichier
+  téléchargeable, exactement comme Claude le fait dans les conversations
+  déjà lues dans cette session. **Cette analyse existe donc très
+  probablement uniquement dans l'historique de la conversation Gemini
+  elle-même**, pas sur disque.
+
+  Steve a été invité à partager cette conversation Gemini via le
+  navigateur (même mécanisme que pour Claude.ai dans cette session) pour
+  qu'elle soit lue et documentée précisément — **pas de réponse obtenue
+  dans l'immédiat**, à reposer plus tard. Tant que ce n'est pas fait,
+  retenir que cette analyse (fichiers de calibration externes utilisés,
+  méthode, conclusions sur le fonctionnement réel de Dirac) est un
+  **actif potentiellement important et non encore documenté dans ce
+  journal**, en plus des preuves de concept déjà listées (Dirac, Audyssey).
 
