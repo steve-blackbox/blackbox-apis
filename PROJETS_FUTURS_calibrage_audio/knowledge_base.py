@@ -54,8 +54,10 @@ vous, court et ordonné... rédigé avec vos mots, c'est votre propriété").
 from __future__ import annotations
 
 from models import (
+    ArtCompatibleDevice,
     CitedPatent,
     CitedStudy,
+    DeviceType,
     EvidenceLevel,
     ManufacturerSpecSheet,
     Role,
@@ -2701,3 +2703,363 @@ FILM_MIX_CHANNEL_ROLES_SYNTHESIS = (
 (ITU-R BS.775, documentation Dolby/DTS) ; faits chiffrés spécifiques
 cross-référencés vers les constantes déjà sourcées individuellement
 dans ce fichier (sections 10, 17, 20, 21, 23)."""
+
+# ---------------------------------------------------------------------------
+# 25. Liste officielle des appareils compatibles Dirac Live ART (demande de
+#     Steve : "enregistrer la liste des produits compatibles dirac art pour
+#     les amplificateurs intégrés et processeurs-préamplis", en 1re étape
+#     de sa méthodologie de diagnostic — "pour gagner du temps et préserver
+#     les enceintes"). Liste lue directement dans le configurateur d'achat
+#     officiel (dirac.com/products/art, menu déroulant "Select for price &
+#     license options"), PAS une page marketing générale : ce sont les
+#     appareils pour lesquels une licence ART est RÉELLEMENT en vente au
+#     moment de l'observation. [Confirmation officielle Dirac — à re-
+#     vérifier périodiquement, cette liste peut s'allonger dans le temps]
+# ---------------------------------------------------------------------------
+ART_COMPATIBLE_DEVICES_OBSERVATION_DATE = "2026-10-02"
+ART_COMPATIBLE_DEVICES_SOURCE_URL = "https://www.dirac.com/products/art"
+
+ART_COMPATIBLE_DEVICES: list[ArtCompatibleDevice] = [
+    # ARCAM — confirmé via hifi-quimper.fr + Audio Science Review (ASR
+    # Forum) : "AVA35 : haut de gamme Radia AV... AVP45 : processeur AV
+    # (sans amplification)" — AVA = ampli intégré, AVP = processeur pur.
+    ArtCompatibleDevice("ARCAM", "AVA15", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("ARCAM", "AVA25", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("ARCAM", "AVA35", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("ARCAM", "AVP45", DeviceType.PROCESSEUR_PREAMPLI),
+    # AudioControl — nomenclature "APR-16" non confirmée avec certitude
+    # depuis une fiche officielle dans le temps disponible ; une annonce
+    # commerciale tierce (habitech.co.uk) mentionne un "bundle" avec
+    # amplificateur 7 ou 11 canaux EN OPTION, ce qui suggère que l'APR-16
+    # pourrait être un processeur central plutôt qu'un ampli intégré,
+    # mais ce n'est PAS confirmé par une source officielle — laissé en
+    # INCERTAIN par prudence plutôt que de deviner.
+    ArtCompatibleDevice("AudioControl", "Hyperion APR-16", DeviceType.INCERTAIN),
+    # Denon — nomenclature officielle bien connue et déjà confirmée dans
+    # ce fichier (section 16/21) : AVR-xxxxH = AV Receiver AVEC ampli
+    # intégré ; AVC-xxxxH = même châssis SANS les étages de puissance
+    # (version "pre/pro" pour installateurs utilisant un ampli externe).
+    ArtCompatibleDevice("Denon", "AVR-A10H", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("Denon", "AVC-A10H", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("Denon", "AVR-A1H", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("Denon", "AVC-A1H", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("Denon", "AVR-X3800H", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("Denon", "AVC-X3800H", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("Denon", "AVR-X3900H", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("Denon", "AVC-X3900H", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("Denon", "AVR-X4800H", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("Denon", "AVC-X4800H", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("Denon", "AVR-X6800H", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("Denon", "AVC-X6800H", DeviceType.PROCESSEUR_PREAMPLI),
+    # JBL Synthesis — nomenclature industrie bien établie : SDP = Surround
+    # Decoder/Sound Processor (pre/pro pur) ; SDR = Surround Decoder
+    # Receiver (avec ampli intégré).
+    ArtCompatibleDevice("JBL Synthesis", "SDP-60", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("JBL Synthesis", "SDR-40", DeviceType.AMPLI_INTEGRE),
+    # Marantz — confirmé par la structure produit officielle elle-même
+    # (dirac.com affiche "Marantz CINEMA 30" comme appareil par défaut
+    # pour Steve) : la série "AV xx" est un processeur pur (lancée pour
+    # concurrencer StormAudio/JBL Synthesis en pre/pro haut de gamme),
+    # la série "CINEMA xx" (dont le CINEMA 30 de Steve) a des étages de
+    # puissance internes natifs, même si Steve les ignore en pratique au
+    # profit de son ampli externe Buckeye NCx252MP.
+    ArtCompatibleDevice("Marantz", "AV 10", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("Marantz", "AV 20", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("Marantz", "AV 30", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice(
+        "Marantz", "CINEMA 30", DeviceType.AMPLI_INTEGRE, price_usd="$299",
+        notes="Appareil de Steve — confirmé par défaut sur le configurateur officiel.",
+    ),
+    ArtCompatibleDevice("Marantz", "CINEMA 40", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("Marantz", "CINEMA 50", DeviceType.AMPLI_INTEGRE),
+    ArtCompatibleDevice("Marantz", "CINEMA 50 SERIES 2", DeviceType.AMPLI_INTEGRE),
+    # Monoprice — le HTP-1 Monolith est un pre/pro pur largement documenté
+    # dans la presse spécialisée (AVS Forum, Audioholics), jamais vendu
+    # avec un ampli intégré.
+    ArtCompatibleDevice("Monoprice", "HTP-1 Monolith", DeviceType.PROCESSEUR_PREAMPLI),
+    # StormAudio — déjà confirmé section 16 : TOUJOURS un processeur pur
+    # (ISP = Immersive Sound Processor), jamais d'ampli intégré, toujours
+    # utilisé avec un ampli externe (comme le Buckeye de Steve).
+    ArtCompatibleDevice("StormAudio", "I.ISP 16.12", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("StormAudio", "ISP Core 16", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("StormAudio", "ISP Elite MK1", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("StormAudio", "ISP Elite MK2", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("StormAudio", "ISP Elite MK3", DeviceType.PROCESSEUR_PREAMPLI),
+    ArtCompatibleDevice("StormAudio", "ISP Master", DeviceType.PROCESSEUR_PREAMPLI),
+    # Tonewinner — type non confirmé avec certitude dans le temps
+    # disponible (marque moins documentée en sources occidentales) ;
+    # laissé en INCERTAIN par prudence plutôt que de deviner.
+    ArtCompatibleDevice("Tonewinner", "AT-600", DeviceType.INCERTAIN),
+]
+
+ART_REQUIRES_RC_AND_BASS_CONTROL = (
+    "Confirmation officielle lue directement sur la fiche produit ART "
+    "(dirac.com/products/art) : 'Requires Room Correction. Bass Control "
+    "required if using one or more subs.' — ART n'est PAS un produit "
+    "autonome, c'est un add-on qui a deux prérequis stricts : (1) Room "
+    "Correction (RC) doit déjà être actif, et (2) Bass Control (BC) est "
+    "EXIGÉ dès qu'un ou plusieurs caissons sont utilisés dans le système. "
+    "**Conséquence directe pour Steve** : ayant 2 caissons (SVS 3000 "
+    "Micro R|Evolution), Bass Control n'est pas optionnel dans son cas — "
+    "c'est un prérequis obligatoire pour que ART fonctionne correctement "
+    "sur l'ensemble de son système 7.2, pas seulement une amélioration "
+    "facultative. Tarifs observés (Marantz, 02/10/2026) : ART seul $299 ; "
+    "bundle complet RC+BC+ART $799 (au lieu de $947 à l'unité) ; bundle "
+    "BC+ART $549 (au lieu de $598)."
+)
+"""[Confirmation officielle Dirac] — dirac.com/products/art, lu en direct
+via le navigateur intégré, section liste à puces sous le titre '03 ART'."""
+
+
+def is_art_compatible(brand: str, model: str) -> ArtCompatibleDevice | None:
+    """Recherche insensible à la casse dans ART_COMPATIBLE_DEVICES.
+    Retourne l'appareil trouvé (avec son DeviceType) ou None si le
+    matériel du client n'apparaît pas dans la liste observée le
+    03/10/2026 — ce qui NE PROUVE PAS que ce matériel est incompatible
+    (la liste évolue), seulement qu'il n'y était pas à cette date."""
+
+    brand_norm = brand.strip().casefold()
+    model_norm = model.strip().casefold()
+    for device in ART_COMPATIBLE_DEVICES:
+        if device.brand.casefold() == brand_norm and device.model.casefold() == model_norm:
+            return device
+    return None
+
+# ---------------------------------------------------------------------------
+# 26. Mécanique exacte de l'éditeur de courbe cible et du Bass Control
+#     (demande de Steve : connaître précisément "ce que Dirac permet de
+#     régler manuellement" avant de calculer des valeurs chiffrées de
+#     réglage). Lu en entier sur le Helpdesk officiel Dirac.
+#     [Confirmation officielle Dirac — Helpdesk]
+# ---------------------------------------------------------------------------
+TARGET_CURVE_EDITOR_MECHANICS = (
+    "Confirmé noir sur blanc sur le Helpdesk Dirac (page 'Filter Design | "
+    "Dirac Live Bass Control') : la courbe cible s'édite par GLISSER-"
+    "DÉPOSER libre sur le graphique ('Drag the target-points on the "
+    "target curve'), PAS par saisie numérique directe d'une valeur. On "
+    "ajoute un nouveau point par clic droit sur la courbe puis 'Add "
+    "control point to'. Conséquence méthodologique importante : "
+    "CONTRAIREMENT au Support Level qui a un pas CONFIRMÉ et chiffré de "
+    "0,5 dB (SUPPORT_LEVEL_STEP_DB), aucun pas fixe en dB ou en Hz n'est "
+    "documenté officiellement pour les points de courbe cible — "
+    "l'édition est continue, limitée seulement par la précision de la "
+    "souris/du geste de l'utilisateur. Une recommandation 'placez un "
+    "point à X Hz / Y dB' doit donc être comprise comme une CIBLE à "
+    "viser du mieux possible, pas une valeur que l'interface imposerait "
+    "au dixième de dB près."
+)
+"""[Confirmation officielle Dirac] — helpdesk.dirac.com/en/dirac-bass-
+control/Filter-Design-c592, lu en entier via le navigateur intégré."""
+
+BASS_CONTROL_TARGET_CURVE_TWO_PART_STRUCTURE = (
+    "Découverte officielle majeure, avec impact direct sur toute "
+    "recommandation de courbe cible pour Steve (qui utilise Bass Control, "
+    "obligatoire avec ses 2 caissons — voir ART_REQUIRES_RC_AND_BASS_"
+    "CONTROL) : 'In Dirac Live 2 the target curve setting the sound "
+    "colouration was unique to the speaker group. For Dirac Live Bass "
+    "Control, however, the lower frequencies are highly correlated "
+    "between speakers, and a better compensation is achieved by "
+    "separating the target curve into a low-frequency part common to "
+    "the system and a higher-frequencies part unique to the speaker "
+    "group.' Concrètement, la courbe cible visible pour CHAQUE groupe "
+    "se compose de 2 segments avec des règles différentes : "
+    "(A) la partie BASSE fréquence (sous le point de croisement du "
+    "groupe) est PARTAGÉE/COMMUNE À TOUT LE SYSTÈME — modifier cette "
+    "partie sur UN groupe affecte la colouration des graves de TOUS les "
+    "groupes simultanément ; "
+    "(B) la partie HAUTE fréquence (au-dessus du croisement du groupe) "
+    "est PROPRE à ce groupe, réglable indépendamment des autres. "
+    "Chaque groupe a en plus SON PROPRE point de croisement individuel "
+    "('each speaker group has their own individual crossover "
+    "frequency'), ajustable en faisant glisser la barre de croisement "
+    "sur le graphique des réponses moyennes. "
+    "**Conséquence pour l'algorithme de recommandation** : il est "
+    "incohérent de recommander un ajustement de courbe DIFFÉRENT entre "
+    "plusieurs enceintes dans leur partie grave commune — seule la "
+    "partie au-dessus du croisement de CHAQUE groupe peut être "
+    "personnalisée enceinte par enceinte (ou groupe par groupe)."
+)
+"""[Confirmation officielle Dirac] — même page Helpdesk que ci-dessus."""
+
+BASS_CONTROL_OFFICIAL_MOVIE_BOOST_CONFIRMATION = (
+    "Confirmation OFFICIELLE directe de la pratique de Steve (booster le "
+    "niveau des caissons pour le cinéma) : 'Increasing the volume of the "
+    "subwoofers can be achieved by raising the part of the target curve "
+    "under 100 Hz by a few dB... This is often wanted when watching "
+    "movies.' Dirac recommande lui-même explicitement de relever la "
+    "courbe cible sous 100 Hz de 'quelques dB' pour un rendu cinéma — "
+    "ni une fréquence de pivot unique ni une valeur chiffrée précise "
+    "n'est donnée ('a few dB'), mais le PRINCIPE et la ZONE (sous "
+    "100 Hz) sont désormais une confirmation officielle, pas seulement "
+    "un retour d'expérience de Steve ou un conseil d'expert tiers "
+    "(Grimani)."
+)
+"""[Confirmation officielle Dirac] — même page Helpdesk que ci-dessus."""
+
+BASS_CONTROL_VS_BASS_MANAGEMENT_MODE_DISTINCTION = (
+    "Distinction officielle entre les 2 modes proposés en plus de "
+    "'Off' : 'Bass management' — gain de chaque caisson simplement mis "
+    "à l'échelle par 1/(nombre de caissons) pour correspondre à la "
+    "courbe cible (répartition égale, pas de filtre sur mesure) ; "
+    "'Bass Control' — harmonise caissons ET enceintes non-caisson dans "
+    "les basses fréquences via des filtres de phase, délais et gains "
+    "SUR MESURE pour chaque canal ('tailor made phase filters, delays "
+    "and gains'). C'est ce 2e mode (plus avancé QUE 'Bass management' "
+    "seul) qu'ART exige en prérequis ('Bass Control required if using "
+    "one or more subs', section 25). "
+    "⚠️ PRÉCISION DE STEVE, IMPORTANTE POUR NE PAS CONFONDRE LA "
+    "HIÉRARCHIE : Bass Control reste un module MOINS PERFECTIONNÉ "
+    "qu'ART lui-même — la hiérarchie réelle à 3 niveaux est 'Bass "
+    "management' (le plus basique, répartition égale) < 'Bass Control' "
+    "(SIMO avancé : filtres sur mesure par canal mais toujours sans "
+    "co-optimisation spatiale entre enceintes, cohérent avec "
+    "DIRAC_THREE_PRODUCT_TIERS_SIMO_VS_MIMO, section 21) < 'ART' (vrai "
+    "MIMO, 'Loudspeaker Co-Optimization', qui coordonne TOUTES les "
+    "enceintes simultanément, section 21). Bass Control est un "
+    "PRÉREQUIS TECHNIQUE d'ART (le module de gestion des caissons "
+    "qu'ART vient ensuite compléter/coordonner avec le reste du "
+    "système), pas un concurrent ni un équivalent d'ART."
+)
+"""[Confirmation officielle Dirac + précision de Steve] — même page
+Helpdesk que ci-dessus pour le mécanisme ; hiérarchie de sophistication
+clarifiée par Steve et cross-référencée à la section 21 (SIMO vs MIMO)."""
+
+# ---------------------------------------------------------------------------
+# 27. Headroom de mesure et gain d'entrée XLR/RCA (demande de Steve :
+#     "quel niveau de gain des subwoofers il doit viser au moment de la
+#     prise de mesure initiale... pour exploiter le headroom de la pièce
+#     et les niveaux max de gain en sortie de ses connexions XLR ou
+#     RCA"). Combine une confirmation officielle Dirac (headroom) et des
+#     principes d'ingénierie audio analogique de domaine public (niveaux
+#     de référence XLR/RCA), appliqués avec prudence au matériel réel de
+#     Steve (fiches déjà sourcées section 15).
+# ---------------------------------------------------------------------------
+DIRAC_OFFICIAL_HEADROOM_EXPLANATION = (
+    "Confirmation officielle directe du Helpdesk Dirac sur le headroom : "
+    "'Properly executed EQs, including Dirac Live, require headroom to "
+    "boost certain frequencies without exceeding 0dBFS and causing "
+    "digital clipping. The output level is attenuated to provide "
+    "headroom, and you may need to increase the volume higher than "
+    "usual... Ensure the measurement volume is the same or slightly "
+    "higher than the listening volume.' Traduction du principe : Dirac "
+    "a besoin de marge numérique pour pouvoir BOOSTER certaines "
+    "fréquences sans écrêter à 0dBFS ; il réduit donc automatiquement le "
+    "niveau de sortie global pour se garder cette marge — d'où un volume "
+    "perçu plus faible après application du filtre, à compenser en "
+    "augmentant le volume d'écoute habituel. **Conseil officiel "
+    "actionnable pour la prise de mesure** : régler le niveau de mesure "
+    "à peu près égal, ou légèrement SUPÉRIEUR, au niveau d'écoute "
+    "habituel réel de Steve — pas un niveau de mesure arbitrairement "
+    "haut ou bas déconnecté de son usage réel."
+)
+"""[Confirmation officielle Dirac] — helpdesk.dirac.com/en/dirac-live/
+Why-does-the-volume-decrease-significantly-when-applying-the-finished-
+filter-f49c, lu en entier via le navigateur intégré."""
+
+XLR_VS_RCA_REFERENCE_LEVEL_PRINCIPLE = (
+    "Principe d'ingénierie audio analogique de domaine public (pas "
+    "spécifique à Dirac) : les connexions RCA (asymétriques) suivent "
+    "conventionnellement un niveau de référence 'consumer' de -10 dBV "
+    "(≈0,316 Vrms), tandis que les connexions XLR (symétriques) suivent "
+    "un niveau de référence 'professionnel' de +4 dBu (≈1,228 Vrms) — un "
+    "écart théorique d'environ 11,8 dB entre les deux standards. "
+    "**Point de vigilance pour Steve** : sa liaison Marantz CINEMA 30 → "
+    "ampli Buckeye NCx252MP passe par un câble ADAPTATEUR RCA(M) vers "
+    "XLR(M) (section 15) — ce type de câble change le CONNECTEUR "
+    "physique mais ne convertit PAS électriquement un niveau -10dBV en "
+    "+4dBu (ce n'est pas un amplificateur de ligne actif, juste un "
+    "câblage passif avec un brochage adapté). Le niveau électrique "
+    "réellement transmis dépend donc du réglage de gain de sortie par "
+    "canal du CINEMA 30 (menu calibration des niveaux d'enceintes), pas "
+    "du simple choix de connecteur."
+)
+"""[Principe d'ingénierie audio générale, domaine public] — standards
+AES/EBU de niveaux de référence professionnel vs consumer, largement
+documentés dans l'industrie (pas une règle Dirac)."""
+
+BUCKEYE_INPUT_SENSITIVITY_VS_HEADROOM_CALCULATION = (
+    "Calcul combinant les fiches déjà sourcées (section 15) : l'ampli "
+    "Buckeye NCx252MP a une sensibilité d'entrée confirmée de 1,6 Vrms "
+    "(charge 4 ohms) à 1,8 Vrms (charge 8 ohms) pour atteindre sa "
+    "PLEINE puissance nominale (150-250W selon canal/impédance), avec "
+    "un gain de tension de 26 dB et une impédance d'entrée de 47 kOhms. "
+    "Pour exploiter pleinement la puissance disponible de cet ampli "
+    "(et donc le headroom réel du système), le niveau de sortie du "
+    "CINEMA 30 par canal devrait s'approcher de cette sensibilité "
+    "d'entrée (1,6-1,8 Vrms) sans la dépasser au point d'écrêter la "
+    "sortie du processeur lui-même. "
+    "⚠️ **Limite honnête** : le niveau de sortie MAXIMAL en Vrms du "
+    "Marantz CINEMA 30 (avant son propre écrêtage) n'a pas été retrouvé "
+    "dans les fiches déjà collectées — cette valeur précise manque pour "
+    "donner un pourcentage ou un réglage de gain de sortie exact et "
+    "garanti. Le principe reste valable (viser à exploiter la "
+    "sensibilité d'entrée du Buckeye sans écrêter le CINEMA 30), mais "
+    "la valeur numérique finale ne peut pas être affirmée sans cette "
+    "donnée manquante ou sans une mesure directe au voltmètre/analyseur "
+    "sur l'installation réelle de Steve."
+)
+"""[Calcul combinant 2 fiches déjà sourcées, section 15] — Buckeye
+NCx252MP (sensibilité d'entrée, gain) ; limite signalée explicitement
+plutôt que comblée par une valeur inventée pour le CINEMA 30."""
+
+# ---------------------------------------------------------------------------
+# 28. Caractéristiques des composants (drivers) des enceintes réelles de
+#     Steve (demande de Steve : "connaissance des caractéristiques des
+#     composants"). Complète les fiches déjà sourcées section 15, qui ne
+#     couvraient que les specs globales (plage de fréquence, impédance,
+#     sensibilité, puissance) sans descendre au niveau du TYPE de driver.
+#     Re-consultation des mêmes 3 pages produit Elipson, recherche ciblée
+#     sur les paragraphes descriptifs (pas seulement le tableau de specs).
+#     [Fiche constructeur officielle]
+# ---------------------------------------------------------------------------
+ELIPSON_DRIVER_COMPONENTS_BY_MODEL = (
+    "Détails de composants (type de driver) relus directement sur les "
+    "pages produit officielles elipson.com, paragraphes descriptifs : "
+    "**Façades (Legacy 3220)** — '2 1/2 way floorstanding loudspeaker "
+    "with two 16.5 cm mid-woofers for the bass and midrange frequencies, "
+    "topped with a wide dispersion AMT tweeter' : 2 médium-graves de "
+    "16,5 cm + 1 tweeter **AMT** (Air Motion Transformer, parfois appelé "
+    "'ruban plissé') à large dispersion — technologie différente d'un "
+    "dôme classique, réputée pour une excellente réponse transitoire. "
+    "**Centrale (Prestige Facet II 14C)** — 'architecture à 2 voies avec "
+    "deux haut-parleurs grave-médium de 170 mm, disposés symétriquement "
+    "autour d'un tweeter de 25 mm à dôme souple' : configuration "
+    "symétrique dite MTM (Médium-Tweeter-Médium), tweeter à **dôme "
+    "souple** (soft dome, PAS un AMT). "
+    "**Surrounds + Surrounds Back (Prestige Facet II 14LCR, x4)** — "
+    "'deux médium-graves de 17 cm' + 'tweeter à dôme souple de 25 mm' : "
+    "MÊME famille de tweeter que la centrale (dôme souple 25mm). "
+    "⚠️ Le matériau exact des membranes des médium-graves (papier, "
+    "polypropylène, fibre, aluminium...) n'est PAS précisé sur les 3 "
+    "pages produit consultées — volontairement non deviné."
+)
+"""[Fiche constructeur officielle] — en.elipson.com/product-page/
+legacy-3220, elipson.com/product-page/prestige-facet-ii-14c et
+prestige-facet-ii-14lcr, paragraphes descriptifs relus via le navigateur
+intégré (recherche ciblée au-delà du tableau de specs déjà extrait en
+section 15)."""
+
+ELIPSON_TWEETER_HETEROGENEITY_IMPLICATION = (
+    "Conséquence directe de la découverte ci-dessus, avec un impact "
+    "réel sur ce que Dirac ART peut ou ne peut pas harmoniser : le "
+    "système de Steve utilise 2 FAMILLES DE TWEETER DIFFÉRENTES — "
+    "tweeter AMT (façades, gamme 'Legacy') vs tweeter à dôme souple "
+    "(centrale + 4 surrounds, gamme 'Prestige Facet II'). Cohérence "
+    "TIMBRALE forte entre centrale et les 4 surrounds (même famille de "
+    "driver), mais hétérogénéité structurelle entre les façades et le "
+    "reste du système. **Limite physique à ne pas perdre de vue** : "
+    "Dirac ART égalise l'AMPLITUDE en fréquence et optimise la phase/le "
+    "temps de décroissance (sections 11-13, 21), mais ne peut PAS "
+    "changer la nature physique d'un driver — la DIRECTIVITÉ propre à "
+    "un AMT (dispersion large mais motif de rayonnement différent d'un "
+    "dôme classique) et la texture/réponse transitoire inhérente au "
+    "type de tweeter restent des caractéristiques du matériel, pas du "
+    "logiciel. Cohérent avec la limite déjà documentée section 14 "
+    "(distorsion non-linéaire = hors de portée d'une correction "
+    "linéaire) : ici c'est une 2e limite, différente mais de même "
+    "nature (le DSP corrige la réponse en fréquence/temps, pas la "
+    "signature physique d'un transducteur)."
+)
+"""[Déduction logique à partir de 2 faits constructeur officiels déjà
+sourcés ci-dessus] — assemblage par nous-mêmes, cohérent avec la
+nuance méthodologique déjà appliquée en section 14."""

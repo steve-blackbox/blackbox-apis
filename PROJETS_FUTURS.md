@@ -2972,3 +2972,71 @@ articles lus, concurrents repérés, retours clients...)_
   10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (02/10, suite 31) **🔧 Méthodologie complète de diagnostic demandée par
+  Steve : liste ART, mécanique exacte de la courbe cible, headroom,
+  composants des drivers — préparation de l'algorithme intégré**
+
+  Steve a formulé la méthodologie attendue en 5 étapes (documentation
+  constructeur/limites d'abord, acoustique+psychoacoustique, lecture des
+  caractéristiques de pièce depuis les mesures, respect des règles ART/
+  Storm, détermination précise des limites du système), puis a précisé
+  l'exigence de résultat : des valeurs CHIFFRÉES et actionnables (quelle
+  fréquence et quel niveau en dB pour un point de courbe cible, quel
+  niveau de support à 0,5dB près, quelle plage de fréquence par
+  enceinte, quel niveau de gain viser à la prise de mesure). Puis a
+  précisé que l'algorithme doit croiser toutes ces données COMME UN TOUT
+  (cohérent avec le principe MIMO/Loudspeaker Co-Optimization d'ART
+  lui-même), pas les traiter séparément.
+
+  Recherches menées (navigateur intégré) :
+  - **Liste officielle des appareils compatibles ART** : lue directement
+    dans le configurateur d'achat dirac.com/products/art (34 entrées,
+    9 marques — ARCAM, AudioControl, Denon, JBL Synthesis, Marantz,
+    Monoprice, StormAudio, Tonewinner), avec distinction ampli intégré
+    vs processeur-préampli par nomenclature constructeur vérifiée
+    (ex. Denon AVR=ampli/AVC=pre-pro, ARCAM AVA=ampli/AVP=processeur).
+    2 cas restent "incertain" par prudence (AudioControl APR-16,
+    Tonewinner AT-600) plutôt que deviner. Découverte importante : ART
+    **nécessite** Room Correction + Bass Control dès qu'un ou plusieurs
+    caissons sont utilisés (prérequis obligatoire pour Steve, pas
+    optionnel). Nouvelle dataclass `ArtCompatibleDevice`/`DeviceType`
+    dans `models.py` + fonction `is_art_compatible()`.
+  - **Mécanique exacte de la courbe cible** (Helpdesk Dirac) : édition
+    par glisser-déposer libre (pas de pas fixe en dB, contrairement au
+    Support Level dont le pas de 0,5dB est confirmé) ; découverte
+    MAJEURE sur la structure en 2 parties de la courbe en Bass Control
+    (partie basse fréquence COMMUNE à tout le système, partie haute
+    PROPRE à chaque groupe avec son propre crossover) — contrainte
+    directe sur l'algorithme de recommandation. Confirmation officielle
+    du conseil de booster les caissons sous 100Hz "de quelques dB" pour
+    le cinéma (déjà pratiqué par Steve).
+  - **Headroom et gain XLR/RCA** : confirmation officielle Dirac sur le
+    besoin de headroom (mesurer à un niveau proche ou légèrement
+    supérieur à l'écoute habituelle) ; principe XLR (+4dBu pro) vs RCA
+    (-10dBV consumer) appliqué avec prudence à la liaison réelle CINEMA
+    30 → Buckeye (câble adaptateur, pas de conversion électrique
+    active) ; calcul avec la sensibilité d'entrée Buckeye déjà connue
+    (1,6-1,8 Vrms) mais limite honnête signalée (niveau de sortie max du
+    CINEMA 30 non retrouvé, pas inventé).
+  - **Caractéristiques des composants** (demande complémentaire de
+    Steve) : re-consultation des 3 pages produit Elipson, découverte du
+    TYPE de tweeter par modèle — AMT à large dispersion pour les
+    façades (Legacy) vs dôme souple pour la centrale et les 4 surrounds
+    (Prestige Facet II, configuration MTM). Implication documentée :
+    cohérence timbrale centrale/surrounds mais hétérogénéité avec les
+    façades, limite physique que le DSP ne peut pas combler (même
+    nature que la limite distorsion non-linéaire, section 14).
+
+  Tentative parallèle (abandonnée après échec de validation) : calcul de
+  RT60/coefficients d'absorption depuis les flux audio bruts du fichier
+  `.liveproject` (décodage Ogg Vorbis réussi, signal ESS/Farina confirmé
+  sur les vraies données de Steve, mais la déconvolution+Schroeder
+  testée sur un signal SYNTHÉTIQUE à RT60 connu a échoué, 118,7%
+  d'erreur) — documenté honnêtement comme non concluant plutôt que
+  d'appliquer une méthode non validée aux données réelles.
+
+  Nouvelles sections 25 à 28 de `knowledge_base.py` (13 constantes).
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression. Construction de l'algorithme
+  de calcul intégré (diagnostic_engine.py) en cours.
+

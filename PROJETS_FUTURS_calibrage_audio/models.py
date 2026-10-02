@@ -209,3 +209,32 @@ class ManufacturerSpecSheet:
     source_url: str
     specs: dict[str, str]          # ex: {"Fréquence": "35Hz-30kHz", "Impédance": "6 ohms"}
     verification: str              # ce qui a été réellement lu (onglet cliqué, méthode)
+
+
+class DeviceType(str, Enum):
+    """Distingue les 2 familles d'appareils que Steve a demandé de
+    savoir reconnaître avant tout diagnostic (section 25 de
+    knowledge_base.py) : un ampli intégré a ses propres étages de
+    puissance ; un processeur-préampli (pre/pro) n'en a pas et doit
+    être associé à un ampli externe (comme le CINEMA 30 de Steve, utilisé
+    en pratique avec son Buckeye NCx252MP externe)."""
+
+    AMPLI_INTEGRE = "ampli intégré (étages de puissance internes)"
+    PROCESSEUR_PREAMPLI = "processeur-préampli (pre/pro, sans étage de puissance)"
+    INCERTAIN = "type non confirmé avec certitude depuis la source consultée"
+
+
+@dataclass
+class ArtCompatibleDevice:
+    """Un appareil pour lequel une licence Dirac Live ART est RÉELLEMENT
+    disponible à l'achat au moment de l'observation — voir
+    knowledge_base.py, section 25, pour la source exacte, la date de
+    consultation et la réserve sur l'évolution possible de cette liste
+    dans le temps (de nouveaux appareils peuvent être ajoutés après coup)."""
+
+    brand: str
+    model: str
+    device_type: DeviceType
+    price_usd: str | None = None   # ex: "$299" — None si non affiché/variable
+    notes: str = ""
+
