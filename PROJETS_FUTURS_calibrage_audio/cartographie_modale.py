@@ -60,6 +60,7 @@ import sys
 from collections import defaultdict
 from dataclasses import dataclass
 
+import knowledge_base as kb
 from liveproject_reader import MeasurementBlock, read_measurement_blocks
 from models import MeasurementPoint, Role, Speaker, SpeakerMeasurement
 from diagnostic_engine import detect_anomalies
@@ -179,6 +180,81 @@ def correlation_matrix(
     return matrix
 
 
+@dataclass
+class FrequencyCluster:
+    anomalies: list[RecurringAnomaly]
+
+    @property
+    def slots(self) -> list[int]:
+        return sorted({a.slot_index for a in self.anomalies})
+
+    @property
+    def freq_range_hz(self) -> tuple[float, float]:
+        freqs = [a.freq_bucket_hz for a in self.anomalies]
+        return (min(freqs), max(freqs))
+
+    @property
+    def is_shared(self) -> bool:
+        """Critère strict de 'mode de pièce confirmé' : au moins 2 SLOTS
+        DIFFÉRENTS montrent une anomalie DÉTECTÉE (pas une simple
+        similarité globale de courbe, voir avertissement ci-dessous) dans
+        ce cluster de fréquence. Un seul slot présent = pas de preuve de
+        partage à cette fréquence précise."""
+        return len(self.slots) >= 2
+
+    @property
+    def is_modal_region(self) -> bool:
+        return self.freq_range_hz[1] < kb.MODAL_REGION_UPPER_BOUND_HZ
+
+
+def cluster_anomalies_by_frequency(
+    anomalies: list[RecurringAnomaly], window_hz: float = 10.0
+) -> list[FrequencyCluster]:
+    """Regroupe les anomalies récurrentes dont les fréquences sont proches
+    (fenêtre glissante `window_hz`), tous slots confondus. Nécessaire car
+    un même phénomène physique peut être détecté à un bucket de fréquence
+    légèrement différent selon le canal (bruit de mesure, `freq_bucket_hz`
+    de `find_recurring_anomalies` trop fin pour capter ce décalage) : sans
+    ce regroupement, deux slots touchés par le même mode à quelques Hz
+    d'écart seraient classés à tort comme deux anomalies isolées
+    distinctes plutôt qu'un seul mode partagé.
+
+    ⚠️ Ce regroupement par seule proximité fréquentielle reste une
+    heuristique : il ne vérifie pas que les slots du cluster partagent
+    effectivement la même nature (creux/pic) ni la même signature spatiale
+    (contrairement à `correlation_matrix`, qui reste le bon outil pour
+    vérifier un cluster suspect au cas par cas)."""
+    anomalies_sorted = sorted(anomalies, key=lambda a: a.freq_bucket_hz)
+    clusters: list[list[RecurringAnomaly]] = []
+    for a in anomalies_sorted:
+        if clusters and abs(a.freq_bucket_hz - clusters[-1][-1].freq_bucket_hz) <= window_hz:
+            clusters[-1].append(a)
+        else:
+            clusters.append([a])
+    return [FrequencyCluster(c) for c in clusters]
+
+
+def describe_clusters(clusters: list[FrequencyCluster]) -> str:
+    lines = []
+    ordered = sorted(clusters, key=lambda c: -len(c.slots))
+    for c in ordered:
+        fmin, fmax = c.freq_range_hz
+        zone = "modale (<300Hz)" if c.is_modal_region else "HORS zone modale (>=300Hz)"
+        status = (
+            f"PARTAGÉ sur {len(c.slots)} canaux (mode de pièce confirmé)"
+            if c.is_shared else "canal UNIQUE (pas de preuve de partage à cette fréquence)"
+        )
+        lines.append(f"[{fmin:.0f}-{fmax:.0f} Hz] zone {zone} — {status} (slots: {c.slots})")
+        for a in sorted(c.anomalies, key=lambda a: a.slot_index):
+            lines.append(
+                f"    S{a.slot_index}: {a.kind} à {a.freq_bucket_hz:.0f}Hz, "
+                f"{a.n_positions}/{a.n_total_positions} positions, "
+                f"ampl moy={a.mean_amplitude_db:.1f}dB "
+                f"(min={a.min_amplitude_db:.1f}, max={a.max_amplitude_db:.1f})"
+            )
+    return "\n".join(lines)
+
+
 def describe_recurring_anomalies(anomalies: list[RecurringAnomaly]) -> str:
     lines = []
     by_slot: dict[int, list[RecurringAnomaly]] = defaultdict(list)
@@ -229,6 +305,15 @@ def main() -> None:
     anomalies = find_recurring_anomalies(by_slot)
     print(describe_recurring_anomalies(anomalies))
 
+    print("\n" + "=" * 70)
+    print("CLASSEMENT PAR CLUSTER DE FRÉQUENCE (fenêtre +/-10Hz) :")
+    print("PARTAGÉ = >=2 slots différents montrent une anomalie DÉTECTÉE à "
+          "cette fréquence (critère strict, pas une simple similarité de "
+          "courbe globale).")
+    print("=" * 70)
+    clusters = cluster_anomalies_by_frequency(anomalies)
+    print(describe_clusters(clusters))
+
     # Fréquences distinctes où une anomalie récurrente a été trouvée sur
     # au moins 2 slots différents : ce sont les meilleures candidates pour
     # vérifier la corrélation croisée (indice de mode de pièce partagé).
@@ -237,6 +322,10 @@ def main() -> None:
         freq_by_bucket[a.freq_bucket_hz].add(a.slot_index)
     shared_freqs = sorted(f for f, slots in freq_by_bucket.items() if len(slots) >= 2)
 
+    print("\n" + "=" * 70)
+    print("CORRÉLATION CROISÉE (complément informatif, voir avertissement "
+          "dans la docstring de cluster_anomalies_by_frequency) :")
+    print("=" * 70)
     for fz in shared_freqs:
         print()
         matrix = correlation_matrix(by_slot, fz)

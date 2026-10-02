@@ -2278,3 +2278,73 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès après l'ajout de `cartographie_modale.py` :
   aucune régression.
 
+- (03/10, suite 17) **📐 Critère PARTAGÉ/ISOLÉ durci + recommandations
+  complètes de groupes/plages/niveau de support — réponse "réglages
+  concrets" demandée par Steve**
+
+  Le critère de corrélation croisée de la suite 16 s'est révélé trop
+  permissif pour classer une anomalie comme "mode de pièce partagé" : une
+  forte corrélation globale entre deux canaux peut venir d'une tendance
+  générale de courbe, pas d'une coïncidence à LA fréquence précise de
+  l'anomalie. **Nouveau critère, plus strict, ajouté à
+  `cartographie_modale.py`** (`FrequencyCluster`,
+  `cluster_anomalies_by_frequency`, `describe_clusters`) : une anomalie
+  est "PARTAGÉE" seulement si **au moins 2 `slot_index` différents
+  montrent une anomalie réellement détectée** (pas juste corrélée) à la
+  même fréquence, à une fenêtre de tolérance de ±10 Hz près (pour
+  absorber le bruit de mesure qui peut décaler légèrement le bucket de
+  détection d'un canal à l'autre).
+
+  Résultat sur le vrai fichier, reclassé avec ce critère strict :
+  - **PARTAGÉ (mode de pièce confirmé)** : 45-80 Hz (7 canaux sur 8 !),
+    110-135 Hz (6 canaux), 235-255 Hz (4 canaux), 185-195 Hz (2 canaux).
+  - **ISOLÉ (candidat défaut propre à un canal/sa position)** : 15 Hz
+    (S5), 150 Hz (S2), 215 Hz (S3), 270 Hz (S0) — tous encore en zone
+    modale (<300 Hz) donc à prendre avec prudence — et 305 Hz (S2),
+    480 Hz (S5), ceux-ci **hors zone modale (≥300 Hz)**, donc selon la
+    règle déjà sourcée (`MODAL_REGION_UPPER_BOUND_HZ`,
+    `diagnose_anomaly`) plus probablement liés au haut-parleur ou à une
+    réflexion locale qu'à la pièce.
+
+  **Groupes/plages/niveau de support générés avec le moteur existant**
+  (`recommend_support_groups`, `recommend_frequency_ranges`,
+  `recommend_support_level`) sur la vraie liste d'enceintes de Steve
+  (`exemple_systeme_steve.build_steve_system`) :
+  - Les 2 caissons SVS peuvent partager un seul groupe de support (même
+    plage déclarée 20-120 Hz officielle).
+  - Hiérarchie de support StormAudio appliquée à chaque rôle réel (ex.
+    centrale : "⚠️ à éviter comme support", façades : caissons d'abord).
+  - Plage basse de support par enceinte = `freq_min_hz` (rappel : values
+    Elipson **estimées, non vérifiées** sauf SVS 20 Hz confirmé
+    officiellement) + chevauchement 30 Hz avec le(s) caisson(s).
+  - **Déclencheur réel et mesuré pour affiner le niveau de support** :
+    comparaison directe de la réponse moyenne (13 positions) des 2
+    caissons (slots 6/7) sur 20-120 Hz → écart moyen 2,9 dB, écart max
+    11,1 dB à 60 Hz. Correspond explicitement au premier item de
+    `SUPPORT_LEVEL_TRIGGERS` ("réponses très différentes entre enceintes
+    équivalentes") → recommandation d'affiner le niveau de support par
+    pas de 0,5 dB autour de -18 dB (au lieu de garder la valeur par
+    défaut faute de déclencheur).
+
+  **Précision matérielle de Steve, actée mais sans impact sur la
+  méthode** : le Marantz CINEMA 30 est utilisé en préamplificateur
+  (pre-out), la puissance étant fournie par un ampli Buckeye NCx252MP
+  externe. Sans conséquence sur le calcul Dirac/ART lui-même : la
+  calibration mesure le résultat acoustique réel en sortie d'enceinte
+  (micro UMIK-1), donc toute la chaîne (préampli + ampli de puissance +
+  haut-parleur) est déjà incluse dans ce que Dirac corrige, quel que soit
+  l'emplacement physique de l'amplification.
+
+  **Limite non résolue, rappelée à Steve dans la réponse** :
+  correspondance `slot_index` 0-5 ↔ nom d'enceinte toujours incertaine
+  (7 noms pour 6 slots) ; seuls les slots 6/7 = les 2 caissons sont
+  identifiés avec confiance (sans certitude sur lequel est "1" ou "2").
+  Toute réponse par enceinte nommée reste donc partiellement
+  spéculative pour les 6 canaux large bande — proposé à Steve de fournir
+  l'ordre de mesure réel ou des captures d'écran Dirac Live nommées pour
+  lever cette ambiguïté, sans bloquer la réponse sur cette question.
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès après ces ajouts à `cartographie_modale.py` :
+  aucune régression.
+
