@@ -191,7 +191,47 @@
 > dit que "notre 100ème robot était [son] algorithme", en référence à son
 > **ancien projet des "100 robots"** (projet distinct, pas encore détaillé
 > à Copilot — pas le storytelling "Audio Robots/Cyber Nodes" du site).
-> Détail dans l'entrée "02/10, suite 11" tout en bas.
+> Copilot est retourné lire les messages 23-31/52 de la conversation
+> Claude pour citer exactement la **liste des "domaines" demandés à
+> Gemini** (matériel du client, doc Dirac/StormAudio, livres d'Anthony
+> Grimani, études acoustiques et psycho-acoustiques, effet des matériaux)
+> — et rappelle une alerte déjà posée par Claude restée **sans réponse
+> claire de Steve** : ces documents ont-ils été réellement fournis en
+> fichiers à Gemini, ou seulement "demandés en mémoire" (ce qui ne
+> fonctionne pas vraiment ainsi avec un LLM et fragilise à la fois la
+> fiabilité et le risque de droit d'auteur) ? Détail et citations exactes
+> dans l'entrée "02/10, suite 11" tout en bas.
+>
+> 🔬 **Rétro-ingénierie complète du format `.liveproject` (02/10,
+> suite 12)** — en réponse à la demande explicite de Steve d'analyser le
+> fichier pour comprendre le fonctionnement réel de Dirac, lecture directe
+> et exhaustive du fichier binaire (pas une analyse par IA comme en
+> suite 10-11), vérifiée empiriquement et testée sur 2 fichiers réels
+> (104 Mo et 254 Mo). Carte complète en 6 zones : métadonnées en clair,
+> **13 flux audio Ogg Vorbis** (méthode de mesure confirmée par décodage
+> réel = sweep exponentiel de Farina, standard public de l'industrie),
+> une **zone chiffrée** (~25-60 % du fichier, entropie 8,00 bits/octet
+> confirmée — volontairement non explorée plus loin, limite éthique
+> assumée), métadonnées de config (version logicielle, ampli, 9 noms
+> d'enceintes), et **104 blocs de mesure** fréquence/magnitude (13
+> positions × 8 canaux, 2048 points chacun, dB SPL absolu). Aucun filtre
+> de correction final (FIR/IIR) trouvé en clair — probablement dans la
+> zone chiffrée. Travail consolidé dans un nouveau module testé,
+> `liveproject_reader.py`. Détail complet dans l'entrée "02/10, suite 12"
+> tout en bas.
+>
+> 💼 **Synthèse commerciale (02/10, suite 13)** — ce que cette
+> rétro-ingénierie permet réellement de construire. **Faisable et
+> légal** : service de ré-analyse à partir des mesures brutes (plus
+> précis qu'une capture d'écran), export vers des formats ouverts type
+> REW, base de connaissances comparative entre configurations (fondée
+> sur des données vérifiables, contrairement à l'analyse Gemini perdue de
+> suite 10). **Bloqué ou déconseillé** : modifier/réinjecter des filtres
+> custom (zone chiffrée), tenter de "craquer" l'algorithme propriétaire
+> (zone grise légale), promettre un fichier généré automatiquement (déjà
+> écarté en suite 8). Aucun arbitrage pris sur la priorité entre les 3
+> projets en cours. Détail complet dans l'entrée "02/10, suite 13" tout
+> en bas.
 >
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
@@ -1761,4 +1801,276 @@ articles lus, concurrents repérés, retours clients...)_
   algorithme de calibration en serait le 100ème, et si cette filiation
   a une utilité quelconque (storytelling, preuve d'antériorité technique,
   continuité de marque) pour le projet home cinéma actuel.
+
+  **Précision complémentaire de Steve** : cet algorithme de calibration
+  n'est pas qu'un ensemble de conseils donnés au fil de l'eau — Steve et
+  l'IA (Gemini) **l'ont construit comme un vrai algorithme**, à partir
+  d'éléments spécifiques que Steve lui a demandé d'apprendre au préalable.
+  Steve a précisé que ces éléments sont ceux qu'il mentionne **au tout
+  début de sa conversation avec Claude sur ce projet** — Copilot est
+  retourné lire ce passage exact dans la conversation partagée (messages
+  23 et 29/52) pour le citer fidèlement plutôt que de deviner :
+
+  - **Message 23/52 (tout premier message sur le sujet)**, cité tel
+    quel : *"j'utilise dirac live art pour calibrer le son de mon systéme
+    home cinéma. la plupart des gens ne comprennent pas les courbes que
+    dirac affichent et ne savent pas comment optimiser les reglages,
+    surtout avec ART. l'idée est de créer un algorithme qui va prendre en
+    compte plusieurs domaines impactant l'acoustique d'une pièce et donc
+    du rendu à l'aide des captures d'écran des courbes de mesure de
+    chaque enceinte."*
+  - **Message 29/52, la liste précise des "domaines" demandés à Gemini**
+    (texte exact de Steve) : *"déjà je demande au client de me lister
+    tout son materiel audio, je demande à l'ia de memoriser tous les
+    manuels constructeurs du materiel. je lui demande de memoriser toutes
+    les informations fournies par dirac et de storm audio. je lui demande
+    de memoriser tous les livres de ANTHONY GRIMANI, toutes les etudes
+    acoustiques dans le domaine de l'audio, les etudes psycho-acoustiques
+    (pour tromper le cerveau au maximum), toutes les etudes de l'effet
+    des materiaux sur les ondes sonores."* Soit, reformulé : (1) le
+    matériel audio du client + ses manuels constructeurs, (2) toute la
+    documentation Dirac et StormAudio, (3) les livres d'Anthony Grimani,
+    (4) les études acoustiques audio, (5) les études psycho-acoustiques,
+    (6) les études sur l'effet des matériaux sur les ondes sonores.
+  - **Message 31/52**, l'objectif final confirmé dans les mêmes mots que
+    la synthèse déjà documentée : *"le but c'est que l'algorithme prennent
+    en compte tous les elements permettant d'obtenir le rendu sonore
+    permettant au client de croire que la scéne du film se passe dans sa
+    piéce."*
+
+  **⚠️ Alerte déjà soulevée par Claude sur cette liste précise (message
+  30/52), à ne pas minimiser** — complète et précise le point de
+  vigilance "Droit d'auteur" déjà noté en suite 7 :
+  1. *"« Mémoriser » ne veut probablement pas dire ce que vous croyez"* :
+     un modèle IA ne retient pas des livres entiers sur demande ; sauf à
+     lui fournir réellement les fichiers (dans la limite de sa fenêtre de
+     contexte), il répond avec ses connaissances générales ou invente des
+     détails plausibles. Test proposé par Claude pour vérifier, jamais
+     fait à ce stade : poser une question précise dont la réponse est
+     dans un livre de Grimani et demander une citation avec page/chapitre.
+  2. **Droit d'auteur** : les livres, manuels et études sont protégés, et
+     les conditions Dirac/StormAudio peuvent limiter la réutilisation de
+     leurs documents dans un service payant — point à faire vérifier par
+     un juriste avant tout lancement. Solution plus sûre proposée :
+     rédiger avec ses propres mots un résumé des règles qui comptent,
+     plutôt que charger les œuvres elles-mêmes.
+  3. Structure recommandée par Claude (pas encore mise en œuvre) : un
+     socle de règles propre à Steve (court, validé par son expérience) +
+     des informations chargées au cas par cas par client (son matériel
+     uniquement) — plutôt qu'une masse de documents mélangés.
+
+  **Question de Claude restée sans réponse claire dans le fil lu** :
+  *"Comment fournissez-vous ces documents à Gemini aujourd'hui : en
+  joignant des fichiers, dans un assistant personnalisé, ou en lui
+  demandant simplement de s'en souvenir ?"* — Steve n'a pas répondu
+  directement à cette question dans la conversation (message 31 rebondit
+  sur l'objectif final sans préciser la méthode). **C'est le point le
+  plus important à clarifier avant de considérer cet algorithme comme
+  fiable ou juridiquement sûr** : si les documents ont seulement été
+  "demandés en mémoire" sans fichiers réellement fournis, l'algorithme
+  pourrait reposer en partie sur des réponses inventées par Gemini plutôt
+  que sur les sources réelles.
+
+  **Complément de lecture (message 32/52)** — en réponse directe à
+  l'objectif de Steve ("le rendu sonore qui fait croire au client que la
+  scène du film se passe dans sa pièce"), Claude propose de **décomposer
+  l'immersion en facteurs mesurables concrets**, sans quoi l'algorithme
+  ne saurait pas quoi optimiser :
+  1. La réponse en fréquence (surtout les graves) — ce que Dirac corrige
+     le mieux.
+  2. L'alignement temporel entre enceintes et caissons (distances,
+     phase) — cohérence de l'image sonore.
+  3. La localisation et l'enveloppement (angles/hauteurs des enceintes,
+     notamment Atmos) — surtout une question de placement physique.
+  4. Les premières réflexions et la durée de réverbération de la pièce —
+     dépendent des matériaux, que l'égalisation logicielle ne corrige
+     que partiellement.
+  5. Les niveaux et la dynamique — volume cohérent entre toutes les
+     enceintes.
+
+  Point de vigilance ajouté par Claude : la correction logicielle ne
+  remplace pas un bon placement et un traitement acoustique de base ; un
+  algorithme qui ne ferait que régler Dirac plafonnerait vite. L'atout
+  proposé serait un **plan d'action classé par impact** (d'abord
+  déplacer telle enceinte, ajouter tel panneau acoustique, puis régler
+  tel paramètre ART) — ce qui distinguerait le service d'un simple guide
+  de réglages. Claude recommande aussi de ne pas viser "tous les
+  éléments" dès la V1, mais de construire une première version autour de
+  **trois sorties seulement** : réglages Dirac, placement des enceintes,
+  recommandation de traitement acoustique — à élargir ensuite. Dernier
+  point : promettre un **processus et des améliorations mesurables**
+  (courbes avant/après), pas un résultat garanti, car l'immersion reste
+  subjective et dépend de la pièce (protège des demandes de
+  remboursement). Question de Claude restée ouverte à ce stade de la
+  lecture : *"Pour que l'algorithme voie la pièce et pas seulement les
+  courbes, prévoyez-vous aussi de demander aux clients les dimensions de
+  la pièce et quelques photos, ou uniquement les captures d'écran de
+  Dirac ?"*
+
+- (02/10, suite 12) **🔬 Rétro-ingénierie directe et exhaustive du fichier
+  `.liveproject` (format binaire propriétaire Dirac Live)**
+
+  Demande explicite de Steve : *"analyse tout le fichier pour apprendre
+  le fonctionnement de dirac et comment on peut en faire une offre
+  commerciale"*, à partir de `TOP CALIB BASE.liveproject` (104 Mo), un
+  des 10 fichiers `.liveproject` archivés dans `~/Desktop/DIRAC/PERSO/`
+  (voir suite 9). Contrairement à l'analyse Gemini des suites 10-11
+  (interprétation de captures d'écran par IA, travail probablement
+  perdu), il s'agit ici d'une **lecture directe du fichier binaire
+  généré par Dirac Live**, octet par octet, avec vérification empirique
+  systématique (jamais d'affirmation sans calcul/lecture réelle à
+  l'appui). Résultat : une carte complète et validée du format, testée
+  avec succès sur **2 fichiers réels de tailles très différentes**
+  (104 Mo et 254 Mo) pour confirmer qu'elle se généralise.
+
+  **Carte du fichier (6 zones identifiées)** :
+  1. **Métadonnées en clair (~0-7 %)** : UUID projet, modèle de micro
+     (UMIK-1), chemin de calibration micro.
+  2. **Zone audio — 13 flux Ogg Vorbis consécutifs** (confirmé par
+     décodage réel, pas seulement par signature de fichier) : chacun
+     correspond à une position de micro. Format décodé : mono, 48 kHz,
+     ~240 kbps, ~59 s. Analyse spectrale (FFT par fenêtres de 20 ms) :
+     il s'agit d'un **sweep sinusoïdal exponentiel (méthode de Farina,
+     standard public de l'industrie, aussi utilisé par REW/ARTA — aucun
+     problème de propriété intellectuelle à le documenter)**, balayant
+     ~50 Hz → ~20-24 kHz en ~4,6 s. Chaque flux contient 1 sweep de
+     référence + 8 sweeps de mesure (canaux) + le même sweep de
+     référence rejoué en contrôle. Un des 8 sweeps est anormalement
+     court (1,9 s, ne balaie que jusqu'à ~250-300 Hz) — cohérent avec un
+     **caisson de basses à bande passante réduite**.
+  3. **Zone chiffrée (~25-60 % selon le fichier, taille variable)** :
+     entropie mesurée **exactement 8,00 bits/octet** partout, écart-type
+     de distribution d'octets (92,6) très proche de la valeur théorique
+     d'un bruit parfaitement uniforme (88,4) — signature de **chiffrement
+     fort, pas de simple compression**. **Décision éthique explicite :
+     zone volontairement non explorée davantage** (tenter de la déchiffrer
+     serait un contournement de protection technique, illégal). Cohérent
+     avec le vécu de Steve (suite 8 : injection de filtres FIR custom
+     bloquée par "protection du format" sur Dirac). Hypothèse non
+     vérifiée : cette zone contient probablement les filtres de
+     correction finaux calculés par l'algorithme.
+  4. **~58-60 %** : métadonnées de config en clair — version logicielle
+     ("7.2.0ch"), ampli/processeur ("Marantz CINEMA 30"), liste des 9
+     noms d'enceintes de la config (Front Left/Right, Center, Surround
+     Left/Right, Surround Back Left/Right, Subwoofer 1/2).
+  5. **~96,5-100 % — 104 blocs de mesure fréquence/magnitude** (13
+     positions de micro × 8 canaux, exactement, pas de reste), chacun
+     2048 points en échelle log (1 Hz → 24 000 Hz), magnitudes en dB SPL
+     absolu. **Limite non résolue assumée** : la correspondance exacte
+     "quel bloc = quelle enceinte précisément" n'a pas pu être établie
+     avec certitude (piste testée par signature de résonance à 60 Hz,
+     non discriminante entre 2 slots).
+  6. **Derniers ~600 octets** : journal de navigation de l'interface
+     (noms d'écrans visités, ex. "FilterDesign", "FilterExport",
+     "VolumeCalibration") — confirme l'existence de ces écrans dans
+     l'app, mais ne contient pas les données elles-mêmes.
+
+  **Recherche explicite des filtres de correction finaux (FIR/IIR, EQ
+  paramétrique)** : résultat négatif honnête. Aucune section du fichier
+  (hors zone chiffrée) ne les contient — seules des occurrences du mot
+  "FIR" dans le journal de navigation UI ou en coïncidence statistique
+  dans des données à haute entropie.
+
+  **⚠️ Auto-correction d'une erreur d'interprétation antérieure** :
+  une première exploration ad hoc (avant l'écriture d'un parseur robuste)
+  avait compté 106 occurrences du marqueur binaire délimitant les blocs
+  de mesure, et conclu à tort "106 blocs = 104 + 2 en trop". En écrivant
+  un parseur avec validation stricte des bornes, il s'avère que ces 2
+  occurrences supplémentaires sont situées **ailleurs dans le fichier
+  (zone de métadonnées, ~58,3 %)**, avec une structure différente (pas
+  2048 points de mesure) — le même marqueur sert à plusieurs types de
+  structures internes, pas uniquement aux blocs de mesure. **Le total
+  réel et confirmé est 104 blocs (13 × 8 exactement)**, cohérent sur les
+  2 fichiers testés. Fait notable conservé : un de ces 2 blocs "à part"
+  indique un `count=13`, une coïncidence qui renforce (sans le prouver
+  formellement) que 13 = nombre de positions de micro, puisque ce nombre
+  apparaît indépendamment à 2 endroits du fichier (ce compteur et les 13
+  flux audio Ogg).
+
+  **Livrable technique** : tout ce travail a été consolidé dans un
+  nouveau module Python, `liveproject_reader.py`, documenté (carte
+  complète du format en docstring, avec niveau de confiance explicite
+  par zone) et testé. Il complète `image_reader.py` (lecture de captures
+  d'écran, déjà en production) avec une lecture **directe des données de
+  mesure brutes**, bien plus riches que ce qu'affiche l'interface Dirac
+  (2048 points par courbe en dB SPL absolu, contre une poignée de pixels
+  interprétés sur une capture d'écran).
+
+- (02/10, suite 13) **💼 Synthèse commerciale de la rétro-ingénierie —
+  ce qui est permis de construire, et ce qui reste bloqué**
+
+  Deuxième partie de la demande de Steve (*"comment on peut en faire une
+  offre commerciale"*), traitée séparément de l'aspect technique
+  (suite 12) pour rester lisible. Classement explicite par niveau de
+  confiance, comme pour le reste de ce document.
+
+  **✅ Faisable et légal dès maintenant** :
+  1. **Service de ré-analyse / second avis technique**, basé sur les
+     mesures brutes extraites par `liveproject_reader.py` (2048 points
+     par courbe, dB SPL absolu, par position de micro) plutôt que sur
+     une capture d'écran de l'app (quelques centaines de pixels
+     interprétés par `image_reader.py`). C'est strictement plus
+     précis — un client envoie son fichier `.liveproject` (pas des
+     captures d'écran), Steve en tire un diagnostic plus fin. Ne
+     nécessite aucune modification du fichier, aucune zone chiffrée
+     impliquée : uniquement de la lecture.
+  2. **Export vers des formats ouverts pour passionnés** (ex. courbes
+     compatibles REW) : les fréquences/magnitudes extraites sont des
+     données numériques standard (tableaux de floats), pas de
+     propriété intellectuelle Dirac à contourner pour les ré-exposer
+     dans un format différent. Public cible : la communauté
+     home-cinéma qui utilise déjà REW en complément de Dirac.
+  3. **Base de connaissances comparative entre configurations/pièces**,
+     dans l'esprit de ce que Steve avait demandé à Gemini de construire
+     (suite 10, probablement perdu) — mais cette fois **fondée sur des
+     données réellement extraites et vérifiables** (104 blocs de mesure
+     par fichier, pas une mémoire de modèle IA invérifiable). Chaque
+     nouveau fichier `.liveproject` analysé peut enrichir une base locale
+     de courbes réelles, permettant à terme de comparer des pièces/
+     configurations entre elles plutôt que de partir de zéro à chaque
+     fois. Rejoint directement l'objectif initial de Steve avec Gemini
+     ("comprendre comment Dirac fonctionne vraiment et trouver ce qui
+     est optimisable"), mais avec une méthode reproductible et
+     documentée plutôt qu'une conversation IA non sauvegardée.
+  4. **Méthode de mesure confirmée et documentable sans risque** : le
+     sweep exponentiel (Farina) étant une méthode publique de
+     l'industrie, expliquer pédagogiquement aux clients comment Dirac
+     mesure leur pièce (ce qu'il balaie, pourquoi un caisson a un sweep
+     plus court, etc.) est un contenu légitime pour un futur service ou
+     une page de vente, sans toucher au code propriétaire de Dirac.
+
+  **🚫 Bloqué ou déconseillé** :
+  1. **Modifier ou réinjecter des filtres de correction custom** dans un
+     fichier `.liveproject` : la zone qui les contiendrait très
+     probablement est chiffrée (voir suite 12, point 3) — cohérent avec
+     le vécu déjà documenté de Steve (suite 8 : Dirac bloque l'injection
+     de filtres FIR personnalisés, contrairement à Audyssey). Rien dans
+     ce travail ne change ce constat : la zone chiffrée n'a pas été
+     explorée, par choix éthique assumé, pas par manque de temps.
+  2. **Tenter de "craquer" l'algorithme propriétaire de Dirac** (déduire
+     sa formule exacte de calcul de filtres à partir des données en
+     clair) : non fait, non tenté, et déconseillé — zone grise légale
+     probable (rétro-ingénierie d'un algorithme commercial protégé), à
+     ne pas confondre avec la lecture de formats de données, qui est
+     beaucoup plus défendable.
+  3. **Promettre un fichier `.liveproject` prêt à l'emploi généré
+     automatiquement** : déjà écarté en suite 8 pour cette même raison
+     de protection technique — le positionnement produit reste "réglages
+     à appliquer soi-même dans l'app Dirac", pas un fichier généré.
+
+  **Lien avec la question ouverte de suite 11** : cette rétro-ingénierie
+  ne répond pas à la question restée sans réponse claire de Steve (les
+  documents/livres/manuels ont-ils été réellement fournis à Gemini en
+  fichiers, ou seulement "demandés en mémoire" ?) — elle ouvre une voie
+  parallèle et plus solide juridiquement : construire la base de
+  connaissances comparative (point 3 ci-dessus) à partir de données
+  mesurées et vérifiables, plutôt que de dépendre de ce qu'un modèle IA
+  affirme avoir mémorisé de sources protégées par le droit d'auteur.
+
+  **Statut** : aucun arbitrage pris sur la priorité entre les 3 projets
+  en cours (Paddle/crypto, BTP, home cinéma) — cette synthèse documente
+  une option technique validée pour le home cinéma, elle ne tranche pas
+  en sa faveur. Prochaine étape si Steve veut avancer : décider laquelle
+  des 4 pistes "faisables" ci-dessus mérite un premier prototype testé
+  sur un vrai client (lui-même ou un proche), avant toute mise en vente.
 

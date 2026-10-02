@@ -1,0 +1,422 @@
+"""
+Moteur de diagnostic et de recommandations pour le calibrage Dirac Live ART.
+
+Entrée : la liste du matériel déclaré par le client (`Speaker`), ses courbes
+mesurées par enceinte (`SpeakerMeasurement`), le niveau de service choisi, et
+en option les informations de pièce du niveau "Approfondi" (`RoomInfo`).
+
+Sortie : un `DiagnosticReport` structuré et traçable — chaque recommandation
+porte son `EvidenceLevel` (voir models.py) pour que rien ne soit présenté
+comme une certitude inventée. Voir knowledge_base.py pour le détail et les
+sources de chaque règle utilisée ici.
+"""
+
+from __future__ import annotations
+
+import math
+
+import knowledge_base as kb
+from models import (
+    Anomaly,
+    DiagnosticReport,
+    EvidenceLevel,
+    Recommendation,
+    Role,
+    RoomInfo,
+    ServiceLevel,
+    Speaker,
+    SpeakerMeasurement,
+)
+
+SPEED_OF_SOUND_MS = 343.0
+
+
+# ---------------------------------------------------------------------------
+# 1. Détection d'anomalies sur une courbe mesurée
+# ---------------------------------------------------------------------------
+def _ring_baseline(
+    values: list[float], index: int, inner_radius: int = 3, outer_radius: int = 8
+) -> float:
+    """Tendance de référence en 'anneau' : moyenne des points situés entre
+    `inner_radius` et `outer_radius` positions du point testé, EN EXCLUANT
+    les points les plus proches (zone `inner_radius`).
+
+    Pourquoi pas une simple moyenne mobile centrée : une moyenne mobile
+    classique inclut le point anormal et ses voisins immédiats dans le
+    calcul de sa propre référence, donc une anomalie large de plusieurs
+    points abaisse (ou relève) sa propre tendance de comparaison et finit
+    par se masquer elle-même. Testé et corrigé le 2026 sur ce prototype :
+    un creux synthétique de 9 dB n'était détecté qu'à hauteur de 2,9 dB
+    d'écart avec une moyenne mobile fenêtre=5, donc jamais signalé contre
+    un seuil de 4 dB. L'anneau exclut la zone susceptible de contenir
+    l'anomalie elle-même, donc la référence reste propre."""
+    n = len(values)
+    lo = max(0, index - outer_radius)
+    hi = min(n, index + outer_radius + 1)
+    ring = [values[j] for j in range(lo, hi) if abs(j - index) > inner_radius]
+    if not ring:
+        return values[index]
+    return sum(ring) / len(ring)
+
+
+def detect_anomalies(
+    measurement: SpeakerMeasurement,
+    threshold_db: float = 4.0,
+    inner_radius: int = 3,
+    outer_radius: int = 8,
+) -> list[Anomaly]:
+    """Repère les creux/pics qui s'écartent de plus de `threshold_db` d'une
+    tendance de référence calculée en anneau (voir `_ring_baseline`).
+    Détection volontairement simple : un prototype, pas un analyseur de
+    courbes certifié — voir README.md, section Limites. Les rayons par
+    défaut supposent un pas de mesure proche de 1-2 Hz dans la zone
+    modale ; à ajuster si les courbes fournies ont un pas différent."""
+    pts = [(p.freq_hz, p.spl_db) for p in sorted(
+        measurement.points, key=lambda p: p.freq_hz
+    )]
+    if len(pts) < (2 * outer_radius + 1):
+        return []  # pas assez de points pour construire un anneau fiable
+
+    values = [spl for _, spl in pts]
+    anomalies: list[Anomaly] = []
+    for i, (freq, spl) in enumerate(pts):
+        trend = _ring_baseline(values, i, inner_radius, outer_radius)
+        delta = spl - trend
+        if abs(delta) < threshold_db:
+            continue
+        kind = "creux" if delta < 0 else "pic"
+        anomalies.append(
+            Anomaly(
+                speaker_name=measurement.speaker.name,
+                freq_hz=freq,
+                kind=kind,
+                amplitude_db=round(abs(delta), 1),
+            )
+        )
+    return _cluster_anomalies(anomalies)
+
+
+def _cluster_anomalies(
+    raw: list[Anomaly], max_gap_hz: float = 6.0
+) -> list[Anomaly]:
+    """Fusionne les points détectés adjacents et de même nature (creux ou
+    pic) en une seule Anomaly représentative (celle de plus grande
+    amplitude du groupe). Sans ce regroupement, un seul phénomène physique
+    étalé sur plusieurs points de mesure produirait une ligne par point
+    dans le rapport, redondante pour le client. `max_gap_hz` suppose un
+    pas de mesure de l'ordre de 1-3 Hz dans la zone modale ; à ajuster si
+    les courbes fournies ont un pas très différent."""
+    if not raw:
+        return []
+    raw_sorted = sorted(raw, key=lambda a: a.freq_hz)
+    clusters: list[list[Anomaly]] = [[raw_sorted[0]]]
+    for anomaly in raw_sorted[1:]:
+        prev = clusters[-1][-1]
+        same_group = (
+            anomaly.kind == prev.kind
+            and (anomaly.freq_hz - prev.freq_hz) <= max_gap_hz
+        )
+        if same_group:
+            clusters[-1].append(anomaly)
+        else:
+            clusters.append([anomaly])
+    return [max(cluster, key=lambda a: a.amplitude_db) for cluster in clusters]
+
+
+# ---------------------------------------------------------------------------
+# 2. Modes propres d'une pièce rectangulaire (modes axiaux uniquement)
+#    [Acoustique générale] — formule standard, domaine public.
+# ---------------------------------------------------------------------------
+def axial_room_modes(room: RoomInfo, max_freq_hz: float = 300.0) -> list[float]:
+    """Retourne les fréquences des modes axiaux (un seul axe à la fois) en
+    dessous de `max_freq_hz`. Les modes tangentiels/obliques, plus faibles
+    et plus nombreux, sont volontairement ignorés dans ce prototype pour
+    rester lisible — voir README.md, section Limites."""
+    dims = [room.length_m, room.width_m, room.height_m]
+    modes: list[float] = []
+    for dim in dims:
+        if dim <= 0:
+            continue
+        n = 1
+        while True:
+            freq = (SPEED_OF_SOUND_MS / 2.0) * (n / dim)
+            if freq > max_freq_hz:
+                break
+            modes.append(round(freq, 1))
+            n += 1
+    return sorted(modes)
+
+
+def _closest_mode(freq_hz: float, modes: list[float], tolerance_hz: float = 6.0):
+    for mode in modes:
+        if abs(mode - freq_hz) <= tolerance_hz:
+            return mode
+    return None
+
+
+def diagnose_anomaly(
+    anomaly: Anomaly, room: RoomInfo | None
+) -> Anomaly:
+    """Complète une anomalie détectée avec ses causes probables et l'action
+    suggérée, en utilisant les dimensions de la pièce si elles sont
+    disponibles (niveau Approfondi) pour affiner le diagnostic."""
+    causes = list(
+        kb.DIP_PROBABLE_CAUSES if anomaly.kind == "creux" else kb.PEAK_PROBABLE_CAUSES
+    )
+
+    if anomaly.freq_hz > kb.MODAL_REGION_UPPER_BOUND_HZ:
+        causes = [
+            c for c in causes if "mode de la pièce" not in c
+        ] or causes
+        anomaly.probable_causes = causes
+        anomaly.suggested_action = (
+            "Anomalie au-dessus de la zone modale typique : vérifier d'abord "
+            "le haut-parleur et son environnement proche (mur, meuble) avant "
+            "d'envisager un réglage logiciel."
+        )
+        return anomaly
+
+    if room is not None:
+        modes = axial_room_modes(room, max_freq_hz=kb.MODAL_REGION_UPPER_BOUND_HZ)
+        matched = _closest_mode(anomaly.freq_hz, modes)
+        if matched is not None:
+            anomaly.probable_causes = [
+                f"mode de la pièce probable (mode axial calculé à {matched} Hz "
+                f"à partir des dimensions déclarées)"
+            ]
+            anomaly.suggested_action = (
+                "Un mode de pièce avéré se corrige mal par la seule "
+                "égalisation : tester d'abord un déplacement de l'enceinte "
+                "ou du point d'écoute de 20 à 30 cm, puis ré-égaliser."
+            )
+            return anomaly
+        anomaly.probable_causes = [
+            c for c in causes if "mode de la pièce" not in c
+        ] or causes
+        anomaly.suggested_action = (
+            "Aucun mode de pièce calculé ne correspond : cause plus "
+            "probablement locale (proximité d'un mur/meuble ou phase avec un "
+            "caisson). Tester un déplacement de l'enceinte en cause de "
+            "quelques dizaines de centimètres."
+        )
+        return anomaly
+
+    # Niveau Essentiel : pas de dimensions fournies, diagnostic non tranché.
+    anomaly.probable_causes = causes
+    anomaly.suggested_action = (
+        "Dimensions de la pièce non fournies (niveau Essentiel) : "
+        "plusieurs causes restent possibles. Le niveau Approfondi "
+        "permettrait de trancher si c'est un mode de pièce calculable."
+    )
+    return anomaly
+
+
+# ---------------------------------------------------------------------------
+# 3. Recommandations de groupes de support et de plages de fréquence
+# ---------------------------------------------------------------------------
+def recommend_support_groups(speakers: list[Speaker]) -> list[Recommendation]:
+    recs: list[Recommendation] = []
+    subs = [s for s in speakers if s.is_subwoofer]
+
+    if len(subs) >= 2:
+        capacities = {round(s.freq_min_hz) for s in subs}
+        if len(capacities) > 1:
+            recs.append(
+                Recommendation(
+                    category="Groupes de support",
+                    target=", ".join(s.name for s in subs),
+                    action=(
+                        "Séparer ces caissons en groupes individuels : ils "
+                        "n'ont pas la même plage basse déclarée."
+                    ),
+                    evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+                    detail=(
+                        "StormAudio recommande des groupes séparés pour les "
+                        "enceintes/caissons de capacités différentes."
+                    ),
+                )
+            )
+        else:
+            recs.append(
+                Recommendation(
+                    category="Groupes de support",
+                    target=", ".join(s.name for s in subs),
+                    action="Ces caissons peuvent partager un seul groupe de support.",
+                    evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+                )
+            )
+
+    for speaker in speakers:
+        hierarchy = kb.STORM_AUDIO_SUPPORT_HIERARCHY.get(speaker.role)
+        if not hierarchy:
+            continue
+        recs.append(
+            Recommendation(
+                category="Hiérarchie de support",
+                target=speaker.name,
+                action=f"Ordre de support recommandé : {' > '.join(hierarchy)}.",
+                evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+            )
+        )
+
+    recs.append(
+        Recommendation(
+            category="Fluidité des filtres (levier n°3)",
+            target="ensemble du système",
+            action=(
+                "Limiter le support à un petit nombre d'enceintes pertinentes "
+                "plutôt que d'activer tous les supports possibles."
+            ),
+            evidence=EvidenceLevel.HYPOTHESE_A_TESTER,
+            detail=(
+                "Indice de forum repris de la conversation source : limiter le "
+                "support donnerait environ 90% du résultat avec de meilleurs "
+                "graphiques de dispersion — un indice, pas une preuve. À "
+                "confirmer par un test comparatif avant/après sur plusieurs cas."
+            ),
+        )
+    )
+    return recs
+
+
+def recommend_frequency_ranges(speakers: list[Speaker]) -> list[Recommendation]:
+    recs: list[Recommendation] = []
+    for speaker in speakers:
+        if speaker.is_subwoofer:
+            continue
+        low = max(speaker.freq_min_hz, kb.DIRAC_DEFAULT_LOW_FLOOR_HZ)
+        recs.append(
+            Recommendation(
+                category="Plage de fréquence",
+                target=speaker.name,
+                action=(
+                    f"Régler la fréquence basse de support à {low:.0f} Hz "
+                    f"(fiche technique du constructeur), avec chevauchement "
+                    f"d'environ {kb.RECOMMENDED_OVERLAP_HZ:.0f} Hz avec le(s) "
+                    f"caisson(s)."
+                ),
+                evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+                detail=(
+                    "Toujours se baser sur la fiche technique, jamais sur le "
+                    "seul balayage mesuré en pièce (les modes de la pièce "
+                    "faussent la mesure). Une plage trop basse mal choisie "
+                    "peut endommager l'enceinte."
+                ),
+            )
+        )
+    return recs
+
+
+def recommend_target_curves(speakers: list[Speaker]) -> list[Recommendation]:
+    recs: list[Recommendation] = []
+    has_front = any(s.role in {Role.FRONT_LEFT, Role.FRONT_RIGHT, Role.CENTER} for s in speakers)
+    if has_front:
+        recs.append(
+            Recommendation(
+                category="Courbe cible",
+                target="façade (gauche/droite/centre)",
+                action="Options : " + " ; ".join(kb.TARGET_CURVES_BY_ROLE["façade (G/D/centre)"]),
+                evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+                detail=kb.TARGET_CURVE_COHERENCE_RULE,
+            )
+        )
+    if any(s.is_subwoofer for s in speakers):
+        recs.append(
+            Recommendation(
+                category="Courbe cible",
+                target="caisson(s) / LFE",
+                action="Options : " + " ; ".join(kb.TARGET_CURVES_BY_ROLE["caisson(s) / LFE"]),
+                evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+            )
+        )
+    if any(s.role in kb.STORM_AUDIO_SUPPORT_HIERARCHY and s.role not in {Role.FRONT_LEFT, Role.FRONT_RIGHT, Role.CENTER, Role.LFE} for s in speakers):
+        recs.append(
+            Recommendation(
+                category="Courbe cible",
+                target="surround / hauteur",
+                action="Options : " + " ; ".join(kb.TARGET_CURVES_BY_ROLE["surround / hauteur"]),
+                evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+            )
+        )
+    return recs
+
+
+def recommend_support_level(trigger_notes: list[str]) -> Recommendation:
+    if trigger_notes:
+        return Recommendation(
+            category="Niveau de support",
+            target="ensemble du système",
+            action=(
+                f"Affiner par pas de {kb.SUPPORT_LEVEL_STEP_DB} dB autour de "
+                f"{kb.SUPPORT_LEVEL_DEFAULT_DB} dB (plage utile "
+                f"{kb.SUPPORT_LEVEL_MIN_DB} à {kb.SUPPORT_LEVEL_MAX_DB} dB), "
+                f"en comparant les filtres calculés à chaque pas."
+            ),
+            evidence=EvidenceLevel.RETOUR_EXPERIENCE_STEVE,
+            detail=(
+                "Déclencheur(s) identifié(s) : " + "; ".join(trigger_notes) +
+                ". Rappel : le seuil d'audibilité d'un écart de niveau est "
+                "généralement cité autour de 1 dB — un réglage à 0,5 dB près "
+                "n'a d'effet garanti que sur les filtres calculés, pas "
+                "forcément à l'oreille."
+            ),
+        )
+    return Recommendation(
+        category="Niveau de support",
+        target="ensemble du système",
+        action=f"Garder la valeur par défaut ({kb.SUPPORT_LEVEL_DEFAULT_DB} dB).",
+        evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+        detail="Aucun déclencheur identifié ne justifie un réglage fin.",
+    )
+
+
+# ---------------------------------------------------------------------------
+# 4. Point d'entrée principal
+# ---------------------------------------------------------------------------
+def run_diagnostic(
+    speakers: list[Speaker],
+    measurements: list[SpeakerMeasurement],
+    service_level: ServiceLevel,
+    room: RoomInfo | None = None,
+    support_level_triggers: list[str] | None = None,
+) -> DiagnosticReport:
+    report = DiagnosticReport(service_level=service_level)
+
+    if service_level == ServiceLevel.ESSENTIEL and room is not None:
+        report.warnings.append(
+            "Informations de pièce fournies mais niveau Essentiel choisi : "
+            "elles ne seront pas utilisées pour affiner le diagnostic modal."
+        )
+        room = None
+    if service_level == ServiceLevel.APPROFONDI and room is None:
+        report.warnings.append(
+            "Niveau Approfondi choisi sans informations de pièce : "
+            "diagnostic dégradé au niveau Essentiel pour les modes de pièce."
+        )
+
+    for measurement in measurements:
+        for anomaly in detect_anomalies(measurement):
+            report.anomalies.append(diagnose_anomaly(anomaly, room))
+
+    report.recommendations.extend(recommend_support_groups(speakers))
+    report.recommendations.extend(recommend_frequency_ranges(speakers))
+    report.recommendations.extend(recommend_target_curves(speakers))
+    report.recommendations.append(
+        recommend_support_level(support_level_triggers or [])
+    )
+
+    if service_level == ServiceLevel.APPROFONDI and room is not None:
+        report.recommendations.append(
+            Recommendation(
+                category="Placement",
+                target="caisson(s)",
+                action=(
+                    "Vérifier la symétrie gauche/droite des distances aux "
+                    "murs ; un caisson isolé dans un coin renforce "
+                    "généralement les modes plutôt que de les atténuer."
+                ),
+                evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+            )
+        )
+
+    return report
