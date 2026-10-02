@@ -183,6 +183,16 @@
 > partager cette conversation plus tard pour la documenter précisément.
 > Détail dans l'entrée "02/10, suite 10" tout en bas.
 >
+> ⚠️ **Correction (02/10, suite 11)** — Steve précise que Gemini n'a
+> probablement pas sauvegardé cette analyse : à traiter comme **travail
+> perdu**, pas comme un actif à retrouver. Leçon retenue : toujours
+> sauvegarder immédiatement en fichier local tout résultat produit par un
+> modèle IA en conversation. Steve a aussi rapporté que Gemini lui avait
+> dit que "notre 100ème robot était [son] algorithme", en référence à son
+> **ancien projet des "100 robots"** (projet distinct, pas encore détaillé
+> à Copilot — pas le storytelling "Audio Robots/Cyber Nodes" du site).
+> Détail dans l'entrée "02/10, suite 11" tout en bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
@@ -1724,4 +1734,31 @@ articles lus, concurrents repérés, retours clients...)_
   méthode, conclusions sur le fonctionnement réel de Dirac) est un
   **actif potentiellement important et non encore documenté dans ce
   journal**, en plus des preuves de concept déjà listées (Dirac, Audyssey).
+
+- (02/10, suite 11) **⚠️ Précision de Steve : cette analyse Gemini est
+  probablement perdue, pas juste "à retrouver"**
+
+  Steve a précisé juste après : **"je ne pense pas qu'il ait sauvegardé
+  ça"** — donc l'analyse décrite en suite 10 (base de données de fichiers
+  de calibration externes constituée par Gemini) n'a très probablement
+  pas persisté et ne sera pas récupérable, même en retrouvant la
+  conversation. **Correction du statut par rapport à suite 10** : ne plus
+  la traiter comme un "actif à documenter plus tard", mais comme un
+  **travail probablement perdu**. Leçon à tirer pour la suite du projet
+  (si repris un jour) : sauvegarder immédiatement tout résultat produit
+  par un modèle IA dans un chat (copier-coller dans un fichier local),
+  ne jamais compter sur la persistance de l'historique d'une conversation
+  seule.
+
+  **Précision confirmée par Steve** : Gemini lui avait dit que *"notre
+  100ème robot était [son] algorithme"*, en référence à **son ancien
+  projet des "100 robots"** — pas le storytelling marketing "robots"/
+  "cyber nodes" du site BlackBox vu plus tôt dans cette session
+  (10 Audio Robots, 20 Cyber Nodes), mais un **projet personnel antérieur
+  et distinct**, dont le contenu précis n'a pas encore été détaillé à
+  Copilot. Point ouvert pour une prochaine session si Steve veut
+  approfondir : qu'est-ce que ce projet des "100 robots", en quoi son
+  algorithme de calibration en serait le 100ème, et si cette filiation
+  a une utilité quelconque (storytelling, preuve d'antériorité technique,
+  continuité de marque) pour le projet home cinéma actuel.
 
