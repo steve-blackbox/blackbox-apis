@@ -95,6 +95,17 @@
 > concurrents — fenêtre probablement encore ouverte. Détail complet et
 > guide d'entretien terrain mis à jour dans l'entrée du journal datée
 > "02/10, suite 2" plus bas.
+>
+> 🎯 **Synthèse produit (02/10, suite 3)** : traduction concrète de tout
+> ce qui précède — 3 mécanismes à construire dès la conception (annonce
+> IA en début d'appel, capture de consentement pendant l'appel entrant
+> pour sécuriser les relances, volet facturation électronique en vente
+> croisée), pitch "l'agent qui respecte la loi plutôt que de la
+> contourner", et une piste concrète pour l'entrée en relation
+> (diagnostic gratuit facturation électronique plutôt que vente directe
+> d'un agent vocal de plus). Ne change rien à la séquence déjà actée
+> (Paddle → validation terrain → construction). Détail dans l'entrée du
+> journal datée "02/10, suite 3" tout en bas du fichier.
 > Détail complet dans l'entrée du journal datée "02/10, suite" plus bas.
 >
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
@@ -1053,4 +1064,49 @@ articles lus, concurrents repérés, retours clients...)_
   fichier avec les retours réels dès qu'ils arrivent — c'est la première
   fois dans cette réflexion qu'on aurait de la donnée terrain plutôt que
   de la recherche documentaire.
+
+- (02/10, suite 3) **🎯 Synthèse : ce que tout ça change concrètement pour
+  le produit**
+
+  Avant cette recherche, le projet était "un agent vocal IA de plus pour
+  les artisans BTP" — noyé dans 8-10 concurrents. Les 3 obligations
+  légales vérifiées (facturation électronique, transparence IA,
+  consentement démarchage) donnent **un produit différent, pas juste un
+  marché différent**. Traduction concrète, à garder comme référence
+  rapide pour quand la construction démarrera :
+
+  **1. Trois mécanismes à construire dès la conception** (pas des ajouts
+  après coup) :
+  - **L'IA s'annonce dès le début de l'appel** (obligatoire, AI Act) —
+    retourné en argument de vente face à des concurrents (VOKAI) qui
+    vantent au contraire que l'IA passe inaperçue, donc potentiellement
+    exposés.
+  - **Capture de consentement pendant l'appel entrant** (question simple
+    en fin d'appel, horodatée, conservée 3 ans) pour sécuriser légalement
+    les relances de devis au-delà des 5 jours ouvrables. Transforme une
+    contrainte légale en fonctionnalité : la chaîne complète
+    **appel → devis → relance légale**, trou identifié chez les
+    concurrents.
+  - **Volet facturation électronique en vente croisée** au même client,
+    pas forcément intégré techniquement dans l'agent vocal.
+
+  **2. Pitch commercial** : plus "un agent vocal IA parmi d'autres", mais
+  **"l'agent vocal BTP qui respecte la loi, pas qui la contourne"** — une
+  barrière à l'entrée réelle (veille juridique que les petits acteurs
+  locaux ne font probablement pas), pas qu'une promesse marketing.
+
+  **3. Piste pour le goulot de distribution** : entrer en relation via un
+  **diagnostic gratuit de conformité facturation électronique** plutôt que
+  par la vente directe d'un agent vocal IA (déjà vu dix fois par l'artisan)
+  — service concret utile, ouvre la porte à vendre l'agent vocal ensuite
+  dans la même visite.
+
+  **4. À éviter absolument** : toute extension vers la rénovation
+  énergétique/panneaux solaires (démarchage interdit même avec
+  consentement).
+
+  **Ce qui ne change PAS** : la séquence reste finir Paddle → valider le
+  terrain (guide d'entretien déjà prêt) → construire. Ces 4 points sont
+  des **critères de conception**, pas une raison de changer l'ordre des
+  étapes déjà décidé.
 
