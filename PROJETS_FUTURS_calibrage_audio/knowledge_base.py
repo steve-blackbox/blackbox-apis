@@ -575,6 +575,39 @@ CITED_STUDIES: list[CitedStudy] = [
         "mais son contenu précis reste à vérifier avant toute "
         "exploitation dans une recommandation.",
     ),
+    CitedStudy(
+        domain="psychoacoustique",
+        title="Precedence effect (effet de précédence, dit aussi "
+        "'effet Haas')",
+        venue_or_authors="Wallach H., Newman E.B. & Rosenzweig M.R. "
+        "(description/nommage de l'effet de précédence) ; Helmut Haas "
+        "(étude sur la parole, thèse de doctorat datée 1949 par la page, "
+        "mais la même page cite aussi 'un article de 1951 de Helmut "
+        "Haas' — incohérence interne à la source, non résolue ici)",
+        year="1949 (Wallach et al. ; thèse de Haas selon une partie de "
+        "la page) et/ou 1951 (article de Haas selon une autre partie de "
+        "la même page) — Claude avait indiqué '1951' de mémoire, ce qui "
+        "est au moins partiellement confirmé mais incomplet",
+        source_url="https://en.wikipedia.org/wiki/Precedence_effect",
+        verification="page Wikipedia lue directement en entier "
+        "(sections historique + conditions d'occurrence)",
+        takeaway="Seuils numériques exploitables pour une future règle "
+        "de diagnostic temporel : (1) une réflexion arrivant après "
+        "1 ms augmente le niveau perçu et l'ampleur spatiale sans créer "
+        "un second évènement auditif ; (2) une réflexion unique arrivant "
+        "entre 5 et 30 ms peut être jusqu'à 10 dB plus forte que le son "
+        "direct sans être perçue comme un écho distinct ; (3) la fenêtre "
+        "de l'effet de précédence va de 2 ms à environ 50 ms pour la "
+        "parole, et peut s'étendre jusqu'à ~100 ms pour la musique ; "
+        "(4) si le son arrivant en second dépasse le premier d'au moins "
+        "15 dB, l'effet de précédence s'effondre (recherche de Langmuir "
+        "et al., citée par Wallach et al.). Non câblé dans "
+        "diagnostic_engine.py pour l'instant : ces seuils concernent "
+        "l'alignement temporel inter-enceintes/caissons, pas la réponse "
+        "en fréquence pure, donc une intégration éventuelle toucherait "
+        "une logique différente de celle existante (DIP/PEAK_PROBABLE_"
+        "CAUSES).",
+    ),
 ]
 """Important : cette liste est un point de départ documentaire, pas une
 base scientifique validée. Aucune valeur numérique du moteur
@@ -729,3 +762,47 @@ matériau. Cohérent avec IMMERSION_FACTORS (facteur 4, premières
 réflexions/réverbération) : ce principe justifie pourquoi un traitement
 acoustique de coin (graves) est un geste différent d'un traitement de
 première réflexion murale (médium/aigu), déjà distingués en section 6."""
+
+CINEMA_REFERENCE_LEVEL_PRINCIPLE = (
+    "Le cinéma professionnel utilise un standard international de "
+    "'niveau de référence' qui fait correspondre un niveau de signal sur "
+    "la console de mixage à un SPL précis en salle : 20 dB sous le clip "
+    "(0 dBFS) correspond à 85 dB SPL pour chaque enceinte L/C/R, 85 dB "
+    "SPL pour les canaux surround combinés, et 95 dB SPL pour le(s) "
+    "caisson(s) — soit +10 dB par rapport aux L/C/R, cohérent avec le "
+    "gain de lecture +10 dB du canal LFE déjà documenté (voir "
+    "LFE_VS_SUBWOOFER_CHANNEL_DISTINCTION). Le SPL de crête total "
+    "théorique qui en résulte avoisine 115-120 dB, atteint rarement et "
+    "brièvement en pratique. Un processeur correctement calibré affiche "
+    "'0 dB' au niveau de référence ; un client qui écoute à '-10 dB' "
+    "écoute donc 10 dB sous ce standard."
+)
+"""[Acoustique générale, source professionnelle non académique] — source :
+Anthony Grimani (président de Grimani Systems / PMI Engineering /
+Dimension4 Acoustics), article « Check Your References », Residential
+Systems, 18/08/2021 : https://www.residentialsystems.com/features/home-
+theater/check-your-references . Lu en entier directement. Auteur reconnu
+dans l'industrie professionnelle du home cinéma, mais ceci reste un
+article de magazine professionnel, PAS une étude académique
+peer-reviewed : à traiter comme une pratique de l'industrie plutôt que
+comme un fait scientifique établi."""
+
+LISTENING_BELOW_REFERENCE_LEVEL_EFFECT = (
+    "Selon Anthony Grimani (même source que CINEMA_REFERENCE_LEVEL_"
+    "PRINCIPLE), écouter significativement (environ 10 dB) sous le "
+    "niveau de référence cinéma dégrade la perception du mixage : le "
+    "détail de bas niveau se perd dans le bruit de fond (surtout en "
+    "surround/hauteur), les dialogues deviennent plus difficiles à "
+    "comprendre, et les graves paraissent plus 'maigres'/moins présents. "
+    "Son conseil pratique (opinion professionnelle, pas une règle "
+    "chiffrée validée) pour un client qui écoute systématiquement sous le "
+    "niveau de référence : envisager un léger renfort du surround et des "
+    "graves, et une correction de 'clarté' sur le canal central."
+)
+"""[Avis d'expert, PAS une étude académique] — même source que
+CINEMA_REFERENCE_LEVEL_PRINCIPLE. Intéressant pour expliquer à un client
+pourquoi deux systèmes identiques calibrés à des volumes d'écoute très
+différents 'ne sonnent pas pareil', mais ne doit PAS être codé comme un
+seuil de correction automatique dans diagnostic_engine.py sans validation
+supplémentaire (c'est une recommandation d'un professionnel, pas un seuil
+mesuré par une étude contrôlée)."""
