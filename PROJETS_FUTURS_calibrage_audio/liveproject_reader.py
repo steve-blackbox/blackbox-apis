@@ -134,6 +134,48 @@ CARTE DU FICHIER (validée sur les 10 fichiers, offsets en % de la taille totale
    sans validation supplémentaire (par exemple en comparant avec d'autres
    projets .liveproject où la configuration d'enceintes diffère).
 
+   ⚠️ **Complément (test sur `TOP CALIB BASE.liveproject`, 9 canaux
+   configurés : 7 enceintes + 2 subs)** : deux méthodes indépendantes
+   convergent pour identifier les **2 derniers slots (6 et 7)** comme
+   étant les 2 subwoofers, avec une confiance nettement meilleure que la
+   piste du pic à 60 Hz ci-dessus :
+   1. Décodage réel de l'audio (Ogg Vorbis → WAV, détection d'enveloppe
+      RMS) : exactement 10 bursts significatifs retrouvés dans l'ordre
+      attendu (1 référence ~4,9 s, 6 mesures larges bande ~4,4-4,8 s,
+      **2 mesures à bande réduite ~2,1 s** en avant-dernière et dernière
+      position, 1 référence rejouée ~4,8 s) — cohérent avec la durée de
+      sweep raccourcie déjà documentée au point 2 pour "2 canaux à bande
+      passante réduite".
+   2. Spectre déconvolué (ce module) : seuls les slots 6 et 7 montrent
+      une décroissance nette et continue au-delà de ~200-250 Hz (jusqu'à
+      -90 dB vers 600 Hz), signature typique d'un filtre passe-bas de
+      caisson — absente des slots 0 à 5.
+   En comparant la forme (pas le niveau, non comparable — voir plus haut)
+   des slots 6/7 avec `SUBWOOFERS.png` (2 courbes mesurées, Subwoofer
+   1/LFE et Subwoofer 2) : le slot 6 (pic isolé net ~55 Hz, chute rapide
+   ensuite) correspond mieux au profil "Subwoofer 1/LFE" que le slot 7
+   (plus irrégulier, 2 bosses) — hypothèse plausible, pas une certitude.
+
+   ⚠️ **Incohérence non résolue découverte lors de ce complément** : la
+   liste de noms de canaux configurés contient **9 entrées contiguës**
+   (vérifié : les 9 noms trouvent chacun exactement 1 occurrence, toutes
+   regroupées dans une fenêtre de 236 octets, donc bien une vraie liste
+   et pas des correspondances éparses) — soit 7 enceintes hors-sub pour
+   seulement **6 slots à bande large** (0 à 5) disponibles une fois les 2
+   slots de subwoofer retirés. Aucune explication trouvée avec les
+   données disponibles (config modifiée après la mesure ? enceinte non
+   mesurée cette session-là ? autre raison ?) — ne pas supposer une
+   correspondance 1:1 entre les 7 noms d'enceintes hors-sub et les 6
+   slots restants.
+
+   **Conclusion pratique (répond à "le fichier suffit-il sans les
+   captures ?")** : non. Même avec les 2 méthodes ci-dessus, l'attribution
+   fiable ne couvre que les 2 subwoofers (et avec un bémol sur lequel est
+   lequel) ; les captures d'écran restent nécessaires pour les 7 autres
+   canaux (étiquetage certain par le logiciel lui-même) et pour disposer
+   de valeurs dans l'échelle relative (dB autour de la cible) qu'utilise
+   le moteur de diagnostic, plutôt que le dB SPL absolu de ce fichier.
+
 6. **Fin de fichier (derniers ~600 octets)** : journal de navigation de
    l'interface utilisateur (noms d'écrans visités : `Navigation`,
    `RecordingDevice`, `SelectArrangement`, `VolumeCalibration`,
