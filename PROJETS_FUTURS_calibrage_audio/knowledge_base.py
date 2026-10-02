@@ -1996,7 +1996,12 @@ DIRAC_AUTOMATIC_COARSE_STEPS_STEVE_FEEDBACK = (
     "réellement) plutôt que sur une vraie limite de l'interface "
     "elle-même. Non confirmé officiellement : à vérifier en pratique "
     "sur le système de Steve plutôt qu'à présenter comme un fait Dirac "
-    "établi."
+    "établi. **Confirmation directe de Steve sur SA méthode** (distincte "
+    "de l'automatique) : il règle lui-même le Support Level "
+    "manuellement 'sans utiliser les paliers de 6 dB', donc bien sur la "
+    "plage continue du curseur — cohérent avec l'hypothèse ci-dessus que "
+    "la limite par paliers concerne l'algorithme automatique, pas "
+    "l'interface manuelle elle-même."
 )
 """[Retour d'expérience Steve] — affirmation de Steve sur le comportement
 observé de l'algorithme automatique Dirac, en tension avec le tableau

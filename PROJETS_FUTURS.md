@@ -2749,3 +2749,62 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès après la correction de documentation : aucune
   régression.
 
+- (03/10, suite 25) **🧩 Verrou slot↔enceinte, figures officielles ART,
+  et valeur ajoutée du service documentée (HRTF, retour d'expérience
+  Steve)**
+
+  Steve a proposé de simplifier le service client (fichier `.liveproject`
+  + liste de matériel seulement, sans captures d'écran), estimant que
+  les courbes affichées par Dirac sont "prédictives" et ne reflètent pas
+  les vraies valeurs mesurées. **Test empirique mené** : comparaison des
+  pics/creux entre le fichier brut (slots 6/7, déjà confirmés comme les
+  2 caissons) et les captures correspondantes — correspondance en
+  fréquence quasi parfaite pour le Subwoofer 2, confirmant que les
+  courbes affichées restent fidèles aux mesures brutes (l'hypothèse
+  "prédictive" n'est pas confirmée), même si une nuance subsiste sur
+  l'amplitude affichée pour un pic du Subwoofer 1.
+
+  **Tentative de résolution du verrou slot↔enceinte** pour les 6 canaux
+  non-subwoofer : l'ordre réel des noms de canaux dans le fichier (par
+  offset croissant, pas l'ordre arbitraire du code) est confirmé
+  identique et stable sur 2 fichiers différents de Steve. Hypothèse
+  testée (slot 0=Front Left ... slot 5=Surround Back Left, Surround Left
+  structurellement absent des slots mesurés) : score de correspondance
+  trop faible et inconstant (24-80 %) pour la confirmer. **Le verrou
+  reste entier pour ces 6 canaux** — seuls les 2 caissons ont une
+  correspondance fiable à ce jour. Documenté honnêtement dans
+  `liveproject_reader.py` pour ne pas répéter cette tentative à l'identique.
+
+  **Clarification sur une recommandation déjà donnée** : Steve a demandé
+  d'où venait la recommandation "éviter la centrale en support" —
+  distinction faite entre le support du canal LFE (règle officielle
+  Dirac, section 17) et le support ART général (règle StormAudio
+  préexistante, section 3, `STORM_AUDIO_SUPPORT_HIERARCHY`, antérieure à
+  cette session, sans citation plus précise disponible que l'étiquette
+  globale `[StormAudio]`).
+
+  **3 images partagées par Steve identifiées et recoupées** : ce sont les
+  Figures 1, 2 et 3 officielles de l'article Helpdesk "How-to: ART
+  Channel Group and Support Settings", capturées visuellement via
+  `screenshotPage` (le texte seul, déjà lu, ne montrait pas leur contenu
+  visuel). Figure 1/3 = groupement de base (paires symétriques
+  groupées ensemble) ; Figure 2 = cas avancé (chaque enceinte séparée,
+  pour gérer une position d'écoute asymétrique) — **qui correspond
+  exactement à la configuration réelle de Steve**.
+
+  **Nouvelle section 18 de `knowledge_base.py`** documentant la valeur
+  ajoutée du service par rapport à l'automatique Dirac, telle
+  qu'énoncée par Steve : HRTF (nouveau sujet, avec mise en garde
+  importante sur la distinction binaural/casque vs système physique
+  multicanal réel — le lien pertinent restant la symétrie de paire et le
+  F-support High déjà documentés, pas un filtre HRTF que Dirac
+  appliquerait), le retour d'expérience de Steve sur les paliers de 6 dB
+  de l'automatique (confirmé par lui : il règle le Support Level
+  manuellement sur la plage continue, "sans utiliser les paliers de
+  6 dB"), son exemple concret de groupement croisé (Surround Back Right
+  + Surround Right, réglages de support croisés), et une synthèse de la
+  proposition de valeur globale du service.
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès après chaque ajout : aucune régression.
+
