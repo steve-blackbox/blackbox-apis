@@ -3335,3 +3335,26 @@ articles lus, concurrents repérés, retours clients...)_
   36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (03/10, suite 41) **📚 Règle méthodologique permanente : privilégier les
+  études peer-reviewed plutôt que Wikipedia**
+
+  Steve a demandé explicitement de s'appuyer sur de vraies études
+  acoustiques plutôt que sur Wikipedia ("n'importe qui peut mettre des
+  informations"). Nouvelle constante `METHODOLOGY_PREFER_PEER_REVIEWED_
+  STUDIES` ajoutée en tête de `knowledge_base.py`, avec une découverte
+  technique utile : PubMed direct (pubmed.ncbi.nlm.nih.gov) bloque
+  systématiquement par reCAPTCHA dans cet environnement, mais **PMC**
+  (PubMed Central, pmc.ncbi.nlm.nih.gov) donne un accès direct au texte
+  intégral sans blocage.
+
+  Correction de la section 38 (valeur du réglage centrale Gemini) : la
+  source Wikipedia a été remplacée par une vraie étude peer-reviewed
+  trouvée via PMC — Albino DDO et al., revue CoDAS (DOI 10.1590/2317-
+  1782/20232022173en), qui mesure la fréquence fondamentale vocale par
+  vidéokymographie digitale directe des cordes vocales (pas seulement
+  l'acoustique) : 129,82 Hz chez l'homme, 214,81 Hz chez la femme,
+  cohérent avec la littérature citée par l'étude (118-142 Hz et 194-220
+  Hz respectivement).
+
+  36 tests unitaires repassés avec succès : aucune régression.
+

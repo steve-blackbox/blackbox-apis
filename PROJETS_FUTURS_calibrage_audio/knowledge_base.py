@@ -43,6 +43,22 @@ constante cite sa source réelle :
     "un indice, pas une preuve" — jamais utilisé seul pour une
     recommandation ferme, seulement en complément.
 
+⚠️ RÈGLE MÉTHODOLOGIQUE PERMANENTE (ajoutée 03/10, demande explicite de
+Steve) : privilégier systématiquement une VRAIE étude acoustique
+peer-reviewed (revue scientifique avec comité de lecture, DOI vérifiable)
+plutôt que Wikipedia pour toute donnée scientifique/physiologique
+(fréquences, seuils perceptifs, valeurs physiologiques, etc.) — Wikipedia
+reste une source ouverte modifiable par n'importe qui, donc moins fiable
+qu'une publication peer-reviewed. Wikipedia reste acceptable UNIQUEMENT
+pour des faits d'ingénierie généraux non controversés et facilement
+vérifiables par ailleurs (ex. principe de fonctionnement d'une classe
+d'amplificateur), jamais comme SEULE source d'une valeur chiffrée
+scientifique précise si une étude académique existe et est accessible.
+Voir METHODOLOGY_PREFER_PEER_REVIEWED_STUDIES ci-dessous pour le détail
+et PMC (PubMed Central, pmc.ncbi.nlm.nih.gov) comme voie d'accès fiable
+découverte lors de cette session (PubMed direct bloque par reCAPTCHA
+dans cet environnement, PMC non).
+
 Aucune "mémorisation" de documents entiers n'est simulée ici : c'est
 exactement le piège que Claude avait signalé dans la conversation source
 (un LLM ne retient pas un livre sur simple demande). Ce fichier assume
@@ -62,6 +78,27 @@ from models import (
     ManufacturerSpecSheet,
     Role,
 )
+
+METHODOLOGY_PREFER_PEER_REVIEWED_STUDIES = (
+    "Règle méthodologique permanente (demande explicite de Steve, 03/10) "
+    ": pour toute donnée scientifique/physiologique chiffrée (fréquences, "
+    "seuils perceptifs, valeurs physiologiques), chercher et citer une "
+    "VRAIE étude acoustique peer-reviewed (revue avec comité de lecture, "
+    "DOI vérifiable) plutôt que Wikipedia, jugée à raison moins fiable "
+    "(source ouverte modifiable par n'importe qui). Voie d'accès fiable "
+    "découverte lors de cette session : PMC (PubMed Central, "
+    "pmc.ncbi.nlm.nih.gov) donne un accès direct au texte intégral de "
+    "nombreux articles peer-reviewed SANS blocage, contrairement à "
+    "PubMed direct (pubmed.ncbi.nlm.nih.gov) qui affiche un reCAPTCHA "
+    "bloquant systématiquement dans cet environnement. Wikipedia reste "
+    "une référence acceptable UNIQUEMENT pour des faits d'ingénierie "
+    "généraux non controversés (ex. principe de fonctionnement d'une "
+    "classe d'amplificateur électronique), jamais comme SEULE source "
+    "d'une valeur chiffrée scientifique précise si une étude académique "
+    "existe et reste accessible."
+)
+"""Règle de méthode transversale, pas une donnée technique en soi —
+s'applique à toute recherche future dans ce fichier."""
 
 # ---------------------------------------------------------------------------
 # 1. Domaine de fonctionnement d'ART vs Dirac Live classique [StormAudio]
@@ -3595,33 +3632,45 @@ GEMINI_CENTER_CHANNEL_PRESENCE_BOOST_VALUE = (
     "par Gemini sur la courbe cible de la CENTRALE uniquement (confirmé "
     "par Steve : non appliqué aux autres enceintes) — **+3,5 dB à "
     "80 Hz**, dans le but explicite de rendre 'les voix plus présentes'. "
-    "Mise en contexte avec la physiologie vocale (domaine public, "
-    "Wikipedia 'Voice frequency') : la fréquence FONDAMENTALE d'une "
-    "voix humaine adulte se situe entre 90-155 Hz (homme) et 165-255 Hz "
-    "(femme) — 80 Hz est donc légèrement EN DESSOUS de cette zone, pas "
-    "dedans. Point psychoacoustique pertinent, confirmé par la même "
-    "source : même si la fondamentale elle-même est atténuée/absente "
-    "dans un système de reproduction, 'enough of the harmonic series "
-    "will be present for the missing fundamental to create the "
-    "impression of hearing the fundamental tone' (phénomène de la "
-    "'fondamentale manquante'/missing fundamental) — un boost juste "
-    "sous la fondamentale pourrait renforcer cette impression de corps/ "
-    "poids perçu sans nécessairement modifier la fondamentale "
-    "elle-même. ⚠️ **Prudence méthodologique** : ceci reste une mise en "
-    "contexte PLAUSIBLE à partir de connaissances générales de domaine "
-    "public, PAS une explication confirmée du raisonnement réel de "
-    "Gemini (modèle IA tiers, méthode non vérifiable formellement par "
-    "nous). Rappel de cohérence avec la section 26 (structure de la "
-    "courbe cible en Bass Control) : pour que ce réglage reste "
-    "effectivement propre à la centrale (comme confirmé par Steve) et "
-    "n'affecte pas toute la courbe commune du système, le point de "
-    "croisement (crossover) du groupe centrale doit être réglé "
-    "au-dessus de 80 Hz — cohérent avec le fait que F-support Low par "
-    "défaut ne descend jamais sous 50 Hz et que Fsiso par défaut est "
-    "150 Hz (plage disponible compatible avec un crossover > 80 Hz)."
+    "Mise en contexte avec la physiologie vocale, sourcée sur une VRAIE "
+    "étude acoustique peer-reviewed (pas Wikipedia, sur demande "
+    "explicite de Steve — voir METHODOLOGY_PREFER_PEER_REVIEWED_STUDIES) "
+    ": Albino DDO et al., 'Comparison between the acoustic fundamental "
+    "frequency of the voice and the vibration frequency of the vocal "
+    "folds analyzed by digital kymography', revue CoDAS (DOI 10.1590/"
+    "2317-1782/20232022173en) — fréquence fondamentale acoustique (f0) "
+    "mesurée sur sujets réels (validée par vidéokymographie digitale "
+    "directe des cordes vocales, pas seulement l'acoustique) : moyenne "
+    "129,82 Hz chez l'homme (littérature citée par l'étude : 118 à "
+    "142 Hz), 214,81 Hz chez la femme (littérature : 194,09 à 219,6 Hz). "
+    "80 Hz est donc nettement EN DESSOUS de cette fondamentale mesurée "
+    "scientifiquement, pas dedans. Point psychoacoustique complémentaire "
+    "(toujours à sourcer par une étude peer-reviewed plutôt que "
+    "Wikipedia si réutilisé formellement — piste non encore vérifiée "
+    "par une étude dédiée ici) : le phénomène de la 'fondamentale "
+    "manquante' suggère qu'un contenu harmonique peut faire percevoir "
+    "une fondamentale même atténuée ; un boost juste sous la zone "
+    "fondamentale réelle pourrait renforcer une impression de corps/"
+    "poids perçu sans la modifier directement. ⚠️ **Prudence "
+    "méthodologique** : ceci reste une mise en contexte PLAUSIBLE, PAS "
+    "une explication confirmée du raisonnement réel de Gemini (modèle "
+    "IA tiers, méthode non vérifiable formellement par nous). Rappel de "
+    "cohérence avec la section 26 (structure de la courbe cible en Bass "
+    "Control) : pour que ce réglage reste effectivement propre à la "
+    "centrale (comme confirmé par Steve) et n'affecte pas toute la "
+    "courbe commune du système, le point de croisement (crossover) du "
+    "groupe centrale doit être réglé au-dessus de 80 Hz — cohérent avec "
+    "le fait que F-support Low par défaut ne descend jamais sous 50 Hz "
+    "et que Fsiso par défaut est 150 Hz (plage disponible compatible "
+    "avec un crossover > 80 Hz)."
 )
 """[Retour d'expérience Steve, valeur exacte communiquée directement]
-— mise en contexte physiologique via en.wikipedia.org/wiki/Voice_
-frequency (domaine public), cross-référencée à la section 26
-(structure de la courbe cible en Bass Control) déjà documentée."""
+— mise en contexte physiologique via une étude peer-reviewed réelle
+(Albino DDO et al., CoDAS, DOI 10.1590/2317-1782/20232022173en, lue en
+entier via PMC — PubMed Central), cross-référencée à la section 26
+(structure de la courbe cible en Bass Control) déjà documentée.
+CORRECTION du 03/10 (suite 41) : la source Wikipedia utilisée dans la
+version initiale de cette constante a été remplacée par cette étude
+académique, suite à la demande explicite de Steve de privilégier les
+vraies études scientifiques plutôt que Wikipedia."""
 
