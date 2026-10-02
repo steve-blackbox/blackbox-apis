@@ -504,4 +504,136 @@ articles lus, concurrents repérés, retours clients...)_
   en natif/inclus, avant de construire quoi que ce soit — pas seulement
   pour le médical, pour chaque secteur PME envisagé à l'avenir.
 
--
+- (01/10, nuit) **🔍 Stratégie "copier ce qui marche et le vendre en mieux"
+  — recherche terrain sur les offres déjà validées à grande échelle**
+
+  **Consigne de Steve** : ne pas inventer un produit dans le vide. Chercher
+  les offres qui fonctionnent *déjà* aujourd'hui sur le marché, les copier,
+  et en vendre une meilleure version que la concurrence.
+
+  **Vérifications faites en direct (fetch des sites officiels, pas une
+  supposition)** :
+  - **Podium** (USA) — **60 000+ entreprises locales clientes**. Produit
+    phare : "AI Employee" — répond à chaque lead 24h/24, qualifie,
+    réactive la base de clients dormants. Chiffres annoncés : temps de
+    réponse à un lead passé de 2h+ à **36 secondes**, **+45% de
+    conversion**, **+30% de revenu**. Tarif : sur devis uniquement (vente
+    commerciale, pas de prix public → signal que c'est cher/à forte marge).
+  - **Housecall Pro** (USA) — **200 000+ professionnels du bâtiment/
+    services à domicile**. Produit phare : "AI Team" — même concept que
+    Podium, repositionné spécifiquement pour les artisans (plombiers,
+    électriciens, etc.).
+  - **Weave** (USA) — même concept encore, repositionné spécifiquement
+    pour les cabinets dentaires/médicaux (textos patients automatisés par
+    IA, encaissement plus rapide).
+  - **Aircall** (France, licorne) — **23 000+ entreprises clientes**,
+    agents vocaux IA également. MAIS ciblage différent : entreprises avec
+    équipes commerciales/support qui grandissent (clients cités : Pipedrive,
+    Burton, Untuckit) — pas des artisans ou praticiens solos/mono-site.
+    **Aucun acteur français confirmé occupant spécifiquement le créneau
+    "agent IA pour artisan/indépendant solo"** à ce stade de la recherche.
+  - **Vapi.ai** — brique d'infrastructure ("picks and shovels") qui permet
+    de construire un agent vocal IA sur-mesure sans partir de zéro ; étude
+    de cas citée : une entreprise (Ring) est passée de zéro à 100% du
+    volume d'appels entrants géré par l'IA **en deux semaines**. Confirme
+    que le produit est réplicable rapidement avec les bons outils, pas
+    besoin de reconstruire un moteur de voix/IA depuis zéro.
+
+  **Lecture combinée avec l'alerte Doctolib du dessus** : le schéma
+  "AI Employee / agent IA qui répond, qualifie et prend rendez-vous" est
+  *le* produit qui marche à grande échelle aujourd'hui, validé dans
+  plusieurs verticales (médical, bâtiment, auto, retail) — donc la bonne
+  nouvelle, c'est qu'il n'y a pas à inventer un nouveau concept, juste à
+  le copier. La mauvaise nouvelle pour le médical/dentaire en France, c'est
+  que Doctolib tient déjà cet angle précis. Le bâtiment (artisans), en
+  revanche, n'a pas d'équivalent confirmé dominant en France sur ce
+  créneau précis — Aircall vise un public différent (équipes, pas solos).
+  Ça renforce la piste de repli "artisans du bâtiment" déjà notée plus
+  haut, maintenant avec des preuves chiffrées réutilisables dans l'argumentaire commercial.
+
+  **Ce que "vendre une meilleure version" peut vouloir dire concrètement
+  ici** (US → France, enterprise → artisan solo) :
+  1. **Prix** : Podium/Housecall Pro vendent sur devis à des entreprises
+     établies US, probablement plusieurs centaines de dollars/mois avec
+     engagement et vente commerciale. Un artisan solo français ne signera
+     jamais ce parcours. Une offre simple, affichée, à l'abonnement bas
+     (type 79-149€/mois) sans démarchage lourd peut capter le bas du
+     marché que ces acteurs ne servent pas efficacement.
+  2. **Langue et canal** : tout ça est pensé SMS + anglais US. En France,
+     le canal naturel pour un artisan et son client, c'est le
+     **WhatsApp** et l'appel téléphonique — pas le SMS pur. Un agent
+     IA natif WhatsApp + voix en français est un vrai différenciateur,
+     pas juste une traduction.
+  3. **Clé en main par métier** : scripts de qualification pré-configurés
+     par corps de métier (plombier ≠ électricien ≠ chauffagiste) plutôt
+     qu'un outil générique à configurer soi-même.
+  4. **Service, pas juste logiciel** : vendre l'installation faite par
+     Steve (configuration, scripts, branchement au téléphone existant)
+     en 48h, pas un self-service que l'artisan doit paramétrer seul —
+     cohérent avec le positionnement "agence d'automatisation" déjà
+     retenu, pas "éditeur SaaS".
+  5. **Réutilisation du socle BlackBox** : l'infra déjà construite
+     (gestion de webhooks, envoi SMS/email, API tierces) sert de
+     fondation technique pour brancher Vapi/Twilio — moins de travail
+     from scratch que prévu initialement.
+
+  **Prochaine étape avant de construire quoi que ce soit** : toujours
+  valider sur le terrain (appels à 3-5 artisans locaux : ont-ils déjà un
+  outil pour les appels manqués/rappels clients ? combien perdent-ils de
+  chantiers faute de rappeler à temps ?) — même logique de prudence que
+  pour le médical, appliquée cette fois à la niche de repli.
+
+- (02/10) **🗺️ Carte secteur par secteur : où est-ce déjà pris, où est-ce
+  encore ouvert ?**
+
+  Suite logique de l'entrée précédente : si Doctolib tient le médical,
+  quels autres secteurs PME ont (ou n'ont pas) leur propre "Doctolib" ?
+  Vérifications faites en direct (fetch de sites officiels un par un,
+  pas de recherche généraliste possible dans cet environnement — Google/
+  Bing/DuckDuckGo bloqués, seuls les fetchs d'URL précises fonctionnent) :
+
+  **🔴 Déjà dominés (acteur unique, à éviter comme angle direct)**
+  - Médical/paramédical → **Doctolib** (déjà documenté plus haut).
+  - Coiffure / beauté / barbiers / spas → **Planity** : "des dizaines de
+    milliers de rendez-vous pris chaque jour", rappel SMS déjà inclus
+    nativement dans le service.
+  - Restaurants → **Zenchef / TheFork** : réservation + CRM intégré
+    ("ZenchefOS"), acteur établi et connecté aux restaurants.
+
+  **🟡 Partiellement couverts (un acteur existe, mais pas sur l'angle
+  "agent IA qui répond au téléphone/qualifie/prend RDV")**
+  - Garages auto → **GarageScore** : plus de 2,5 millions d'avis clients
+    collectés, mais uniquement sur la réputation/satisfaction — rien sur
+    la réponse aux appels manqués ou la prise de RDV automatisée.
+  - Artisans du bâtiment → des outils type **Obat** existent, mais
+    uniquement pour les devis/factures — rien non plus sur la réponse
+    téléphonique ou la qualification de prospect.
+
+  **🟢 Probablement ouverts (aucun acteur dominant confirmé sur l'angle
+  précis "agent IA qui répond/qualifie/prend RDV")**
+  - **Artisans du bâtiment** (plombier, électricien, chauffagiste,
+    peintre, maçon, serrurier) — confirmé par l'absence d'équivalent
+    Doctolib/Planity, et par le fait qu'Aircall (l'acteur français le
+    plus proche sur les agents vocaux IA) cible des équipes qui
+    grandissent, pas des artisans solos. **Reste la meilleure option
+    identifiée à ce stade.**
+  - **Vétérinaires** — `doctolib.fr/veterinaire` redirige vers la page
+    d'accueil générale (pas de section dédiée trouvée) → signal que
+    Doctolib ne les couvre pas, mais ce n'est pas une preuve définitive,
+    à re-vérifier si cette piste est creusée sérieusement.
+
+  **⚪ Non vérifiés par fetch direct cette fois (supposition, pas un
+  fait établi)** : avocats, notaires, comptables, agences immobilières —
+  probablement fragmentés (beaucoup d'outils différents) plutôt que
+  dominés par un acteur unique, mais ça reste à vérifier avant d'y bâtir
+  quoi que ce soit, même logique que pour toutes les autres niches.
+
+  **Conclusion** : la carte confirme et renforce — pas juste par défaut
+  cette fois, mais contre plusieurs secteurs effectivement testés — que
+  les **artisans du bâtiment** restent le terrain libre le plus solide
+  pour l'angle "agent IA qui répond au téléphone et ne perd plus aucun
+  prospect". Cette carte reste partielle (limite des outils de recherche
+  disponibles) : la validation terrain (appels à 3-5 artisans locaux,
+  déjà actée dans l'entrée précédente) reste l'étape qui tranchera pour
+  de vrai, pas une recherche web plus poussée.
+
