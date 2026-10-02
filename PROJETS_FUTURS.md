@@ -124,6 +124,15 @@
 > Le principe (valider avant de construire) ne change pas, seule la
 > tactique change. Détail dans l'entrée "02/10, suite 5" tout en bas.
 >
+> 📊 **Paramètres de campagne obtenus (02/10, suite 6)** — Copilot a
+> utilisé directement la page Claude.ai partagée par Steve pour obtenir
+> des paramètres concrets de campagne : mots-clés (Google/Meta), budget
+> 60/40, CPC estimé 1,50-4€ sur les mots-clés de niche, seuils de succès/
+> échec à fixer avant lancement. **Nouveau concurrent identifié et
+> vérifié** : Absys (secrétariat téléphonique externalisé **humain**,
+> positionnement anti-IA) — à anticiper dans le message de la landing
+> page. Détail complet dans l'entrée "02/10, suite 6" tout en bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
@@ -1285,4 +1294,80 @@ articles lus, concurrents repérés, retours clients...)_
   **Prochaine étape concrète** : décider si la page + campagne se prépare
   maintenant (en parallèle de la fin de Paddle, effort minime) ou après —
   au choix de Steve, pas de contrainte technique qui l'impose.
+
+- (02/10, suite 6) **📊 Paramètres concrets de la campagne pub (via Claude,
+  interrogé en direct dans son propre navigateur, puis vérifié en partie)**
+
+  **Origine** : Steve a partagé sa page Claude.ai avec Copilot. Copilot a
+  pu taper une question directement dans Claude et lire sa réponse, sans
+  copier-coller manuel. Réponse obtenue avec recherche web réelle de
+  Claude, chiffres à traiter comme des ordres de grandeur (pas de donnée
+  officielle publique sur le CPC — Claude le précise lui-même).
+
+  **1. Coût par clic estimé** : mots-clés génériques du métier type
+  "plombier urgence" = 6-12€/clic (à éviter, ce sont les clients des
+  artisans, pas les artisans). Mots-clés B2B de niche ("répondeur
+  automatique artisan", "secrétariat téléphonique IA artisan") estimés à
+  **1,50-4€/clic**, faible volume de recherche. Point notable : des
+  services de secrétariat téléphonique externalisé **humain** (pas IA)
+  enchérissent déjà sur des mots-clés proches, ce qui tire les enchères
+  vers le haut.
+
+  **2. Répartition budget conseillée : 60% Google Ads / 40% Meta Ads.**
+  Google capte une intention de recherche active mais coûte plus cher
+  (~4,22€/clic en moyenne tous secteurs vs 0,97€ Facebook, chiffre
+  généraliste pas spécifique à ce secteur). Meta touche plus d'artisans
+  sans intention explicite (0,40-2,50€/clic selon Facebook/Instagram).
+  LinkedIn écarté (4,50-12€/clic, peu d'artisans présents).
+
+  **3. Résultat attendu avec 100€** : ~35-70 visiteurs (Google 60€ → 15-30
+  clics à 2-4€ ; Meta 40€ → 20-40 clics à 1-2€), puis **0 à 3 réservations**
+  de créneau pilote avec un taux de conversion 2-5% (typique B2B froid).
+  **Limite explicitement soulignée par Claude** : échantillon trop petit
+  pour un coût d'acquisition fiable, sert seulement à détecter un signal
+  franchement négatif (0/60) ou encourageant (2-3) — **seuils de succès/
+  échec à fixer avant de lancer la campagne**, pas après, pour ne pas
+  interpréter les chiffres a posteriori.
+
+  **4. Mots-clés et ciblage recommandés** :
+  - Google Ads (campagne Search, correspondance exacte/expression,
+    jamais large avec ce budget) : "secrétariat téléphonique artisan",
+    "répondeur intelligent artisan", "assistant vocal IA plombier" /
+    "standard téléphonique plombier", "ne plus rater d'appel client
+    artisan", "prise de rendez-vous automatique plombier".
+  - Mots-clés négatifs indispensables : gratuit, emploi, recrutement,
+    formation, offre d'emploi, secrétaire, numéro, avis, "plombier
+    urgence" (pour exclure les particuliers). CPC max ~4€, limiter à la
+    France.
+  - Meta Ads : ciblage par intérêts/fonctions (plombier, électricien,
+    chauffagiste, artisan du bâtiment), diffusion programmée aux moments
+    où ils sont sur leur téléphone (tôt le matin, midi, fin de journée).
+  - Landing page : mobile-first (artisans sur chantier), un seul CTA
+    (créneau pilote), **afficher la grille 99/179/299€ plutôt que la
+    cacher** (filtre les curieux + valide la tarification), installer le
+    suivi de conversion avant le lancement.
+
+  **⚠️ Point de la réponse de Claude explicitement écarté** : il suggère
+  aussi un "test en direct" complémentaire (appeler/écrire à 20-30
+  artisans via groupes Facebook/forums/contacts personnels). **Non
+  retenu** — c'est exactement la méthode que Steve vient d'écarter
+  explicitement (entrée précédente), Claude ne connaissait pas cette
+  contrainte dans sa conversation séparée.
+
+  **✅ Vérification complémentaire faite (absys.fr, source citée par
+  Claude)** : confirmé réel — service de secrétariat téléphonique
+  externalisé **humain** ciblant explicitement plombier/électricien/
+  chauffagiste/menuisier/jardinier/ferronnier. **Angle de positionnement
+  notable découvert** : leur argument de vente est frontalement anti-IA
+  ("un répondeur ne suffit plus... une voix humaine, une écoute active").
+  **Nouvelle catégorie de concurrent identifiée**, différente de VOKAI/
+  Eliocall (IA) : du secrétariat humain qui va probablement jouer la carte
+  "humain contre robot" face à une offre IA. À garder en tête pour la
+  landing page — l'argument de transparence IA (obligatoire, cf. entrée
+  précédente) doit être présenté comme un gage de sérieux/conformité, pas
+  comme une faiblesse face à ce type de concurrent.
+
+  **Prochaine étape** : ces paramètres (mots-clés, négatifs, budget,
+  répartition, seuils) sont prêts à l'usage dès que la landing page
+  (todo `build-landing-page-smoke-test`) sera construite.
 
