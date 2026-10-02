@@ -29,7 +29,7 @@ Ce n'est **pas** :
 | Fichier | Rôle |
 |---|---|
 | `models.py` | Structures de données (enceintes, mesures, pièce, recommandations, anomalies, rapport, études citées). |
-| `knowledge_base.py` | Toutes les règles et sources (directives StormAudio ART, hiérarchie de support, courbes cibles, diagnostic différentiel, 5 facteurs d'immersion, prérequis techniques, disclaimers obligatoires, études scientifiques citées). |
+| `knowledge_base.py` | Toutes les règles et sources (directives StormAudio ART, hiérarchie de support, courbes cibles, diagnostic différentiel, 5 facteurs d'immersion, prérequis techniques, disclaimers obligatoires, études scientifiques citées, fondamentaux home cinéma de fond — section 10). |
 | `diagnostic_engine.py` | Détection d'anomalies sur les courbes, calcul des modes propres de la pièce, diagnostic différentiel, génération des recommandations. |
 | `report_generator.py` | Transforme un `DiagnosticReport` en rapport texte livrable au client. |
 | `image_reader.py` | Lit automatiquement les courbes depuis une capture d'écran Dirac Live (calibration d'axes + détection de la couleur de la courbe, méthode de digitalisation de graphique) — remplace la saisie manuelle des points fréquence/dB. |
@@ -110,10 +110,25 @@ python3 liveproject_reader.py "/chemin/vers/fichier.liveproject"
   pas comme un fait établi.
 - **Aucun lien officiel avec Dirac ou StormAudio.** Voir
   `knowledge_base.MANDATORY_DISCLAIMERS`, inclus dans chaque rapport généré.
+- **Section 10 de `knowledge_base.py` (fondamentaux home cinéma) est un
+  socle de référence, pas encore câblée dans `diagnostic_engine.py`.**
+  Apprentissage de fond fait à la demande de Steve (psychoacoustique,
+  zones fréquentielles d'une pièce/fréquence de Schroeder, bass
+  management, distinction rendu Atmos vs correction Dirac/Audyssey,
+  absorption), sourcé sur Wikipedia et les guides officiels dolby.com
+  (via leurs archives Wayback Machine, le site live ayant bloqué les
+  requêtes automatisées pendant cette recherche). Volontairement sans
+  formule numérique inventée quand la source ne la donnait pas (ex. pas
+  de valeur chiffrée de fréquence de Schroeder) ni de tableau de
+  coefficients d'absorption mal extrait d'une page source.
 
 ## Pistes V2 (non commencées)
 
 - Modes tangentiels/obliques en plus des axiaux.
+- Calculer une vraie fréquence de Schroeder par pièce (au lieu du seuil
+  fixe `MODAL_REGION_UPPER_BOUND_HZ = 300.0`) si `RoomInfo` collecte un
+  jour le RT60 ou une estimation de celui-ci — voir
+  `knowledge_base.SCHROEDER_TRANSITION_CONCEPT`.
 - Relier `image_reader.py`/`liveproject_reader.py` au moteur de diagnostic
   (`diagnostic_engine.py`) pour passer directement d'une capture d'écran
   ou d'un fichier `.liveproject` à un rapport, sans étape manuelle entre

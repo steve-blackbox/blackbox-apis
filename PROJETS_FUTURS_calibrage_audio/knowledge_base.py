@@ -160,6 +160,77 @@ probablement dans le menu à l'écran, même lorsque Dirac Live est le moteur
 réellement actif sur l'appareil. Ne pas confondre avec une calibration
 Audyssey réelle. [Marantz/Dirac officiel]"""
 
+DIRAC_MAX_FILTER_SLOTS = 3
+"""Nombre maximum de filtres Dirac Live pouvant être stockés simultanément
+sur l'ampli (Slot 1 à 3, sélectionnables depuis le menu Audio - Dirac
+Live). Chaque filtre mémorise non seulement la correction acoustique
+(réponse en fréquence et temporelle) mais aussi le niveau de sortie et la
+distance de chaque enceinte au moment de l'export depuis le logiciel
+Dirac Live ; ces réglages sont conservés séparément par source d'entrée.
+[Marantz/Dirac officiel]"""
+
+DIRAC_FILTER_BYPASSED_IN_DIRECT_MODES = True
+"""En mode d'écoute 'Direct' ou 'Pure Direct', seuls les Distances et
+Levels mémorisés par le filtre Dirac Live actif sont appliqués ; le filtre
+acoustique (correction de fréquence/temporelle, et donc ART) ne l'est
+plus. [Marantz/Dirac officiel]"""
+
+ART_REQUIRES_FULL_BANDWIDTH_LICENSE = True
+"""La licence Active Room Treatment ne peut être combinée qu'avec la
+licence Dirac Live Room Correction 'Full Bandwidth' ; elle est
+incompatible avec la licence Room Correction à bande limitée ('Limited
+Bandwidth'). Précision apportée à ART_LICENSE_TIERS ci-dessus.
+[Marantz/Dirac officiel]"""
+
+ART_LICENSE_CHECK_METHOD = (
+    "Se vérifie uniquement dans le logiciel Dirac Live sur ordinateur "
+    "(page 'Filter Design'), jamais depuis l'écran de l'ampli/TV."
+)
+"""[Marantz/Dirac officiel] — point opérationnel utile pour éviter une
+fausse alerte si un client ne voit aucune mention de licence sur l'écran
+de l'ampli : l'absence d'indication à l'écran ne veut pas dire que la
+licence ART est absente ou inactive."""
+
+ART_LOCKED_SETTINGS_WHEN_ACTIVE = [
+    "Speaker Layout - Subwoofer Mode",
+    "Speaker Layout - Subwoofer Layout",
+    "Advanced - Low Frequency Effects",
+    "Audio - Subwoofer Level Adjust",
+    "Audio - IMAX Audio Settings (forcé sur 'Auto')",
+    "Dialog Enhancer (menu Options)",
+    "Tone (menu Options)",
+    "Channel Level Adjust (menu Options) — verrouillé spécifiquement par "
+    "ART, pas par Bass Control/Bass Management seuls",
+]
+"""Réglages verrouillés dans le menu de l'ampli dès qu'un filtre Dirac
+Live avec Bass Management, Bass Control ou ART est actif (la dernière
+ligne ne concerne qu'ART spécifiquement). Pour débloquer ces réglages :
+désactiver Dirac Live ou sélectionner un filtre où seul Room Correction
+est appliqué. [Marantz/Dirac officiel]"""
+
+DIRAC_DISABLED_WITH_HEADPHONES = True
+"""Dirac Live (donc ART) se désactive automatiquement dès qu'un casque
+est branché/sélectionné sur l'ampli. [Marantz/Dirac officiel]"""
+
+GRAPHIC_EQ_UNAVAILABLE_WITH_DIRAC = True
+"""Le Graphic EQ natif de l'ampli ne peut pas être réglé tant que Dirac
+Live est actif (quel que soit le filtre sélectionné). [Marantz/Dirac
+officiel]"""
+
+ART_VS_PASSIVE_TREATMENT_PRINCIPLE = (
+    "Contrairement aux traitements acoustiques passifs (pièges à basses, "
+    "diffuseurs), qui absorbent ou dispersent l'énergie sonore existante, "
+    "ART utilise activement les enceintes déjà en place pour réduire les "
+    "résonances induites par la pièce, permettant un contrôle du champ "
+    "sonore aux très basses fréquences qu'un traitement passif ne peut "
+    "pratiquement pas atteindre."
+)
+"""[Marantz/Dirac officiel] — reformulation du principe de fonctionnement
+d'ART par opposition aux solutions passives ; utile pour expliquer à un
+client pourquoi ART ne remplace pas un traitement acoustique mais agit de
+façon complémentaire, pas concurrente. Rejoint ABSORPTION_GENERAL_PRINCIPLE
+(section 10), qui couvre le côté traitement passif."""
+
 # ---------------------------------------------------------------------------
 # 2. Niveaux de support : une limite de liberté, pas un réglage 1:1 [StormAudio]
 # ---------------------------------------------------------------------------
@@ -257,7 +328,16 @@ individuelles par enceinte), à respecter dans toute recommandation."""
 MODAL_REGION_UPPER_BOUND_HZ = 300.0
 """Au-dessus de cette fréquence approximative, une anomalie de courbe est
 plus probablement due au haut-parleur ou à une réflexion locale qu'à un
-mode propre de la pièce entière. Seuil indicatif, pas une limite stricte."""
+mode propre de la pièce entière. Seuil indicatif, pas une limite stricte.
+
+Ce seuil correspond à ce que la littérature acoustique appelle la zone de
+transition autour de la « fréquence de Schroeder » (voir
+SCHROEDER_TRANSITION_CONCEPT, section 10 de ce fichier) : en dessous, les
+modes propres de la pièce dominent ; au-dessus, le comportement devient
+statistique/diffus. 300 Hz reste une valeur fixe de prototype — la vraie
+fréquence de Schroeder dépend du volume de la pièce et de son RT60, deux
+informations que `RoomInfo` ne collecte pas encore (voir piste V2).
+[Acoustique générale]"""
 
 DIP_PROBABLE_CAUSES = [
     "mode de la pièce (annulation/addition liée aux dimensions)",
@@ -500,3 +580,152 @@ CITED_STUDIES: list[CitedStudy] = [
 base scientifique validée. Aucune valeur numérique du moteur
 (diagnostic_engine.py) ne repose sur ces études tant que leur contenu
 complet n'a pas été lu et confirmé — voir README.md, section Limites."""
+
+# ---------------------------------------------------------------------------
+# 10. Fondamentaux home cinéma (apprentissage de fond demandé par Steve :
+#     "je pense qu'il faut que tu apprenne comment fonctionne un système
+#     home cinéma"). Sources encyclopédiques/constructeur de référence,
+#     lues directement (Wikipedia, dolby.com via ses propres archives),
+#     PAS des études à vérifier comme la section 9 — tous ces faits sont
+#     reproductibles et publics. Classés [Acoustique générale]. Rien ici
+#     n'est encore câblé dans diagnostic_engine.py : c'est un socle de
+#     référence, à mobiliser au cas par cas plus tard (voir pistes V2).
+# ---------------------------------------------------------------------------
+SCHROEDER_TRANSITION_CONCEPT = (
+    "Le comportement du son dans une pièce se découpe en 4 zones "
+    "fréquentielles : (1) en dessous de la fréquence dont la demi-longueur "
+    "d'onde égale la plus grande dimension de la pièce, le son se comporte "
+    "comme une variation de pression statique ; (2) au-dessus, les modes "
+    "propres de la pièce dominent (résonances, ondes stationnaires) ; "
+    "(3) une zone de transition d'environ 2 octaves ; (4) en haute "
+    "fréquence, le son se comporte statistiquement comme des rayons qui "
+    "rebondissent. La frontière entre les zones (2) et (3)/(4) est "
+    "appelée 'fréquence de Schroeder' (ou 'crossover frequency') : "
+    "au-dessus, les fréquences hautes et moyennes dominent sur les modes "
+    "de pièce isolés."
+)
+"""[Acoustique générale] — source : https://en.wikipedia.org/wiki/Room_acoustics
+(section sur les 4 zones fréquentielles et la fréquence de Schroeder,
+nommée d'après Manfred R. Schroeder). Volontairement SANS formule
+numérique : la page source ne donne pas de formule chiffrée de cette
+fréquence de transition (seulement sa définition conceptuelle et les
+formules des modes propres, déjà implémentées dans
+diagnostic_engine.axial_room_modes). Ne pas coder une formule du type
+'2000 * sqrt(RT60/V)' tant qu'elle n'a pas été vérifiée sur une source
+réellement consultée — voir la règle 'no invention' de la section 9."""
+
+EQUAL_LOUDNESS_PRINCIPLE = (
+    "La sensibilité de l'oreille humaine au volume n'est pas plate sur le "
+    "spectre : elle est maximale entre environ 1 kHz et 5 kHz (bande où "
+    "se trouvent l'essentiel des dialogues et consonnes), et diminue vers "
+    "les graves et les aigus extrêmes. Les courbes isosoniques (equal-"
+    "loudness contours, popularisées par Fletcher et Munson) montrent "
+    "qu'à bas volume d'écoute, les graves et aigus perçus s'affaiblissent "
+    "plus vite que le médium — d'où les fonctions 'loudness' des "
+    "amplificateurs, qui ne sont PAS la même chose qu'une courbe cible de "
+    "calibrage Dirac/Audyssey (celle-ci vise une réponse en fréquence "
+    "stable quel que soit le volume, pas une compensation dynamique)."
+)
+"""[Acoustique générale] — source : https://en.wikipedia.org/wiki/Psychoacoustics .
+Pertinent pour expliquer à un client pourquoi 'monter le son' ne suffit
+pas à corriger un déséquilibre perçu dans les graves ou les dialogues,
+et pour ne pas confondre une fonction loudness de l'ampli avec un
+réglage de courbe cible Dirac."""
+
+LFE_VS_SUBWOOFER_CHANNEL_DISTINCTION = (
+    "Le canal LFE (Low-Frequency Effects) d'une piste Dolby Digital/DTS "
+    "est un canal de MIX, limité à la bande 20-120 Hz et amplifié de "
+    "+10 dB par convention à la lecture — ce n'est pas un synonyme du "
+    "'canal subwoofer' de l'ampli. En pratique, le processeur additionne "
+    "dans le(s) caisson(s) à la fois le LFE et les graves renvoyées par "
+    "le bass management des autres canaux (voir ci-dessous) : ce que "
+    "Dirac/Audyssey mesurent et corrigent sur le(s) caisson(s) est donc "
+    "déjà un signal composite, pas le LFE brut seul."
+)
+"""[Acoustique générale] — source : https://en.wikipedia.org/wiki/Dolby_Digital
+et https://en.wikipedia.org/wiki/Bass_management . Confirme et précise ce
+qui avait été déduit empiriquement du fichier .liveproject de Steve (voir
+liveproject_reader.py) : les 2 derniers slots de mesure, probablement les
+subwoofers, montrent une bande passante réduite après 200-250 Hz,
+cohérente avec cette bande LFE 20-120 Hz (+ marge de mesure)."""
+
+BASS_MANAGEMENT_CROSSOVER_PRINCIPLE = (
+    "Le 'bass management' sépare un signal en deux à une fréquence de "
+    "croisement : un filtre passe-haut (typiquement 12 dB/octave, "
+    "Butterworth) retire les graves des enceintes principales, et un "
+    "filtre passe-bas (typiquement 24 dB/octave, Linkwitz-Riley) envoie "
+    "ces graves vers le(s) caisson(s). L'alignement Linkwitz-Riley "
+    "4e ordre (-6 dB au point de croisement pour chaque filtre) est le "
+    "standard qui permet une somme plate à la fréquence de croisement. "
+    "80 Hz est la fréquence de croisement la plus citée par défaut, dans "
+    "une plage usuelle de 40 à 120 Hz selon la capacité des enceintes "
+    "principales."
+)
+"""[Acoustique générale] — source : https://en.wikipedia.org/wiki/Bass_management .
+Cohérent avec MANUAL_CROSSOVER_FREQUENCIES_HZ et
+MANUAL_CROSSOVER_DEFAULT_OTHERS_HZ (= 80.0) déjà documentés en section 1
+à partir du manuel Marantz — cette entrée ajoute le POURQUOI acoustique
+(ordre de filtre, type d'alignement) derrière ces valeurs déjà connues du
+manuel constructeur, utile pour expliquer une recommandation à un client
+qui demande pourquoi 80 Hz plutôt qu'une autre valeur."""
+
+DOLBY_ATMOS_RENDERING_VS_ROOM_CORRECTION = (
+    "Dolby Atmos encode jusqu'à 128 'objets' audio (118 objets dynamiques "
+    "+ 10 'beds', canaux fixes de référence), et un moteur de rendu "
+    "('renderer') Dolby mixe ces objets en temps réel pour les adapter à "
+    "la configuration réelle des enceintes installées (jusqu'à 24.1.10 "
+    "canaux en home cinéma). Ce rendu spatial se fait EN AMONT de Dirac "
+    "Live ART ou d'Audyssey : ces derniers ne connaissent pas la notion "
+    "d'objet Atmos, ils reçoivent le signal déjà mixé par canal physique "
+    "et appliquent seulement une correction acoustique (réponse en "
+    "fréquence et temporelle) sur ce signal. Ce sont deux couches de "
+    "traitement indépendantes dans la chaîne : la correction Dirac/"
+    "Audyssey ne peut ni améliorer ni dégrader le placement spatial des "
+    "objets Atmos, seulement la fidélité de restitution de chaque "
+    "enceinte prise isolément."
+)
+"""[Acoustique générale] — source : https://en.wikipedia.org/wiki/Dolby_Atmos .
+Utile pour répondre à un client qui demanderait si Dirac 'gère' Atmos :
+réponse nuancée, ni oui ni non — Dirac corrige les enceintes sur
+lesquelles Atmos a déjà été rendu, sans interagir avec le rendu lui-même."""
+
+DOLBY_OFFICIAL_SUPPORTED_SPEAKER_LAYOUTS = [
+    "2.1", "3.1", "4.1", "4.1.2", "4.1.4", "5.1", "5.1.2", "5.1.4",
+    "7.1", "7.1.2", "7.1.4", "7.1.6", "9.1", "9.1.2", "9.1.4", "9.1.6",
+    "11.1.8",
+]
+"""[Documentation constructeur publique] — source : guides officiels
+'Speaker setup guides' de dolby.com (liste vérifiée via les archives
+Wayback Machine du 27/09/2026, le site live bloquant les requêtes
+automatisées au moment de cette recherche). Chaque configuration a sa
+propre page de placement d'enceintes (angles, hauteur), mais ces pages
+utilisent un visualiseur interactif (JS) dont le détail numérique des
+angles n'a pas pu être extrait par ce canal — seule la liste des
+configurations supportées et le principe général (enceintes à hauteur
+d'oreille assise, sauf indication contraire pour les surrounds/hauteurs)
+ont pu être confirmés. Le système de Steve (9 canaux : 7 enceintes +
+2 caissons, voir liveproject_reader.py) correspond à une configuration
+7.1.x standard de cette liste."""
+
+ABSORPTION_GENERAL_PRINCIPLE = (
+    "Un matériau absorbant transforme une partie de l'énergie sonore "
+    "incidente en chaleur plutôt que de la réfléchir ; le coefficient "
+    "d'absorption (entre 0 et 1, parfois >1 en mesure de laboratoire) "
+    "dépend à la fois du matériau ET de la fréquence — un même panneau "
+    "absorbe généralement beaucoup mieux en haute fréquence qu'en basse "
+    "fréquence, car l'épaisseur nécessaire pour absorber efficacement une "
+    "longueur d'onde est proportionnelle à cette longueur d'onde (les "
+    "graves ont des longueurs d'onde de plusieurs mètres). C'est pourquoi "
+    "les pièges à basses ('bass traps') dans les coins sont une approche "
+    "différente des panneaux absorbants muraux classiques, plus efficaces "
+    "en médium/aigu."
+)
+"""[Acoustique générale] — source : https://en.wikipedia.org/wiki/Absorption_(acoustics) .
+Volontairement qualitatif, SANS tableau de coefficients chiffrés par
+matériau : le tableau de la page source s'est révélé mal exploitable via
+l'extraction automatique (colonnes de valeurs sans alignement fiable avec
+les noms de matériaux) — risque de mal attribuer un chiffre à un
+matériau. Cohérent avec IMMERSION_FACTORS (facteur 4, premières
+réflexions/réverbération) : ce principe justifie pourquoi un traitement
+acoustique de coin (graves) est un geste différent d'un traitement de
+première réflexion murale (médium/aigu), déjà distingués en section 6."""
