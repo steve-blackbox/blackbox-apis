@@ -161,6 +161,17 @@
 > client. Deux preuves de concept techniques existent (Dirac + Audyssey),
 > à archiver. Détail dans l'entrée "02/10, suite 8" tout en bas.
 >
+> 📁 **Archives déjà localisées (02/10, suite 9)** — recherche sur le Mac
+> de Steve : tout existe déjà sur le Bureau (`~/Desktop/DIRAC`,
+> `~/Desktop/AUDISSEY`, ~492 Mo au total), bien plus complet que prévu.
+> À retenir surtout : **Steve possède déjà un micro de mesure calibré
+> UMIK-1**, ce qui rend la piste premium "vérification par mesure REW
+> réelle" jouable immédiatement sans achat de matériel, et un dossier
+> "TEST CONCEPTION CLIENT" prouvant qu'il avait déjà commencé à réfléchir
+> à l'angle client avant cette session. Rien copié/déplacé, juste
+> documenté. Détail complet (chemins exacts) dans l'entrée "02/10,
+> suite 9" tout en bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
@@ -1606,4 +1617,59 @@ articles lus, concurrents repérés, retours clients...)_
   concrètes à fort potentiel commercial ("testé et validé personnellement
   sur mon propre système, sur les deux standards dominants du marché") —
   à ne pas perdre, en plus de l'archive déjà recommandée pour Dirac.
+
+- (02/10, suite 9) **📁 Les archives existent déjà, localisées sur le Mac
+  de Steve — recherche effectuée par Copilot via `find` à la demande de
+  Steve ("je dois avoir les fichiers encore")**
+
+  Résultat : tout existe déjà, bien plus complet qu'anticipé, et déjà
+  partiellement organisé par Steve lui-même en dossiers dédiés sur le
+  Bureau (`~/Desktop`). **Rien n'a été copié ni déplacé** — ce journal se
+  contente de documenter les emplacements exacts pour mémoire. Ces
+  dossiers ne sont **pas** versionnés dans ce dépôt Git (fichiers
+  binaires volumineux et données personnelles de calibration, hors
+  sujet pour un repo de code).
+
+  **`~/Desktop/DIRAC/` (416 Mo)** :
+  - `COURBE CIBLE/` → 8 fichiers `.targetcurve` : les courbes cibles
+    personnalisées évoquées comme levier technique n°1 dans la
+    conversation Claude sont **déjà en place**, pas à créer :
+    `AudioAdvice_4db_bass_gain`, `Harman-4dB/6dB/8dB`,
+    `LCR Cinema Target StormAudio_`, `Subwoofer Cinema StormAudio`,
+    `Surround Cinema Target StormAudio`, et une `courbe maison`
+    personnelle.
+  - `FICHIER CALIBRATION UMIK 1/` → fichiers de calibration d'un **micro
+    de mesure UMIK-1** (`7199598.txt`, `7199598_90deg.txt`). **Répond à
+    une question restée ouverte dans l'entrée "suite 7"** : Steve
+    possède déjà le matériel nécessaire pour la piste premium "vérification
+    par mesure REW réelle vs courbe prédite par Dirac" — rien à acheter,
+    juste à mettre en œuvre si cet axe est retenu un jour.
+  - `PERSO/` → 10 fichiers `.liveproject` de tests personnels (`ART PRO
+    FINAL`, `FULL IA`, `unleashed`, `V1.0.2`, etc.).
+  - `TEST CONCEPTION CLIENT/` → 2 fichiers `.liveproject` (`test
+    niveaux`, `TEST NIVEAU DE SUPPORT`). **Le nom de ce dossier prouve
+    que Steve avait déjà commencé, avant cette session, à réfléchir
+    concrètement à l'angle client** et pas seulement à son propre
+    système — élément à ne pas négliger si la mémoire du projet doit
+    être reconstituée plus tard.
+  - `~/Desktop/FULL IA.liveproject` (+ `.zip`) existe aussi en double à
+    la racine du Bureau, hors du dossier `DIRAC/`.
+
+  **`~/Desktop/AUDISSEY/` (76 Mo)** :
+  - `Test fichier audissey/` → `BLACKBOX_MASTER_DEFINITIF.ady` (nom très
+    probablement la version aboutie liée à la marque BlackBox),
+    `Test_Chassis.ady` (+ variante `Salon`, `Integral`, un doublon et un
+    `.zip`).
+  - `fichier natif audissey/` → `FICHIER_OPTIMISE.ady` et `prise de
+    mesure premier test.ady`.
+  - Quelques fichiers `.ady` identiques existent aussi en double dans
+    `~/Downloads`.
+
+  **Recommandation (pas exécutée, à valider avec Steve avant d'agir)** :
+  ces ~492 Mo ne vivent aujourd'hui que sur le Bureau d'une seule
+  machine, sans sauvegarde cloud confirmée — un risque de perte pur et
+  simple (panne disque, suppression accidentelle). Une simple copie vers
+  un espace de sauvegarde personnel (iCloud Drive, disque externe, etc.)
+  suffirait ; aucune action engagée tant que Steve n'a pas confirmé le
+  canal de sauvegarde souhaité.
 
