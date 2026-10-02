@@ -48,11 +48,25 @@ enceinte, interface Dirac Live en français, résolution 2794x1538) :
     dur. Un seul élément d'interface a une couleur stable sur toutes les
     captures et doit être exclu explicitement : le bleu "+X dB"/"-X dB"
     de l'indicateur de plage détectée, UI_RANGE_INDICATOR_RGB=(10,110,160).
-  - Courbe lissée ("tendance") : couleur pâle et désaturée, nettement
-    différente de la courbe mesurée (ex. (178,125,175) pour Front Left vs
+  - Courbe pâle/désaturée (ex. (178,125,175) pour Front Left vs
     (137,41,131) mesurée — distance euclidienne ≈103, grande marge par
-    rapport à la tolérance de couleur par défaut de 40). Pas de confusion
-    observée entre les deux avec ces paramètres.
+    rapport à la tolérance de couleur par défaut de 40 : pas de confusion
+    observée entre les deux). ⚠️ CORRECTION (03/10, suite 24) : d'abord
+    supposée être une "courbe lissée/tendance" ou la courbe "Corrigé"
+    (résultat du filtre ART), cette hypothèse a été INFIRMÉE par mesure :
+    en comparant chiffre par chiffre la valeur de cette courbe pâle et de
+    la courbe mesurée à plusieurs fréquences identiques, la courbe pâle
+    s'éloigne PARFOIS DAVANTAGE de 0 dB que la mesure brute (ex. Surround
+    Gauche à 60 Hz : mesuré=+1,7 dB, pâle=+4,3 dB) — un vrai résultat de
+    filtre ne peut jamais s'éloigner plus de sa cible que la mesure brute
+    ne l'était déjà. Cette courbe pâle est donc très probablement la
+    **courbe CIBLE** (la consigne visée, indépendante de la mesure),
+    PAS le résultat réel après correction ART. Confirmé par Steve que
+    ces captures sont "les courbes brutes réglées en automatique par
+    Dirac, aucun réglage manuel" : la courbe "Corrigé" réelle n'a pas pu
+    être identifiée avec certitude sur ces captures (peut-être
+    superposée visuellement à la cible, peut-être non affichée) — ne
+    pas présenter la courbe pâle comme "ce qu'ART obtient en pratique".
 
 Ce qui n'a PAS encore été revalidé : une résolution de capture différente
 de 2794x1538, une interface Dirac dans une autre langue, ou une version

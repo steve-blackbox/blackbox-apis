@@ -2715,3 +2715,37 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès après les ajouts sections 16-17 : aucune
   régression.
 
+- (03/10, suite 24) **🔍 Correction méthodologique : la "courbe pâle"
+  des captures n'est pas le résultat Corrigé, c'est la courbe Cible**
+
+  Steve a précisé que ses captures montrent "les courbes brutes réglées
+  en automatique par Dirac, aucun réglage manuel". Vérification
+  demandée : la 2e courbe pâle visible sur chaque capture (jusque-là
+  supposée être soit une "tendance lissée" soit le résultat "Corrigé"
+  après filtre ART) a été comparée chiffre par chiffre à la courbe
+  mesurée, à 60/120/150 Hz, sur les 7 enceintes non-caisson (extraction
+  automatique de sa couleur propre par image, détection par plage de
+  saturation moyenne 0,20-0,45). Résultat : la courbe pâle s'éloigne
+  PARFOIS DAVANTAGE de 0 dB que la mesure brute (ex. Surround Gauche à
+  60 Hz : mesuré +1,7 dB, pâle +4,3 dB) — un vrai résultat de filtre ne
+  peut jamais s'éloigner plus de sa cible que ne l'était déjà la mesure
+  brute. **Conclusion révisée : cette courbe pâle est très probablement
+  la courbe CIBLE (la consigne visée), pas le résultat réel après
+  correction ART.** La vraie courbe "Corrigé" n'a pas pu être identifiée
+  avec certitude sur ces captures. Correction apportée directement dans
+  la docstring d'`image_reader.py` (qui affirmait par erreur qu'il
+  s'agissait d'une "courbe lissée/tendance") pour éviter de refaire
+  cette erreur d'interprétation dans une prochaine analyse.
+
+  Ce qui reste valide malgré cette correction : le diagnostic des 3
+  modes de pièce (suite 23) repose sur la courbe MESURÉE (brute), pas
+  sur la courbe pâle — donc non affecté par cette correction. Mais la
+  synthèse donnée à Steve est nuancée : on ne sait toujours pas quel
+  résultat RÉEL le filtre ART automatique obtient en pratique sur ces
+  pics, seulement ce qui a été mesuré avant traitement et ce que Dirac
+  vise comme cible.
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès après la correction de documentation : aucune
+  régression.
+
