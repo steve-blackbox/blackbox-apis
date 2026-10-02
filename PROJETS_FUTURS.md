@@ -41,6 +41,17 @@
 >    second temps, puis au-delà) — un moteur générique + une configuration
 >    par vertical, plutôt qu'un outil jetable à usage unique.
 >
+> ⚠️ **Mise à jour (01/10, soirée)** : l'angle précis "rappels automatiques
+> anti no-show" pour le médical/dentaire présente un risque concurrentiel
+> majeur — Doctolib Pro (acteur dominant, "centaines de milliers de
+> soignants" en France) inclut très probablement déjà cette fonctionnalité
+> dans son abonnement tout compris. **Avant toute construction**, valider
+> sur le terrain (3-5 appels à des cabinets locaux) si c'est bien le cas.
+> Si oui : soit changer d'angle dans le médical (recall de contrôle annuel,
+> gestion d'avis Google — moins susceptibles d'être déjà couverts), soit
+> redonner la priorité aux artisans du bâtiment. Détail complet dans
+> l'entrée du journal datée "01/10, plus tard dans la soirée" plus bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
@@ -450,5 +461,47 @@ articles lus, concurrents repérés, retours clients...)_
   distribution active BlackBox (lancements publics, SEO, outreach,
   pricing...) mis en pause en conséquence — pas supprimés, à reconsidérer
   si l'agence ne prend pas.
+
+- (01/10, plus tard dans la soirée) **⚠️ Risque concurrentiel majeur détecté
+  sur l'angle "rappels automatiques anti no-show" pour le médical/dentaire
+  — Doctolib Pro**
+
+  **Origine** : Steve a demandé une explication claire du projet médical
+  pour bien comprendre de quoi il s'agit. En vérifiant (site officiel
+  `info.doctolib.fr`, pas une simple supposition), constat clé : Doctolib
+  Pro annonce accompagner **"des centaines de milliers de soignants"** en
+  France chaque jour, avec une tarification **"100% des fonctionnalités en
+  illimité"** (un seul abonnement tout compris, pas à la carte), et possède
+  du contenu dédié sur son propre site pour la recherche "rappel sms" — donc
+  très probablement déjà incluses pour la majorité du marché français.
+
+  **Conséquence** : pitcher "rappels automatiques anti no-show" à un
+  cabinet déjà client Doctolib reviendrait à proposer gratuitement ce qu'il
+  possède déjà dans un outil qu'il paie pour autre chose — refus quasi
+  garanti dès le premier appel commercial, et risque de valider la mauvaise
+  hypothèse si on construit la démo avant de vérifier ça sur le terrain.
+
+  **Mitigation adoptée — valider avant de construire** : avant tout
+  développement, appeler/visiter 3-5 cabinets dentaires locaux et demander
+  simplement s'ils utilisent déjà Doctolib, s'ils ont déjà des rappels
+  automatiques, et ce qui leur manque encore administrativement. Coût quasi
+  nul (quelques appels), évite de construire une démo pour un problème déjà
+  résolu chez le prospect.
+
+  **Pistes de repli si confirmé que Doctolib couvre déjà les rappels** (à
+  arbitrer selon les retours terrain) :
+  1. Changer d'angle **à l'intérieur du médical/dentaire** vers un besoin
+     que Doctolib ne couvre probablement pas nativement : relance de
+     "recall" (rappel du contrôle annuel/détartrage, pas juste confirmation
+     de rendez-vous déjà pris), ou gestion automatisée des avis Google après
+     visite.
+  2. Redonner la priorité aux **artisans du bâtiment** comme niche de
+     démarrage — aucun acteur dominant équivalent à Doctolib n'occupe ce
+     terrain de la même façon, risque de redondance plus faible.
+
+  **Principe général à retenir pour toute niche future** : systématiquement
+  vérifier s'il existe déjà un acteur dominant qui résout le même problème
+  en natif/inclus, avant de construire quoi que ce soit — pas seulement
+  pour le médical, pour chaque secteur PME envisagé à l'avenir.
 
 -
