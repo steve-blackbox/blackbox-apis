@@ -3523,3 +3523,29 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès : aucune régression (documentation pure, pas de
   changement de code fonctionnel dans cette entrée).
 
+- (03/10, suite 46) **📐 Seuil de perceptibilité du facteur Q des modes
+  de pièce (Q=16)**
+
+  Poursuite de la même recherche (étude trouvée via le même dépôt
+  institutionnel University of Huddersfield qui héberge les travaux de
+  Fazenda, déjà cité). Lecture intégrale de Fazenda, Avis & Davies
+  (2003), "Difference limen for the Q-factor of room modes", AES 115th
+  Convention — antérieure à l'étude JASA 2015 déjà documentée, sur un
+  angle complémentaire (facteur Q plutôt que temps de décroissance en
+  secondes).
+
+  **Valeurs chiffrées (Table 6 de l'étude)** : seuil de perceptibilité
+  d'un changement de Q = 15,2% (Q=1, RT faible) à 6,8% (Q=30, RT
+  faible), et 18,1% à 8,0% (RT moyen). Tendance confirmée une fois de
+  plus : plus un mode est résonant (Q élevé), plus un petit changement
+  devient perceptible.
+
+  **Seuil actionnable proposé par les auteurs** : les changements en
+  dessous d'un **Q=16 sont subjectivement imperceptibles** — défini
+  comme le seuil en dessous duquel tout traitement de pièce
+  supplémentaire peut être redondant.
+
+  1 constante ajoutée en section 42 de `knowledge_base.py` (complément
+  aux 3 déjà ajoutées dans la même section). 42 tests unitaires :
+  aucune régression (documentation pure).
+

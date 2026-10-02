@@ -4265,3 +4265,46 @@ of low-frequency room modes.' 116th AES Convention, Berlin, Germany,
 pre-print 6083. Citation complète obtenue via sa référence [17] dans
 Nastasa et al. 2023 (ci-dessus)."""
 
+MODAL_Q_FACTOR_DIFFERENCE_LIMEN_FAZENDA_2003 = (
+    "Étude complémentaire du MÊME auteur de référence (Fazenda) que la "
+    "constante précédente (MODAL_DECAY_PERCEPTION_THRESHOLDS_FAZENDA_"
+    "2015), mais antérieure et sur un angle différent : pas le temps "
+    "de décroissance en secondes, mais le FACTEUR Q (acuité de la "
+    "résonance — Q élevé = résonance étroite et prononcée, équivalent "
+    "à une décroissance longue). Test subjectif (10 sujets, 3 "
+    "répétitions, ANOVA) mesurant le 'difference limen' (DL, plus "
+    "petit changement de Q perceptible, en %) pour 3 niveaux de Q de "
+    "référence (1, 10, 30) et 2 temps de réverbération ambiants (RT "
+    "faible/moyen). Résultats chiffrés exacts (Table 6 de l'étude) : "
+    "DL = 15,2% (Q=1, RT faible) ; 10,1% (Q=10, RT faible) ; 6,8% "
+    "(Q=30, RT faible) ; 18,1% (Q=1, RT moyen) ; 11,9% (Q=10, RT "
+    "moyen) ; 8,0% (Q=30, RT moyen). Tendance claire, cohérente avec "
+    "tout ce qui est déjà documenté sur le temps de décroissance : "
+    "'le difference limen AUGMENTE quand le facteur Q DIMINUE' — "
+    "autrement dit, plus un mode est RÉSONANT/PROLONGÉ (Q élevé), plus "
+    "les auditeurs sont SENSIBLES à de petits changements de son "
+    "acuité ; un mode déjà bien amorti (Q faible) nécessite un "
+    "changement beaucoup plus important pour qu'une différence soit "
+    "perceptible. **Seuil absolu actionnable proposé par les auteurs** "
+    ": 'les changements en dessous d'un Q=16 seront subjectivement "
+    "IMPERCEPTIBLES, ce qui peut être défini comme le seuil inférieur "
+    "au-delà duquel tout traitement de pièce supplémentaire peut être "
+    "REDONDANT.' Limite honnête : le facteur Q n'est PAS un concept "
+    "actuellement exploité dans notre modèle de mesure "
+    "(MeasurementPoint ne capture que freq_hz + spl_db), donc ce seuil "
+    "reste une connaissance de référence non encore branchée sur un "
+    "calcul automatisé — mais il confirme, depuis un 3e angle "
+    "méthodologique indépendant (DL perceptif sur le Q, pas "
+    "l'amplitude ni le temps de décroissance brut), que les modes "
+    "'longs'/résonants nécessitent une vigilance accrue, cohérent avec "
+    "toute notre section 33 (prudence sur les gains, creux abaissés "
+    "jamais comblés)."
+)
+"""[Étude peer-reviewed, AES, même équipe de référence] — Fazenda,
+B.M., Avis, M.R., & Davies, W.J. (2003). 'Difference limen for the
+Q-factor of room modes.' AES 115th Convention, New York, USA. PDF en
+libre accès institutionnel : eprints.hud.ac.uk/id/eprint/3537, lu en
+texte intégral (University of Huddersfield Repository — Fazenda y a
+déposé ses travaux de l'époque où il était à l'University of
+Salford)."""
+
