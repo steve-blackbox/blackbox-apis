@@ -150,6 +150,17 @@
 > complet (produit, pricing, risques, roadmap) dans l'entrée "02/10,
 > suite 7" tout en bas.
 >
+> 🔧 **Confirmation technique de Steve (02/10, suite 8)** — Steve a
+> personnellement testé la génération de fichier prêt à l'emploi sur les
+> deux standards dominants : **Dirac Live ART bloqué par protection du
+> code**, **Audyssey fonctionnel mais fragile** (a fallu alléger le code
+> pour que le processeur Marantz accepte l'injection). D'où le choix
+> déjà documenté de vendre des **réglages à appliquer par le client
+> lui-même** plutôt qu'un fichier généré — plus robuste, sans
+> contournement de protection, valable quel que soit le système du
+> client. Deux preuves de concept techniques existent (Dirac + Audyssey),
+> à archiver. Détail dans l'entrée "02/10, suite 8" tout en bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
@@ -1546,4 +1557,53 @@ articles lus, concurrents repérés, retours clients...)_
   Gemini, les consignes données, les résultats) avant que ça ne se perde
   — c'est potentiellement le vrai actif du projet, plus que n'importe
   quel modèle IA utilisé.
+
+- (02/10, suite 8) **🔧 Confirmation technique directe de Steve : pourquoi
+  l'offre repose sur des réglages conseillés, pas sur un fichier généré**
+
+  Steve a confirmé par expérience personnelle directe (pas seulement
+  l'avertissement théorique de Claude) les limites techniques qui fondent
+  le choix de modèle d'offre :
+  - **Dirac Live ART** : Steve avait réussi à *créer* un fichier
+    `.liveproject` destiné à être injecté dans l'ampli, mais **le code
+    est protégé** — impossible de l'injecter réellement dans le
+    processeur. Confirme définitivement le point de vigilance déjà noté
+    ci-dessus ("abandonner toute tentative de génération du fichier
+    .liveproject") : ce n'est pas une précaution théorique, c'est un mur
+    technique vérifié.
+  - **Audyssey** (sur son propre ampli Marantz) : tentative réussie,
+    mais avec un obstacle intermédiaire — le processeur Marantz refusait
+    l'injection de filtres FIR personnalisés à la place du travail de
+    l'algorithme Audyssey natif. Il a fallu **alléger le code** pour que
+    le processeur l'accepte. Résultat final : un fichier créé avec
+    Gemini a pu être inséré sans problème.
+
+  **Conclusion de Steve, dans ses mots, qui justifie directement le choix
+  de modèle déjà documenté plus haut** : *"d'où mon choix de fournir les
+  bons réglages à partir des captures pour que le client les applique
+  lui-même."* Autrement dit, la voie "fichier prêt à l'emploi" a été
+  explorée concrètement sur les deux standards de calibration les plus
+  répandus (Dirac, Audyssey) et s'est révélée soit bloquée (Dirac), soit
+  fragile et dépendante du modèle d'ampli/processeur (Audyssey — code à
+  adapter au cas par cas). Vendre des **réglages à appliquer
+  manuellement par le client** est donc un choix pragmatique et plus
+  robuste qu'il n'y paraît : ça fonctionne quel que soit le système de
+  calibration du client (Dirac, Audyssey, potentiellement YPAO/Anthem
+  ARC), sans contourner aucune protection, sans risque juridique, et sans
+  fragilité technique propre à chaque modèle d'ampli.
+
+  **Nouvel élément d'archive potentiel identifié** : Steve dispose donc de
+  **deux preuves de concept techniques réelles**, pas une seule :
+  1. Le test Dirac Live ART (déjà noté plus haut : captures avant/après,
+     consignes et résultats obtenus avec Gemini).
+  2. Un **fichier Audyssey fonctionnel créé avec Gemini**, réellement
+     injecté avec succès dans son ampli Marantz après allègement du
+     code — plus la conversation Gemini correspondante et le code
+     allégé lui-même.
+  Question posée à Steve pour savoir si tout cela est encore disponible
+  (fichier, conversation, version allégée du code) : **pas de réponse
+  obtenue dans l'immédiat**, à reposer plus tard. Ce sont des preuves
+  concrètes à fort potentiel commercial ("testé et validé personnellement
+  sur mon propre système, sur les deux standards dominants du marché") —
+  à ne pas perdre, en plus de l'archive déjà recommandée pour Dirac.
 
