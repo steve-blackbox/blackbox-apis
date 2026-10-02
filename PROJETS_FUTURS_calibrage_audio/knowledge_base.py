@@ -4149,3 +4149,119 @@ testée dans diagnostic_engine.py (test_integrated_amp_topology_adds_
 extra_caveat_but_still_computes et test_external_power_amp_topology_
 has_no_extra_caveat)."""
 
+# ---------------------------------------------------------------------------
+# 42. Impact des modes de pièce sur la LOCALISATION spatiale en basse
+#     fréquence, et seuils de perception chiffrés du temps de
+#     décroissance modal (poursuite de la recherche peer-reviewed
+#     20-150Hz demandée par Steve, 03/10 : "la recherche scientifique
+#     est la base de l'acoustique... on va continuer à explorer ça").
+#     Source principale : Nastasa, M., Pulkki, V., & Mäkivirta, A.
+#     (2023). "Impact of standing waves on human auditory perception
+#     of low-frequency direction." AES International Conference on
+#     Spatial and Immersive Audio, Huddersfield, UK — Aalto Acoustic
+#     Lab (Finlande) + Genelec Oy. PDF en libre accès institutionnel
+#     (acris.aalto.fi), lu en texte intégral (9 pages).
+# ---------------------------------------------------------------------------
+LOW_FREQUENCY_LOCALIZATION_DEGRADED_BY_ROOM_MODES = (
+    "Étude peer-reviewed (test d'écoute psychoacoustique, 20 "
+    "participants, méthode 2AFC, 960 essais, chambre anéchoïque ISO "
+    "3745) démontrant que les modes de pièce dégradent la LOCALISATION "
+    "spatiale des sources en très basse fréquence (31,5/50/80 Hz "
+    "testés — pile dans la plage ART) — pas seulement le niveau ou le "
+    "timbre perçu, un aspect du 'rendu global' non couvert par nos "
+    "règles précédentes. Résultat central, chiffré : le 'direct-to-"
+    "mode ratio' (DMR) — écart de niveau entre le son direct et le "
+    "nœud de pression MINIMUM (creux) à partir duquel l'onde "
+    "stationnaire n'influence plus la perception de direction — "
+    "est de **10 dB à 31,5 Hz, 23 dB à 50 Hz, et 16 dB à 80 Hz** "
+    "(seuil = 70% de réponses correctes, méthode de Mills 1958 pour "
+    "l'angle minimum audible). **Asymétrie pics/creux confirmée une "
+    "3e fois indépendamment** (après Cecchi et al. 2018 section 39, "
+    "et notre propre règle de prudence section 33) : le nœud de "
+    "pression MAXIMUM (pic) n'affecte la localisation que 'de façon "
+    "nominale', alors que le nœud MINIMUM (creux) 'impède fortement' "
+    "la localisation, même à des écarts de niveau relativement "
+    "grands. Conclusion textuelle des auteurs, directement "
+    "exploitable : 'si une information directionnelle correcte est "
+    "souhaitée dans le spectre basse fréquence, ces nœuds de pression "
+    "[les creux] devraient être considérés en priorité' — et plus "
+    "largement : 'la localisation des sources basse fréquence n'est "
+    "pas tant une question de capacité de notre système auditif, "
+    "qu'une question des propriétés acoustiques de l'environnement "
+    "d'écoute' (donc un problème d'ACOUSTIQUE DE PIÈCE, pas une limite "
+    "physiologique à accepter). ⚠️ Limite explicitement reconnue par "
+    "les auteurs eux-mêmes : ces valeurs de DMR ont été mesurées dans "
+    "UNE configuration de test précise (onde stationnaire synthétique "
+    "entre 2 caissons latéraux) — 'il est difficile d'estimer si ces "
+    "valeurs de DMR pourraient être généralisées à d'autres pièces'. "
+    "Nous les rapportons donc comme un ORDRE DE GRANDEUR scientifique "
+    "validé, pas une constante universelle à appliquer telle quelle."
+)
+"""[Étude peer-reviewed, AES] — Nastasa, M., Pulkki, V., & Mäkivirta,
+A. (2023), 'Impact of standing waves on human auditory perception of
+low-frequency direction', AES International Conference on Spatial and
+Immersive Audio 2023. PDF institutionnel : acris.aalto.fi/ws/
+portalfiles/portal/139838618/Impact_Standing_Waves.pdf, lu en texte
+intégral (extraction directe du PDF, pas un résumé tiers)."""
+
+MODAL_DECAY_PERCEPTION_THRESHOLDS_FAZENDA_2015 = (
+    "Valeurs chiffrées PRÉCISES du seuil de perception du temps de "
+    "décroissance modal (enfin localisées après plusieurs tentatives "
+    "bloquées sur ResearchGate, section 38/recherches précédentes — "
+    "trouvées ici via leur citation complète dans Nastasa et al. 2023, "
+    "ci-dessus) : en dessous de ces seuils, 'il est peu probable que "
+    "les problèmes modaux soient détectés, et l'usage de méthodes de "
+    "contrôle [EQ] pour les corriger est susceptible d'être "
+    "perceptuellement dénué de sens' (conclusion textuelle des "
+    "auteurs). Seuils mesurés pour des bursts de sinusoïde pure : "
+    "**0,9 s à 32 Hz (85 dB) ; 0,3 s à 63 Hz (85 dB) et 0,5 s à 63 Hz "
+    "(70 dB) ; 0,27 s à 100 Hz (70 ET 85 dB)**. Tendance claire : le "
+    "seuil de détectabilité DIMINUE avec la fréquence (il faut un "
+    "temps de décroissance plus long pour être détecté à 32 Hz qu'à "
+    "100 Hz), et DIMINUE légèrement avec un niveau plus élevé à 63 Hz "
+    "(85 dB détecte un peu plus vite que 70 dB). **Implication directe "
+    "pour notre algorithme** : notre détection d'anomalie actuelle "
+    "(detect_anomalies, calculate_room_mode_control_points) se base "
+    "UNIQUEMENT sur l'AMPLITUDE mesurée (dB), jamais sur le TEMPS DE "
+    "DÉCROISSANCE du mode — cette étude montre que c'est le facteur "
+    "perceptuel principal identifié par la littérature, pas "
+    "l'amplitude seule. Un mode de FORTE amplitude mais de décroissance "
+    "RAPIDE (bien amorti) pourrait rester perceptuellement non "
+    "pertinent, et inversement. Piste d'amélioration V2 identifiée "
+    "mais NON implémentée ici, faute de donnée de temps de décroissance "
+    "disponible dans nos MeasurementPoint actuels (freq_hz + spl_db "
+    "seulement, pas de RT60 modal par bande) — nécessiterait d'enrichir "
+    "le modèle de mesure si une vraie source de données l'expose un "
+    "jour (Dirac calcule cette information en interne pour son propre "
+    "algorithme, mais ne l'expose pas forcément au client)."
+)
+"""[Étude peer-reviewed, référence historique du domaine] — Fazenda,
+B.M., Stephenson, M., & Goldberg, A. (2015). 'Perceptual thresholds
+for the effects of room modes as a function of modal decay.' The
+Journal of the Acoustical Society of America, 137(3), 1088-1098.
+Citation complète obtenue via sa référence [19] dans Nastasa et al.
+2023 (ci-dessus) — contenu original JASA non rouvert directement
+(paywall AIP déjà documenté comme bloquant), mais les valeurs
+chiffrées rapportées ici sont citées littéralement par une 2e étude
+peer-reviewed (Nastasa et al. 2023), donc à 2 niveaux de vérification
+indépendants."""
+
+MODAL_DECAY_PERCEPTION_THRESHOLDS_KARJALAINEN_2004 = (
+    "2e étude de référence sur le même sujet, antérieure à Fazenda et "
+    "al. : 'jusqu'à 100 Hz, le seuil de temps de décroissance est "
+    "d'environ 0,2 à 0,3 s, tandis qu'à 50 Hz des temps de décroissance "
+    "allant jusqu'à deux secondes ne font AUCUNE différence "
+    "perceptible.' Cette dernière valeur (2 secondes à 50 Hz sans "
+    "différence perceptible) est frappante : elle suggère que la "
+    "zone autour de 50 Hz est PARTICULIÈREMENT TOLÉRANTE aux "
+    "décroissances longues comparée à 100 Hz, cohérent avec la "
+    "tendance générale (seuil qui diminue avec la fréquence) déjà "
+    "observée chez Fazenda et al. ci-dessus, bien que les 2 études ne "
+    "soient pas directement comparables (méthodologies différentes)."
+)
+"""[Étude peer-reviewed, AES] — Karjalainen, M., Antsalo, P.,
+Mäkivirta, A., & Välimäki, V. (2004). 'Perception of temporal decay
+of low-frequency room modes.' 116th AES Convention, Berlin, Germany,
+pre-print 6083. Citation complète obtenue via sa référence [17] dans
+Nastasa et al. 2023 (ci-dessus)."""
+

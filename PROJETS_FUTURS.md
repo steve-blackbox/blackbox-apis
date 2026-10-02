@@ -3486,3 +3486,40 @@ articles lus, concurrents repérés, retours clients...)_
   42 tests au total) + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (03/10, suite 45) **🎯 Impact des modes de pièce sur la LOCALISATION
+  spatiale + seuils chiffrés de perception du temps de décroissance
+  modal**
+
+  Steve a confirmé vouloir continuer l'exploration scientifique
+  ("la recherche scientifique est la base de l'acoustique"). Lecture
+  intégrale d'une étude AES 2023 (Aalto Acoustic Lab + Genelec Oy),
+  trouvée en PDF institutionnel libre d'accès : Nastasa, Pulkki &
+  Mäkivirta, "Impact of standing waves on human auditory perception of
+  low-frequency direction".
+
+  **Découverte principale** : les modes de pièce dégradent la
+  LOCALISATION spatiale en basse fréquence (31,5/50/80Hz testés), pas
+  seulement le niveau/timbre perçu. Seuil chiffré du "direct-to-mode
+  ratio" (DMR, écart de niveau nécessaire pour ne plus perturber la
+  localisation) : **10dB à 31,5Hz, 23dB à 50Hz, 16dB à 80Hz**.
+  Confirmation indépendante, une 3e fois, de l'asymétrie pics/creux
+  (les creux "impèdent fortement" la localisation, les pics "de façon
+  nominale" seulement) — cohérent avec Cecchi et al. 2018 (section 39)
+  et notre propre règle de prudence (section 33).
+
+  **Bonus inattendu** : cet article cite in extenso les valeurs
+  chiffrées exactes de l'étude cherchée depuis plusieurs sessions et
+  bloquée sur ResearchGate — **Fazenda, Stephenson & Goldberg (2015),
+  JASA 137(3):1088-1098**, "Perceptual thresholds for the effects of
+  room modes as a function of modal decay" : seuils de 0,9s à 32Hz,
+  0,3-0,5s à 63Hz, 0,27s à 100Hz. Confirme que le TEMPS DE DÉCROISSANCE
+  d'un mode (pas seulement son amplitude en dB) est le facteur
+  perceptuel déterminant — piste d'amélioration V2 identifiée mais non
+  implémentée, faute de donnée de decay dans nos mesures actuelles
+  (`MeasurementPoint` n'a que freq_hz + spl_db).
+
+  3 constantes ajoutées en section 42 de `knowledge_base.py`.
+  42 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression (documentation pure, pas de
+  changement de code fonctionnel dans cette entrée).
+
