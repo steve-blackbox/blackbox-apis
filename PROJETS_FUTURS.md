@@ -2534,3 +2534,61 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès après ces ajouts à `knowledge_base.py` : aucune
   régression.
 
+- (03/10, suite 21) **🧩 Bilan honnête de compréhension globale + premier
+  trou comblé : la distorsion non-linéaire, limite physique d'ART**
+
+  Steve a demandé si j'avais besoin d'autres informations pour une
+  compréhension globale d'un système home cinéma et de ce qui impacte
+  son rendu. Plutôt que de répondre de mémoire, j'ai fait un vrai bilan
+  en parcourant les 13 sections de `knowledge_base.py`, `models.py` et
+  `diagnostic_engine.py`, et confirmé par recherche (`grep`) l'absence
+  de plusieurs sujets : distorsion/non-linéarité des haut-parleurs,
+  directivité/dispersion, diffusion acoustique, RT60 réellement mesuré,
+  électronique d'amplification, câblage/alimentation, chaîne numérique
+  amont (codecs, HDMI, jitter). L'effet de précédence (Haas) et la
+  psychoacoustique du volume (Fletcher-Munson) étaient déjà couverts,
+  donc pas comptés comme trous.
+
+  Steve indisponible pour prioriser (choix pragmatique fait en
+  autopilot) : traité en premier le trou le plus directement lié au
+  projet de calibrage — **la limite physique de ce qu'un correcteur
+  linéaire comme ART peut corriger**, cohérent avec le fait que les 3
+  brevets Dirac déjà lus (suites 18-20) décrivent tous un contrôleur LQG
+  **linéaire**. Nouvelle section 14 de `knowledge_base.py` (4 constantes
+  sourcées), à partir de deux pages Wikipedia lues directement :
+  - **`LINEAR_EQ_CANNOT_FIX_NONLINEAR_DISTORTION`** : un égaliseur ne
+    fait qu'ajuster amplitude/phase par fréquence (linéaire), alors que
+    la distorsion harmonique (THD) et d'intermodulation (IMD) d'un
+    haut-parleur crée du contenu fréquentiel NOUVEAU par un phénomène
+    non-linéaire — structurellement hors de portée d'un filtre linéaire
+    placé en amont. Conséquence concrète : une calibration ART parfaite
+    ne rendra jamais une enceinte médiocre ou poussée trop fort aussi
+    propre qu'une meilleure enceinte bien dimensionnée.
+  - **`LOUDSPEAKER_DISTORTION_MAGNITUDE_VS_ELECTRONICS`** : chiffres
+    sourcés — électronique <1 % THD, haut-parleurs 1-5 % à niveau
+    modéré (jusqu'à 10 % acceptable dans les graves en lecture forte),
+    la plupart des enceintes domestiques distordant fortement au-delà
+    de 100 dB SPL.
+  - **`INTERMODULATION_DISTORTION_AND_CROSSOVER_LINK`** : l'IMD
+    augmente avec l'excursion du cône et diminue avec la largeur de
+    bande du haut-parleur — ajoute une 2e justification acoustique au
+    crossover déjà documenté (au-delà de la sommation plate
+    Linkwitz-Riley), indépendante de tout réglage DSP.
+  - **`LOUDSPEAKER_COLOURATION_RESONANCE_CONCEPT`** : la "coloration"
+    (résonances mécaniques du cône/suspension/caisson qui continuent de
+    vibrer après la fin du signal, mesurée en waterfall/spectrogramme)
+    est un phénomène distinct, que la correction de phase/amplitude
+    d'ART peut atténuer en partie mais pas éliminer à la source —
+    frontière reconnue comme pas parfaitement nette avec les sources
+    actuelles.
+
+  Les autres trous identifiés (physique du haut-parleur hors
+  distorsion, diffusion, RT60 mesuré, électronique ampli, câblage,
+  chaîne numérique) sont listés dans `README.md` ("Pistes V2") pour
+  être repris si Steve le demande, plutôt que traités sans priorisation
+  réelle de sa part.
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès après ces ajouts à `knowledge_base.py` : aucune
+  régression.
+

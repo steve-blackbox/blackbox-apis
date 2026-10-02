@@ -1267,3 +1267,137 @@ brevet Dirac Research connue ne reste ouverte à ce stade ; un
 approfondissement supplémentaire nécessiterait une nouvelle recherche
 (ex : Google Patents, requête 'assignee:Dirac Research AB') que Steve
 n'a pas demandée pour l'instant."""
+
+# ---------------------------------------------------------------------------
+# 14. Limite physique de toute correction DSP linéaire (ART/Dirac, Audyssey,
+#     etc.) : la distorsion NON-LINÉAIRE des haut-parleurs. Question de
+#     Steve ("as-tu besoin d'autres informations pour une compréhension
+#     globale d'un système home cinéma ?") : après bilan honnête du
+#     contenu existant (sections 1 à 13, toutes centrées sur la réponse
+#     LINÉAIRE amplitude/phase), ce point est identifié comme le trou le
+#     plus directement utile à combler en premier — les 3 brevets Dirac
+#     déjà lus (sections 11 à 13) décrivent tous un contrôleur LQG, c'est
+#     à dire un filtre LINÉAIRE, causal et stable. Sources encyclopédiques
+#     lues directement (même méthode que la section 10), classées
+#     [Acoustique générale].
+# ---------------------------------------------------------------------------
+LINEAR_EQ_CANNOT_FIX_NONLINEAR_DISTORTION = (
+    "Distinction fondamentale de théorie du signal, établie en combinant "
+    "deux faits séparément sourcés ci-dessous : un égaliseur/correcteur "
+    "(dont Dirac ART, d'après les 3 brevets lus en sections 11 à 13, qui "
+    "décrivent tous un contrôleur LQG linéaire, causal et stable) ne "
+    "fait qu'ajuster l'amplitude et la phase du signal à CHAQUE "
+    "fréquence, de façon linéaire. La distorsion harmonique (THD) et la "
+    "distorsion d'intermodulation (IMD) d'un haut-parleur sont, par "
+    "définition, le produit d'un système NON-LINÉAIRE : elles créent du "
+    "contenu fréquentiel NOUVEAU (harmoniques à 2x/3x la fréquence "
+    "d'origine, ou produits de combinaison entre deux fréquences "
+    "distinctes) qui n'existait pas dans le signal d'entrée. Un filtre "
+    "linéaire placé en amont du haut-parleur (ce que fait Dirac) ne peut "
+    "structurellement pas empêcher ce phénomène non-linéaire de se "
+    "produire DANS le haut-parleur lui-même : il peut seulement changer "
+    "l'amplitude et la phase du signal qu'il reçoit, pas la façon dont "
+    "ce haut-parleur particulier le transforme physiquement. Conséquence "
+    "pratique directe pour un client : une calibration ART parfaite ne "
+    "rendra jamais une enceinte de mauvaise qualité, ou poussée au-delà "
+    "de ses capacités, aussi propre qu'une meilleure enceinte bien "
+    "dimensionnée — ce sont deux problèmes de nature différente, pas un "
+    "seul que la calibration pourrait entièrement résoudre."
+)
+"""[Acoustique générale] — synthèse de deux pages Wikipedia lues
+directement : https://en.wikipedia.org/wiki/Total_harmonic_distortion
+('When a sinusoidal signal of frequency ω passes through a non-ideal,
+non-linear device, additional content is added at integer multiples nω
+(harmonics)... we start with an ideal system where the transfer function
+is linear and time-invariant') et
+https://en.wikipedia.org/wiki/Audio_system_measurements, section
+'Intermodulation distortion (IMD)' ('This effect results from
+non-linearities in the system'). Le rapprochement entre ces deux faits
+(équaliseur = système linéaire ; distorsion = produit d'un système
+non-linéaire) est un raisonnement logique explicite de notre part, pas
+une phrase unique citée telle quelle — à ne pas présenter comme une
+citation directe d'une seule source."""
+
+LOUDSPEAKER_DISTORTION_MAGNITUDE_VS_ELECTRONICS = (
+    "Ordres de grandeur chiffrés et sourcés, utiles pour expliquer "
+    "concrètement pourquoi le haut-parleur reste le maillon faible : "
+    "l'électronique haute-fidélité (amplis, lecteurs CD) atteint "
+    "typiquement MOINS de 1 % de distorsion harmonique, alors que les "
+    "haut-parleurs ('éléments mécaniques') ont 'des niveaux plus élevés "
+    "inévitables' — 1 à 5 % de distorsion à un niveau d'écoute modérément "
+    "fort n'est 'pas rare', et jusqu'à 10 % est jugé acceptable dans les "
+    "graves en lecture forte (l'oreille humaine étant moins sensible à "
+    "la distorsion dans cette zone). Une source dédiée à la mesure des "
+    "haut-parleurs chiffre la distorsion typique autour de 3 % "
+    "('distortion residue' pondéré 468), correspondant à 1-2 % de THD, "
+    "et précise qu'au-dessus de 100 dB SPL 'presque tous les systèmes de "
+    "haut-parleurs domestiques distordent fortement' (les moniteurs "
+    "professionnels tenant un niveau de distorsion modeste jusqu'à "
+    "environ 110 dB SPL à 1 m)."
+)
+"""[Acoustique générale] — https://en.wikipedia.org/wiki/Audio_system_
+measurements, section 'Total harmonic distortion (THD)' ('Essentially,
+all loudspeakers produce more distortion than electronics, and 1-5%
+distortion is not unheard of at moderately loud listening levels...
+levels are usually expected to be under 10% at loud playback [in the
+bass]') et https://en.wikipedia.org/wiki/Loudspeaker_measurement,
+section 'Distortion measurement' ('Most speakers give around 3%
+distortion measured 468-weighted distortion residue... almost all
+domestic speaker systems distort badly above 100 dB SPL. Professional
+monitors may maintain modest distortion up to around 110 dB SPL at
+1 m')."""
+
+INTERMODULATION_DISTORTION_AND_CROSSOVER_LINK = (
+    "Précision importante qui relie ce sujet à ce qui est déjà documenté "
+    "sur le crossover (voir BASS_MANAGEMENT_CROSSOVER_PRINCIPLE, section "
+    "10) : la distorsion d'intermodulation (IMD) d'un haut-parleur "
+    "'augmente avec l'excursion du cône' (donc avec le niveau sonore "
+    "demandé à ce haut-parleur) et 'réduire la bande passante d'un "
+    "haut-parleur réduit directement l'IMD'. C'est exactement ce que "
+    "fait un crossover (séparer la bande de fréquences en plusieurs "
+    "haut-parleurs spécialisés) : au-delà de la justification déjà "
+    "connue (sommation plate au point de croisement, alignement "
+    "Linkwitz-Riley), le crossover a donc une seconde justification "
+    "acoustique indépendante — limiter l'excursion et la largeur de "
+    "bande de chaque haut-parleur réduit sa distorsion d'intermodulation "
+    "intrinsèque, un bénéfice qu'aucun réglage DSP linéaire en amont "
+    "(ART ou autre) ne peut apporter à lui seul."
+)
+"""[Acoustique générale] — même source que ci-dessus,
+https://en.wikipedia.org/wiki/Audio_system_measurements, section
+'Intermodulation distortion (IMD)' ('IMD increases with cone excursion.
+Reducing a driver's bandwidth directly reduces IMD. This is achieved by
+splitting the desired frequency range into separate bands with an audio
+crossover and employing separate drivers for each band of
+frequencies')."""
+
+LOUDSPEAKER_COLOURATION_RESONANCE_CONCEPT = (
+    "Un phénomène physique distinct de la distorsion harmonique/IMD, "
+    "appelé 'coloration' : la tendance du cône, de sa suspension, du "
+    "caisson et de l'air qu'il enferme à CONTINUER de vibrer quand le "
+    "signal électrique s'arrête, par stockage d'énergie dans des "
+    "résonances mécaniques (d'autant plus audibles que leur facteur de "
+    "qualité, le 'Q', est élevé — une résonance étroite et prolongée). "
+    "C'est ce phénomène, pas la distorsion harmonique, que mesurent les "
+    "graphiques en cascade temps/fréquence ('waterfall' ou "
+    "spectrogramme) déjà mentionnés en section 11 à propos du lissage "
+    "adaptatif de Dirac. Nuance importante pour ne pas sur-simplifier : "
+    "une correction DSP qui agit sur l'amplitude ET la phase (ce que "
+    "revendiquent les 3 brevets Dirac, via leur 'target impulse "
+    "response') peut atténuer une partie de l'effet perçu d'une "
+    "résonance en la rééquilibrant en amplitude, mais n'élimine pas le "
+    "stockage d'énergie mécanique lui-même à sa source — la frontière "
+    "entre 'ce qu'ART peut corriger' et 'ce qui reste un défaut physique "
+    "du haut-parleur' n'est donc pas parfaitement nette et mériterait, "
+    "si besoin, une source allant plus loin que cette synthèse "
+    "encyclopédique générale."
+)
+"""[Acoustique générale] — https://en.wikipedia.org/wiki/Loudspeaker_
+measurement, section 'Colouration analysis' ('Loudspeakers differ from
+most other items of audio equipment in suffering from colouration, the
+tendency of various parts of the speaker—the cone, its surround, the
+cabinet, the enclosed space—to carry on moving when the signal
+ceases... resonances with high Q factor are especially audible... FFT
+measuring equipment was introduced in order to measure the delayed
+output from speakers and display it as a time vs. frequency waterfall
+plot')."""

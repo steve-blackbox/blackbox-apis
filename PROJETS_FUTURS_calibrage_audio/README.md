@@ -29,7 +29,7 @@ Ce n'est **pas** :
 | Fichier | Rôle |
 |---|---|
 | `models.py` | Structures de données (enceintes, mesures, pièce, recommandations, anomalies, rapport, études citées, brevets cités). |
-| `knowledge_base.py` | Toutes les règles et sources (directives StormAudio ART, hiérarchie de support, courbes cibles, diagnostic différentiel, 5 facteurs d'immersion, prérequis techniques, disclaimers obligatoires, études scientifiques citées, fondamentaux home cinéma de fond — section 10, fondements brevetés d'ART lus en texte intégral — section 11). |
+| `knowledge_base.py` | Toutes les règles et sources (directives StormAudio ART, hiérarchie de support, courbes cibles, diagnostic différentiel, 5 facteurs d'immersion, prérequis techniques, disclaimers obligatoires, études scientifiques citées, fondamentaux home cinéma de fond — section 10, trois brevets Dirac Research lus en texte intégral — sections 11 à 13, limite physique de la correction linéaire face à la distorsion non-linéaire des haut-parleurs — section 14). |
 | `diagnostic_engine.py` | Détection d'anomalies sur les courbes, calcul des modes propres de la pièce, diagnostic différentiel, génération des recommandations. |
 | `report_generator.py` | Transforme un `DiagnosticReport` en rapport texte livrable au client. |
 | `image_reader.py` | Lit automatiquement les courbes depuis une capture d'écran Dirac Live (calibration d'axes + détection de la couleur de la courbe, méthode de digitalisation de graphique) — remplace la saisie manuelle des points fréquence/dB. |
@@ -122,13 +122,20 @@ python3 liveproject_reader.py "/chemin/vers/fichier.liveproject"
   formule numérique inventée quand la source ne la donnait pas (ex. pas
   de valeur chiffrée de fréquence de Schroeder) ni de tableau de
   coefficients d'absorption mal extrait d'une page source.
-- **Section 11 de `knowledge_base.py` (fondements brevetés d'ART) décrit
-  un mécanisme mathématique général lu dans un vrai brevet Dirac
-  Research (US9781510B2, texte intégral), pas les réglages exacts du
-  produit commercial actuel.** Aucune décompilation ni rétro-ingénierie
-  du logiciel Dirac Live n'a été faite ou ne sera faite : seule la
-  lecture de documents de divulgation publique (brevets accordés) est
-  utilisée comme source "interne". Pas encore câblée dans
+- **Sections 11 à 13 de `knowledge_base.py` (fondements brevetés d'ART)
+  décrivent un mécanisme mathématique général lu dans trois vrais
+  brevets Dirac Research (US9781510B2, US8213637B2, US9426600B2, textes
+  intégraux), pas les réglages exacts du produit commercial actuel.**
+  Aucune décompilation ni rétro-ingénierie du logiciel Dirac Live n'a
+  été faite ou ne sera faite : seule la lecture de documents de
+  divulgation publique (brevets accordés) est utilisée comme source
+  "interne". Pas encore câblées dans `diagnostic_engine.py`.
+- **Section 14 de `knowledge_base.py` (limite physique de la correction
+  linéaire face à la distorsion non-linéaire des haut-parleurs) est un
+  raisonnement logique assemblé à partir de deux pages Wikipedia lues
+  séparément, pas une citation unique d'une source qui l'énoncerait
+  telle quelle.** Voir la docstring de `LINEAR_EQ_CANNOT_FIX_NONLINEAR_
+  DISTORTION` pour le détail de cette nuance. Pas encore câblée dans
   `diagnostic_engine.py`.
 
 ## Pistes V2 (non commencées)
@@ -152,3 +159,14 @@ python3 liveproject_reader.py "/chemin/vers/fichier.liveproject"
   avait fait faire à Gemini (voir `../PROJETS_FUTURS.md`, "suite 10" à
   "suite 13") — mais à partir de données réellement extraites et
   vérifiables plutôt que d'une mémoire de modèle IA non sauvegardée.
+- **Trous identifiés (03/10, bilan de compréhension globale demandé par
+  Steve) mais non comblés par manque de priorisation explicite** :
+  directivité/dispersion du haut-parleur selon le type de driver,
+  diffusion acoustique (3e pilier à côté de l'absorption et des modes,
+  diffuseurs Schroeder/QRD), RT60 réellement mesuré (pas seulement le
+  concept de fréquence de Schroeder), électronique de l'amplificateur
+  (puissance, impédance de charge, headroom, écrêtage), câblage et
+  alimentation électrique (bruit de fond, mise à la terre), chaîne
+  numérique en amont (codecs, HDMI eARC, gigue/jitter). À reprendre si
+  Steve en fait la demande, avec la même méthode de recherche sourcée.
+
