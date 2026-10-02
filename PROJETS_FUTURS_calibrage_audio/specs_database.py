@@ -10,7 +10,7 @@ de data qui s'étoffera." Avant ce module, les 5 fiches déjà sourcées
 simple liste Python codée en dur, valable uniquement pour le matériel de
 Steve — rien ne persistait d'un client à l'autre.
 
-Principe : un fichier JSON (`data/manufacturer_specs_db.json`) sert de
+Principe : un fichier JSON (`specs_db/manufacturer_specs_db.json`) sert de
 base vivante. Au premier appel, il est initialisé avec les fiches déjà
 connues de `knowledge_base.py` (pour ne rien perdre de ce qui a déjà été
 sourcé et vérifié). Ensuite, chaque nouvelle fiche trouvée pour un
@@ -34,7 +34,7 @@ from dataclasses import asdict
 import knowledge_base as kb
 from models import ManufacturerSpecSheet
 
-DEFAULT_DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "manufacturer_specs_db.json")
+DEFAULT_DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "specs_db", "manufacturer_specs_db.json")
 
 
 def _spec_to_dict(spec: ManufacturerSpecSheet) -> dict:

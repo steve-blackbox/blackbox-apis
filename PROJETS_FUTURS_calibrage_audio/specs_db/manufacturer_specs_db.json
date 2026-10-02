@@ -1,0 +1,96 @@
+[
+  {
+    "brand": "Elipson",
+    "model": "Legacy 3220",
+    "role_in_system": "Façades gauche/droite du système 7.2 de Steve",
+    "source_url": "https://en.elipson.com/product-page/legacy-3220",
+    "specs": {
+      "Type": "2 1/2 voies, colonne, bass-reflex",
+      "Tweeter": "AMT (Air Motion Transformer)",
+      "Médium/Grave": "2x 165mm, membrane aluminium/céramique",
+      "Puissance RMS admissible": "150 W",
+      "Réponse en fréquence": "35 Hz - 30 kHz",
+      "Sensibilité": "89 dB",
+      "Impédance": "6 ohms",
+      "Dimensions (L x H x P)": "1105 x 276 x 360 mm",
+      "Poids (chacune)": "32,8 kg"
+    },
+    "verification": "Page produit lue via le navigateur intégré (readPage), onglet 'SPECIFICATIONS' cliqué (clickElement) pour révéler le tableau de mesures — remplace l'estimation prudente non vérifiée utilisée avant le 03/10 (45 Hz) par la vraie valeur officielle (35 Hz)."
+  },
+  {
+    "brand": "Elipson",
+    "model": "Prestige Facet II 14C (dénommée 'Facet 2.0 14C' par Steve à l'oral — nom commercial officiel confirmé : 'Facet II')",
+    "role_in_system": "Centrale du système 7.2 de Steve",
+    "source_url": "https://www.elipson.com/product-page/prestige-facet-ii-14c",
+    "specs": {
+      "Type": "Enceinte centrale, 2 voies, bass-reflex laminaire",
+      "Puissance": "150 W RMS, amplification recommandée 40-200 W",
+      "Tweeter": "25 mm, dôme souple",
+      "Grave-médium": "2x 170 mm avec ogive centrale",
+      "Réponse en fréquence": "43 Hz - 25 kHz (±3dB)",
+      "Sensibilité": "93 dB (1W/1m)",
+      "Filtre": "3000 Hz, 18 dB/octave",
+      "Impédance nominale": "6 ohms",
+      "Impédance minimale": "4,5 ohms @ 180 Hz",
+      "Fréquence d'accord bass-reflex": "57 Hz",
+      "Dimensions produit": "600 x 207 x 250 mm",
+      "Poids net": "12,7 kg"
+    },
+    "verification": "Page produit lue via le navigateur intégré (readPage), onglet 'Détails techniques' cliqué (clickElement) — remplace l'estimation prudente non vérifiée utilisée avant le 03/10 (65 Hz) par la vraie valeur officielle (43 Hz ±3dB)."
+  },
+  {
+    "brand": "Elipson",
+    "model": "Prestige Facet II 14LCR (dénommée 'Facet 2.0 LCR' par Steve à l'oral)",
+    "role_in_system": "Surround + Surround Back (x4) du système 7.2 de Steve",
+    "source_url": "https://www.elipson.com/product-page/prestige-facet-ii-14lcr",
+    "specs": {
+      "Type": "Enceinte principale/centrale/surround, 2 voies bass-reflex",
+      "Puissance": "150 W RMS, amplification recommandée 40-200 W",
+      "Tweeter": "25 mm",
+      "Grave-médiums": "2x 170 mm",
+      "Réponse en fréquence": "53 Hz - 25 kHz (±3dB)",
+      "Sensibilité": "93 dB (1W/1m)",
+      "Filtre répartiteur": "3200 Hz, 18 dB/18 dB",
+      "Impédance nominale": "6 ohms",
+      "Impédance minimale": "4,6 ohms @ 202 Hz",
+      "Fréquence d'accord bass-reflex": "54 Hz",
+      "Dimensions": "650 x 280 x 170 mm",
+      "Poids": "13,3 kg"
+    },
+    "verification": "Page produit lue via le navigateur intégré (readPage), onglet 'Détails techniques' cliqué (clickElement) — remplace l'estimation prudente non vérifiée utilisée avant le 03/10 (70 Hz) par la vraie valeur officielle (53 Hz ±3dB)."
+  },
+  {
+    "brand": "Buckeye Amps (modules Hypex NCOREx)",
+    "model": "NCx252MP 8-Channel",
+    "role_in_system": "Ampli de puissance du système de Steve, piloté en pré-ampli par le Marantz CINEMA 30 (7 canaux utilisés sur 8 en config 7.2 — le fabricant confirme explicitement qu'un canal inutilisé sur un bloc 8 canaux ne pose aucun problème de performance)",
+    "source_url": "https://www.buckeyeamp.com/shop/amplifiers/hypex/ncx252mp/8_channel",
+    "specs": {
+      "Modules": "4x Hypex NCx252MP (2 canaux chacun)",
+      "Puissance par canal (1kHz, 1% THD)": "150W@8Ω / 250W@4Ω / 180W@2Ω",
+      "THD": "0,0007 % (125W, 4 ohms, 10Hz-20kHz)",
+      "Rapport signal/bruit (S/N)": "120 dB",
+      "Réponse en fréquence": "10 Hz - 50 kHz",
+      "Impédance d'entrée": "47 kOhms",
+      "Sensibilité d'entrée": "1,6 Vrms (4 ohms) / 1,8 Vrms (8 ohms)",
+      "Gain en tension": "26 dB",
+      "Courant de sortie": "18 A par canal",
+      "Efficacité": "92 %",
+      "Consommation veille": "0,5 W",
+      "Dimensions": "17 x 13 x 4 pouces, 16 lbs"
+    },
+    "verification": "Page produit lue directement via le navigateur intégré (readPage), tableau 'Power'/'Fidelity'/'Specifications' déjà présent dans le DOM sans clic nécessaire sur cette page."
+  },
+  {
+    "brand": "Buckeye Amps",
+    "model": "Câbles RCA(M) à XLR(M)",
+    "role_in_system": "Liaison entre les pré-sorties du Marantz CINEMA 30 (RCA) et les entrées de l'ampli Buckeye NCx252MP (XLR) — confirmé utilisé par Steve",
+    "source_url": "https://www.buckeyeamp.com/shop/amplifiers/options/cables",
+    "specs": {
+      "Câble": "Canare L-4E6S Star Quad",
+      "Connecteurs": "Neutrik XLR + Neutrik/Rean RCA",
+      "Schéma de câblage": "Schéma exact recommandé par Purifi et Hypex pour la conversion RCA->XLR, conçu pour éviter le bruit de fond ou le ronflement de masse (ground hum)",
+      "Longueurs disponibles": "0,5 m / 1 m / 2 m"
+    },
+    "verification": "Page produit lue directement via le navigateur intégré (readPage). Pertinent pour le risque de bruit de fond/ronflement de masse mentionné en section 14 (Audio System Measurements, 'Noise'/'Crosstalk'/'Common-mode rejection ratio') : ce choix de câble écarte spécifiquement ce risque, confirmé par le fabricant d'ampli lui-même, pas par Steve ou par nous."
+  }
+]
