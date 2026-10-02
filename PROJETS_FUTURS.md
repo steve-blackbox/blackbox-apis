@@ -2216,3 +2216,65 @@ articles lus, concurrents repérés, retours clients...)_
   etc.). Les 10 tests unitaires et `example_run.py` repassés avec succès
   après ces ajouts : aucune régression.
 
+- (02/10, suite 16) **🗺️ Cartographie modale EMPIRIQUE du vrai fichier de
+  Steve (`TOP CALIB BASE.liveproject`) — Steve ne veut pas de courbe
+  cible toute faite, mais une optimisation sur mesure par enceinte**
+
+  Steve a écarté un premier fichier (`FULL IA.liveproject`, "pas mon
+  fichier d'origine") puis confirmé explicitement le bon fichier :
+  **`~/Desktop/DIRAC/PERSO/TOP CALIB BASE.liveproject`** (104 Mo, 7.2.0ch,
+  9 canaux configurés, 13 positions de micro, 104 blocs de mesure
+  fréquence/magnitude décodés par `liveproject_reader.py`).
+
+  Steve a aussi précisé deux points qui corrigent l'approche initialement
+  envisagée :
+  1. **"je n'ai pas besoin des courbes cibles toute faite car moi je veux
+     optimiser les courbes de chaque enceinte sur mesure"** — donc pas de
+     recommandation basée sur `TARGET_CURVES_BY_ROLE` (gabarits nommés
+     Harman/StormAudio), mais une analyse différentielle par enceinte à
+     partir de ses propres mesures (`detect_anomalies`/`diagnose_anomaly`
+     de `diagnostic_engine.py`, déjà conçus pour ça).
+  2. **"tu n'as pas besoin des dimensions de la pièce. le fichier et les
+     courbes te donnent une cartographie de la pièce"** — correction
+     méthodologique juste : plutôt que de calculer des modes axiaux
+     théoriques (`axial_room_modes`, qui suppose une pièce rectangulaire
+     vide), les 13 vraies positions de micro déjà mesurées constituent une
+     cartographie empirique supérieure. Nouveau script
+     **`cartographie_modale.py`** écrit pour exploiter cette idée : (a)
+     cohérence spatiale — un creux/pic retrouvé sur la majorité des 13
+     positions (pas une seule) est un vrai phénomène, pas un artefact
+     local ; (b) corrélation croisée entre `slot_index` (canaux) à une
+     fréquence donnée — si le motif spatial sur les 13 positions est
+     quasi identique entre deux canaux mesurés par des enceintes
+     différentes, la pièce (pas la source) domine la réponse à cette
+     fréquence, preuve empirique d'un vrai mode de pièce.
+
+  Résultat sur le vrai fichier de Steve, deux modes de pièce dominants et
+  très bien confirmés statistiquement :
+  - **~55 Hz** : corrélation de +0,6 à +0,94 entre 6 des 8 canaux
+    (quasiment tout le système, enceintes ET les 2 caissons), le dernier
+    canal étant anti-corrélé à -0,6 à -0,93 (même mode, position
+    spatiale inversée).
+  - **~70 Hz** : corrélation de +0,76 à +0,99 entre 6 des 8 canaux.
+  - **~130-135 Hz** : mode partagé mais sur un sous-groupe plus restreint
+    (3-4 canaux), corrélation plus fragmentée.
+  Ces deux premières zones (55 Hz, 70 Hz) sont les meilleures candidates
+  pour une correction par courbe cible personnalisée dans Dirac Live,
+  puisqu'elles sont confirmées sur la quasi-totalité du système, pas
+  seulement une enceinte isolée.
+
+  Rappel des limites toujours valables (non résolues dans ce segment) :
+  correspondance `slot_index` (0-5) ↔ nom d'enceinte précis toujours
+  incertaine (7 noms pour 6 slots large bande) ; seuls les slots 6/7
+  (les 2 caissons) sont identifiés avec une bonne confiance ; les
+  magnitudes du fichier sont en dB SPL absolu (comparaison relative
+  valide en interne, pas directement lisible comme les captures d'écran
+  Dirac). Vérifié au passage : le fichier de calibration du micro UMIK-1
+  de Steve (`7199598.txt`, déjà intégré dans Dirac par Steve lui-même
+  avant la mesure) a un effet négligeable (<0,3 dB) entre 30 et 300 Hz,
+  donc n'affecte pas l'analyse modale ci-dessus.
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès après l'ajout de `cartographie_modale.py` :
+  aucune régression.
+

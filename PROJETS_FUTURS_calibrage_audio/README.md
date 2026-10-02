@@ -34,6 +34,7 @@ Ce n'est **pas** :
 | `report_generator.py` | Transforme un `DiagnosticReport` en rapport texte livrable au client. |
 | `image_reader.py` | Lit automatiquement les courbes depuis une capture d'écran Dirac Live (calibration d'axes + détection de la couleur de la courbe, méthode de digitalisation de graphique) — remplace la saisie manuelle des points fréquence/dB. |
 | `liveproject_reader.py` | Rétro-ingénierie du fichier binaire propriétaire `.liveproject` généré par Dirac Live : lit les métadonnées, décode les 13 flux audio de mesure (Ogg Vorbis) et les 104 blocs de mesure fréquence/magnitude bruts. Lecture seule — voir docstring d'en-tête pour la carte complète du format et ses limites. |
+| `cartographie_modale.py` | Cartographie EMPIRIQUE des modes de pièce à partir d'un vrai `.liveproject` : cohérence spatiale des anomalies sur les 13 positions de micro + corrélation croisée entre enceintes/caissons (sans calcul théorique de dimensions de pièce). Voir docstring d'en-tête pour la méthode et ses limites. |
 | `example_run.py` | Démonstration complète sur un système 5.1.4 fictif (2 niveaux de service). |
 | `tests/test_diagnostic_engine.py` | Tests unitaires (`unittest`, bibliothèque standard uniquement). |
 
