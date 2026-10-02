@@ -106,7 +106,15 @@
 > d'un agent vocal de plus). Ne change rien à la séquence déjà actée
 > (Paddle → validation terrain → construction). Détail dans l'entrée du
 > journal datée "02/10, suite 3" tout en bas du fichier.
-> Détail complet dans l'entrée du journal datée "02/10, suite" plus bas.
+>
+> 📦 **Offre concrète conçue (02/10, suite 4)** — nom de travail
+> **« Zéro chantier perdu »** : niche plombiers-chauffagistes/électriciens
+> dépannage, 3 blocs (réponse immédiate conforme, chaîne devis→relance
+> légale, preuve de résultat mensuelle), grille 99/179/299€/mois, premier
+> mois pilote garanti. Correction de marge faite (vapi.ai : coût réel
+> ~5-10€/mois/client, pas 20-30€). Détail complet, risques et protocole
+> de validation à seuils dans l'entrée du journal datée "02/10, suite 4"
+> tout en bas du fichier.
 >
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
@@ -1109,4 +1117,110 @@ articles lus, concurrents repérés, retours clients...)_
   terrain (guide d'entretien déjà prêt) → construire. Ces 4 points sont
   des **critères de conception**, pas une raison de changer l'ordre des
   étapes déjà décidé.
+
+- (02/10, suite 4) **📦 Offre concrète conçue : « Zéro chantier perdu »**
+
+  **Origine** : Steve a demandé comment traduire tout ce qui précède en
+  une offre commerciale réelle. Claude a proposé un plan détaillé et
+  chiffré. Ce qui suit est **la version retenue après vérification et
+  correction de deux points**, à traiter comme la spec de travail actuelle
+  pour quand la construction démarrera — pas encore testée sur le terrain.
+
+  **Positionnement** : ne pas vendre "un agent vocal IA" (commodité,
+  79-399€/mois chez la concurrence), vendre **un résultat mesurable**
+  (des chantiers récupérés) sur un seul créneau.
+
+  **Niche retenue** : plombiers-chauffagistes et électriciens de dépannage,
+  une seule zone géographique au départ. Logique : métiers d'urgence où un
+  appel manqué part chez le concurrent dans l'heure, panier moyen élevé,
+  zone unique permettant bouche-à-oreille et démos en personne.
+  **⚠️ Nuance apportée à la proposition de Claude** : ce créneau n'est pas
+  vierge — Eliocall cible déjà explicitement "plombiers, électriciens et
+  chauffagistes" (vérifié dans une recherche précédente). Pas disqualifiant
+  (confirme même une vraie demande sur ce sous-segment précis), mais la
+  différenciation devra venir de l'exécution locale et de la chaîne
+  conformité/relance, pas de l'absence de concurrent direct sur ce métier.
+
+  **L'offre — 3 blocs** (cohérents avec les 3 mécanismes de conformité déjà
+  actés dans l'entrée précédente) :
+  1. **Réponse immédiate** : renvoi d'appel si non-décroché, annonce
+     "assistant IA" (conformité transparence IA), qualification
+     (urgence/adresse/nature du problème), transfert direct si urgence
+     grave (gaz, inondation, électricité). Fiche envoyée par SMS/WhatsApp
+     à l'artisan.
+  2. **Du lead au devis** : photos par SMS/WhatsApp, consentement recueilli
+     pendant l'appel, relance à J+3/J+7 sur devis non signés — c'est le
+     bloc différenciant (chaîne appel→devis→relance légale).
+  3. **Preuve de résultat** : récapitulatif mensuel (appels captés,
+     urgences, RDV, devis, chantiers signés déclarés, CA récupéré estimé).
+
+  **🚨 Règle de conception ajoutée (pas dans la proposition initiale)** :
+  le triage d'urgence (bloc 1) est le point le plus sensible du produit —
+  pas qu'un risque commercial (chantier perdu) mais un risque de sécurité
+  réel (gaz, incendie, électrocution). **Règle dure à appliquer dès la V1,
+  non négociable** : en cas de moindre doute sur un danger immédiat,
+  l'agent redirige systématiquement vers les secours officiels (18/112) en
+  plus de prévenir l'artisan — l'IA ne doit jamais être seule juge de la
+  gravité d'une situation dangereuse.
+
+  **Grille tarifaire proposée** : Essentiel 99€/mois (bloc 1 seul), Pro
+  179€/mois (blocs 1-2-3), Équipe 299€/mois (Pro + 2-5 lignes). Mise en
+  place à 0€ pour réduire la friction. **Premier mois pilote garanti** :
+  aucun lead récupéré mesurable, aucun paiement. Positionnement cohérent
+  avec les repères marché déjà vérifiés (Eliocall 79-399€, AirAgent
+  89-299€, SOS-AN 1500€+300€/mois) : dans le haut de fourchette, justifié
+  par la vente de résultat plutôt que de minutes.
+  **Condition à ne pas oublier** : la garantie "zéro lead = zéro paiement"
+  implique que le bloc 3 (mesure) doit exister dès le jour 1 du pilote,
+  pas être construit après coup — sinon impossible à prouver aux premiers
+  clients.
+
+  **✅ Correction de marge faite (vérification vapi.ai, déjà confirmé réel
+  plus tôt dans la session)** : Claude estimait le coût variable à 20-30€/
+  mois/client en utilisant le tarif de revente d'Aircall à ses clients
+  (0,19-0,30€/min) comme proxy — **mauvais repère, ça inclut la marge
+  d'Aircall**. Le tarif réel d'une plateforme d'infrastructure vocale IA
+  (vapi.ai : hébergement 50$/1000min + modèle IA 8-45$/1000min) donne
+  plutôt **0,06 à 0,10€/minute tout compris**, soit **5 à 10€/mois pour
+  ~100 minutes** — la marge brute réelle serait donc meilleure que
+  l'estimation initiale, à condition de construire sur une brique
+  d'infrastructure (type Vapi/Bland/Retell + Twilio) plutôt que de
+  revendre un produit déjà packagé.
+
+  **Acquisition des premiers clients** :
+  - **Test d'appel mystère** : appeler soi-même 10 artisans de la zone
+    pour mesurer le taux de décroché réel — donnée locale propre, plus
+    convaincante que les statistiques génériques du marché (rappel : les
+    chiffres de perte cités par la concurrence sont des simulations non
+    vérifiées, cf. entrée précédente).
+  - **Partenaires** : comptables, négoces de matériaux, éditeurs de devis
+    (Tolteck, Obat) qui voient les artisans toute la semaine — limite
+    aussi le risque qu'ils ajoutent eux-mêmes la fonction (risque
+    plateforme déjà identifié).
+
+  **Protocole de validation avant construction (~3 semaines)** :
+  1. ~10 entretiens d'artisans (guide déjà préparé, entrée précédente).
+  2. 3 pilotes avec suivi manuel au départ.
+  3. **Seuils de décision fixés à l'avance** : au moins un chantier
+     récupéré par pilote en 30 jours, et plus de la moitié des pilotes qui
+     passent en payant à l'issue du mois gratuit.
+
+  **Risques identifiés (Claude) à garder en tête** : l'artisan ne voit pas
+  la valeur et résilie (suivi du churn dès le départ) ; mauvais triage
+  d'urgence (voir règle de conception ajoutée ci-dessus) ; qualité réelle
+  sur chantier (bruit, accents — à tester en vrai avant de promettre quoi
+  que ce soit) ; risque qu'Obat ou un généraliste copie la fonction.
+
+  **Hypothèse de départ retenue (faute de réponse directe de Steve)** :
+  démarrage sans contact artisan existant (réseau BlackBox = plutôt
+  tech/développeurs, aucune trace de contact BTP dans toute la réflexion
+  précédente) — le plan d'acquisition ci-dessus (appel mystère +
+  partenaires) est pensé pour ce cas, le plus exigeant. À corriger si
+  Steve a en réalité quelques contacts à solliciter en bonus.
+
+  **Prochaine étape** : cette offre reste **non testée sur le terrain** —
+  elle devient le support concret du guide d'entretien déjà préparé
+  (entrée précédente) plutôt qu'un plan figé. Premier jalon concret avant
+  toute ligne de code : faire le test d'appel mystère sur 10 artisans de
+  la zone choisie.
 
