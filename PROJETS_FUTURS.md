@@ -3549,3 +3549,43 @@ articles lus, concurrents repérés, retours clients...)_
   aux 3 déjà ajoutées dans la même section). 42 tests unitaires :
   aucune régression (documentation pure).
 
+- (03/10, suite 47) **🏆 Résultat scientifique majeur : les auditeurs
+  préfèrent le contrôle du temps de décroissance à l'aplatissement de
+  la courbe de magnitude**
+
+  Dernière piste explorée cette nuit avant la pause : Fazenda,
+  Wankling, Hargreaves, Elmer & Hirst (2012), "Subjective preference of
+  modal control methods in listening rooms", Journal of the Audio
+  Engineering Society, 60(5), pp. 338-349. Citation complète et
+  abstract vérifiés directement sur le dépôt institutionnel University
+  of Huddersfield (texte intégral non disponible en libre accès pour
+  cette référence précise, contrairement aux 2 précédentes).
+
+  **Résultat central** : étude comparant 8 systèmes de reproduction
+  basse fréquence différents dans une vraie pièce d'écoute. Conclusion
+  textuelle des auteurs : "une forte corrélation a été démontrée entre
+  les améliorations perçues de qualité et les temps de décroissance...
+  les systèmes assurant une décroissance plus rapide sont préférés à
+  ceux qui tentent d'aplatir la réponse en fréquence de magnitude."
+
+  Renforce empiriquement (préférence subjective testée, pas juste une
+  méthode théorique) le concept déjà documenté section 39 (Mäkivirta et
+  al., égalisation modale visant le temps de décroissance). Prudence
+  maintenue : ceci n'affirme pas qu'ART modifie effectivement le temps
+  de décroissance (boîte noire Dirac, brevet déjà étudié ne précisant
+  pas ce point) — seulement que ce serait souhaitable perceptuellement
+  si c'est le cas.
+
+  1 constante ajoutée en section 42 de `knowledge_base.py` (4 au total
+  dans cette section pour la soirée). 42 tests unitaires : aucune
+  régression (documentation pure).
+
+  **Bilan de la soirée (suites 39 à 47)** : 7 commits locaux, 4
+  nouvelles sections de knowledge_base.py (39, 40, 41, 42), une
+  nouvelle architecture de calcul généralisable (AmplifierChainSpec,
+  AmplificationTopology), 6 nouveaux tests (42 au total). Pause
+  naturelle proposée vu l'heure (1h30+) — pistes restantes pour une
+  prochaine session : texte intégral de Fazenda et al. 2012 si une
+  source libre d'accès est trouvée, Toole & Olive 1988 (JAES, probable
+  paywall), "Optimal modal spacing and density for critical listening".
+

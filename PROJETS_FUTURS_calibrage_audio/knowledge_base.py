@@ -4308,3 +4308,46 @@ texte intégral (University of Huddersfield Repository — Fazenda y a
 déposé ses travaux de l'époque où il était à l'University of
 Salford)."""
 
+SUBJECTIVE_PREFERENCE_DECAY_CONTROL_OVER_MAGNITUDE_FLATTENING = (
+    "Résultat scientifique majeur, le plus directement pertinent pour "
+    "comprendre POURQUOI une approche comme ART pourrait surpasser un "
+    "simple EQ de magnitude : étude comparant la préférence subjective "
+    "pour HUIT systèmes de reproduction basse fréquence différents, "
+    "conçus pour contrôler les modes de pièce dans une vraie pièce "
+    "d'écoute (pas une chambre anéchoïque). Conclusion textuelle des "
+    "auteurs : 'une forte corrélation a été démontrée entre les "
+    "améliorations perçues de qualité et les TEMPS DE DÉCROISSANCE de "
+    "l'énergie basse fréquence. Pour des conditions d'écoute critique, "
+    "les systèmes assurant une décroissance PLUS RAPIDE de l'énergie "
+    "basse fréquence sont PRÉFÉRÉS à ceux qui tentent d'APLATIR la "
+    "réponse en fréquence de magnitude.' Autrement dit : un système "
+    "qui se contente d'égaliser le NIVEAU (dB) sans réduire le temps "
+    "de décroissance d'un mode est MOINS apprécié perceptuellement "
+    "qu'un système qui réduit activement ce temps de décroissance, "
+    "même si les deux peuvent produire une courbe de magnitude "
+    "mesurée similaire. Ceci recoupe directement et renforce "
+    "empiriquement (préférence subjective testée, pas juste une "
+    "méthode proposée théoriquement) le concept déjà documenté "
+    "section 39 (Mäkivirta et al., égalisation modale visant le "
+    "contrôle du TEMPS de décroissance, pas seulement le niveau). "
+    "⚠️ **Prudence méthodologique importante** : ceci NE PERMET PAS "
+    "d'affirmer avec certitude qu'ART (boîte noire propriétaire "
+    "Dirac) modifie réellement le temps de décroissance des modes "
+    "plutôt que de 'simplement' aplatir leur magnitude — cette étude "
+    "éclaire POURQUOI un contrôle du decay serait souhaitable "
+    "perceptuellement SI un système le fait, pas une preuve que "
+    "n'importe quel système MIMO (dont ART) le fait effectivement. "
+    "Le brevet Dirac déjà étudié (sections 10-11) ne précise pas "
+    "explicitement si la correction cible le temps de décroissance ou "
+    "seulement la réponse en régime permanent."
+)
+"""[Étude peer-reviewed, JAES] — Fazenda, B., Wankling, M.,
+Hargreaves, J.A., Elmer, L.A., & Hirst, J. (2012). 'Subjective
+preference of modal control methods in listening rooms.' Journal of
+the Audio Engineering Society, 60(5), pp. 338-349. ISSN 1549-4950.
+Citation complète et abstract lus directement sur la page du dépôt
+institutionnel University of Huddersfield (eprints.hud.ac.uk/id/
+eprint/17980/) — texte intégral du PDF non disponible en libre accès
+sur ce dépôt (contrairement aux 2 études précédentes du même auteur),
+seul l'abstract a été vérifié directement, pas le corps de l'article."""
+
