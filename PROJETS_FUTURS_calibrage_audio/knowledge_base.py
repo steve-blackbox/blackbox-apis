@@ -821,16 +821,22 @@ mesuré par une étude contrôlée)."""
 #     du code de Dirac pour nos connaissances personnelles"). Ligne rouge
 #     rappelée : le LOGICIEL Dirac Live est propriétaire et fermé — aucune
 #     décompilation ni rétro-ingénierie n'a été tentée ou ne sera tentée.
-#     La seule source technique "interne" légitime ici est un VRAI brevet
-#     déposé par Dirac Research AB, document de divulgation publique
-#     complète (c'est la contrepartie légale de la protection par brevet),
-#     fourni en PDF par Steve lui-même et lu en texte intégral (extraction
-#     réelle du texte, pas une supposition). Référence complète dans
-#     CITED_PATENTS ci-dessous. Un deuxième fichier PDF fourni par Steve au
-#     même moment (US9415102) s'est avéré être un brevet pharmaceutique
-#     d'Alexion Pharmaceuticals sur des anticorps anti-C5, sans aucun
-#     rapport avec l'audio ou Dirac — vérifié par lecture réelle du texte,
-#     signalé honnêtement plutôt qu'ignoré, et non utilisé ici.
+#     Les seules sources techniques "internes" légitimes ici sont deux
+#     VRAIS brevets déposés par Dirac Research AB, documents de divulgation
+#     publique complète (c'est la contrepartie légale de la protection par
+#     brevet), lus en texte intégral (extraction réelle du texte, pas une
+#     supposition) : le premier (US9781510B2) a été fourni en PDF par Steve
+#     lui-même ; le second (US8213637B2, famille EP2257083B1) a été
+#     identifié via la page Google Patents que Steve a partagée dans son
+#     navigateur, puis téléchargé directement depuis le stockage PDF public
+#     officiel de Google Patents (même source finale que si Steve l'avait
+#     fourni directement — aucun contenu tiers ou résumé non vérifié).
+#     Référence complète dans CITED_PATENTS ci-dessous. Un troisième
+#     fichier PDF fourni par Steve au même moment que le premier
+#     (US9415102) s'est avéré être un brevet pharmaceutique d'Alexion
+#     Pharmaceuticals sur des anticorps anti-C5, sans aucun rapport avec
+#     l'audio ou Dirac — vérifié par lecture réelle du texte, signalé
+#     honnêtement plutôt qu'ignoré, et non utilisé ici.
 # ---------------------------------------------------------------------------
 ART_PRIMARY_SUPPORT_MECHANISM = (
     "Le brevet US9781510B2 définit formellement le mécanisme que le "
@@ -980,6 +986,110 @@ Research dans ses propres essais (16 enceintes au total dans cet
 exemple) — PAS une recommandation de dimensionnement pour le système 7.2
 de Steve, qui n'a que 9 enceintes au total."""
 
+# ---------------------------------------------------------------------------
+# 12. Deuxième brevet Dirac Research (US8213637B2, antérieur, 2009) —
+#     cherche à répondre spécifiquement à la question de Steve sur le
+#     fonctionnement interne d'ART/Dirac Live avec PLUSIEURS positions de
+#     mesure. Porte sur un mécanisme plus large que le premier brevet :
+#     pas seulement "primaire + support" pour une enceinte à la fois, mais
+#     une résolution JOINTE de l'égalisation, du crossover, du délai/
+#     niveau et de l'up-mixing pour émuler des "sources sonores
+#     virtuelles" sur plusieurs zones d'écoute.
+# ---------------------------------------------------------------------------
+SFC_UNIFIED_OPTIMIZATION_MECHANISM = (
+    "Le brevet US8213637B2 décrit un mécanisme plus large que le premier "
+    "brevet (US9781510B2) : au lieu de traiter séparément et "
+    "séquentiellement l'égalisation de chaque enceinte, la conception du "
+    "filtre de recouvrement (crossover), le réglage du délai et du "
+    "niveau de chaque canal, puis l'up-mixing — ce que le brevet décrit "
+    "comme le processus de réglage traditionnel d'un système audio de "
+    "voiture en plusieurs étapes — l'invention résout ces 5 problèmes "
+    "('equalizer design, crossover design, delay and level calibration, "
+    "sum-response optimization, up-mixing') en UNE SEULE optimisation "
+    "mathématique jointe. Limite honnête à signaler : ce brevet décrit "
+    "une CAPACITÉ mathématique générale de l'algorithme, pas "
+    "nécessairement ce que fait le produit Marantz CINEMA 30 de Steve en "
+    "pratique — on sait déjà par la documentation officielle Marantz que "
+    "le crossover (MANUAL_CROSSOVER_FREQUENCIES_HZ) reste un réglage "
+    "manuel séparé sur cet appareil, non recalculé automatiquement par "
+    "ART. Il y a donc une tension réelle entre la capacité théorique "
+    "unifiée revendiquée par le brevet et le réglage manuel du crossover "
+    "effectivement documenté sur le CINEMA 30 — à ne pas gommer."
+)
+"""[Brevet Dirac Research] — US8213637B2 "Sound field control in
+multiple listening regions", inventeurs Lars-Johan Brännmark, Mikael
+Sternad, Mathias Johansson (Uppsala, Suède), déposé 28/05/2009, accordé
+03/07/2012, assigné à Dirac Research AB. Famille de brevet incluant
+EP2257083B1 (demande européenne correspondante EP09007142, citée en
+page de garde du brevet US lui-même). Texte intégral lu (PDF officiel
+téléchargé directement depuis le stockage public Google Patents, 20
+pages : abstract, background, summary, detailed description sections 1
+à 5, revendications 1 à 20) via extraction réelle PyMuPDF. Section
+'Background of the Invention' et 'Summary of the Invention'."""
+
+SFC_TARGET_STAGE_RICHER_THAN_CURVE = (
+    "Point potentiellement important pour comprendre pourquoi la 'courbe "
+    "cible' visible dans l'interface Dirac Live peut sembler insuffisante "
+    "pour tout expliquer : le brevet définit un 'target stage' qui n'est "
+    "PAS qu'une simple courbe de gain en fonction de la fréquence, mais "
+    "un jeu complet de réponses impulsionnelles cibles (une par position "
+    "de mesure) représentant une pièce D'ÉCOUTE DE RÉFÉRENCE virtuelle — "
+    "avec des paramètres ajustables explicitement cités : angles et "
+    "distances des enceintes virtuelles, taille de la pièce virtuelle, "
+    "force et diffusion des premières réflexions. Le brevet précise que "
+    "ce 'target stage' peut être MESURÉ dans une vraie pièce de "
+    "référence ou SIMULÉ. Limite honnête : rien ne confirme, dans ce "
+    "brevet ni ailleurs dans nos sources, quelle part de cette richesse "
+    "(réflexions, pièce virtuelle) est réellement exposée ou utilisée "
+    "dans le produit Dirac Live ART commercialisé sur le CINEMA 30 — la "
+    "courbe cible visible dans l'interface pourrait n'être qu'une "
+    "projection simplifiée (gain vs fréquence) de ce modèle plus riche, "
+    "sans que cela soit confirmé par une source officielle distincte."
+)
+"""[Brevet Dirac Research] — même brevet US8213637B2, section 'Detailed
+Description', sous-section '2. Acoustic Modelling and Target Stage
+Definition'. Texte intégral lu."""
+
+SFC_DISJOINT_REGIONS_CRITERION = (
+    "Le brevet définit un critère géométrique précis pour qu'un jeu de "
+    "positions de mesure soit traité comme PLUSIEURS zones d'écoute "
+    "distinctes plutôt qu'une seule : au moins 2 zones, au moins 4 "
+    "positions de mesure par zone, et une distance entre zones "
+    "supérieure à la plus grande distance entre positions adjacentes à "
+    "l'intérieur d'une même zone (une revendication dépendante précise "
+    "même 'au moins deux fois supérieure'). L'exemple chiffré du brevet "
+    "est un habitacle de voiture à 4 sièges : 64 positions au total, "
+    "réparties en 4 zones de 16 positions (4x4) centrées sur chaque "
+    "siège. Limite honnête et importante : nous ne savons PAS, faute "
+    "d'une description sourcée de la disposition exacte des 13 positions "
+    "de mesure de Steve (TOP CALIB BASE.liveproject), si elles "
+    "correspondent à une seule zone d'écoute (cas le plus probable pour "
+    "un home cinéma à un seul rang de sièges) ou à plusieurs zones "
+    "disjointes au sens de ce brevet (ex: canapé principal + un fauteuil "
+    "éloigné) — ce point mériterait d'être vérifié avec Steve avant de "
+    "lui attribuer une conclusion précise sur son propre système."
+)
+"""[Brevet Dirac Research] — même brevet US8213637B2, revendications 1
+et 5, et section 'Detailed Description' sous-section 2 (exemple de la
+Fig. 3, voiture à 4 sièges). Texte intégral lu."""
+
+SFC_MATHIAS_JOHANSSON_CONFIRMED_COINVENTOR = (
+    "Ce brevet confirme, par une source primaire vérifiable (le brevet "
+    "lui-même, pas une thèse tierce), que Mathias Johansson est bien "
+    "co-inventeur chez Dirac Research AB, aux côtés de Lars-Johan "
+    "Brännmark et Mikael Sternad — ce qui renforce (sans le prouver "
+    "définitivement) la piste de recherche identifiée précédemment via "
+    "la thèse 2024 de Viktor Gunnarsson, qui remerciait un 'Mathias "
+    "Johansson' comme initiateur de projet. Les deux noms Brännmark et "
+    "Sternad apparaissent également dans les références académiques "
+    "citées par l'autre brevet (US9781510B2), ce qui dessine un noyau "
+    "académique stable (Uppsala University / Dirac Research AB) commun "
+    "aux deux brevets."
+)
+"""[Brevet Dirac Research] — US8213637B2, page de garde (liste des
+inventeurs). Recoupement avec le travail de recherche académique du
+segment précédent (checkpoint sur la thèse de Viktor Gunnarsson)."""
+
 CITED_PATENTS: list[CitedPatent] = [
     CitedPatent(
         patent_number="US9781510B2",
@@ -1003,15 +1113,33 @@ CITED_PATENTS: list[CitedPatent] = [
         "nom commercial 'ART' ni les réglages exacts de l'interface "
         "actuelle, seulement le principe mathématique sous-jacent.",
     ),
+    CitedPatent(
+        patent_number="US8213637B2",
+        title="Sound field control in multiple listening regions",
+        inventors="Lars-Johan Brännmark, Mikael Sternad, Mathias "
+        "Johansson (Uppsala, Suède)",
+        assignee="Dirac Research AB",
+        priority_date="2009-05-28 (accordé 2012-07-03)",
+        source_url="https://patents.google.com/patent/US8213637B2/en "
+        "(PDF officiel téléchargé depuis le stockage public Google "
+        "Patents ; famille EP2257083B1, demande correspondante "
+        "EP09007142)",
+        verification="Texte intégral lu (20 pages : abstract, "
+        "background, summary, detailed description sections 1 à 5, "
+        "revendications 1 à 20) via extraction réelle du PDF, pas un "
+        "résumé de tiers.",
+        takeaway="Brevet antérieur et plus large que US9781510B2 : "
+        "décrit la résolution JOINTE de l'égalisation, du crossover, du "
+        "délai/niveau et de l'up-mixing pour émuler des 'sources "
+        "sonores virtuelles' sur plusieurs zones d'écoute. Voir "
+        "SFC_UNIFIED_OPTIMIZATION_MECHANISM, SFC_TARGET_STAGE_RICHER_"
+        "THAN_CURVE, SFC_DISJOINT_REGIONS_CRITERION et SFC_MATHIAS_"
+        "JOHANSSON_CONFIRMED_COINVENTOR ci-dessus. Ne décrit pas non "
+        "plus le nom commercial 'ART'.",
+    ),
 ]
-"""Piste identifiée mais NON encore lue en texte intégral (donc non
-ajoutée à CITED_PATENTS) : le brevet US8213637B2 / EP2257083B1 "Sound
-field control in multiple listening regions", même inventeur principal
-(Lars-Johan Brannmark), déposé 2009, antérieur à celui-ci — porterait
-spécifiquement sur le contrôle à PLUSIEURS positions d'écoute
-simultanées (potentiellement pertinent pour les 13 positions de mesure
-de Steve), mais seul le titre et un extrait court ont été vus via l'API
-de recherche Google Patents. À lire en texte intégral avant de lui
-attribuer le moindre fait précis, même chose pour US9426600B2 (Adrian
-Bahne, variante 'pairwise loudspeaker channel') si Steve souhaite
-approfondir davantage cette piste."""
+"""Piste restante, identifiée mais NON encore lue en texte intégral
+(donc non ajoutée à CITED_PATENTS) : le brevet US9426600B2 (Adrian
+Bahne, variante 'pairwise loudspeaker channel'), si Steve souhaite
+approfondir davantage cette piste au-delà des deux brevets déjà
+intégrés ci-dessus."""

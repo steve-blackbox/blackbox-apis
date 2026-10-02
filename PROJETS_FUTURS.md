@@ -2423,3 +2423,59 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès après ces ajouts à `knowledge_base.py`/`models.py` :
   aucune régression.
 
+- (03/10, suite 19) **📜 Deuxième brevet Dirac Research lu en texte
+  intégral — la "piste non poursuivie" de suite 18 est résolue**
+
+  Steve a partagé son navigateur avec la page Google Patents du premier
+  brevet déjà intégré (US9781510B2) ; j'ai identifié depuis cette même
+  page le lien PDF officiel direct (stocké sur
+  `patentimages.storage.googleapis.com`, pas besoin de JS ni de contourner
+  de blocage) et appliqué la même méthode pour naviguer vers puis
+  télécharger le second brevet resté en piste ouverte depuis suite 18.
+
+  **Brevet exploité : US8213637B2** "Sound field control in multiple
+  listening regions", Lars-Johan Brännmark / Mikael Sternad / Mathias
+  Johansson (Uppsala), déposé 2009, accordé 2012, assigné Dirac Research
+  AB — famille de brevet incluant EP2257083B1 (demande correspondante
+  EP09007142, citée en page de garde). Texte intégral extrait (PyMuPDF,
+  20 pages) et lu. Ajouté à `knowledge_base.py` (nouvelle section 12,
+  4 constantes `SFC_*` + entrée `CitedPatent`) :
+  - **Mécanisme plus large que le premier brevet** : résolution JOINTE de
+    l'égalisation, du crossover, du délai/niveau par canal et de
+    l'up-mixing en UNE seule optimisation, pour émuler des "sources
+    sonores virtuelles" sur plusieurs zones d'écoute — au lieu de régler
+    ces 5 aspects séparément comme dans le processus traditionnel
+    (décrit par le brevet lui-même pour l'audio automobile).
+    ⚠️ Tension honnête relevée avec un fait déjà documenté : le CINEMA 30
+    garde le crossover en réglage MANUEL séparé
+    (`MANUAL_CROSSOVER_FREQUENCIES_HZ`), donc cette capacité unifiée
+    théorique du brevet ne semble pas totalement exploitée telle quelle
+    par le produit commercial réel.
+  - **"Target stage" plus riche qu'une simple courbe cible** : le brevet
+    définit la cible comme un jeu complet de réponses impulsionnelles
+    représentant une pièce d'écoute virtuelle entière (angles/distances
+    des enceintes virtuelles, taille de pièce, force et diffusion des
+    premières réflexions), mesurable ou simulable — pas juste un gain en
+    fonction de la fréquence. On ne sait pas quelle part de cette
+    richesse est exposée dans l'interface Dirac Live actuelle.
+  - **Critère géométrique précis pour des "zones d'écoute disjointes"** :
+    ≥2 zones, ≥4 positions par zone, distance entre zones supérieure
+    (au moins le double selon une revendication dépendante) à la plus
+    grande distance entre positions adjacentes d'une même zone. Exemple
+    chiffré du brevet : voiture à 4 sièges, 64 positions (4×16). Non
+    vérifié si les 13 positions de Steve correspondent à une seule zone
+    ou à plusieurs zones disjointes au sens strict du brevet — point
+    ouvert, à clarifier avec Steve si besoin.
+  - **Mathias Johansson confirmé co-inventeur** par une source primaire
+    (le brevet lui-même) — renforce la piste académique de suite 25
+    (thèse de Viktor Gunnarsson qui le remerciait comme "project
+    initiator") sans la prouver définitivement.
+
+  **Piste restante** (toujours non lue) : brevet US9426600B2 (Adrian
+  Bahne, variante "pairwise loudspeaker channel"), à creuser seulement si
+  Steve le souhaite.
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès après ces ajouts à `knowledge_base.py` : aucune
+  régression.
+
