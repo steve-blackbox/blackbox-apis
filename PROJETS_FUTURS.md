@@ -116,17 +116,27 @@
 > de validation à seuils dans l'entrée du journal datée "02/10, suite 4"
 > tout en bas du fichier.
 >
+> 🔄 **Pivot méthode de validation (02/10, suite 5)** : Steve refuse le
+> démarchage individuel d'artisans (ni le temps ni l'envie) — contrainte
+> définitive. **Remplacé par un smoke test digital** : landing page avec
+> le pitch "Zéro chantier perdu" + petit budget pub (50-100€, Google/Meta
+> Ads) + CTA "réserver un créneau pilote gratuit", zéro contact individuel.
+> Le principe (valider avant de construire) ne change pas, seule la
+> tactique change. Détail dans l'entrée "02/10, suite 5" tout en bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
 
 - Priorité absolue actuelle : terminer la bascule Paddle, puis **valider
-  sur le terrain avant de construire quoi que ce soit** — y compris pour
-  le bâtiment, maintenant qu'on sait que la concurrence y est déjà dense.
-  Lors des appels de validation terrain, ajouter systématiquement la
-  question facturation électronique (sont-ils déjà en conformité
-  réception ? savent-ils qu'émettre sera bientôt obligatoire aussi ?) —
-  détail dans le journal daté 02/10.
+  l'intérêt avant de construire quoi que ce soit** — y compris pour le
+  bâtiment, maintenant qu'on sait que la concurrence y est déjà dense.
+  **Méthode de validation (02/10, suite 5) : smoke test digital (landing
+  page + petit budget pub), pas de démarchage individuel** — Steve a
+  explicitement écarté l'option d'appeler/visiter des artisans un par un.
+  La question facturation électronique reste à intégrer dans le pitch de
+  la landing page (argument de conformité), pas dans un appel — détail
+  dans le journal daté 02/10.
 
 ---
 
@@ -1218,9 +1228,61 @@ articles lus, concurrents repérés, retours clients...)_
   partenaires) est pensé pour ce cas, le plus exigeant. À corriger si
   Steve a en réalité quelques contacts à solliciter en bonus.
 
-  **Prochaine étape** : cette offre reste **non testée sur le terrain** —
-  elle devient le support concret du guide d'entretien déjà préparé
-  (entrée précédente) plutôt qu'un plan figé. Premier jalon concret avant
-  toute ligne de code : faire le test d'appel mystère sur 10 artisans de
-  la zone choisie.
+  **Prochaine étape (⚠️ méthode remplacée, voir entrée suivante)** : cette
+  offre reste non testée sur le terrain. Le plan initial prévoyait un test
+  d'appel mystère + 10 entretiens d'artisans en direct — **abandonné**,
+  voir l'entrée "02/10, suite 5" juste en dessous pour la méthode retenue.
+
+- (02/10, suite 5) **🔄 Pivot méthodologique : smoke test digital au lieu
+  du démarchage direct**
+
+  **Origine** : Steve refuse explicitement de contacter des artisans un à
+  un (ni le temps ni l'envie). Contrainte légitime et définitive, pas à
+  contourner. **Le principe de validation avant construction reste
+  valable** (toutes les découvertes précédentes — Doctolib, densité BTP —
+  montrent que construire sans valider est risqué), **seule la méthode
+  change**.
+
+  **Méthode retenue : landing page + petit budget pub (smoke test), zéro
+  contact individuel** :
+  1. Une page unique reprenant le pitch "Zéro chantier perdu" (3 blocs,
+     grille 99/179/299€/mois, mois pilote gratuit) — même boilerplate que
+     BlackBox, construction rapide pour Steve.
+  2. CTA engageant : "réservez votre créneau pilote gratuit" (lien
+     Calendly) plutôt qu'un simple email — filtre les curieux des
+     prospects réellement intéressés.
+  3. Petit budget pub ciblé (Google Ads sur des recherches type "répondeur
+     automatique artisan", ou Meta Ads ciblé métiers BTP) — de l'ordre de
+     50-100€ sur 1-2 semaines, pas plus.
+  4. Signal mesurable sans parler à personne : visites, taux de clic sur
+     le CTA, créneaux réservés.
+
+  **Pourquoi c'est un signal au moins aussi fiable qu'un entretien** : un
+  entretien mesure ce que les gens *disent* ("oui ça m'intéresse"), un
+  clic sur un CTA avec un prix déjà affiché mesure ce que les gens *font*
+  — moins biaisé, et zéro sollicitation individuelle désagréable dans les
+  deux sens (ni pour Steve, ni pour l'artisan démarché à froid).
+
+  **Seuils de décision à fixer avant de lancer le budget pub (hypothèse de
+  départ, à calibrer avec les vrais chiffres une fois la campagne lancée,
+  pas une vérité de marché)** : un taux de clic/inscription anormalement
+  bas même avec un budget minime serait un signal négatif clair à prendre
+  au sérieux, sans avoir déçu ou importuné personne en direct.
+
+  **Alternative optionnelle, non prioritaire** : si un retour qualitatif
+  s'avère vraiment utile plus tard (comprendre *pourquoi* ça convertit ou
+  pas, pas seulement *si*), déléguer les quelques appels/entretiens à un
+  freelance (Malt/Upwork) pour un coût modique, plutôt que de les faire
+  soi-même. Pas une étape obligatoire du plan.
+
+  **Ce qui ne change pas** : l'offre elle-même (3 blocs, grille tarifaire,
+  règle de sécurité triage d'urgence, correction de marge) reste la
+  spec de travail actuelle (entrée précédente) — seule la façon de la
+  tester change. Séquence toujours valable : Paddle d'abord, puis ce
+  smoke test (bien plus léger qu'un plan d'entretiens, peut même se faire
+  en parallèle sans gros effort), puis construction si le signal est bon.
+
+  **Prochaine étape concrète** : décider si la page + campagne se prépare
+  maintenant (en parallèle de la fin de Paddle, effort minime) ou après —
+  au choix de Steve, pas de contrainte technique qui l'impose.
 
