@@ -65,14 +65,32 @@
 > (hyper-local, sous-segment métier précis, ou comptables à creuser).
 > Détail complet dans l'entrée du journal datée "02/10" plus bas.
 >
+> 💡 **Mise à jour (02/10, suite)** : changement d'angle de recherche —
+> au lieu de chercher un marché *actuellement* vide (de moins en moins
+> réaliste), chercher les **obligations légales à venir déjà actées**
+> qui vont forcer la demande avant que les concurrents ne s'y positionnent.
+> Piste la plus solide trouvée et vérifiée en direct (impots.gouv.fr) : la
+> réforme de la **facturation électronique obligatoire**. Depuis le
+> 1er septembre 2026, toutes les entreprises (y compris le plus petit
+> artisan) doivent déjà être en mesure de recevoir des factures au format
+> structuré, et la prochaine vague (PME/micro-entreprises obligées
+> d'émettre, pas seulement recevoir) arrive. Angle retenu : **accompagnement
+> humain** à la mise en conformité (pas vendre un logiciel — déjà pris par
+> Pennylane/LegalPlace), **combinable avec le projet agent IA BTP** déjà en
+> cours (même client, argument de vente plus fort car obligation légale).
+> Détail complet dans l'entrée du journal datée "02/10, suite" plus bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
 
 - Priorité absolue actuelle : terminer la bascule Paddle, puis **valider
   sur le terrain avant de construire quoi que ce soit** — y compris pour
-  le bâtiment, maintenant qu'on sait que la concurrence y est déjà dense
-  (détail dans le journal daté 02/10).
+  le bâtiment, maintenant qu'on sait que la concurrence y est déjà dense.
+  Lors des appels de validation terrain, ajouter systématiquement la
+  question facturation électronique (sont-ils déjà en conformité
+  réception ? savent-ils qu'émettre sera bientôt obligatoire aussi ?) —
+  détail dans le journal daté 02/10.
 
 ---
 
@@ -755,4 +773,93 @@ articles lus, concurrents repérés, retours clients...)_
   vous VOKAI/Eliocall/Callsens/SOS Assistant Numérique, les utilisez-vous,
   qu'est-ce qui ne vous convainc pas" — pour mesurer la vraie pénétration
   de la concurrence sur le terrain, pas juste son existence sur le web.
+
+- (02/10, suite) **💡 Changement de méthode : chercher les obligations
+  légales à venir plutôt qu'un marché actuellement vide**
+
+  **Origine** : Steve a identifié que la vraie façon d'avoir un temps
+  d'avance n'est pas de chercher un marché sans concurrent aujourd'hui
+  (on vient de montrer que ça n'existe quasiment plus, cf. entrée
+  précédente), mais de repérer **les problèmes qui vont être créés par
+  des obligations légales déjà actées**, avant que les concurrents ne
+  s'y positionnent — une demande garantie par la loi plutôt qu'à deviner.
+
+  **Piste vérifiée en direct la plus solide : la réforme de la
+  facturation électronique obligatoire.**
+  - **Fait confirmé en direct (impots.gouv.fr, page d'accueil
+    officielle)** : depuis le **1er septembre 2026** (il y a seulement un
+    mois au moment de cette entrée), les grandes entreprises et ETI
+    doivent émettre leurs factures via une plateforme de dématérialisation
+    partenaire (PDP) agréée par l'État, et **toutes les entreprises, sans
+    exception de taille, doivent déjà être en capacité de RECEVOIR des
+    factures électroniques** dans un format structuré (Factur-X, UBL ou
+    CII) — un simple PDF ne suffit plus légalement.
+  - **Confirmé en direct (lecoindesentrepreneurs.fr)** : l'obligation
+    concerne à terme absolument toutes les entreprises assujetties à la
+    TVA, y compris les micro-entreprises bénéficiant de la franchise en
+    base de TVA — aucune taille n'y échappe.
+  - **Prochaine vague (NON reconfirmée par une source officielle directe
+    malgré plusieurs tentatives — à vérifier avant de s'appuyer dessus
+    commercialement)** : date généralement citée dans la presse
+    spécialisée comme le 1er septembre 2027, où les PME et
+    micro-entreprises devront à leur tour **émettre** leurs factures de
+    cette façon (pas seulement les recevoir).
+
+  **Vérification faite sur la concurrence côté logiciel** : au moins deux
+  éditeurs proposent déjà des logiciels conformes et accessibles aux TPE
+  (Pennylane ; LegalPlace à 99€/an). **Vendre un logiciel serait donc à
+  nouveau un marché pris.** Aucun acteur dédié trouvé en revanche sur
+  l'**accompagnement humain** (choisir la bonne PDP, configurer, migrer
+  les habitudes de facturation existantes, former le patron artisan qui
+  n'y comprend rien) — recherche non exhaustive, à prendre comme un
+  signal, pas une confirmation de vide total.
+
+  **Pourquoi c'est un bon candidat "problème futur garanti"** :
+  1. Ce n'est pas une hypothèse de marché, c'est une **obligation légale
+     avec date connue** — la demande est certaine, pas à deviner ni à
+     convaincre un prospect qu'il en a besoin.
+  2. **Dès aujourd'hui**, la quasi-totalité des artisans/TPE sont
+     probablement déjà non-conformes sur le volet réception sans le
+     savoir — argument commercial immédiatement actionnable, pas dans un
+     an.
+  3. **Angle d'accompagnement cohérent avec le principe déjà retenu**
+     ("le client final ne doit structurellement pas savoir coder/être
+     technique") — un artisan qui ne comprend rien aux PDP/formats
+     Factur-X a structurellement besoin d'aide humaine, pas d'un simple
+     logiciel de plus.
+  4. **Combinable directement avec le projet agent IA BTP déjà en cours**
+     — même client cible (artisans du bâtiment), et un argument de vente
+     nettement plus fort pour ouvrir la porte ("c'est une obligation
+     légale, pas un gadget") que l'agent vocal seul, avec la possibilité
+     de vendre les deux dans la même relation commerciale.
+
+  **Autres pistes vérifiées dans la même recherche, moins immédiatement
+  exploitables** :
+  - **NIS2** (cybersécurité) : directive confirmée encore en transposition
+    législative en France (ANSSI, "projet de loi Résilience", article 14),
+    touche directement les grandes entités mais redescend vers les PME
+    sous-traitantes par obligation contractuelle imposée par leurs
+    donneurs d'ordre — opportunité réelle mais qui demande une expertise
+    cybersécurité non détenue actuellement, à mettre de côté pour l'instant
+    plutôt qu'à exploiter tout de suite.
+  - **AI Act (UE)** : obligations renforcées pour les systèmes IA à haut
+    risque à partir du 2 décembre 2027 (recrutement, scoring crédit...) —
+    vise plutôt des PME/ETI technologiquement plus avancées que les
+    artisans solos, piste à garder pour un éventuel futur vertical séparé,
+    pas pour la niche BTP actuelle.
+  - **Baromètre France Num 2026** (officiel, Direction générale des
+    Entreprises, publié septembre 2026) : le secteur Bâtiment-Construction
+    est à seulement **30% d'adoption de l'IA** (contre 72% dans le
+    numérique, 60% services spécialisés), mais **a doublé en un an** (x2,
+    contre 16% en 2024) — confirme que le BTP reste en retard sur l'IA en
+    général et rattrape vite, au-delà du seul agent vocal déjà saturé.
+    Signal que d'autres usages IA pour le BTP (hors réponse téléphonique)
+    pourraient rester sous-exploités, à explorer séparément si besoin.
+
+  **Prochaine étape** : vérifier la date exacte de la vague PME/micro
+  (actuellement non confirmée officiellement malgré plusieurs tentatives),
+  et ajouter systématiquement la question facturation électronique aux
+  appels de validation terrain déjà prévus (sont-ils déjà en conformité
+  réception ? savent-ils qu'émettre sera bientôt obligatoire aussi ?
+  qui s'en occupe pour eux actuellement ?).
 
