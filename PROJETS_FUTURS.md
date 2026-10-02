@@ -2842,3 +2842,33 @@ articles lus, concurrents repérés, retours clients...)_
   10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (03/10, suite 27) **🎙️ Article écrit de Grimani sur le canal centre/
+  dialogue (limite honnête : pas d'analyse vidéo native)**
+
+  Steve a partagé un live YouTube d'Anthony Grimani (déjà cité section
+  10) sur le placement d'enceintes/traitement de pièce. Limite technique
+  honnête constatée : pas de transcription disponible pour cette vidéo,
+  et contrairement à Gemini (capacité multimodale native confirmée par
+  Steve), cet environnement ne peut lire que le texte/DOM des pages,
+  pas analyser l'audio/vidéo directement. Piste de repli : recherche et
+  lecture d'un article ÉCRIT du même expert, sur le même sujet précis
+  demandé par Steve (rendu des voix) — "Get Centered"
+  (residentialsystems.com, auteur confirmé).
+
+  Nouvelle section 20 de `knowledge_base.py` (3 constantes) :
+  - Distribution d'énergie mesurée par Grimani sur 10 films d'action :
+    Centre = référence, Gauche/Droite = -3dB, latéraux = -3dB de plus,
+    arrière = encore -3dB de plus.
+  - **Donnée chiffrée précise mais à bon contexte** : pour un système
+    SANS centrale physique (image fantôme), Grimani recommande +6dB sur
+    1 octave centré à 1500Hz pour compenser le crosstalk inter-
+    auriculaire, puis mélange à -3dB dans L/R ("Phantom+™"). Steve ayant
+    une VRAIE centrale physique, ce correctif ne s'applique pas
+    directement à son cas — documenté avec cette réserve explicite pour
+    ne pas induire en erreur.
+  - Seuil de 120Hz pour la détection de localisation enceinte/caisson
+    (complémentaire au seuil de 80Hz déjà documenté, section 17).
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

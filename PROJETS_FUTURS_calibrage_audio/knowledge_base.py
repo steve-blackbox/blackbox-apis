@@ -2173,3 +2173,77 @@ CINEMA_DIALOGUE_RENDERING_CAVEAT = (
 )
 """Synthèse de prudence rédigée par nous-mêmes à partir des limites
 identifiées dans les sources ci-dessus — pas une citation directe."""
+
+# ---------------------------------------------------------------------------
+# 20. Article écrit d'Anthony Grimani sur le canal centre/dialogue (piste de
+#     repli honnête : Steve a partagé un live YouTube avec Grimani que
+#     nous ne pouvons pas analyser — pas de transcription disponible pour
+#     cette vidéo, et contrairement à Gemini, cet environnement n'a pas de
+#     capacité native d'analyse audio/vidéo multimodale directe. Un
+#     article ÉCRIT du même expert, sur le même sujet précis demandé par
+#     Steve — rendu des voix/dialogue — a été trouvé et lu en entier à la
+#     place). [Avis d'expert professionnel, pas une étude académique]
+# ---------------------------------------------------------------------------
+GRIMANI_CENTER_CHANNEL_ENERGY_DISTRIBUTION = (
+    "Données chiffrées mesurées par Grimani lui-même sur 10 films "
+    "d'action (moyenne) : le canal Centre porte le PLUS d'énergie de "
+    "tout le système ('is right in the middle of all the picture "
+    "action... film directors and sound designers naturally put the "
+    "majority of the sound elements there'). Par rapport au Centre : "
+    "Gauche/Droite = -3 dB (moitié de la puissance), canaux latéraux "
+    "(Sides) = encore -3 dB de moins, canaux arrière (Backs) = encore "
+    "-3 dB de moins. Conclusion de l'auteur : 'il est donc logique "
+    "d'être particulièrement attentif à la qualité, la clarté, la "
+    "bande passante et la dynamique de l'enceinte Centre' — cohérent "
+    "avec l'importance que Steve accorde lui-même au rendu de sa "
+    "centrale."
+)
+"""[Avis d'expert professionnel] — Anthony Grimani, 'Get Centered',
+Residential Systems (residentialsystems.com/features/get-centered),
+auteur confirmé (lien direct vers son profil). Lu en entier via le
+navigateur intégré."""
+
+GRIMANI_PHANTOM_CENTER_EQ_RECOMMENDATION = (
+    "⚠️ Donnée chiffrée précise de Grimani, MAIS pour un contexte "
+    "différent de celui de Steve — à ne pas appliquer telle quelle sans "
+    "cette réserve : pour un système SANS enceinte centrale physique "
+    "(image centrale 'fantôme' reconstituée par les enceintes Gauche/"
+    "Droite seules), Grimani recommande : déclarer le Centre 'Small' au "
+    "décodeur surround, router les sorties L/C/R vers un égaliseur DSP "
+    "avec fonction de mixage, et '**ajouter environ 6 dB, sur une "
+    "largeur d'un octave, centré à 1500 Hz**' pour compenser la perte "
+    "d'énergie dans le médium inhérente à une image centrale fantôme "
+    "(causée par le 'crosstalk inter-auriculaire' : l'effet d'ombre de "
+    "la tête quand le même signal arrive de 2 enceintes séparées d'un "
+    "angle horizontal d'environ 45°). Puis mélanger ce Centre recalculé "
+    "dans Gauche/Droite à "
+    "-3 dB — procédé que Grimani nomme 'Phantom+™'. **Steve a une "
+    "VRAIE enceinte centrale physique (Elipson Prestige Facet II 14C)**, "
+    "donc ce correctif spécifique au phénomène de crosstalk d'une "
+    "fausse image centrale ne s'applique PAS directement à son cas — "
+    "mais la fréquence citée (1500 Hz, zone de présence/intelligibilité "
+    "des consonnes) reste une donnée précise et sourcée, potentiellement "
+    "une piste à considérer avec prudence, pas une prescription "
+    "directement transposable."
+)
+"""[Avis d'expert professionnel] — Anthony Grimani, 'Get Centered',
+Residential Systems. Même source que ci-dessus. Section centrale de
+l'article décrivant le procédé 'Phantom+™'."""
+
+GRIMANI_SUBWOOFER_LOCALIZATION_THRESHOLD_120HZ = (
+    "Seuil chiffré précis donné par Grimani dans ce même article : "
+    "'120 Hz is the frequency at which the average listener can start "
+    "to detect that the speaker and subwoofer are not in the same "
+    "place' — argument qu'il utilise pour insister sur le fait de "
+    "garder TOUS les caissons près de l'écran/façade (pas dispersés "
+    "ailleurs dans la pièce) si l'enceinte centrale ne descend pas en "
+    "dessous de cette fréquence. Complémentaire aux seuils déjà "
+    "documentés sur le bass management (section 10) et la direction "
+    "d'arrivée en dessous de 80 Hz (section 17, brevet US9426600B2) — "
+    "ces 2 seuils (80 Hz non-audible, 120 Hz audible) ne sont pas "
+    "contradictoires : ils viennent de 2 sources différentes et "
+    "encadrent une zone de transition plausible entre 80 et 120 Hz, "
+    "sans qu'une valeur unique et consensuelle ne soit établie ici."
+)
+"""[Avis d'expert professionnel] — Anthony Grimani, 'Get Centered',
+Residential Systems. Même source que ci-dessus."""
