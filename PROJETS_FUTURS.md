@@ -3308,3 +3308,30 @@ articles lus, concurrents repérés, retours clients...)_
   36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (03/10, suite 40) **🎙️ Valeur exacte enfin obtenue : réglage centrale
+  "coffre voix" de Gemini = +3,5dB à 80Hz**
+
+  Recherchée sans succès depuis plusieurs sections (18, 20), Steve a
+  enfin communiqué la valeur exacte du réglage recommandé par Gemini sur
+  la courbe cible de la CENTRALE uniquement : +3,5dB à 80Hz, pour "voir
+  des voix plus présentes".
+
+  Mise en contexte avec la physiologie vocale (Wikipedia, domaine
+  public) : la fondamentale vocale adulte se situe entre 90-155Hz
+  (homme) et 165-255Hz (femme) — 80Hz est légèrement EN DESSOUS de
+  cette zone. Point psychoacoustique pertinent trouvé dans la même
+  source : le phénomène de la "fondamentale manquante" (missing
+  fundamental) — même atténuée, la fondamentale reste perçue si assez
+  d'harmoniques sont présentes ; un boost juste sous cette zone pourrait
+  renforcer l'impression de corps/poids sans la modifier directement.
+  Prudence explicite : mise en contexte plausible à partir de
+  connaissances générales, pas une confirmation du raisonnement réel de
+  Gemini. Rappel de cohérence avec la section 26 (structure de courbe
+  cible en Bass Control) : pour que ce réglage reste propre à la
+  centrale (confirmé par Steve), le crossover du groupe centrale doit
+  être réglé au-dessus de 80Hz.
+
+  Nouvelle section 38 de `knowledge_base.py` (1 constante).
+  36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

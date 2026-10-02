@@ -3584,3 +3584,44 @@ ART_VOIX-CINEMA.liveproject] — voir liveproject_reader.py, point 5 de
 la carte du format, pour la documentation complète et la piste non
 explorée (structure QVariant après chaque clé)."""
 
+# ---------------------------------------------------------------------------
+# 38. La valeur EXACTE du réglage "coffre pour les voix" de Gemini sur la
+#     centrale de Steve — cherchée et documentée comme manquante depuis
+#     plusieurs sections (18, 20), enfin fournie par Steve.
+# ---------------------------------------------------------------------------
+GEMINI_CENTER_CHANNEL_PRESENCE_BOOST_VALUE = (
+    "Valeur EXACTE communiquée par Steve (03/10), recherchée sans "
+    "succès depuis plusieurs sections de ce fichier : réglage recommandé "
+    "par Gemini sur la courbe cible de la CENTRALE uniquement (confirmé "
+    "par Steve : non appliqué aux autres enceintes) — **+3,5 dB à "
+    "80 Hz**, dans le but explicite de rendre 'les voix plus présentes'. "
+    "Mise en contexte avec la physiologie vocale (domaine public, "
+    "Wikipedia 'Voice frequency') : la fréquence FONDAMENTALE d'une "
+    "voix humaine adulte se situe entre 90-155 Hz (homme) et 165-255 Hz "
+    "(femme) — 80 Hz est donc légèrement EN DESSOUS de cette zone, pas "
+    "dedans. Point psychoacoustique pertinent, confirmé par la même "
+    "source : même si la fondamentale elle-même est atténuée/absente "
+    "dans un système de reproduction, 'enough of the harmonic series "
+    "will be present for the missing fundamental to create the "
+    "impression of hearing the fundamental tone' (phénomène de la "
+    "'fondamentale manquante'/missing fundamental) — un boost juste "
+    "sous la fondamentale pourrait renforcer cette impression de corps/ "
+    "poids perçu sans nécessairement modifier la fondamentale "
+    "elle-même. ⚠️ **Prudence méthodologique** : ceci reste une mise en "
+    "contexte PLAUSIBLE à partir de connaissances générales de domaine "
+    "public, PAS une explication confirmée du raisonnement réel de "
+    "Gemini (modèle IA tiers, méthode non vérifiable formellement par "
+    "nous). Rappel de cohérence avec la section 26 (structure de la "
+    "courbe cible en Bass Control) : pour que ce réglage reste "
+    "effectivement propre à la centrale (comme confirmé par Steve) et "
+    "n'affecte pas toute la courbe commune du système, le point de "
+    "croisement (crossover) du groupe centrale doit être réglé "
+    "au-dessus de 80 Hz — cohérent avec le fait que F-support Low par "
+    "défaut ne descend jamais sous 50 Hz et que Fsiso par défaut est "
+    "150 Hz (plage disponible compatible avec un crossover > 80 Hz)."
+)
+"""[Retour d'expérience Steve, valeur exacte communiquée directement]
+— mise en contexte physiologique via en.wikipedia.org/wiki/Voice_
+frequency (domaine public), cross-référencée à la section 26
+(structure de la courbe cible en Bass Control) déjà documentée."""
+
