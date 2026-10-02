@@ -32,11 +32,13 @@ Ce n'est **pas** :
 | `knowledge_base.py` | Toutes les règles et sources (directives StormAudio ART, hiérarchie de support, courbes cibles, diagnostic différentiel, 5 facteurs d'immersion, prérequis techniques, disclaimers obligatoires, études scientifiques citées, fondamentaux home cinéma de fond — section 10, trois brevets Dirac Research lus en texte intégral — sections 11 à 13, limite physique de la correction linéaire face à la distorsion non-linéaire des haut-parleurs — section 14, fiches techniques officielles du matériel réel de Steve — section 15). |
 | `diagnostic_engine.py` | Détection d'anomalies sur les courbes, calcul des modes propres de la pièce, diagnostic différentiel, génération des recommandations **et calculs précis chiffrés** (niveau de Support Level à 0,5 dB près à partir de l'écart RÉELLEMENT mesuré entre 2 enceintes groupées — y compris un groupage personnalisé/croisé déclaré via `support_group_assignments`, plage F-support Low/High par enceinte, points de contrôle de courbe cible pour les pics confirmés comme modes de pièce — jamais pour un creux, limite physique). 100% générique : s'adapte à n'importe quelle configuration cliente, aucune valeur codée en dur pour un système particulier. |
 | `report_generator.py` | Transforme un `DiagnosticReport` en rapport texte livrable au client. |
+| `specs_database.py` | Base de données PERSISTANTE de fiches techniques constructeur (`data/manufacturer_specs_db.json`), qui s'enrichit client après client : initialisée au premier appel avec les fiches déjà sourcées de `knowledge_base.py`, puis complétée via `add_spec()` à chaque nouveau matériel rencontré — évite de re-chercher une fiche déjà trouvée pour un client précédent. |
 | `image_reader.py` | Lit automatiquement les courbes depuis une capture d'écran Dirac Live (calibration d'axes + détection de la couleur de la courbe, méthode de digitalisation de graphique) — remplace la saisie manuelle des points fréquence/dB. |
 | `liveproject_reader.py` | Rétro-ingénierie du fichier binaire propriétaire `.liveproject` généré par Dirac Live : lit les métadonnées, décode les 13 flux audio de mesure (Ogg Vorbis) et les 104 blocs de mesure fréquence/magnitude bruts. Lecture seule — voir docstring d'en-tête pour la carte complète du format et ses limites. |
 | `cartographie_modale.py` | Cartographie EMPIRIQUE des modes de pièce à partir d'un vrai `.liveproject` : cohérence spatiale des anomalies sur les 13 positions de micro + corrélation croisée entre enceintes/caissons (sans calcul théorique de dimensions de pièce). Voir docstring d'en-tête pour la méthode et ses limites. |
 | `example_run.py` | Démonstration complète sur un système 5.1.4 fictif (2 niveaux de service). |
-| `tests/test_diagnostic_engine.py` | Tests unitaires (`unittest`, bibliothèque standard uniquement). |
+| `tests/test_diagnostic_engine.py`, `tests/test_specs_database.py` | Tests unitaires (`unittest`, bibliothèque standard uniquement). |
+
 
 ## Comment l'exécuter
 
@@ -152,8 +154,9 @@ python3 liveproject_reader.py "/chemin/vers/fichier.liveproject"
 - Vérifier le contenu complet des études listées dans `CITED_STUDIES`
   (accès bibliothèque universitaire ou version préprint/auteur) avant
   d'en tirer des règles numériques.
-- Base de données de fiches techniques d'enceintes courantes pour éviter
-  la saisie manuelle des plages de fréquence constructeur.
+- ~~Base de données de fiches techniques d'enceintes courantes~~ — FAIT
+  (03/10, suite 34) : voir `specs_database.py`, base persistante en
+  JSON qui s'enrichit client après client.
 - Base de connaissances comparative entre fichiers `.liveproject`
   analysés (plusieurs mesures/pièces), dans la lignée de ce que Steve
   avait fait faire à Gemini (voir `../PROJETS_FUTURS.md`, "suite 10" à

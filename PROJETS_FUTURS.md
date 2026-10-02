@@ -3116,3 +3116,38 @@ articles lus, concurrents repérés, retours clients...)_
   de Steve) : base de données persistante de fiches techniques
   constructeur, enrichie client après client.
 
+- (02/10, suite 34) **💾 Base de données persistante de fiches techniques
+  constructeur — s'enrichit client après client**
+
+  Steve a demandé explicitement : "au fur et à mesure des clients nous
+  aurons une source de data qui s'étoffera." Avant cette suite, les 5
+  fiches constructeur (section 15) étaient une liste Python codée en
+  dur, valable uniquement pour le matériel de Steve.
+
+  Nouveau module `specs_database.py` : base JSON persistante
+  (`data/manufacturer_specs_db.json`), initialisée au premier appel avec
+  les fiches déjà sourcées de `knowledge_base.py` (bootstrap, rien n'est
+  perdu), puis enrichie via `add_spec()` pour chaque nouveau matériel
+  rencontré chez un client — disponible immédiatement pour tous les
+  clients suivants ayant le même matériel, sans re-recherche. Fonctions :
+  `find_spec` (recherche insensible à la casse), `add_spec` (refuse
+  d'écraser silencieusement une fiche existante), `update_spec` (mise à
+  jour explicite), `known_brands`.
+
+  **Correction au passage** (vérification croisée avant de committer la
+  base) : en documentant les types de driver Elipson (section 28), une
+  incohérence a été repérée — le paragraphe descriptif consulté ne
+  mentionnait pas le matériau des membranes, mais le tableau "SPECIFICATIONS"
+  déjà extrait en section 15 le précisait pour la Legacy 3220 (aluminium/
+  céramique). Corrigé pour refléter les 2 sources croisées plutôt que de
+  déclarer une donnée manquante à tort.
+
+  7 nouveaux tests unitaires dédiés (31 au total), utilisant des
+  fichiers JSON temporaires isolés pour ne jamais polluer la vraie base
+  pendant les tests (vérifié : `data/` reste vide après la suite de
+  tests). README.md mis à jour (nouveau module documenté, piste V2
+  marquée comme faite).
+
+  31 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

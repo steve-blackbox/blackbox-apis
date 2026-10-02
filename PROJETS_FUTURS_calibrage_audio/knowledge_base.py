@@ -3030,6 +3030,9 @@ ELIPSON_DRIVER_COMPONENTS_BY_MODEL = (
     "16,5 cm + 1 tweeter **AMT** (Air Motion Transformer, parfois appelé "
     "'ruban plissé') à large dispersion — technologie différente d'un "
     "dôme classique, réputée pour une excellente réponse transitoire. "
+    "Matériau de la membrane confirmé PAR AILLEURS dans l'onglet "
+    "'SPECIFICATIONS' de la même page (CITED_MANUFACTURER_SPECS, section "
+    "15, déjà sourcé avant cette relecture) : aluminium/céramique. "
     "**Centrale (Prestige Facet II 14C)** — 'architecture à 2 voies avec "
     "deux haut-parleurs grave-médium de 170 mm, disposés symétriquement "
     "autour d'un tweeter de 25 mm à dôme souple' : configuration "
@@ -3038,15 +3041,20 @@ ELIPSON_DRIVER_COMPONENTS_BY_MODEL = (
     "**Surrounds + Surrounds Back (Prestige Facet II 14LCR, x4)** — "
     "'deux médium-graves de 17 cm' + 'tweeter à dôme souple de 25 mm' : "
     "MÊME famille de tweeter que la centrale (dôme souple 25mm). "
-    "⚠️ Le matériau exact des membranes des médium-graves (papier, "
-    "polypropylène, fibre, aluminium...) n'est PAS précisé sur les 3 "
-    "pages produit consultées — volontairement non deviné."
+    "⚠️ Pour la centrale ET les surrounds (contrairement aux façades), le "
+    "matériau exact des membranes des médium-graves (papier, "
+    "polypropylène, fibre...) n'est précisé NI dans le paragraphe "
+    "descriptif NI dans l'onglet 'Détails techniques' déjà consulté pour "
+    "ces 2 modèles (section 15) — volontairement non deviné, à "
+    "distinguer de la Legacy 3220 où cette info existe bien (ci-dessus)."
 )
 """[Fiche constructeur officielle] — en.elipson.com/product-page/
 legacy-3220, elipson.com/product-page/prestige-facet-ii-14c et
 prestige-facet-ii-14lcr, paragraphes descriptifs relus via le navigateur
-intégré (recherche ciblée au-delà du tableau de specs déjà extrait en
-section 15)."""
+intégré, croisés avec les tableaux de specs déjà extraits en section 15
+(CITED_MANUFACTURER_SPECS) pour ne pas déclarer manquante une info en
+réalité déjà présente ailleurs dans ce fichier."""
+
 
 ELIPSON_TWEETER_HETEROGENEITY_IMPLICATION = (
     "Conséquence directe de la découverte ci-dessus, avec un impact "
