@@ -3270,3 +3270,41 @@ articles lus, concurrents repérés, retours clients...)_
   36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (03/10, suite 39) **🔬 Analyse de 2 nouveaux fichiers réels de Steve :
+  calibration UMIK-1 et configuration actuelle (ART_VOIX-CINEMA)**
+
+  Steve a partagé 2 fichiers réels supplémentaires. **Fichier de
+  calibration micro** (UMIK-1 S/N 7199598, 90°, chargé par Steve dans
+  Dirac avant chaque mesure) : comparaison numérique rigoureuse avec sa
+  courbe cible personnalisée ('courbe maison.targetcurve') pour vérifier
+  une hypothèse en suspens (section 19, small-room X-curve). Résultat
+  nuancé : la majorité de la courbe (grave à médium-aigu, <15kHz) est
+  clairement un choix de design indépendant (écarts jusqu'à +8dB), mais
+  au-delà de 17-20kHz la correspondance avec la calibration réelle du
+  micro est frappante (écart de seulement 0,13dB à 19931Hz). Les deux
+  hypothèses (X-curve et calibration micro) restent compatibles sans
+  preuve permettant de trancher.
+
+  **Fichier de configuration actuelle** (ART_VOIX-CINEMA.liveproject,
+  "ma courbe corrigée avec les recommandations de gemini, que j'utilise
+  actuellement") : comparé au fichier de base déjà analysé. Les 104
+  blocs de mesure brute sont STRICTEMENT IDENTIQUES (écart 0,00dB exact)
+  — Steve est reparti des mêmes mesures de micro pour ajuster
+  uniquement la courbe cible, cohérent avec la doc officielle Dirac et
+  RCH. Conséquence : les changements recommandés par Gemini ne sont pas
+  visibles dans les mesures brutes (probablement dans la zone chiffrée).
+
+  **Découverte structurelle supplémentaire** : 117 clés nommées
+  'measurement::measuredRes_posN_chM' trouvées (13 positions × 9
+  canaux, confirmant la présence de 9 "slots" par position), mais
+  toujours seulement 104 blocs de données complètes (13×8). Cette 2e
+  preuve indépendante renforce l'incohérence déjà documentée (9 noms
+  pour 8 blocs) sans permettre de la résoudre — le verrou slot<->enceinte
+  reste entier pour les canaux non-subwoofer.
+
+  Nouvelle section 36-37 de `knowledge_base.py` (3 constantes), mise à
+  jour de la carte du format dans `liveproject_reader.py` (point 5).
+
+  36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

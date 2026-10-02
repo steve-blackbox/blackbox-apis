@@ -3468,3 +3468,105 @@ RCH_GROWING_DATASET_PARALLELS_STEVE_VISION = (
 même section. Observation méthodologique, pas une nouvelle donnée
 technique en soi."""
 
+# ---------------------------------------------------------------------------
+# 36. Comparaison rigoureuse entre le VRAI fichier de calibration du micro
+#     UMIK-1 de Steve (S/N 7199598, 90°, chargé par Steve dans Dirac avant
+#     chaque mesure) et sa courbe cible personnalisée ('courbe maison.
+#     targetcurve') — vérification demandée implicitement par le partage
+#     de ce fichier, pour clarifier/nuancer l'hypothèse small-room X-curve
+#     déjà documentée (section 19).
+# ---------------------------------------------------------------------------
+UMIK1_CALIBRATION_VS_CUSTOM_TARGET_CURVE_COMPARISON = (
+    "Comparaison numérique point par point (interpolation linéaire aux "
+    "22 fréquences exactes des points de contrôle de 'courbe maison."
+    "targetcurve') entre la calibration réelle du micro de Steve "
+    "(UMIK-1 S/N 7199598, fichier '90deg', chargé par Steve dans Dirac "
+    "avant chaque mesure — confirmé par Steve lui-même) et sa courbe "
+    "cible personnalisée. Résultat NUANCÉ, à bien distinguer en 2 "
+    "zones : "
+    "(1) **Du grave au médium-aigu (20 Hz à 6 kHz)** : écarts ÉNORMES "
+    "et croissants vers le grave (jusqu'à +8 dB à 20 Hz, encore +4,1 dB "
+    "à 6 kHz) — la courbe cible de Steve dans cette zone n'a AUCUN "
+    "rapport avec la calibration du micro, c'est un choix de design "
+    "clairement volontaire et indépendant (fort boost progressif vers "
+    "les graves, déclin vers le médium-aigu, profil cohérent avec une "
+    "préférence de coloration type 'more bass'/Harman-like, pas un "
+    "artefact de mesure). "
+    "(2) **Au-delà de 17-20 kHz** : écarts BEAUCOUP plus faibles et "
+    "frappants — seulement -0,94 dB à 17723,9 Hz et +0,13 dB (quasi "
+    "nul) à 19931,3 Hz. "
+    "**Conclusion honnête, sans sur-interprétation** : l'hypothèse "
+    "'small-room X-curve' (section 19) reste une piste plausible pour "
+    "expliquer le PROFIL GÉNÉRAL de déclin vers l'aigu, mais cette "
+    "nouvelle comparaison révèle qu'une 2e explication est AUSSI "
+    "numériquement compatible avec les 2 DERNIERS points de la courbe "
+    "(coïncidence avec la calibration réelle du micro) — sans qu'on "
+    "puisse trancher laquelle (ou si les deux, ou aucune) a réellement "
+    "influencé la main de Steve ou de l'outil utilisé pour construire "
+    "cette courbe. Les deux hypothèses restent non confirmées "
+    "formellement par Steve lui-même."
+)
+"""[Calcul numérique direct sur 2 fichiers réels de Steve, interpolation
+reproductible] — fichier de calibration UMIK-1 S/N 7199598 (fourni par
+Steve) et courbe maison.targetcurve (déjà utilisée section 19)."""
+
+# ---------------------------------------------------------------------------
+# 37. Analyse du fichier de configuration ACTUELLE de Steve
+#     (ART_VOIX-CINEMA.liveproject, "ma courbe corrigée avec les
+#     recommandations de gemini, que j'utilise actuellement") — comparée
+#     au fichier de base déjà analysé (TOP CALIB BASE.liveproject).
+# ---------------------------------------------------------------------------
+ART_VOIX_CINEMA_SAME_RAW_MEASUREMENTS_AS_BASE = (
+    "Comparaison numérique directe, slot par slot et bande de fréquence "
+    "par bande de fréquence, des 104 blocs de mesure brute entre "
+    "'TOP CALIB BASE.liveproject' (fichier de base déjà analysé) et "
+    "'ART_VOIX-CINEMA.liveproject' (config actuelle de Steve, avec les "
+    "recommandations de Gemini déjà appliquées) : écart de 0,00 dB "
+    "EXACT sur tous les slots et toutes les bandes (20-200 Hz, "
+    "200 Hz-2 kHz, 2-20 kHz). **Les mesures brutes du micro sont "
+    "IDENTIQUES entre les 2 fichiers** — Steve n'a pas refait de "
+    "nouvelles mesures, il est reparti des mêmes captures de micro pour "
+    "ajuster uniquement la courbe cible/les filtres. Cohérent avec la "
+    "documentation officielle Dirac déjà citée (section 17, guide ART) "
+    "ET avec la doc de l'outil tiers RCH (section 35) : 'Load a "
+    "previous Dirac Live project. If at least 9 mic positions have "
+    "been captured and nothing has changed in the system since that "
+    "project was measured, then you can skip past the Measure step... "
+    "and go directly to Filter Design.' **Conséquence méthodologique "
+    "importante** : les changements recommandés par Gemini (courbe "
+    "cible, points de contrôle, niveaux de support) ne sont PAS "
+    "visibles dans les 104 blocs de mesure bruts (ils vivent ailleurs "
+    "dans le fichier — très probablement dans la zone chiffrée des "
+    "filtres finaux, volontairement non explorée). Comparer deux "
+    ".liveproject d'un même système ne permet donc PAS de déduire les "
+    "réglages appliqués entre les deux par une simple différence de "
+    "courbes mesurées."
+)
+"""[Calcul numérique direct sur 2 fichiers réels de Steve] — TOP CALIB
+BASE.liveproject (déjà analysé) et ART_VOIX-CINEMA.liveproject (partagé
+par Steve comme sa configuration actuelle)."""
+
+LIVEPROJECT_9_NAMED_CHANNEL_KEYS_VS_8_DATA_BLOCKS_CONFIRMED = (
+    "Nouvelle preuve structurelle INDÉPENDANTE de l'incohérence déjà "
+    "documentée dans liveproject_reader.py (9 noms de canaux configurés "
+    "pour seulement 8 blocs de mesure complets) : la zone finale du "
+    "fichier contient 117 chaînes nommées 'measurement::measuredRes_"
+    "posN_chM' (N=0 à 12, M=0 à 8 — exactement 13 positions × 9 "
+    "canaux, toutes présentes sans exception). Le compte direct des "
+    "blocs de mesure 'count=2048' reste pourtant strictement 104 "
+    "(= 13×8), jamais 117. Cette 2e preuve, obtenue par une méthode "
+    "complètement différente (clés structurelles du format Qt-like, "
+    "pas la liste de noms en texte), RENFORCE la réalité de "
+    "l'incohérence déjà identifiée, mais NE PERMET PAS de déterminer "
+    "lequel des 9 canaux nommés correspond au 'ch' sans bloc de "
+    "données complet — l'hypothèse déjà testée et non confirmée "
+    "('Surround Left' structurellement absent, score 24-80% seulement) "
+    "reste la piste la plus plausible mais toujours sans preuve "
+    "suffisante. Le verrou slot<->enceinte documenté reste donc "
+    "entier pour les 6-7 canaux non-subwoofer."
+)
+"""[Analyse binaire directe et reproductible sur le fichier réel
+ART_VOIX-CINEMA.liveproject] — voir liveproject_reader.py, point 5 de
+la carte du format, pour la documentation complète et la piste non
+explorée (structure QVariant après chaque clé)."""
+

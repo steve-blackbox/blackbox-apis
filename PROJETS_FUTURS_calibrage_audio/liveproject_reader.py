@@ -203,6 +203,30 @@ CARTE DU FICHIER (validée sur les 10 fichiers, offsets en % de la taille totale
    de valeurs dans l'échelle relative (dB autour de la cible) qu'utilise
    le moteur de diagnostic, plutôt que le dB SPL absolu de ce fichier.
 
+   ⚠️ **Confirmation structurelle indépendante de l'incohérence 9/8 (03/10,
+   fichier `ART_VOIX-CINEMA.liveproject`, partagé par Steve comme sa
+   config actuelle avec les réglages Gemini appliqués)** : dans la zone
+   finale du fichier (~95-100 %), 117 chaînes de la forme
+   `measurement::measuredRes_posN_chM` sont présentes — exactement 13
+   positions (N=0 à 12) × 9 canaux (M=0 à 8), TOUTES présentes sans
+   exception. Ceci confirme, depuis un angle STRUCTUREL totalement
+   indépendant (clés nommées du format interne, pas juste le comptage de
+   la liste de noms en métadonnées), que le logiciel Dirac Live a bien
+   un SLOT RÉSERVÉ pour 9 canaux à chaque position. Pourtant, le compte
+   direct des blocs `count=2048` (`BLOCK_MARKER`) sur ce même fichier
+   reste strictement **104 = 13 × 8**, jamais 117. **Cette 2e preuve
+   indépendante renforce la réalité de l'incohérence déjà documentée
+   ci-dessus (9 noms/canaux configurés pour 8 blocs de données
+   complètes), mais n'apporte PAS de nouvel élément permettant de
+   trancher LEQUEL des 9 "ch" (0 à 8) correspond au canal sans bloc
+   `count=2048`** — l'hypothèse déjà testée et non confirmée
+   ("Surround Left" structurellement absent) reste la plus plausible
+   mais toujours sans preuve suffisante. Piste non explorée faute de
+   temps : examiner la structure binaire Qt-like qui suit chacune de
+   ces 117 clés (probablement un `QVariant` avec sa propre taille) pour
+   voir si l'une d'elles a une taille de donnée nulle/différente — non
+   tenté ici, pourrait être une prochaine étape concrète.
+
 6. **Fin de fichier (derniers ~600 octets)** : journal de navigation de
    l'interface utilisateur (noms d'écrans visités : `Navigation`,
    `RecordingDevice`, `SelectArrangement`, `VolumeCalibration`,
