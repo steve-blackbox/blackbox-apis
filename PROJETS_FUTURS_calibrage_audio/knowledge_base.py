@@ -1936,3 +1936,121 @@ ART_OFFICIAL_MIMO_AND_ROOM_SIZE = (
 )
 """[Documentation officielle Dirac] — Helpdesk, 'Dirac Live Active Room
 Treatment (ART) FAQ' ; dirac.com/resources/downloads (note OS)."""
+
+# ---------------------------------------------------------------------------
+# 18. Valeur ajoutée du service par rapport à l'automatique Dirac (demande
+#     de Steve : lister précisément ce qui différencie notre approche d'un
+#     simple clic sur "Calculate" avec les réglages par défaut). Inclut
+#     HRTF (nouveau sujet, jamais traité ici), le retour d'expérience de
+#     Steve sur les paliers de réglage de l'automatique, et son exemple
+#     concret de groupement croisé.
+# ---------------------------------------------------------------------------
+HRTF_CONCEPT_AND_LIMIT_FOR_MULTICHANNEL = (
+    "La HRTF (Head-Related Transfer Function) est la façon dont la "
+    "taille/forme de la tête, des oreilles (pavillon), du conduit "
+    "auditif et du torse d'UNE personne filtre un son selon sa position "
+    "dans l'espace avant qu'il n'atteigne le tympan — boost général "
+    "autour de 2-5 kHz, résonance principale type +17 dB vers 2700 Hz, "
+    "mais très variable d'une personne à l'autre. Elle aide le cerveau à "
+    "lever 'le cône de confusion' (positions différentes qui donnent les "
+    "mêmes indices de différence de temps/niveau entre les 2 oreilles, "
+    "ITD/ILD) grâce aux indices spectraux propres au pavillon de chaque "
+    "individu. ⚠️ Point de prudence important, à ne pas confondre : la "
+    "HRTF est typiquement appliquée comme un FILTRE ARTIFICIEL pour "
+    "SIMULER une position de source sur un rendu BINAURAL (casque, 2 "
+    "canaux). Sur un système multicanal de haut-parleurs PHYSIQUES réels "
+    "(le cas de Steve), chaque enceinte est déjà à sa vraie position "
+    "dans l'espace : c'est la HRTF NATURELLE et propre de l'auditeur "
+    "(son vrai corps, en temps réel) qui s'applique directement, sans "
+    "qu'aucun filtre logiciel n'ait besoin de la simuler. Rien dans les "
+    "3 brevets Dirac lus (sections 11-13) ni dans la documentation "
+    "officielle (sections 16-17) ne mentionne de traitement HRTF/"
+    "binaural : le lien pertinent et déjà documenté est plutôt indirect "
+    "— la qualité de localisation naturelle du cerveau dépend de la "
+    "PRÉCISION des indices ITD/ILD réels reçus par les 2 oreilles, donc "
+    "de la fidélité de CHAQUE enceinte prise isolément (mécanisme de "
+    "symétrie de paire, brevet US9426600B2) et de l'absence d'enceinte "
+    "de support 'révélée'/localisable individuellement (paramètre "
+    "F-support High, section 17) — PAS d'un filtre HRTF explicite que "
+    "Dirac appliquerait."
+)
+"""[Acoustique générale] — https://en.wikipedia.org/wiki/
+Head-related_transfer_function. Le paragraphe de mise en garde est un
+raisonnement de rapprochement avec les sources déjà citées de ce
+fichier, pas une citation directe d'une source qui ferait ce lien."""
+
+DIRAC_AUTOMATIC_COARSE_STEPS_STEVE_FEEDBACK = (
+    "Retour d'expérience de Steve (non encore vérifié par une source "
+    "officielle indépendante) : le réglage automatique de Dirac en mode "
+    "'Calculate' par défaut n'offrirait, en pratique, qu'un choix par "
+    "GROS PALIERS (de l'ordre de 6 dB) pour le niveau de support, plutôt "
+    "qu'un réglage fin continu. Nuance à garder : le tableau OFFICIEL "
+    "déjà documenté (ART_PARAMETER_SUPPORT_LEVEL_OFFICIAL_TABLE, section "
+    "17) montre une plage légale CONTINUE de -24 à -1 dB sur le curseur "
+    "manuel — donc le curseur LUI-MÊME n'est pas limité à des paliers de "
+    "6 dB. La remarque de Steve porte donc plus probablement sur ce que "
+    "l'algorithme AUTOMATIQUE choisit par défaut sans intervention "
+    "(peut-être un pas de calcul interne grossier, ou le fait que les "
+    "'rough numbers' -6/-18/-24 dB donnés en exemple dans la doc "
+    "(section 17) sont les seules valeurs que l'automatique explore "
+    "réellement) plutôt que sur une vraie limite de l'interface "
+    "elle-même. Non confirmé officiellement : à vérifier en pratique "
+    "sur le système de Steve plutôt qu'à présenter comme un fait Dirac "
+    "établi."
+)
+"""[Retour d'expérience Steve] — affirmation de Steve sur le comportement
+observé de l'algorithme automatique Dirac, en tension avec le tableau
+officiel de la section 17 qui documente une plage continue sur le
+curseur manuel. Les deux faits ne sont pas forcément contradictoires
+(l'un décrit le curseur manuel, l'autre le comportement de l'auto)."""
+
+STEVE_CROSSED_GROUPING_EXAMPLE = (
+    "Exemple concret donné par Steve de son propre réglage manuel sur "
+    "son système réel : il a regroupé Surround Back Right avec Surround "
+    "Right, avec des réglages de support CROISÉS entre eux. Ceci est "
+    "cohérent avec le cas d'usage 'Directional bass'/groupement "
+    "personnalisé déjà documenté officiellement (section 17, "
+    "ART_GROUPING_EXAMPLE_OFFICIAL et le concept de Figure 2 de l'article "
+    "'How-to: ART Channel Group and Support Settings', "
+    "ART_OFFICIAL_FIGURES_1_2_3_CONFIRMED) : regrouper deux enceintes "
+    "censées être proches dans l'espace (Surround Right et Surround Back "
+    "Right sont toutes deux du côté droit de la pièce) permet de leur "
+    "faire partager un support mutuel plus marqué qu'avec les enceintes "
+    "du côté gauche, renforçant la cohérence spatiale de ce côté — un "
+    "exemple réel et personnalisé que l'automatique par défaut "
+    "n'explore pas de lui-même (voir ART_FOUR_CUSTOMIZATION_SETTINGS, "
+    "qui précise que le groupement par défaut n'est révisé que "
+    "manuellement)."
+)
+"""[Retour d'expérience Steve] — réglage réel appliqué par Steve sur son
+propre système, rapporté tel quel."""
+
+SERVICE_VALUE_PROPOSITION_VS_AUTOMATIC = (
+    "Synthèse de la valeur ajoutée du service par rapport à un simple "
+    "clic sur 'Calculate' avec les réglages par défaut d'ART, telle "
+    "qu'énoncée explicitement par Steve : (1) ajustement INDIVIDUEL de "
+    "la courbe de réponse de chaque enceinte à partir de SES propres "
+    "mesures réelles, plutôt qu'un gabarit de courbe cible générique ; "
+    "(2) compréhension approfondie du mécanisme ART (3 brevets lus en "
+    "texte intégral + documentation officielle complète, sections 11 à "
+    "17) appliquée en respectant les limites physiques réelles du "
+    "matériel (fiches techniques vérifiées, section 15, et limite de "
+    "distorsion non-linéaire, section 14) plutôt que des réglages à "
+    "l'aveugle ; (3) prise en compte des caractéristiques des matériaux "
+    "de la pièce d'écoute (absorption/diffusion, section 10) ; (4) "
+    "niveaux de support ajustés sur mesure plutôt que par les paliers "
+    "grossiers de l'automatique (DIRAC_AUTOMATIC_COARSE_STEPS_STEVE_"
+    "FEEDBACK, à vérifier) ; (5) plages de fréquence de support (F-"
+    "support Low/High) ajustées sur mesure selon la fiche technique "
+    "réelle de chaque enceinte plutôt que la détection automatique "
+    "générique ; (6) groupes d'enceintes choisis pour leur pertinence "
+    "géométrique/acoustique réelle (voir STEVE_CROSSED_GROUPING_EXAMPLE) "
+    "plutôt que le groupement par défaut. Limite honnête : ces leviers "
+    "sont une synthèse de ce que permet l'interface ART documentée "
+    "officiellement (section 17), pas une promesse de résultat garanti "
+    "— leur efficacité réelle dépend de chaque système et reste à "
+    "valider par la mesure avant/après, comme le reste de cette base de "
+    "connaissances le rappelle systématiquement."
+)
+"""[Steve] — proposition de valeur du service, formulée explicitement
+par Steve, recoupée avec les sections déjà sourcées de ce fichier."""
