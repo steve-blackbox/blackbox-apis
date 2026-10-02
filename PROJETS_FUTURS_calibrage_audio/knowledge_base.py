@@ -1675,3 +1675,234 @@ Dirac Live (lue directement). Buckeye (l'ampli de puissance de Steve)
 n'y figure pas — cohérent : c'est un ampli de puissance externe piloté
 en analogique (XLR) par le CINEMA 30, pas un appareil qui exécute
 lui-même Dirac Live."""
+
+# ---------------------------------------------------------------------------
+# 17. Guide officiel COMPLET des réglages ART (demande de Steve : "recupere
+#     un maximum d'infos", puis "le faq aussi", sur le Helpdesk Dirac
+#     officiel). Deux articles lus en entier via le navigateur intégré :
+#     "How-to: ART Channel Group and Support Settings" (PDF téléchargeable
+#     à https://mavenoidfiles.com/rhn76fg119p6goal115hjddgu67f7k8u8vd6,
+#     lu en HTML) et "Dirac Live Active Room Treatment Setup Guide"
+#     (incluant son tableau "Detailed Description of Parameters"), tous
+#     deux sur helpdesk.dirac.com. C'est la source la plus précise et la
+#     plus directement actionnable de toute cette base de connaissances
+#     pour répondre à "quels réglages appliquer dans Dirac" — à utiliser
+#     en priorité sur les sections 1-9 (qui dataient de documentation
+#     StormAudio plus générale, partiellement recoupée ici).
+# ---------------------------------------------------------------------------
+ART_FOUR_CUSTOMIZATION_SETTINGS = (
+    "Au-delà de la courbe cible, Dirac documente officiellement 4 "
+    "réglages de personnalisation d'ART, listés dans cet ordre logique "
+    "d'intervention : (1) Channel grouping (regroupement des canaux en "
+    "groupes ART/principaux et groupes de support) ; (2) Group Support "
+    "enable/disable (activer/désactiver qu'un groupe donné supporte un "
+    "autre) ; (3) Group Support Range (la plage de fréquence sur "
+    "laquelle ce support agit) ; (4) Group Support Level (l'intensité de "
+    "ce support, en dB). Ces 4 réglages sont à n'explorer manuellement "
+    "que si le résultat par défaut ne convainc pas totalement : ART "
+    "fonctionne avec des réglages par défaut automatiquement détectés à "
+    "partir des mesures."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'How-to: ART
+Channel Group and Support Settings', section 'Problem formulation'."""
+
+ART_PARAMETER_FSISO_OFFICIAL = (
+    "Paramètre officiel nommé 'Fsiso', réglé par groupe ART (principal) : "
+    "'agit comme une fréquence de crossover dans un système à gestion de "
+    "graves. Le but est de trouver la valeur Fsiso la PLUS HAUTE pour "
+    "votre système qui donne encore un bon résultat. Des valeurs Fsiso "
+    "plus basses sont plus robustes mais offrent moins de bénéfice, des "
+    "valeurs plus hautes offrent plus de bénéfice mais peuvent "
+    "RÉVÉLER les enceintes de support dans le résultat final' "
+    "(traduction). Valeur par défaut : 150 Hz. Plage légale : 50 à "
+    "150 Hz. C'est la définition précise et chiffrée de la borne haute "
+    "de la plage 20-150 Hz déjà connue : 150 Hz n'est pas une limite "
+    "fixe absolue mais la valeur par défaut d'un paramètre réglable "
+    "entre 50 et 150 Hz. Méthode de réglage conseillée par Dirac : "
+    "partir de 150 Hz et descendre progressivement seulement si une "
+    "enceinte de support devient localisable/audible individuellement."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'Dirac Live
+Active Room Treatment Setup Guide', section 'ART Parameters', tableau
+détaillé du paramètre 'Fsiso'."""
+
+ART_PARAMETER_SUPPORT_LEVEL_OFFICIAL_TABLE = (
+    "Paramètre officiel 'Support Level' (par relation groupe de support "
+    "-> groupe principal) : 'détermine à quel point un haut-parleur est "
+    "utilisé par l'algorithme. Pour équilibrer l'usage des enceintes et "
+    "éviter la distorsion, changez les valeurs de Support Level selon la "
+    "position des enceintes dans la pièce' (traduction). Valeur par "
+    "défaut : -18 dB. Plage légale exacte : -24 dB (contribution "
+    "MAXIMALE) à -1 dB (contribution MINIMALE) -- plage officielle plus "
+    "précise que les 'valeurs rondes pratiques' -6/-18/-24 dB données "
+    "ailleurs dans le même centre d'aide (article 'How-to: ART Channel "
+    "Group and Support Settings') à titre d'exemples arrondis, pas comme "
+    "les bornes réelles du curseur. Lien direct avec la section 14 de "
+    "cette base (distorsion non-linéaire) : Dirac affirme explicitement "
+    "que ce réglage sert à 'éviter de surcharger des enceintes "
+    "spécifiques', donc à prévenir la distorsion par excursion excessive "
+    "d'un haut-parleur trop sollicité comme support."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'Dirac Live
+Active Room Treatment Setup Guide', tableau détaillé du paramètre
+'Support level' ; et article 'How-to: ART Channel Group and Support
+Settings', section 'Subwoofer rated capability' (valeurs arrondies
+-6/-18/-24 dB)."""
+
+ART_PARAMETER_F_SUPPORT_LOW_HIGH_OFFICIAL = (
+    "Paramètres officiels 'F-support Low' et 'F-support High' (par "
+    "relation groupe de support -> groupe principal), ensemble "
+    "équivalents au 'Support Range' : F-support Low 'définit la "
+    "fréquence la plus basse à laquelle une enceinte peut en supporter "
+    "une autre... évite que de petites enceintes soient surchargées avec "
+    "des graves qu'elles ne sont pas conçues pour gérer' — plage légale "
+    "20 Hz à Fsiso, valeur par défaut détectée automatiquement depuis "
+    "les mesures (PAS une valeur fixe). F-support High 'fixe la "
+    "fréquence la plus haute... pour un caisson, agit comme un filtre "
+    "passe-bas appliqué au signal d'entrée ; pour une enceinte "
+    "large-bande, ce paramètre peut être ajusté selon la position de "
+    "l'enceinte pour éviter de révéler les enceintes de support dans le "
+    "résultat final' — plage légale F-support Low à Fsiso. Fait "
+    "important confirmé explicitement : 'la plage de Support par défaut "
+    "pour les enceintes NON-caisson ne descendra jamais sous 50 Hz' "
+    "(section 'Active Room Treatment Filter Design' du même guide) — "
+    "contrairement aux caissons, qui peuvent descendre jusqu'à 20 Hz."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'Dirac Live
+Active Room Treatment Setup Guide', tableaux détaillés des paramètres
+'F-support Low' et 'F-support High', et section 'Active Room Treatment
+Filter Design' (règle des 50 Hz minimum pour les non-caissons)."""
+
+ART_LFE_MAIN_CHANNEL_OFFICIAL_RULE = (
+    "Règle officielle précise sur le canal LFE, directement actionnable "
+    "pour le système de Steve : Dirac Live EXIGE qu'un appareil "
+    "configuré avec un canal LFE déclare UNE enceinte comme 'enceinte "
+    "principale' pour ce canal (cette enceinte sert de référence pour "
+    "la correction de réponse impulsionnelle ART à toutes les positions "
+    "de micro mesurées ; son groupe de canal porte aussi la courbe "
+    "cible associée). LFE est officiellement défini (source Wikipedia "
+    "citée par Dirac lui-même) comme produisant du contenu EN DESSOUS DE "
+    "120 Hz, ce qui le fait rentrer entièrement dans la plage ART "
+    "(<150 Hz). RÈGLE GÉNÉRALE DE BASE donnée par Dirac : 'ne laisser "
+    "QUE les caissons et les grandes enceintes large-bande supporter le "
+    "canal LFE' — il faut désactiver le support des PETITES enceintes "
+    "vers le groupe LFE (décocher leur case de support). Appliqué au "
+    "système réel de Steve : parmi ses enceintes, seules les façades "
+    "Elipson Legacy 3220 (colonnes 2,5 voies, 35 Hz) sont de bons "
+    "candidats 'grande enceinte large-bande' pour supporter le LFE — la "
+    "centrale (Facet II 14C, 43 Hz) et les 4 surrounds (Facet II 14LCR, "
+    "53 Hz) sont plus proches du profil 'petite enceinte' que ce "
+    "principe recommande d'exclure du support LFE, sauf validation "
+    "contraire par les mesures réelles."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'How-to: ART
+Channel Group and Support Settings', section 'LFE main channel'."""
+
+ART_SUBWOOFER_GROUPING_WALL_POSITION_RULE = (
+    "Précision officielle sur le regroupement des caissons, allant "
+    "au-delà de la règle déjà connue (séparer les caissons de capacités "
+    "différentes) : Dirac recommande AUSSI de séparer en groupes "
+    "distincts deux caissons qui n'ont pas le même soutien des murs "
+    "environnants (ex : un caisson près d'une ouverture vers une pièce "
+    "voisine a MOINS de soutien qu'un caisson dans un angle de la pièce "
+    "d'écoute), car 'les murs de soutien affectent significativement la "
+    "performance d'un caisson dans une pièce' (traduction). Donc la "
+    "position géométrique des 2 caissons de Steve (SVS 3000 Micro "
+    "R|Evolution) par rapport aux murs/coins de sa pièce devrait être "
+    "vérifiée avant de décider s'ils doivent rester dans le même groupe "
+    "ART ou être séparés — information non encore disponible dans ce "
+    "projet (aucune donnée géométrique précise sur leur emplacement "
+    "relatif aux murs n'a été collectée)."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'How-to: ART
+Channel Group and Support Settings', section 'Subwoofer rated
+capability', 2e paragraphe."""
+
+ART_SUPPORT_SPEAKERS_NO_OWN_TARGET_CURVE = (
+    "Point méthodologique à ne pas négliger en répondant à 'quelle "
+    "courbe cible pour chaque enceinte' : dans Dirac Live ART, SEULS les "
+    "groupes PRINCIPAUX (ART groups / main groups) ont une courbe cible "
+    "qui leur est propre. Un haut-parleur placé en PUR groupe de "
+    "support (séparé du groupe principal qu'il soutient) N'A PAS sa "
+    "propre courbe cible : il contribue uniquement à aider le groupe "
+    "principal qu'il supporte à atteindre LA cible DE CE GROUPE "
+    "principal. Donc la question 'quelle courbe cible pour l'enceinte X' "
+    "n'a de sens que si X est elle-même désignée comme canal principal "
+    "d'un groupe ART, pas si elle n'est que support d'un autre groupe."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'How-to: ART
+Channel Group and Support Settings', section 'Support speakers don't
+have specific target curves'."""
+
+ART_MINIMUM_MEASUREMENTS_OFFICIAL = (
+    "Deux seuils chiffrés officiels distincts sur le nombre de mesures, "
+    "à ne pas confondre : (1) il faut AU MOINS 3 mesures valides, dont "
+    "le point d'écoute principal ('sweetspot'), pour que l'option ART "
+    "soit seulement sélectionnable dans le logiciel (en dessous, "
+    "l'option reste grisée) ; (2) il faut AU MOINS 9 positions de micro "
+    "déjà capturées, ET une configuration système inchangée depuis, "
+    "pour pouvoir réutiliser un projet Dirac existant SANS re-mesurer "
+    "(sinon il faut re-mesurer). Avec ses 13 positions de micro (fichier "
+    "TOP CALIB BASE.liveproject), Steve dépasse largement les deux "
+    "seuils."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'Dirac Live
+Active Room Treatment Setup Guide', sections 'Setting up Dirac Live' et
+'Active Room Treatment Filter Design'."""
+
+ART_GROUPING_EXAMPLE_OFFICIAL = (
+    "Exemple officiel de regroupement donné par Dirac pour un système "
+    "2.2 (2 façades + 2 caissons), transposable au raisonnement pour un "
+    "système plus grand comme celui de Steve (7.2) : 'Deux groupes : "
+    "Façade Gauche et Droite ensemble dans un groupe, les 2 caissons "
+    "ensemble dans un second groupe, si on veut utiliser les caissons "
+    "de la même façon. Trois groupes : Façade Gauche et Droite "
+    "ensemble, et CHAQUE caisson dans son PROPRE groupe séparé si on "
+    "veut contrôler leur interaction avec les façades indépendamment' "
+    "(traduction). Règle générale pour les grands systèmes : 'grouper "
+    "les enceintes selon leur usage et leur position, en pensant à "
+    "l'impact de la position de l'enceinte sur des réglages comme Fsiso "
+    "et F-support High. Choisir les groupes qui ont le plus de sens "
+    "pour votre système et votre position d'écoute' (traduction)."
+)
+"""[Documentation officielle Dirac] — Helpdesk, article 'Dirac Live
+Active Room Treatment Setup Guide', section 'Comment on Grouping'."""
+
+ART_VS_RC_SPATIAL_CONSISTENCY_OFFICIAL = (
+    "Différence officielle précise entre Room Correction (RC) seul et "
+    "ART, cruciale pour comprendre ce qu'ART apporte concrètement en "
+    "plus : 'RC améliore la performance dans la zone mesurée avec "
+    "l'objectif d'atteindre la réponse cible EN MOYENNE, ce qui veut "
+    "dire qu'une mesure ponctuelle donnée (après calibration) peut "
+    "montrer un léger écart par rapport à la courbe cible. ART, grâce à "
+    "son contrôle du champ sonore utilisant toutes les enceintes, a une "
+    "performance significativement plus forte pour réduire la variation "
+    "spatiale et reproduire fidèlement la courbe cible À N'IMPORTE "
+    "QUELLE position mesurée' (traduction). Autrement dit : RC vise une "
+    "bonne moyenne sur l'ensemble des positions, ART vise une bonne "
+    "cohérence à CHAQUE position individuellement -- bénéfice direct "
+    "pour un salon avec plusieurs places assises."
+)
+"""[Documentation officielle Dirac] — Helpdesk, 'Dirac Live Active Room
+Treatment (ART) FAQ', question sur la différence entre RC et ART sur
+la variation spatiale. Confirme et précise, en langage produit, le
+concept de 'target stage' du brevet US8213637B2 (section 12)."""
+
+ART_OFFICIAL_MIMO_AND_ROOM_SIZE = (
+    "Confirmations officielles supplémentaires de la FAQ ART : 'ART "
+    "utilise une technologie MIMO brevetée pour coordonner toutes les "
+    "enceintes, optimisant leur interaction pour gérer les résonances "
+    "induites par la pièce, particulièrement dans la plage critique de "
+    "graves 20-150 Hz' -- confirmation du terme officiel 'MIMO' "
+    "(Multiple-Input Multiple-Output), cohérent avec le modèle MIMO des "
+    "brevets lus (sections 11-13). Plage de pièce optimale confirmée "
+    "identique à celle déjà connue : environ 12 à 100 m². Config "
+    "minimale : système stéréo (2 enceintes). Prérequis matériel "
+    "explicites : AVR/récepteur certifié ART, licence Dirac Live avec "
+    "add-on ART, application Dirac Live sur Windows/macOS (PAS iOS/"
+    "Android pour Bass Control et ART), microphone de mesure "
+    "omnidirectionnel, licence Bass Control si un ou plusieurs caissons "
+    "sont utilisés."
+)
+"""[Documentation officielle Dirac] — Helpdesk, 'Dirac Live Active Room
+Treatment (ART) FAQ' ; dirac.com/resources/downloads (note OS)."""
