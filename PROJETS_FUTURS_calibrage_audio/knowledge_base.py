@@ -3327,34 +3327,48 @@ d'autres retours de terrain le suggèrent."""
 #     documentée honnêtement plutôt que passée sous silence.
 # ---------------------------------------------------------------------------
 PUBLIC_LIVEPROJECT_SEARCH_ATTEMPT_INCONCLUSIVE = (
-    "3 recherches tentées via le navigateur intégré pour trouver des "
-    "fichiers .liveproject publics (dans le but de généraliser la "
-    "compréhension du format au-delà des 10 fichiers de Steve, "
-    "notamment pour tenter de résoudre le verrou slot<->enceinte non "
-    "résolu pour 6/8 canaux, liveproject_reader.py) : "
-    "(1) Google 'filetype:liveproject dirac live' -> 'Aucun document ne "
-    "correspond aux termes de recherche spécifiés' ; "
+    "Recherches tentées via le navigateur intégré pour trouver des "
+    "fichiers .liveproject publics AVEC DE VRAIES MESURES (dans le but "
+    "de généraliser la compréhension du format au-delà des fichiers de "
+    "Steve, notamment pour tenter de résoudre le verrou slot<->enceinte "
+    "non résolu) : "
+    "(1) Google 'filetype:liveproject dirac live' -> aucun résultat ; "
     "(2) Google '\".liveproject\" dirac forum download/share/upload' -> "
-    "résultats pertinents mais SANS fichier téléchargeable (une "
-    "discussion technique du forum officiel miniDSP confirme juste la "
-    "nature du format : 'That is a Dirac Live save file', aucun lien de "
-    "partage de données réel) ; "
-    "(3) recherche de dépôts GitHub 'liveproject dirac' -> '0 results'. "
-    "**Conclusion honnête** : je n'ai pas pu reproduire ce que Gemini "
-    "aurait réussi à faire avec les outils de recherche disponibles ici "
-    "(navigateur intégré + recherche Google/GitHub). Hypothèse plausible "
-    "mais NON vérifiée : Gemini a pu accéder à des sources non indexées "
-    "par ces moteurs (groupes privés, Discord, liens de partage directs "
-    "dans des discussions non publiques) — à ne pas confondre avec une "
-    "preuve que de tels fichiers n'existent pas publiquement. Si Steve "
-    "dispose de liens précis utilisés par Gemini, les fournir "
-    "directement permettrait de reprendre cette piste utilement."
+    "résultats pertinents mais SANS fichier téléchargeable (forum "
+    "officiel miniDSP, confirme juste la nature du format) ; "
+    "(3) dépôts GitHub 'liveproject dirac' -> 0 résultat direct, mais "
+    "a mené à la découverte de l'outil RCH/Sangoku (section 35) ; "
+    "(4) AVS Forum 'site:avsforum.com \".liveproject\"' -> a mené à la "
+    "découverte de RCH (succès indirect, pas un fichier) ; "
+    "(5) HCFR 'site:homecinema-fr.com \".liveproject\"' -> fil 'Dirac "
+    "Live v3 avec Bass Control' : UNE SEULE mention de '.liveproject', "
+    "dans un contexte différent de celui recherché — un utilisateur "
+    "explique avoir tenté de RENOMMER un fichier de courbe cible en "
+    "'.liveproject' sans succès ('Si je renome l'extension des fichiers "
+    "en .liveproject cela ne fonctionne pas'). Le fil parle en réalité "
+    "du PARTAGE DE COURBES CIBLES PRÉDÉFINIES (.targetcurve, ex. "
+    "'Harman' — le même type de fichier déjà présent chez Steve, "
+    "Harman-4/6/8dB.targetcurve), pas de fichiers .liveproject complets "
+    "avec mesures. "
+    "**Conclusion honnête, après 5 tentatives sur des plateformes "
+    "différentes** : aucun VRAI fichier .liveproject tiers avec des "
+    "mesures réelles n'a été trouvé et téléchargé. Seule la "
+    "DOCUMENTATION d'un outil capable de les traiter (RCH) a pu être "
+    "exploitée (section 35) — pas un vrai fichier d'exemple. Hypothèse "
+    "plausible mais NON vérifiée : Gemini a pu accéder à des sources "
+    "non indexées par ces moteurs (groupes privés, Discord, liens de "
+    "partage directs dans des discussions non publiques) — à ne pas "
+    "confondre avec une preuve que de tels fichiers n'existent pas "
+    "publiquement. Si Steve dispose de liens précis utilisés par "
+    "Gemini, les fournir directement permettrait de reprendre cette "
+    "piste utilement."
 )
-"""[Recherche web tentée, non concluante] — google.com (3 requêtes),
-github.com/search, minidsp.com/community (lu en entier), via le
-navigateur intégré. Documenté par honnêteté méthodologique, cohérent
-avec la tentative RT60/absorption déjà documentée comme non concluante
-(suite 32)."""
+"""[Recherche web tentée, non concluante après 5 essais] — google.com,
+github.com/search, avsforum.com, homecinema-fr.com (lu en entier),
+minidsp.com/community (lu en entier), via le navigateur intégré.
+Documenté par honnêteté méthodologique, cohérent avec la tentative
+RT60/absorption déjà documentée comme non concluante (suite 32)."""
+
 
 # ---------------------------------------------------------------------------
 # 35. Découverte majeure : un outil tiers open-source (Room Correction
