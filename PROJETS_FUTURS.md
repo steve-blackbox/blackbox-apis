@@ -2872,3 +2872,54 @@ articles lus, concurrents repérés, retours clients...)_
   10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (03/10, suite 28) **📰 Audioholics (Dirac ART + roadmap Denon/Marantz)
+  et retour Grimani via Gemini sur le placement d'enceintes/traitement**
+
+  Steve a demandé d'aller sur Audioholics (après avoir écarté un 1er
+  article trop ancien et un 2e sur Audyssey, non désiré). Recherche
+  recentrée sur "site:audioholics.com Dirac Live", 2 articles lus en
+  entier via le navigateur intégré.
+
+  **Article 1 — "Dirac Live Active Room Treatment: One Giant Leap for
+  Room EQ, Coming Spring '23"** (Wayde Robson) : citations officielles
+  DIRECTES et NOMMÉES de 2 inventeurs des brevets déjà lus (sections
+  11-13) — Mathias Johansson (CPO Dirac) confirme "reduce bass decay
+  times digitally, without needing bass traps..." ; Dr. Lars-Johan
+  Brännmark (Chief Scientist) nomme le mécanisme **"Loudspeaker
+  Co-Optimization"**. Précision historique : Dirac Live Room Correction
+  classique = SIMO (une enceinte à la fois), ART = premier vrai MIMO
+  (plusieurs micros simultanés). Clarification sur la chronologie
+  StormAudio (bien le 1er partenaire ART, dès janvier 2023 — résout la
+  tension notée section 16).
+
+  **Article 2 — "Dirac Roadmap for 2022 Denon & Marantz AV Products"**
+  (Gene DellaSala) : distingue 3 produits Dirac à ne pas confondre —
+  Basic Dirac Live (SIMO), Dirac Live with Bass Control (SIMO, excite
+  les modes plus uniformément SANS les annuler), et Dirac Spatial
+  Correction/Unison (MIMO, mais réservé à l'automobile en 2022 — relation
+  exacte avec ART non clarifiée par une source officielle, à vérifier).
+  Q&A officiel Sound United : firmware Dirac déployé après mars 2023,
+  réservé aux modèles 2022+ (CINEMA 30 de Steve concerné), licence
+  payante séparée, calibrations Dirac/Audyssey non combinables (micro
+  dédié type UMIK-1 requis), pas de PEQ manuel (tout passe par le
+  logiciel Dirac Live).
+
+  **Retour Grimani (via résumé Gemini de son live Youthman, 2 messages)**
+  — limite honnête : résumé par IA tierce non vérifiable directement,
+  classé avec cette réserve explicite. Règles chiffrées : "règle des
+  38%" (position du siège), triangle frontal 45°, "Psychoacoustic
+  Reversal" (Surround Back à ~165°/max 30° d'écart — directement
+  pertinent pour la config 7.2 de Steve), SBIR (interférence de
+  proximité au mur, à corriger par placement plutôt que par EQ seul),
+  absorption asymétrique + RT60 équilibré (convergence notée avec la
+  citation Johansson ci-dessus), méthode des 4 caissons d'angle.
+  Réserves documentées : config Steve = 7.2 SANS hauteur Atmos active
+  (recommandations Atmos non applicables) et 2 caissons seulement (pas
+  4) — explique en partie pourquoi les 3 modes de pièce déjà confirmés
+  (section empirique) ne peuvent être qu'atténués, pas éliminés, par le
+  DSP seul.
+
+  Nouvelles sections 21 et 22 de `knowledge_base.py` (9 constantes).
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

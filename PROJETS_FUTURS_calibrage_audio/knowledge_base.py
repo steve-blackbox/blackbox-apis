@@ -2247,3 +2247,313 @@ GRIMANI_SUBWOOFER_LOCALIZATION_THRESHOLD_120HZ = (
 )
 """[Avis d'expert professionnel] — Anthony Grimani, 'Get Centered',
 Residential Systems. Même source que ci-dessus."""
+
+# ---------------------------------------------------------------------------
+# 21. Articles Audioholics sur Dirac Live (demande de Steve : explorer
+#     Audioholics pour toute information utile, en excluant Audyssey).
+#     Source journalistique spécialisée reconnue dans l'industrie, avec
+#     CITATIONS DIRECTES ATTRIBUÉES à des dirigeants/scientifiques Dirac
+#     Research eux-mêmes (pas une reformulation tierce). [Journalisme
+#     spécialisé audio, citations officielles directes]
+# ---------------------------------------------------------------------------
+DIRAC_COO_JOHANSSON_BASS_DECAY_QUOTE = (
+    "Citation officielle directe de Mathias Johansson (Chief Product "
+    "Officer de Dirac — déjà identifié comme co-inventeur du brevet "
+    "US8213637B2, section 12), rapportée par Audioholics lors de "
+    "l'annonce d'ART (printemps 2023) : 'Dirac pioneered digital room "
+    "correction through our impulse response optimization technology "
+    "found in our acclaimed Dirac Live Room Correction feature. Now, "
+    "with Active Room Treatment we are moving beyond traditional room "
+    "correction to actually reduce bass decay times digitally, without "
+    "needing bass traps or thick layers of wall absorption.' Confirme, "
+    "par une citation NOMMÉE et attribuée (pas une reformulation "
+    "marketing anonyme), exactement ce que le Helpdesk officiel disait "
+    "déjà (section 18) sur la réduction du temps de décroissance des "
+    "graves ('lingering bass')."
+)
+"""[Journalisme spécialisé, citation officielle directe] —
+audioholics.com/audio-technologies/dirac-live-active-room-treatment-
+dsp-room-eq-spring-201823, 'Dirac Live Active Room Treatment: One Giant
+Leap for Room EQ, Coming Spring '23' (Wayde Robson, 2022/2023). Lu en
+entier via le navigateur intégré."""
+
+DIRAC_SIMO_VS_MIMO_HISTORICAL_DISTINCTION = (
+    "Précision historique et technique importante, confirmée par cet "
+    "article : avant ART, 'Dirac Live Room Correction' (RC) classique "
+    "reposait sur un système **SIMO** (Single-Input Multiple-Output) : "
+    "une correction qui ne pouvait traiter qu'UNE enceinte à la fois, "
+    "séquentiellement. ART introduit pour la première fois un vrai "
+    "système **MIMO** (Multiple-Input Multiple-Output) : le microphone "
+    "de calibration lit le son de TOUTES les enceintes SIMULTANÉMENT, "
+    "'en utilisant plusieurs microphones dans des zones d'écoute clés à "
+    "travers la pièce', permettant pour la première fois un véritable "
+    "contrôle SPATIAL (pas juste par-enceinte). Cohérent avec le terme "
+    "'MIMO' déjà confirmé officiellement par la FAQ Dirac (section 18), "
+    "mais cette source ajoute la distinction historique AVANT/APRÈS qui "
+    "manquait : RC seul = SIMO (limité), ART = MIMO (le vrai saut "
+    "technologique)."
+)
+"""[Journalisme spécialisé] — même article Audioholics que ci-dessus."""
+
+DIRAC_SCIENTIST_BRANNMARK_CO_OPTIMIZATION_QUOTE = (
+    "Citation officielle directe du Dr. Lars-Johan Brännmark (Research "
+    "Fellow et Chief Scientist chez Dirac — déjà identifié comme "
+    "co-inventeur des 3 brevets lus en texte intégral, sections 11 à "
+    "13), rapportée par Audioholics : il nomme ce mécanisme "
+    "'**Loudspeaker Co-Optimization**' — 'the process that allows "
+    "Dirac Live Active Room Treatment to apply room-correction to each "
+    "speaker in your multi-channel system simultaneously as they work "
+    "together to create equal results across the spatial plane.' "
+    "Terme officiel supplémentaire, attribué nommément à l'un des "
+    "inventeurs réels des brevets déjà analysés — renforce la "
+    "cohérence entre le langage marketing/presse et les mécanismes "
+    "mathématiques déjà documentés à partir des brevets eux-mêmes. "
+    "L'article emploie aussi une métaphore pédagogique utile pour "
+    "expliquer le concept aux clients : 'one hand (or one speaker) "
+    "washes the other' (comme un bruiteur actif/Active Noise "
+    "Cancelling qui annule les fréquences sur-représentées dues aux "
+    "réflexions et interactions entre plusieurs enceintes jouant en "
+    "même temps)."
+)
+"""[Journalisme spécialisé, citation officielle directe] — même article
+Audioholics que ci-dessus."""
+
+STORMAUDIO_FIRST_ART_PARTNER_TIMELINE = (
+    "Clarification historique importante qui résout la 'tension' notée "
+    "en section 16 (StormAudio affirmant être 'la seule marque' à "
+    "inclure ART) : cet article (printemps 2023) confirme que "
+    "StormAudio a bien été le TOUT PREMIER partenaire à recevoir ART, "
+    "via une mise à jour firmware gratuite pour tout achat d'un "
+    "processeur/AVR StormAudio à partir du 1er janvier 2023 (ou "
+    "199-299$ de licence pour les achats antérieurs). La déclaration "
+    "StormAudio 'seule marque' n'était donc pas une erreur marketing "
+    "mais un FAIT RÉEL au moment où elle a été écrite (ART n'existait "
+    "alors que sur StormAudio) — elle est simplement devenue obsolète "
+    "une fois ART étendu à d'autres marques (dont Marantz, confirmé "
+    "disponible sur le CINEMA 30 de Steve, section 16) sans que la page "
+    "StormAudio ne soit mise à jour depuis."
+)
+"""[Journalisme spécialisé] — même article Audioholics que ci-dessus,
+section 'Practical Testing Availability'."""
+
+DIRAC_THREE_PRODUCT_TIERS_SIMO_VS_MIMO = (
+    "Clarification IMPORTANTE issue d'un 2e article Audioholics (2022, "
+    "antérieur à ART), à prendre avec prudence car il distingue des "
+    "produits Dirac qui pourraient prêter à confusion avec ART : "
+    "l'article liste 3 types de correction Dirac déployés ou prévus "
+    "chez Denon/Marantz : "
+    "(1) 'Basic Dirac Live' — 'the original version, its SIMO "
+    "[Single-Input Multiple-Output] and has no bass management of its "
+    "own' ; "
+    "(2) 'Dirac Live with Bass Control' (version mono-caisson ou "
+    "multi-caisson) — reste SIMO : 'it doesn't cancel the modes, it is "
+    "simply exciting modes more evenly amongst the 2-4 LF sources' "
+    "(ne fait qu'exciter les modes plus uniformément entre 2 à 4 "
+    "caissons, ne les annule PAS) ; "
+    "(3) 'Dirac Spatial Correction' (anciennement nommé 'Unison') — "
+    "vrai MIMO, mais l'article précise explicitement (en 2022) que "
+    "'it is not something that exists on any consumer products for "
+    "the home. It is used in some cars, like the noted Volvo.' "
+    "ATTENTION : il n'est PAS certain que 'Dirac Spatial "
+    "Correction'/Unison (orienté automobile) soit le MÊME produit que "
+    "'Active Room Treatment' (ART, lancé printemps 2023 pour le grand "
+    "public, section 21 ci-dessus) — les deux emploient MIMO mais "
+    "semblent être des gammes de produits distinctes développées par "
+    "Dirac Research pour des marchés différents (auto vs home "
+    "cinema). Cette distinction mérite d'être gardée à l'esprit : le "
+    "'MIMO'/'Loudspeaker Co-Optimization' documenté pour ART (section "
+    "21) est a priori bien ART, et non ce produit automobile, mais "
+    "aucune source officielle Dirac trouvée à ce jour ne clarifie "
+    "formellement la relation exacte entre 'Unison' et 'ART'."
+)
+"""[Journalisme spécialisé, à vérifier] — audioholics.com/editorials/
+dirac-road-map-denon-marantz-2022, 'Dirac Roadmap for 2022 Denon &
+Marantz AV Products' (Gene DellaSala, 2022). Lu en entier via le
+navigateur intégré."""
+
+DENON_MARANTZ_OFFICIAL_DIRAC_QA_2022 = (
+    "Q&A officiel (réponses attribuées à Sound United/Denon/Marantz "
+    "dans l'article) sur le déploiement de Dirac Live chez Denon et "
+    "Marantz, utile pour comprendre le contexte matériel du CINEMA 30 "
+    "de Steve : "
+    "(1) Firmware supportant Dirac Live (versions limited ET full "
+    "bandwidth) déployé 'AFTER the firmware update in March 2023' ; "
+    "Bass Control prévu '2024 - TBD' (pas encore commencé à l'époque) ; "
+    "Spatial correction : 'too early to commit anything new' (pas de "
+    "date). "
+    "(2) Les modèles Denon/Marantz ANTÉRIEURS à 2022 (ex. AVR-X8500H, "
+    "SR7015/8015, AV7706, AV8805) NE PEUVENT PAS être mis à jour pour "
+    "supporter Dirac Live — nécessite un nouveau DSP/matériel présent "
+    "uniquement à partir du millésime 2022. Le CINEMA 30 de Steve "
+    "étant un modèle plus récent (2023+), il fait partie de la "
+    "nouvelle génération compatible nativement. "
+    "(3) Dirac Live est un 'optional upgrade (upcharge)' : licence à "
+    "acheter séparément sur dirac.com/denon ou dirac.com/marantz, prix "
+    "exact non communiqué ('Final pricing is under Dirac's control and "
+    "may change in the future'). "
+    "(4) Dirac et Audyssey sont des calibrations strictement SÉPARÉES "
+    "— impossible de combiner une fonction Audyssey (ex. Dynamic "
+    "Volume/Dynamic EQ) avec Dirac Live. Un microphone de calibration "
+    "DÉDIÉ est nécessaire pour Dirac (type MiniDSP UMIK-1, déjà "
+    "documenté comme celui utilisé par Steve) — le micro Audyssey "
+    "fourni avec l'ampli ne fonctionne QUE pour Audyssey. "
+    "(5) La fonction 'Speaker Preset' permet de stocker 2 calibrations "
+    "sur l'AVR et de basculer entre elles (ex. Preset 1 = Audyssey, "
+    "Preset 2 = Dirac Live) — utile pour comparer en A/B. "
+    "(6) Sound United NE supporte PAS de PEQ manuel indépendant : tout "
+    "ajustement EQ doit passer par le logiciel Dirac Live ou par "
+    "l'app/logiciel Audyssey MultEQ — cohérent avec la pratique de "
+    "Steve qui ajuste ses courbes cibles directement dans Dirac Live "
+    "(points de contrôle), pas via un PEQ tiers."
+)
+"""[Confirmation officielle via journalisme spécialisé] — même article
+Audioholics que ci-dessus (Q&A attribué à Sound United/Denon/Marantz)."""
+
+# ---------------------------------------------------------------------------
+# 22. Anthony Grimani — placement d'enceintes et traitement de pièce
+#     (live YouTube avec la chaîne Youthman, demandé par Steve, non
+#     accessible directement par l'assistant — ni transcription ni
+#     capacité d'analyse vidéo native). Steve a transmis un RÉSUMÉ produit
+#     par Gemini (IA tierce) à partir de cette vidéo.
+#     NIVEAU DE PREUVE À TRAITER AVEC PRUDENCE SUPPLÉMENTAIRE : ce n'est
+#     PAS une lecture directe d'une source primaire par l'assistant, mais
+#     un résumé secondaire produit par un autre système d'IA, non
+#     vérifiable formellement ici (risque résiduel d'erreur/d'extrapolation
+#     de la part de Gemini). Le niveau de confiance intrinsèque sur
+#     l'identité et l'expertise de Grimani reste élevé : il s'agit du même
+#     expert déjà cité en section 20 (article écrit 'Get Centered', lu
+#     directement par l'assistant), confirmé par Steve comme étant
+#     l'intervenant du live. [Avis d'expert professionnel, rapporté par
+#     IA tierce — à corroborer si possible avec une source écrite directe]
+# ---------------------------------------------------------------------------
+GRIMANI_ROOM_LAYOUT_AND_SEATING = (
+    "Règles de disposition de la pièce et du siège d'écoute rapportées "
+    "par Grimani (via résumé Gemini) : "
+    "(1) concevoir la pièce pour la 'zone verte' (places principales), "
+    "sans compromis acoustique pour les sièges d'appoint occasionnels ; "
+    "(2) le centre de l'écran/téléviseur doit être proche du niveau des "
+    "yeux des spectateurs assis (erreur fréquente : écran trop haut) ; "
+    "(3) ne JAMAIS placer le siège d'écoute en plein milieu de la pièce, "
+    "ni exactement au 1/4 ou aux 3/4 de la longueur — ce sont des zones "
+    "de nœuds/ventres d'ondes stationnaires qui annulent certaines "
+    "fréquences et détruisent l'impact des basses ; "
+    "(4) règle dite 'des 38%' : bon point de départ pour la rangée de "
+    "sièges principale = la positionner à 38% de la longueur totale de "
+    "la pièce depuis le mur avant, pour éviter les pires pics/creux. "
+    "RÉSERVE : les dimensions exactes de la pièce de Steve et la "
+    "position précise de son siège d'écoute par rapport à ces repères "
+    "ne sont pas connues de l'assistant à ce jour — cette règle ne peut "
+    "donc PAS être vérifiée comme respectée ou non pour son installation "
+    "réelle sans ces mesures complémentaires."
+)
+"""[Avis d'expert professionnel, rapporté par IA tierce] — Anthony
+Grimani, live YouTube avec la chaîne Youthman (https://www.youtube.com/
+watch?v=THlvJ_lolmE), résumé transmis par Steve via Gemini."""
+
+GRIMANI_SPEAKER_PLACEMENT_ANGLES = (
+    "Règles de placement des enceintes rapportées par Grimani : "
+    "(1) triangle frontal : Front Left/Right à un angle de 45° par "
+    "rapport à la position d'écoute principale ; la centrale à la même "
+    "hauteur que les frontales pour une transition fluide des sons à "
+    "l'écran — DIRECTEMENT APPLICABLE à la config 7.2 de Steve (Front "
+    "Left, Center, Front Right) ; "
+    "(2) 'Psychoacoustic Reversal' (inversion psychoacoustique) : erreur "
+    "fréquente qui consiste à trop écarter la paire Surround Back l'une "
+    "de l'autre (ex. 140-150° par rapport à l'auditeur au lieu de "
+    "165°). Au-delà d'un écart de ~30° entre les deux enceintes "
+    "arrière, le cerveau peut, à cause de la forme de l'oreille externe, "
+    "interpréter un son venant de l'arrière comme venant de l'AVANT de "
+    "la pièce. Conseil : resserrer la paire Surround Back à un angle "
+    "d'environ 165° par rapport à l'auditeur (soit ~30° d'écart entre "
+    "elles) — DIRECTEMENT PERTINENT pour Steve qui possède bien un "
+    "canal Surround Back Left et Surround Back Right dans sa config "
+    "7.2 (confirmé par les métadonnées du fichier .liveproject) ; la "
+    "vérification de l'angle RÉEL de ses enceintes arrière nécessite "
+    "toutefois une mesure physique que l'assistant n'a pas ; "
+    "(3) enceintes 'Wide' à 45° de la position d'écoute pour combler le "
+    "vide entre frontales et surrounds latérales — NON APPLICABLE à la "
+    "configuration active de Steve (7.2, aucun canal Wide dans sa "
+    "liste de 7 enceintes) ; "
+    "(4) effet SBIR (Speaker Boundary Interference Response) : la "
+    "proximité immédiate d'une enceinte à un mur crée des annulations/"
+    "renforcements de fréquences par interférence ; se corrige en "
+    "décollant physiquement l'enceinte du mur. Point IMPORTANT : SBIR "
+    "crée typiquement des creux étroits et profonds qu'il est difficile "
+    "de corriger uniquement par EQ/DSP (nécessiterait un boost très "
+    "important, souvent peu souhaitable) — cohérent avec la prudence "
+    "déjà documentée en section 14 sur les limites physiques de la "
+    "correction numérique : un problème d'interférence physique de "
+    "proximité au mur se traite d'abord par le placement, pas par "
+    "Dirac ART seul."
+)
+"""[Avis d'expert professionnel, rapporté par IA tierce] — même live
+Grimani/Youthman que ci-dessus."""
+
+GRIMANI_ATMOS_HEIGHT_NOTE = (
+    "Recommandations Grimani sur les canaux de hauteur (Dolby Atmos) : "
+    "éviter 4-6 enceintes au plafond dans une petite pièce ('Mush', "
+    "nuage de réflexions incontrôlable) et préférer UNE SEULE paire, "
+    "légèrement en avant des spectateurs, alignée en ligne droite à "
+    "mi-chemin entre la centrale et les frontales ('parapluie de son'). "
+    "RÉSERVE IMPORTANTE : la configuration ACTIVE de Steve est un 7.2 "
+    "SANS hauteurs Atmos actives (confirmé dans exemple_systeme_steve.py "
+    "et les métadonnées du fichier .liveproject, qui ne listent que 7 "
+    "enceintes + 2 caissons, aucun canal de hauteur). Cette recommandation "
+    "n'est donc PAS applicable à son installation actuelle telle que "
+    "documentée ; elle n'est conservée ici que pour information, au cas "
+    "où Steve envisagerait une évolution future de son système."
+)
+"""[Avis d'expert professionnel, rapporté par IA tierce] — même live
+Grimani/Youthman que ci-dessus."""
+
+GRIMANI_ROOM_TREATMENT_BALANCE = (
+    "Recommandations Grimani sur le traitement acoustique physique : "
+    "(1) ne PAS sur-amortir (éviter de recouvrir tous les murs de mousse "
+    "absorbante, ce qui rend la pièce 'morte') ; "
+    "(2) 'absorption asymétrique' : placer un panneau absorbant sur un "
+    "mur latéral et, juste en face sur le mur opposé, un panneau de "
+    "diffusion plutôt qu'un second panneau absorbant — casse les échos "
+    "flottants tout en gardant une sensation d'espace ; "
+    "(3) l'objectif recherché est un temps de décroissance du son "
+    "(Decay Time / RT60) ÉQUILIBRÉ entre graves, médiums et aigus, pas "
+    "une élimination totale des réflexions. "
+    "CONVERGENCE NOTABLE avec la section 21 : cet objectif de RT60 "
+    "équilibré par des moyens PHYSIQUES (absorption/diffusion) est "
+    "exactement le même objectif que celui cité par Mathias Johansson "
+    "(CPO Dirac) pour justifier Active Room Treatment par des moyens "
+    "NUMÉRIQUES ('reduce bass decay times digitally, without needing "
+    "bass traps or thick layers of wall absorption') — les deux "
+    "approches (traitement physique de Grimani, DSP ART de Dirac) "
+    "visent la même grandeur acoustique (le temps de décroissance), "
+    "par des leviers différents et complémentaires."
+)
+"""[Avis d'expert professionnel, rapporté par IA tierce] — même live
+Grimani/Youthman que ci-dessus."""
+
+GRIMANI_MULTI_SUBWOOFER_METHOD = (
+    "Méthode des caissons multiples selon Grimani : le problème n°1 en "
+    "home cinéma est l'onde stationnaire (basses très fortes à un "
+    "endroit, quasi absentes 50cm plus loin) ; sa solution de référence "
+    "est l'installation de 4 caissons de basses, un dans CHACUN des 4 "
+    "coins de la pièce, qui 's'équilibrent mutuellement' et annulent "
+    "en grande partie les résonances architecturales, pour des basses "
+    "homogènes à toutes les places. "
+    "RÉSERVE IMPORTANTE : Steve possède 2 caissons (Subwoofer 1 et "
+    "Subwoofer 2), pas 4 — sa configuration réelle ne correspond pas à "
+    "la méthode optimale décrite par Grimani. Cette information n'est "
+    "PAS une invitation à recommander l'achat de 2 caissons "
+    "supplémentaires (hors sujet de la mission de réglages logiciels), "
+    "mais elle explique en partie, de façon cohérente, pourquoi les 3 "
+    "modes de pièce déjà confirmés empiriquement par double méthode "
+    "indépendante (~60Hz, ~110-135Hz, ~235-255Hz — cf. analyse du "
+    "fichier .liveproject et cartographie_modale.py) ne peuvent être "
+    "qu'ATTÉNUÉS par le DSP (Dirac Bass Control / ART) et non éliminés "
+    "aussi efficacement qu'avec 4 caissons correctement positionnés : "
+    "avec seulement 2 sources de graves, il reste structurellement "
+    "moins de degrés de liberté spatiaux pour 'bombarder' la pièce "
+    "et annuler ses résonances que ce que permettrait une 4e paire de "
+    "coins actifs — le rôle du DSP est alors de compenser, autant que "
+    "la physique le permet, ce manque de degrés de liberté spatiaux."
+)
+"""[Avis d'expert professionnel, rapporté par IA tierce] — même live
+Grimani/Youthman que ci-dessus."""
