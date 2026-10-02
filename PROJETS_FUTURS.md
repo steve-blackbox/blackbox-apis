@@ -2644,3 +2644,74 @@ articles lus, concurrents repérés, retours clients...)_
   `example_run.py` + `exemple_systeme_steve.py` repassés avec succès :
   aucune régression.
 
+- (03/10, suite 23) **🎯 Synthèse des réglages ART : confirmations
+  officielles Dirac/StormAudio (sections 16-17) + analyse empirique
+  réelle des vraies mesures de Steve**
+
+  Steve a demandé la synthèse finale des réglages à appliquer dans
+  Dirac pour optimiser son système, puis explicitement de prendre en
+  compte "toutes les notes sur le site de dirac et de storm", y compris
+  support/downloads/FAQ. Exploration approfondie via le navigateur
+  intégré (web_fetch avait échoué sur dirac.com par le passé, erreur
+  429) :
+  - **dirac.com** (page produit ART, quickstart, liste des 29 marques
+    compatibles, page Marantz, page CINEMA 30 spécifique) → section 16
+    de `knowledge_base.py` : mécanisme "cancellation signals" confirmé
+    en langage produit, ART cible le "lingering bass"/temps de
+    décroissance (cohérent avec les 3 modes de pièce trouvés plus bas),
+    réutilisation possible des mesures existantes.
+  - **stormaudio.com/room-calibration/** → point de vigilance noté :
+    "Expert Bass Management" (6 zones) semble être un ajout propriétaire
+    StormAudio, non confirmé sur le Marantz CINEMA 30 de Steve.
+  - **helpdesk.dirac.com** (Helpdesk officiel, articles "How-to: ART
+    Channel Group and Support Settings" et "Dirac Live Active Room
+    Treatment Setup Guide" lus intégralement, accordéons cliqués) →
+    section 17, la source la plus précise et actionnable de tout le
+    projet : les 4 réglages de personnalisation (grouping, enable/
+    disable, range, level), les valeurs exactes de chaque paramètre
+    (**Fsiso** défaut 150Hz/plage 50-150Hz ; **Support Level** défaut
+    -18dB/plage -24 à -1dB ; **F-support Low/High** détecté
+    automatiquement, jamais sous 50Hz pour les non-caissons), la règle
+    LFE précise (seuls caissons + grandes enceintes large-bande doivent
+    le supporter), la règle de séparation des caissons selon leur
+    soutien mural, le fait que les enceintes en pur support n'ont pas de
+    courbe cible propre, les seuils de mesure (3 minimum pour activer
+    ART, 9 pour réutiliser un projet), et la différence précise RC vs
+    ART sur la variation spatiale (confirme le "target stage" du brevet
+    US8213637B2).
+
+  **En parallèle, première vraie analyse empirique du système réel** :
+  les 8 captures d'écran de `~/Desktop/CAPTURE ECRAN COURBES/` ont été
+  digitalisées avec `image_reader.py` (déjà calibré pour ces captures
+  précises) pour extraire les vraies courbes mesurées de chaque
+  enceinte (les 2 caissons séparés par couleur exacte : rouge
+  (137,41,41) = Subwoofer 1/LFE, magenta (137,41,120) = Subwoofer 2).
+  `detect_anomalies` exécuté sur chaque courbe réelle, filtré à la
+  bande passante EXACTE de chaque enceinte (fiches section 15, pas une
+  marge arbitraire — point que Steve a corrigé en cours de route).
+  Croisement avec `cartographie_modale.py` exécuté sur le vrai fichier
+  `TOP CALIB BASE.liveproject` (confirmé par Steve comme son fichier de
+  mesure original) : **3 modes de pièce confirmés par double méthode
+  indépendante** (~45-80Hz sur 7/8 canaux, ~110-135Hz sur 6/8,
+  ~235-255Hz sur 4/8) — convergence forte entre l'analyse d'image (vrais
+  noms d'enceintes) et l'analyse du fichier brut (sans correspondance
+  slot↔enceinte fiable, mais cohérence spatiale sur les 13 positions).
+  Point de vigilance identifié : un pic récurrent vers 142-150Hz proche
+  du marqueur de crossover visible sur les captures, possible artefact
+  de transition plutôt qu'un vrai mode. Configuration actuelle des
+  groupes ART lue directement sur les captures : chaque enceinte dans
+  son propre groupe, sauf les 2 caissons réunis.
+
+  Synthèse complète livrée à Steve : réglages LFE (quelles enceintes
+  doivent/ne doivent pas supporter le LFE selon leurs vraies specs),
+  conseil Fsiso/Support Level, vérification du soutien mural des 2
+  caissons, rappel de la limite physique (pic de +20dB sur Front Left
+  vers 55-60Hz, risque de distorsion non-linéaire que ART ne peut pas
+  corriger). Aucune courbe cible générique recommandée, conformément à
+  la demande explicite de Steve de ne pas utiliser les fichiers
+  `.targetcurve` génériques de son poste.
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès après les ajouts sections 16-17 : aucune
+  régression.
+
