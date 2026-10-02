@@ -133,6 +133,23 @@
 > positionnement anti-IA) — à anticiper dans le message de la landing
 > page. Détail complet dans l'entrée "02/10, suite 6" tout en bas.
 >
+> 🎧 **NOUVELLE PISTE PARALLÈLE découverte (02/10, suite 7)** — une
+> conversation Claude séparée et antérieure (52 messages, menée en
+> parallèle du travail sur le BTP) a fait émerger un **troisième projet
+> potentiel, beaucoup plus abouti que le BTP sur le plan technique** : un
+> service payant de calibrage audio **Dirac Live ART** (correction
+> acoustique home cinéma haut de gamme), où le client envoie des captures
+> d'écran de ses courbes de mesure et reçoit les réglages optimaux. À la
+> différence du BTP (marché où Steve n'a aucune expertise métier), **celui-
+> ci part d'une expertise personnelle réelle et déjà vérifiée** (testé avec
+> succès sur son propre système). Trois pistes actives coexistent
+> maintenant : Paddle/crypto (en cours de finalisation), BTP (smoke test
+> prêt à lancer), home cinéma (idée très mûrie mais zéro test externe).
+> **Aucun arbitrage fait pour l'instant** — documenté pour mémoire, la
+> priorité BTP n'est pas changée tant que Steve n'a pas tranché. Détail
+> complet (produit, pricing, risques, roadmap) dans l'entrée "02/10,
+> suite 7" tout en bas.
+>
 > Le reste de ce fichier (constat de marché, pistes explorées, journal
 > chronologique daté) documente le raisonnement qui a mené à cette décision
 > — gardé pour mémoire, pas pour relancer le débat à chaque session.
@@ -1370,4 +1387,163 @@ articles lus, concurrents repérés, retours clients...)_
   **Prochaine étape** : ces paramètres (mots-clés, négatifs, budget,
   répartition, seuils) sont prêts à l'usage dès que la landing page
   (todo `build-landing-page-smoke-test`) sera construite.
+
+- (02/10, suite 7) **🎧 Nouvelle piste parallèle : service de calibrage
+  Dirac Live ART (home cinéma) — lu intégralement une conversation Claude
+  séparée (52 messages) à la demande de Steve**
+
+  **Origine de la conversation** : au départ, Steve demandait à Claude si
+  son abonnement Copilot Pro (VS Code) pouvait se relier à son compte
+  Claude.ai, car Copilot bloquait certaines recherches web (données de
+  marché fraîches 2026). Claude a expliqué que les deux sont séparés,
+  recommandé l'extension "Claude Code" comme pont possible, et proposé
+  de chercher directement dans cette conversation — **c'est exactement le
+  mécanisme utilisé depuis dans cette session** (Steve partage sa page
+  Claude.ai avec Copilot, qui tape les questions et lit les réponses).
+
+  **Comment le sujet home cinéma est apparu** : dans cette même
+  conversation, Steve cherchait un domaine pour atteindre 5000€/mois,
+  a d'abord évalué le marché des API (jugé "bouché"), puis Claude a
+  demandé dans quel domaine Steve avait une vraie expertise personnelle.
+  Réponse : le home cinéma. Puis l'idée précise est sortie.
+
+  **Le projet en une phrase (reprise de la synthèse de Claude, message
+  36/52, validée comme fidèle)** : un service payant qui analyse les
+  mesures Dirac Live ART d'un client à partir de captures d'écran de ses
+  courbes par enceinte, et lui indique les réglages pour l'expérience de
+  film la plus immersive possible dans sa pièce ("faire croire que la
+  scène se passe dans son salon"). Construit sur l'expertise home cinéma
+  de Steve, sa LLC, et le site + tunnel Paddle déjà existants.
+
+  **Pourquoi cette idée est jugée plus forte que le BTP sur un point
+  précis** : contrairement à l'agent vocal artisans (marché où Steve n'a
+  aucune expertise du métier plombier/électricien), ici **Steve vit le
+  problème lui-même** et a déjà validé que l'approche fonctionne sur son
+  propre système avec Gemini (un test, pas encore une preuve générale —
+  voir limites plus bas). Un test Stereophile confirme que le réglage
+  manuel d'ART demande beaucoup d'efforts sans outil d'aide intégré.
+  Concurrence identifiée : consultants humains à distance/sur site,
+  environ 500£ HT (Royaume-Uni) à 500-2000$ (estimation forum, US) pour
+  une prestation complète — donc de la place pour une offre nettement
+  moins chère.
+
+  **Structure d'offre à deux niveaux (proposée par Claude, à tester)** :
+  - **Niveau 1 "Essentiel"** (~49€) : captures d'écran des courbes +
+    liste du matériel → réglages Dirac conseillés.
+  - **Niveau 2 "Approfondi"** (~150-300€) : + formulaire 2 min
+    (dimensions approximatives, placement enceintes/caissons) → analyse
+    couvrant aussi placement et traitement acoustique, avec échange de
+    suivi.
+  - Test proposé pour trancher si le niveau 2 est nécessaire : traiter
+    5-10 cas avec et sans les infos complémentaires, comparer les
+    conseils obtenus.
+  - Hypothèse de prix (non vérifiée) : ~40 clients Essentiel + ~15
+    clients Approfondi ≈ 5000€/mois.
+
+  **Travail technique déjà poussé avec Claude (recherche web réelle sur
+  la doc StormAudio/forums spécialisés)** — trois leviers manuels que
+  Steve propose en plus des réglages automatiques d'ART :
+  1. **Courbes cibles individuelles par enceinte** (plutôt qu'une courbe
+     unique Harman/StormAudio appliquée partout) — confirmé faisable
+     techniquement (Dirac permet d'isoler une enceinte dans son propre
+     groupe pour lui donner sa courbe ; les enceintes de support n'ont
+     pas de courbe propre). Risque identifié : casser la cohérence de
+     timbre entre enceintes si mal appliqué — règle proposée : garder la
+     façade (G/D/centre) alignée, réserver les écarts marqués aux
+     enceintes dont la situation le justifie (surrounds/hauteurs).
+  2. **Niveaux de support à 0,5dB près, seulement si nécessaire** —
+     Steve a confirmé que Dirac accepte ce pas de valeur (testé chez
+     lui). Claude reste prudent sur l'ampleur réelle de l'effet (le
+     seuil d'audibilité d'un écart de niveau est généralement cité à
+     ~1dB) et propose un test empirique (faire varier par pas de 0,5dB,
+     comparer les courbes de filtre calculées). Déclencheurs concrets
+     définis pour "nécessaire" : réponses très différentes entre
+     enceintes équivalentes, enceinte/caisson sursollicité, écart visible
+     en dispersion, direction sonore perceptible dans les graves.
+  3. **Choix des groupes de support pour fluidifier les filtres FIR** —
+     non documenté officiellement, mais un indice trouvé sur forum
+     (limiter le support à quelques enceintes donne ~90% du résultat
+     avec de meilleurs graphiques de dispersion) — "un indice, pas une
+     preuve".
+
+  La documentation StormAudio trouvée confirme une bonne partie de
+  l'intuition de Steve (plages de fréquence à régler d'après les fiches
+  techniques et non la mesure en pièce, chevauchement des plages entre
+  enceintes, groupes séparés recommandés pour enceintes de capacités
+  différentes, hiérarchie de priorité LFE > façade > centre à éviter en
+  support). Conclusion de Claude : la vraie valeur ajoutée de Steve est
+  probablement dans la **structure** (qui soutient qui, sur quelles
+  plages, avec quels groupes, dans quel ordre de réglage) plus que dans
+  la précision du niveau seul.
+
+  **Dernier axe exploré (messages 51-52, les plus récents) : la courbe
+  "après correction" affichée par Dirac est une estimation calculée, pas
+  une mesure réelle.** Sources trouvées par Claude : des retours
+  d'utilisateurs contradictoires (certains rapportent un écart important
+  entre la prédiction Dirac et une mesure REW indépendante, d'autres un
+  écart faible) — l'écart varie donc selon les cas. Piste intéressante
+  soulevée : une **vérification par mesure REW réelle (avec micro
+  calibré) pourrait devenir l'offre premium** — c'est ce que Dirac ne
+  fait pas, et ça fournit une preuve avant/après tangible. Documenter cet
+  écart prédit/mesuré sur plusieurs systèmes pourrait aussi être un
+  résultat original et publiable pour la crédibilité. Steve n'a pas
+  encore confirmé s'il possède déjà un micro calibré + REW.
+
+  **⚠️ Points de vigilance identifiés par Claude, à ne pas perdre** :
+  - **Abandonner toute tentative de génération du fichier .liveproject**
+    (contourner les protections de Dirac expose juridiquement et risque
+    de bloquer le projet) — approche par captures d'écran uniquement.
+  - **Droit d'auteur** : ne pas charger des livres/manuels/études
+    protégés (manuels constructeurs, livres d'Anthony Grimani, docs
+    Dirac/StormAudio) dans un système commercial sans vérifier les
+    droits — écrire un socle de règles avec ses propres mots plutôt que
+    charger les œuvres telles quelles. Vérifier aussi que "mémoriser"
+    correspond à des documents réellement fournis au modèle (demander
+    une citation précise avec page/chapitre pour tester).
+  - **Nom** : se présenter "pour Dirac Live" sans laisser croire à un
+    lien officiel avec Dirac — un avis juridique serait utile sur ce
+    point (ni Claude ni Copilot ne sont juristes).
+  - **Promesse commerciale** : vendre un processus + mesures avant/après,
+    jamais un résultat garanti — l'immersion est subjective. Clause de
+    non-garantie à prévoir dans les conditions.
+  - **Fiabilité** : un seul test sur soi-même (juge et partie, connaît
+    déjà le résultat attendu) ne suffit pas — tester la cohérence
+    (même capture envoyée plusieurs fois), des cas inconnus tirés de
+    forums, puis des volontaires externes avec mesures avant/après avant
+    de vendre quoi que ce soit.
+  - **Sécurité matérielle** : de mauvaises plages de fréquence en support
+    peuvent endommager du matériel — recommandations toujours à vérifier
+    contre la fiche technique de l'enceinte, clause de non-responsabilité
+    claire.
+
+  **Roadmap proposée par Claude (hypothèse, non actée)** : semaines 1-2
+  finaliser Paddle + constituer un jeu de test depuis des cas publiés sur
+  forums + rédiger le socle de règles ; semaines 2-4 analyses gratuites
+  pour 5-10 volontaires (forums/groupes home cinéma) avec mesures avant/
+  après et témoignages ; mois 2 test comparatif courbes seules vs
+  courbes+infos, page de vente, lancement niveau 1 ; mois 3+ prospection
+  communautés, ajustement prix, ajout niveau 2, automatisation.
+
+  **🚨 Tension à signaler clairement, pas à trancher seul** : cette
+  conversation s'est déroulée en parallèle du travail déjà fait sur le
+  BTP dans cette session (dernier message daté d'il y a ~16h au moment de
+  la lecture). Steve a donc maintenant **trois pistes actives
+  simultanément** : finaliser Paddle/crypto, lancer le smoke test BTP
+  (déjà entièrement chiffré et prêt à exécuter), et ce projet home
+  cinéma (idée très mûrie techniquement mais zéro validation externe,
+  zéro ligne de code, zéro test sur un système qui n'est pas celui de
+  Steve). Claude avait déjà averti dès le début de cette même
+  conversation : "ne pas s'éparpiller, finir Paddle, puis consacrer du
+  temps à valider un seul angle avant de construire." **Aucun arbitrage
+  fait par Copilot** — Steve a seulement demandé de "prendre connaissance"
+  du projet, pas de trancher la priorité. La piste BTP reste la priorité
+  affichée tant que Steve n'a pas décidé explicitement de la changer.
+
+  **Prochaine étape suggérée (pas actée)** : si Steve veut avancer sur ce
+  projet en parallèle ou à la place du BTP, la première action à faible
+  coût serait de suivre le conseil de Claude au message 48 : archiver
+  maintenant ce qui existe déjà (captures avant/après de son propre test
+  Gemini, les consignes données, les résultats) avant que ça ne se perde
+  — c'est potentiellement le vrai actif du projet, plus que n'importe
+  quel modèle IA utilisé.
 
