@@ -22,6 +22,15 @@ constante cite sa source réelle :
     n'est reproduite telle quelle, conformément à la ligne rouge ci-dessus.
     Sources : https://manuals.marantz.com/CINEMA30/EU/EN/index.php
               https://manuals.marantz.com/DiracLive/ALL/EN/index.php
+  - [Brevet Dirac Research] = faits techniques reformulés avec nos propres
+    mots, lus en texte intégral dans un vrai brevet déposé par Dirac
+    Research AB (document PDF fourni par Steve, texte extrait et vérifié,
+    pas une décompilation du logiciel — un brevet accordé est un document
+    de divulgation publique obligatoire, voir section 11 pour le détail
+    et les limites). AUCUNE tentative de rétro-ingénierie ou de
+    décompilation du logiciel Dirac Live lui-même n'a été faite ou ne
+    sera faite : ligne rouge absolue, le brevet est la SEULE source
+    technique "interne" légitime utilisée ici.
   - [Acoustique générale] = physique du son / psychoacoustique de base,
     savoir scientifique public (pas une œuvre soumise à droit d'auteur) :
     modes propres d'une pièce rectangulaire, effet de précédence (Haas),
@@ -44,7 +53,7 @@ vous, court et ordonné... rédigé avec vos mots, c'est votre propriété").
 
 from __future__ import annotations
 
-from models import CitedStudy, EvidenceLevel, Role
+from models import CitedPatent, CitedStudy, EvidenceLevel, Role
 
 # ---------------------------------------------------------------------------
 # 1. Domaine de fonctionnement d'ART vs Dirac Live classique [StormAudio]
@@ -806,3 +815,203 @@ différents 'ne sonnent pas pareil', mais ne doit PAS être codé comme un
 seuil de correction automatique dans diagnostic_engine.py sans validation
 supplémentaire (c'est une recommandation d'un professionnel, pas un seuil
 mesuré par une étude contrôlée)."""
+
+# ---------------------------------------------------------------------------
+# 11. Fondements brevetés d'ART (demande de Steve : "analyse l'intégralité
+#     du code de Dirac pour nos connaissances personnelles"). Ligne rouge
+#     rappelée : le LOGICIEL Dirac Live est propriétaire et fermé — aucune
+#     décompilation ni rétro-ingénierie n'a été tentée ou ne sera tentée.
+#     La seule source technique "interne" légitime ici est un VRAI brevet
+#     déposé par Dirac Research AB, document de divulgation publique
+#     complète (c'est la contrepartie légale de la protection par brevet),
+#     fourni en PDF par Steve lui-même et lu en texte intégral (extraction
+#     réelle du texte, pas une supposition). Référence complète dans
+#     CITED_PATENTS ci-dessous. Un deuxième fichier PDF fourni par Steve au
+#     même moment (US9415102) s'est avéré être un brevet pharmaceutique
+#     d'Alexion Pharmaceuticals sur des anticorps anti-C5, sans aucun
+#     rapport avec l'audio ou Dirac — vérifié par lecture réelle du texte,
+#     signalé honnêtement plutôt qu'ignoré, et non utilisé ici.
+# ---------------------------------------------------------------------------
+ART_PRIMARY_SUPPORT_MECHANISM = (
+    "Le brevet US9781510B2 définit formellement le mécanisme que le "
+    "produit commercial appelle 'ART' : pour chaque canal d'entrée, on "
+    "désigne UNE enceinte 'primaire' (celle dont on veut améliorer la "
+    "réponse) et un sous-ensemble d'autres enceintes 'de support' (de 1 à "
+    "N-1 enceintes, N étant le nombre total d'enceintes du système) qui "
+    "contribuent au signal pour aider l'enceinte primaire à se rapprocher "
+    "de sa cible à TOUTES les positions de mesure simultanément — "
+    "l'enceinte primaire elle-même ne fait jamais partie de son propre "
+    "sous-ensemble de support. Le brevet précise explicitement que, selon "
+    "les réglages trouvés par l'optimisation, le filtre peut parfaitement "
+    "décider de sortie nulle sur certaines enceintes de support "
+    "candidates si leur usage n'aide pas (revendication 4) — le fait "
+    "qu'une enceinte soit déclarée 'candidate au support' ne garantit "
+    "donc pas qu'elle sera effectivement utilisée à chaque fréquence."
+)
+"""[Brevet Dirac Research] — US9781510B2 "Audio precompensation
+controller design using a variable set of support loudspeakers",
+inventeurs Lars-Johan Brannmark, Anders Ahlén, Adrian Bahne (Uppsala,
+Suède), déposé 22/03/2012, accordé 03/10/2017, assigné à Dirac Research
+AB. Texte intégral lu (PDF fourni par Steve, 30 pages, extraction de
+texte réelle via PyMuPDF, pas un résumé). Revendication 1 (indépendante)
+et revendication 3 citées quasi mot pour mot sur le mécanisme central.
+Limite à garder en tête : ce brevet date de 2012 et décrit un MÉCANISME
+MATHÉMATIQUE GÉNÉRAL, pas nécessairement les paramètres exacts du produit
+'Dirac Live ART' commercialisé dans les versions récentes (~2021+) —
+le nom commercial 'ART' n'apparaît d'ailleurs jamais dans ce brevet."""
+
+ART_NOT_LIMITED_TO_LOW_FREQUENCY = (
+    "Le brevet compare explicitement sa méthode à deux approches "
+    "antérieures qu'il juge limitées : (1) un simple ajustement du signal "
+    "de caisson en dessous de 150 Hz, qualifié de 'très primitif' ; "
+    "(2) l''égalisation modale' (références académiques Mäkivirta et al. "
+    "2003), qui identifie explicitement les fréquences centrales et "
+    "temps de décroissance de CHAQUE mode de pièce pris séparément, mais "
+    "qui est limitée en pratique à moins de 200 Hz (zone où les modes "
+    "sont supposés distincts et bien séparés en fréquence). Le brevet "
+    "revendique au contraire une 'flexibilité plus élevée, où les "
+    "améliorations de performance ne sont pas contraintes aux basses "
+    "fréquences' (Summary of the Invention). C'est cohérent avec ce que "
+    "Dirac Live ART affiche en pratique (ART reste disponible sur une "
+    "plage qui dépasse largement 200 Hz), mais ce principe de brevet ne "
+    "dit pas où ART s'arrête concrètement dans l'interface actuelle — "
+    "voir section 1 pour les limites déjà connues sur ce point."
+)
+"""[Brevet Dirac Research] — même brevet US9781510B2, section 'Background
+of the Invention' et 'Summary of the Invention'. Texte intégral lu."""
+
+ART_ADAPTIVE_SMOOTHING_PRINCIPLE = (
+    "Point le plus directement utile pour anticiper l'interprétation que "
+    "Dirac fait d'un fichier de mesure brut : le brevet décrit une étape "
+    "de design finale où, pour approcher la cible 'en moyenne RMS sur "
+    "toutes les positions de mesure', un 'lissage en fraction d'octave "
+    "VARIABLE, basé sur les variations spatiales de la réponse' est "
+    "appliqué, explicitement 'afin de ne pas sur-compenser une région de "
+    "fréquence particulière'. En clair : plus une anomalie de courbe "
+    "varie d'une position de mesure à l'autre (forte variance spatiale), "
+    "plus elle est lissée avant correction (car elle est probablement "
+    "due à une interférence locale, pas un vrai défaut systématique) ; "
+    "plus une anomalie est stable/cohérente à travers les positions "
+    "(faible variance spatiale), moins elle est lissée (car elle est "
+    "probablement un vrai phénomène systématique — défaut d'enceinte ou "
+    "mode de pièce dominant). C'est EXACTEMENT le principe que "
+    "cartographie_modale.cluster_anomalies_by_frequency applique déjà "
+    "(une anomalie n'est classée 'PARTAGÉE'/mode de pièce confirmé que "
+    "si elle est détectée à la même fréquence sur au moins 2 slots de "
+    "mesure différents) : ce brevet ne prouve pas que notre seuillage "
+    "précis (±10Hz, 2 slots minimum) soit identique à celui de Dirac "
+    "(qui reste un paramètre non public), mais confirme que le PRINCIPE "
+    "général de notre méthode (distinguer 'cohérent entre positions' de "
+    "'isolé à une position') est le même principe que celui revendiqué "
+    "par Dirac Research pour son propre algorithme. Limite honnête : la "
+    "valeur numérique exacte du lissage ('1/3 octave', '1/6 octave', ou "
+    "une largeur vraiment variable selon un calcul propriétaire) n'est "
+    "PAS donnée dans le brevet — seul le principe qualitatif l'est."
+)
+"""[Brevet Dirac Research] — même brevet US9781510B2, section 'Detailed
+Description', paragraphe suivant la conception du filtre à phase
+minimale ('A final design step is therefore preferably added after the
+criterion minimization...'). Texte intégral lu. Recoupé avec le test
+empirique réalisé en segment précédent (lissage 1/3 octave appliqué au
+vrai fichier de Steve, voir PROJETS_FUTURS.md) : les deux pointent dans
+la même direction (le lissage réduit fortement le nombre d'anomalies
+jugées significatives), mais le test empirique a utilisé une largeur de
+lissage FIXE (1/3 octave) alors que le brevet décrit une largeur
+VARIABLE — donc nos deux résultats convergent sur le principe, pas sur
+le paramétrage exact."""
+
+ART_OPTIMIZATION_METHOD_LQG = (
+    "Le brevet précise que le calcul des paramètres du filtre repose sur "
+    "une optimisation de type 'Linear Quadratic Gaussian' (LQG), méthode "
+    "connue de la théorie du contrôle optimal, pour concevoir un "
+    "contrôleur 'feedforward' multivariable stable, linéaire et causal. "
+    "La fonction de critère optimisée est une somme pondérée des carrés "
+    "des écarts entre les réponses impulsionnelles compensées estimées "
+    "et les réponses impulsionnelles cibles, sur TOUTES les positions de "
+    "mesure à la fois (pas position par position), sous contrainte de "
+    "stabilité du filtre résultant. La cible elle-même a un délai de "
+    "propagation acoustique qui dépend de la DISTANCE réelle entre "
+    "l'enceinte primaire et chaque position de mesure — donc la cible "
+    "n'est pas purement une courbe de gain en fonction de la fréquence, "
+    "elle intègre aussi un alignement temporel physique. Le brevet ajoute "
+    "que la fonction de critère peut inclure des 'termes de pénalité' qui "
+    "contraignent le niveau de signal (magnitude) envoyé à un "
+    "sous-ensemble choisi des enceintes de support, pour des bandes de "
+    "fréquence données — mécanisme qui correspond vraisemblablement (mais "
+    "ce rapprochement n'est pas confirmé par une source officielle "
+    "distincte) à ce que l'interface Dirac Live affiche comme 'niveau de "
+    "support' : moins de pénalité laisse les enceintes de support "
+    "contribuer plus fort, plus de pénalité les contraint à rester "
+    "discrètes."
+)
+"""[Brevet Dirac Research] — même brevet US9781510B2, section 'Detailed
+Description'. Texte intégral lu, y compris le formalisme mathématique
+(matrices de fonctions de transfert, modèle MIMO). Le brevet cite lui-
+même des références académiques établies sur lesquelles il s'appuie :
+Miyoshi & Kaneda 1988 (inversion de la réponse acoustique d'une pièce),
+Neely & Allen 1979 (inversibilité d'une réponse impulsionnelle de
+pièce), et plusieurs travaux de M. Sternad et A. Ahlén (dont le
+co-inventeur Anders Ahlén est lui-même l'auteur académique) sur le
+contrôle LQ et le filtrage robuste face aux erreurs de modèle. Limite :
+le rapprochement entre 'termes de pénalité par bande de fréquence' et
+le curseur commercial 'niveau de support' est une inférence raisonnable
+de notre part, PAS un fait confirmé par une source distincte qui ferait
+explicitement ce lien."""
+
+ART_PATENT_EXPERIMENTAL_EXAMPLE = (
+    "Le brevet documente un exemple expérimental concret et vérifiable : "
+    "un haut-parleur de monitoring de studio ATC SCM16 (référence "
+    "commerciale réelle) mesuré à 64 positions dans une pièce. Comparé à "
+    "un design mono-canal classique, le design multicanal de l'exemple "
+    "utilise l'enceinte ATC comme primaire et 15 enceintes "
+    "supplémentaires comme support, positionnées à des hauteurs et "
+    "distances variées tout autour de la zone d'écoute. Les figures du "
+    "brevet (réponses en fréquence et déclin spectral cumulatif/"
+    "'waterfall') montrent une dispersion bien plus resserrée entre les "
+    "64 positions après le design multicanal qu'après le design "
+    "mono-canal — mais le brevet ne donne pas de valeur chiffrée de "
+    "réduction de variance ou de dB exploitable telle quelle (seulement "
+    "des graphiques)."
+)
+"""[Brevet Dirac Research] — même brevet US9781510B2, section 'An
+Illustrative Example'. Texte intégral lu. Sert uniquement à illustrer
+l'ordre de grandeur du nombre d'enceintes de support utilisé par Dirac
+Research dans ses propres essais (16 enceintes au total dans cet
+exemple) — PAS une recommandation de dimensionnement pour le système 7.2
+de Steve, qui n'a que 9 enceintes au total."""
+
+CITED_PATENTS: list[CitedPatent] = [
+    CitedPatent(
+        patent_number="US9781510B2",
+        title="Audio precompensation controller design using a variable "
+        "set of support loudspeakers",
+        inventors="Lars-Johan Brannmark, Anders Ahlén, Adrian Bahne "
+        "(Uppsala, Suède)",
+        assignee="Dirac Research AB",
+        priority_date="2012-03-22 (accordé 2017-10-03)",
+        source_url="https://patents.google.com/patent/US9781510B2/en "
+        "(PDF texte intégral fourni directement par Steve)",
+        verification="Texte intégral lu (30 pages : abstract, background, "
+        "summary, detailed description, revendications 1 à 27, liste des "
+        "références académiques citées) via extraction réelle du PDF, "
+        "pas un résumé de tiers.",
+        takeaway="Brevet fondateur du mécanisme 'primaire + enceintes de "
+        "support' qui sous-tend ART : voir ART_PRIMARY_SUPPORT_MECHANISM, "
+        "ART_NOT_LIMITED_TO_LOW_FREQUENCY, ART_ADAPTIVE_SMOOTHING_"
+        "PRINCIPLE, ART_OPTIMIZATION_METHOD_LQG et ART_PATENT_"
+        "EXPERIMENTAL_EXAMPLE ci-dessus pour le détail. Ne décrit pas le "
+        "nom commercial 'ART' ni les réglages exacts de l'interface "
+        "actuelle, seulement le principe mathématique sous-jacent.",
+    ),
+]
+"""Piste identifiée mais NON encore lue en texte intégral (donc non
+ajoutée à CITED_PATENTS) : le brevet US8213637B2 / EP2257083B1 "Sound
+field control in multiple listening regions", même inventeur principal
+(Lars-Johan Brannmark), déposé 2009, antérieur à celui-ci — porterait
+spécifiquement sur le contrôle à PLUSIEURS positions d'écoute
+simultanées (potentiellement pertinent pour les 13 positions de mesure
+de Steve), mais seul le titre et un extrait court ont été vus via l'API
+de recherche Google Patents. À lire en texte intégral avant de lui
+attribuer le moindre fait précis, même chose pour US9426600B2 (Adrian
+Bahne, variante 'pairwise loudspeaker channel') si Steve souhaite
+approfondir davantage cette piste."""

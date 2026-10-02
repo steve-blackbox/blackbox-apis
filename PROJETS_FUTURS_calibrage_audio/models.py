@@ -104,6 +104,12 @@ class EvidenceLevel(str, Enum):
         "directement, pas une reformulation tierce)"
     )
     STORMAUDIO_OFFICIEL = "Directive officielle StormAudio (doc ART)"
+    BREVET_DIRAC_RESEARCH = (
+        "Brevet Dirac Research AB lu en texte intégral (ex: US9781510B2) "
+        "— source primaire officielle, mais décrit un mécanisme "
+        "mathématique général, pas forcément les paramètres exacts du "
+        "produit commercial actuel"
+    )
     PRINCIPE_ACOUSTIQUE = "Principe acoustique général (domaine public)"
     RETOUR_EXPERIENCE_STEVE = "Retour d'expérience Steve — à valider par test"
     HYPOTHESE_A_TESTER = "Hypothèse / indice de forum — non prouvé"
@@ -152,3 +158,25 @@ class CitedStudy:
     source_url: str
     verification: str            # ce qui a été réellement vérifié (titre, abstract, texte intégral...)
     takeaway: str                 # ce qu'on en retient pour l'algorithme, formulé prudemment
+
+
+@dataclass
+class CitedPatent:
+    """Un brevet réellement lu en texte intégral (PDF fourni par Steve ou
+    récupéré via Google Patents), jamais une référence inventée — voir
+    knowledge_base.py, section 11, pour le contexte. Un brevet est une
+    source de nature différente d'une étude académique (CitedStudy) :
+    c'est un document de divulgation technique complète, obligatoire en
+    échange de la protection juridique, examiné par un office des
+    brevets (pas de peer review scientifique). Son contenu technique est
+    public et citable, mais reste la description d'une invention
+    protégée, pas une publication scientifique."""
+
+    patent_number: str            # ex: "US9781510B2"
+    title: str
+    inventors: str
+    assignee: str
+    priority_date: str            # date de dépôt initiale
+    source_url: str
+    verification: str             # ce qui a été réellement lu (texte intégral, quelles sections)
+    takeaway: str                  # ce qu'on en retient, formulé prudemment

@@ -2348,3 +2348,78 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès après ces ajouts à `cartographie_modale.py` :
   aucune régression.
 
+- (03/10, suite 18) **📜 Brevets Dirac Research lus en texte intégral —
+  réponse à "l'interprétation que fait Dirac" et à "analyse le code de
+  Dirac pour nos connaissances personnelles"**
+
+  Ligne rouge rappelée et respectée : le logiciel Dirac Live reste
+  propriétaire et fermé, aucune décompilation ni rétro-ingénierie n'a été
+  tentée. En revanche, un **brevet accordé est un document de divulgation
+  publique obligatoire** (c'est la contrepartie légale de la protection) :
+  c'est une source technique interne légitime, différente d'une
+  documentation marketing tierce.
+
+  **Recherche** : `dirac.com` (429), Google Patents en HTML direct (503
+  après quelques requêtes — rate limit), Bing/DuckDuckGo/Espacenet/
+  freepatentsonline/Justia (bloqués ou non pertinents) ont tous échoué à
+  un moment ou un autre. **Ce qui a fonctionné** : l'API JSON interne de
+  Google Patents (`patents.google.com/xhr/query?url=q%3D...`) a listé 7
+  brevets réels de "Dirac Research AB", et **Steve a lui-même téléchargé
+  et partagé le PDF texte intégral** du brevet le plus pertinent — bien
+  plus fiable que mes propres tentatives de contournement de blocage.
+
+  ⚠️ **Fichier à écarter** : le deuxième PDF partagé par Steve au même
+  moment (`US9415102.pdf`) s'est avéré être un brevet **pharmaceutique**
+  d'Alexion Pharmaceuticals (anticorps anti-C5), sans aucun rapport avec
+  l'audio — vérifié par lecture réelle, signalé plutôt qu'ignoré, non
+  utilisé.
+
+  **Brevet exploité : US9781510B2** "Audio precompensation controller
+  design using a variable set of support loudspeakers", Lars-Johan
+  Brannmark / Anders Ahlén / Adrian Bahne (Uppsala), déposé 2012, accordé
+  2017, assigné Dirac Research AB. Texte intégral extrait (PyMuPDF, 30
+  pages) et lu. Ajouté à `knowledge_base.py` (nouvelle section 11,
+  `CitedPatent` dans `models.py`) :
+  - **Mécanisme ART confirmé mot pour mot** : 1 enceinte "primaire" + un
+    sous-ensemble (1 à N-1) d'enceintes "de support" par canal d'entrée,
+    optimisées ensemble pour que la primaire atteigne sa cible à TOUTES
+    les positions de mesure. Le brevet précise que le filtre peut
+    décider une sortie nulle sur une enceinte de support candidate si
+    elle n'aide pas (revendication 4).
+  - **Non limité aux basses fréquences** (contrairement à l'égalisation
+    modale classique <200 Hz citée en comparaison dans le brevet) —
+    cohérent avec ART affiché au-delà de 200 Hz en pratique.
+  - **Découverte la plus utile pour "anticiper l'interprétation de
+    Dirac"** : le brevet décrit un **lissage en fraction d'octave
+    VARIABLE, basé sur la variance spatiale entre positions de mesure**,
+    appliqué explicitement "afin de ne pas sur-compenser une région de
+    fréquence particulière". C'est le **même principe** que le critère
+    PARTAGÉ/ISOLÉ déjà codé dans `cluster_anomalies_by_frequency` (suite
+    17) : une anomalie cohérente entre plusieurs positions = probablement
+    réelle = moins lissée ; une anomalie qui varie fortement d'une
+    position à l'autre = probablement une interférence locale = plus
+    lissée. Le brevet confirme le PRINCIPE, pas le paramétrage exact
+    (toujours non public).
+  - Méthode d'optimisation nommée explicitement : **LQG (Linear Quadratic
+    Gaussian)**, cible avec délai de propagation acoustique basé sur la
+    distance réelle enceinte↔position de mesure, et "termes de pénalité"
+    par bande de fréquence qui contraignent le niveau de signal des
+    enceintes de support — probablement (inférence, pas confirmé
+    explicitement) le mécanisme derrière le curseur commercial "niveau de
+    support".
+  - Exemple expérimental du brevet : haut-parleur ATC SCM16 mesuré à 64
+    positions, 1 primaire + 15 supports — illustre l'ordre de grandeur
+    utilisé par Dirac Research dans ses propres essais, pas une
+    recommandation pour le système 7.2 (9 enceintes) de Steve.
+
+  **Piste non poursuivie** (faute de lecture complète) : brevet
+  US8213637B2 / EP2257083B1 "Sound field control in multiple listening
+  regions" (même inventeur principal, 2009, antérieur) — potentiellement
+  pertinent pour les 13 positions de mesure de Steve, identifié via l'API
+  de recherche mais pas encore lu en texte intégral. À creuser seulement
+  si Steve le souhaite et peut en fournir le PDF comme pour le premier.
+
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès après ces ajouts à `knowledge_base.py`/`models.py` :
+  aucune régression.
+

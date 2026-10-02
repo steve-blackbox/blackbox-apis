@@ -28,8 +28,8 @@ Ce n'est **pas** :
 
 | Fichier | Rôle |
 |---|---|
-| `models.py` | Structures de données (enceintes, mesures, pièce, recommandations, anomalies, rapport, études citées). |
-| `knowledge_base.py` | Toutes les règles et sources (directives StormAudio ART, hiérarchie de support, courbes cibles, diagnostic différentiel, 5 facteurs d'immersion, prérequis techniques, disclaimers obligatoires, études scientifiques citées, fondamentaux home cinéma de fond — section 10). |
+| `models.py` | Structures de données (enceintes, mesures, pièce, recommandations, anomalies, rapport, études citées, brevets cités). |
+| `knowledge_base.py` | Toutes les règles et sources (directives StormAudio ART, hiérarchie de support, courbes cibles, diagnostic différentiel, 5 facteurs d'immersion, prérequis techniques, disclaimers obligatoires, études scientifiques citées, fondamentaux home cinéma de fond — section 10, fondements brevetés d'ART lus en texte intégral — section 11). |
 | `diagnostic_engine.py` | Détection d'anomalies sur les courbes, calcul des modes propres de la pièce, diagnostic différentiel, génération des recommandations. |
 | `report_generator.py` | Transforme un `DiagnosticReport` en rapport texte livrable au client. |
 | `image_reader.py` | Lit automatiquement les courbes depuis une capture d'écran Dirac Live (calibration d'axes + détection de la couleur de la courbe, méthode de digitalisation de graphique) — remplace la saisie manuelle des points fréquence/dB. |
@@ -122,6 +122,14 @@ python3 liveproject_reader.py "/chemin/vers/fichier.liveproject"
   formule numérique inventée quand la source ne la donnait pas (ex. pas
   de valeur chiffrée de fréquence de Schroeder) ni de tableau de
   coefficients d'absorption mal extrait d'une page source.
+- **Section 11 de `knowledge_base.py` (fondements brevetés d'ART) décrit
+  un mécanisme mathématique général lu dans un vrai brevet Dirac
+  Research (US9781510B2, texte intégral), pas les réglages exacts du
+  produit commercial actuel.** Aucune décompilation ni rétro-ingénierie
+  du logiciel Dirac Live n'a été faite ou ne sera faite : seule la
+  lecture de documents de divulgation publique (brevets accordés) est
+  utilisée comme source "interne". Pas encore câblée dans
+  `diagnostic_engine.py`.
 
 ## Pistes V2 (non commencées)
 
