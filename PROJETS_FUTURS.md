@@ -2923,3 +2923,33 @@ articles lus, concurrents repérés, retours clients...)_
   10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
 
+- (02/10, suite 29) **🎙️ Grimani : 2e vidéo (Shane Lee/Sonatus) et
+  architecture matérielle Grimani Systems — réserve forte documentée**
+
+  Steve a transmis un nouveau résumé Gemini couvrant la vidéo Youthman
+  (compléments) ET une 2e vidéo avec Shane Lee sur Sonatus (filiale de
+  traitement acoustique de Grimani). Toujours via résumé IA tierce, même
+  réserve méthodologique qu'en section 22.
+
+  Contenu nouveau : méthode Sonatus en 3 composants (absorption/
+  diffusion/bass trapping, ratio selon volume de pièce, alternance de
+  panneaux asymétriques sur plusieurs points de réflexion). Architecture
+  matérielle propriétaire Grimani Systems : guide d'onde CSA (70-80°
+  horizontal), enceintes tout-actif tri-amplifiées avec DSP par
+  haut-parleur, et séparation des caissons par rôle de fréquence (18"
+  d'angle = 40-80Hz, 21" infrasonique à l'avant = 15-40Hz).
+
+  **Vérification faite avant documentation** : le matériel réel de Steve
+  (`exemple_systeme_steve.py`) a été relu — ses 2 caissons SVS 3000
+  Micro R|Evolution sont IDENTIQUES (pas de répartition 18"/21" par
+  rôle), et ses enceintes Elipson sont PASSIVES (pas tri-amplifiées,
+  pas de DSP par haut-parleur comme Grimani Systems). **Réserve forte
+  documentée explicitement** : les valeurs 15-40Hz/40-80Hz décrivent un
+  crossover MATÉRIEL FIXE propriétaire d'une marque tierce, à ne PAS
+  transposer comme réglages Dirac F-support Low/High génériques pour
+  le Bass Management logiciel de Steve.
+
+  Nouvelle section 23 de `knowledge_base.py` (3 constantes).
+  10 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+

@@ -2557,3 +2557,91 @@ GRIMANI_MULTI_SUBWOOFER_METHOD = (
 )
 """[Avis d'expert professionnel, rapporté par IA tierce] — même live
 Grimani/Youthman que ci-dessus."""
+
+# ---------------------------------------------------------------------------
+# 23. Anthony Grimani — compléments psychoacoustique (vidéo Youthman) et
+#     architecture matérielle Grimani Systems / Sonatus (vidéo avec Shane
+#     Lee, https://www.youtube.com/live/Qy2bjBBOgIA). Toujours via résumé
+#     Gemini transmis par Steve — même réserve de prudence qu'en section 22
+#     (source secondaire non vérifiée directement par l'assistant).
+#     [Avis d'expert professionnel, rapporté par IA tierce]
+# ---------------------------------------------------------------------------
+GRIMANI_PSYCHOACOUSTIC_REVERSAL_MECHANISM = (
+    "Complément sur le mécanisme physiologique derrière le "
+    "'Psychoacoustic Reversal' déjà documenté (section 22) : Grimani "
+    "explique que l'évolution humaine a conformé l'oreille pour capter "
+    "les menaces venant principalement de l'AVANT et des CÔTÉS ; "
+    "l'acuité auditive à l'arrière est naturellement très faible. Les "
+    "fourchettes d'angle données varient légèrement selon la prise "
+    "(130-140° ou 140-150° à éviter ; 165° à 170° recommandé, soit "
+    "~30° d'écart max entre les deux Surround Back) — à traiter comme "
+    "un ordre de grandeur ('resserrer autour de 165-170°'), pas une "
+    "valeur unique au degré près. Reste directement pertinent pour la "
+    "paire Surround Back Left/Right de Steve."
+)
+"""[Avis d'expert professionnel, rapporté par IA tierce] — Anthony
+Grimani, live YouTube avec la chaîne Youthman (https://www.youtube.com/
+watch?v=THlvJ_lolmE), résumé transmis par Steve via Gemini."""
+
+GRIMANI_SONATUS_ACOUSTIC_TREATMENT_METHOD = (
+    "Contenu nouveau (vidéo avec Shane Lee) : Grimani présente Sonatus, "
+    "sa filiale de traitement acoustique résidentiel. Méthode en 3 "
+    "composants, dans un ratio strict calculé selon le VOLUME de la "
+    "pièce (le ratio exact n'est pas chiffré dans le résumé transmis) : "
+    "(1) absorption contrôlée, pour stabiliser le temps de réverbération "
+    "global (RT60) — cohérent avec la section 22 ; "
+    "(2) diffusion/dispersion, pour disperser l'énergie sans l'éteindre "
+    "et donner une sensation d'espace ('les murs reculent') ; "
+    "(3) gestion des basses (Bass Trapping) par panneaux denses dans "
+    "les angles de la pièce, où l'énergie grave s'accumule "
+    "naturellement. Image donnée par Grimani : 'l'acoustique, c'est "
+    "comme le sel et les épices dans un plat : il en faut, mais si vous "
+    "en mettez trop, c'est immangeable' — une mousse acoustique bas de "
+    "gamme détruit les aigus SANS toucher aux graves, rendant la pièce "
+    "sourde et déséquilibrée plutôt qu'équilibrée. "
+    "Précision sur l'asymétrie déjà documentée (section 22) : au lieu "
+    "d'une seule paire absorbant/diffusant fixe, Grimani propose "
+    "d'ALTERNER (absorbant à gauche/diffusant à droite sur un point de "
+    "réflexion, puis diffusant à gauche/absorbant à droite sur le point "
+    "de réflexion suivant) pour éviter les échos flottants sans détruire "
+    "la dynamique globale de la pièce."
+)
+"""[Avis d'expert professionnel, rapporté par IA tierce] — Anthony
+Grimani avec Shane Lee, discussion sur Sonatus."""
+
+GRIMANI_SYSTEMS_PROPRIETARY_HARDWARE_RESERVE = (
+    "Contenu nouveau sur l'architecture matérielle propriétaire de "
+    "Grimani Systems (sa marque d'enceintes, distincte de Sonatus) : "
+    "(1) technologie brevetée 'CSA' (Conic Section Array), un guide "
+    "d'onde élargissant la directivité horizontale à 70-80°, pour un "
+    "'sweet spot' qui englobe toute la pièce au lieu d'une zone étroite ; "
+    "(2) enceintes TOUT-ACTIF tri-amplifiées : chaque haut-parleur "
+    "(grave/médium/aigu) a son propre canal d'amplification dédié dans "
+    "un rack externe, avec filtrage numérique géré en amont par un DSP "
+    "propriétaire (pas de filtre passif interne), permettant une "
+    "correction de phase en temps réel ; "
+    "(3) séparation des caissons de basse PAR RÔLE DE FRÉQUENCE : des "
+    "caissons d'angle de 18 pouces (aux 4 coins) gèrent la zone de "
+    "transition 40-80Hz, tandis qu'un caisson d'infrastructure de 21 "
+    "pouces (à l'avant) est dédié exclusivement à l'infrasonique "
+    "15-40Hz (impact physique des basses fréquences). "
+    "RÉSERVE MÉTHODOLOGIQUE IMPORTANTE : cette architecture décrit le "
+    "matériel PROPRIÉTAIRE de la marque Grimani Systems, structurellement "
+    "différente du système réel de Steve : ses enceintes Elipson sont "
+    "PASSIVES (pas tri-amplifiées actives, pas de DSP par haut-parleur), "
+    "amplifiées par un ampli externe générique (Buckeye NCx252MP, pas "
+    "un rack Grimani Systems), et ses 2 caissons SVS 3000 Micro "
+    "R|Evolution sont IDENTIQUES entre eux (pas une paire '18 pouces "
+    "d'angle' + un '21 pouces infrasonique' avec répartition de rôle "
+    "par fréquence). Les valeurs chiffrées 15-40Hz / 40-80Hz décrivent "
+    "un CROSSOVER MATÉRIEL FIXE entre deux types de caissons différents "
+    "chez Grimani Systems — ce ne sont PAS des paramètres Dirac F-support "
+    "Low/High génériques à reproduire tels quels dans les réglages de "
+    "Steve, dont le Bass Management repose sur Dirac Live (logiciel) "
+    "appliqué à 2 caissons de même modèle, pas sur une séparation "
+    "matérielle figée par construction."
+)
+"""[Avis d'expert professionnel, rapporté par IA tierce — architecture
+matérielle d'une marque tierce, À NE PAS transposer directement aux
+réglages logiciels de Steve] — Anthony Grimani avec Shane Lee,
+discussion sur Grimani Systems (grimanisystems.com)."""
