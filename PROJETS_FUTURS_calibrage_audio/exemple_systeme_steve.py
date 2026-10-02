@@ -35,6 +35,56 @@ Config réelle (7.2, pas de hauteurs Atmos actives) :
     voies, 53Hz-25kHz ±3dB, 6Ω nominal/4,6Ω min @202Hz, 93dB, 150W RMS)
   - Caissons : 2x SVS 3000 Micro R|Evolution (specs officielles confirmées :
     extension jusqu'à 20 Hz, dual 9" actifs — voir svsound.com)
+
+Observations réelles rapportées par Steve (03/10, voir knowledge_base.py
+section 39 pour l'explication scientifique peer-reviewed, et section 40
+pour la stratégie de calibration) :
+- Le système, une fois calibré dans SA pièce, reproduit une fréquence
+  minimale mesurée de 17 Hz — EN DESSOUS des 20 Hz de la fiche
+  constructeur SVS (mesurée en conditions proches du champ libre).
+  Steve confirme explicitement que "sa pièce joue un rôle important
+  dans les basses fréquences" : l'extension observée est cohérente
+  avec l'effet de "pressure-field chamber" documenté dans une étude
+  AES peer-reviewed (Pedersen & Møller 2013, knowledge_base.py section
+  39) — à très basse fréquence, la pièce elle-même agit comme une
+  chambre de pression qui renforce/étend la réponse perçue au-delà de
+  la seule capacité du haut-parleur en champ libre.
+- Stratégie de calibration des caissons recommandée par Gemini :
+  utiliser LE MICRO comme référence objective pour régler d'abord
+  toutes les enceintes à un même niveau sonore mesuré, PUIS augmenter
+  DIRECTEMENT LE GAIN PHYSIQUE DU CAISSON lui-même (réglage sur
+  l'appareil SVS, pas un menu logiciel Marantz) de +8 dB au-dessus de
+  cette référence, PENDANT l'étape de calibration manuelle des niveaux
+  par tonalités de test (avant la mesure micro Dirac elle-même) ; le
+  processeur Marantz/Dirac calcule ensuite automatiquement, à partir
+  de cette mesure, une atténuation LOGICIELLE sur le canal caisson
+  pour revenir à l'équilibre cible. Objectif double confirmé par
+  Steve : exploiter au maximum le room gain naturel de la pièce, et
+  conserver la réserve maximale de puissance de l'ampli INTERNE du
+  caisson (headroom) pour éviter toute distorsion lors de transitoires
+  intenses (explosions) à volume élevé — voir knowledge_base.py
+  section 40 pour le détail complet et le lien avec le cas réel de
+  surchauffe ampli (section 33).
+  ⚠️ **État réel actuel, différent de la recommandation** : la
+  calibration EFFECTIVEMENT utilisée par Steve aujourd'hui (le fichier
+  déjà analysé ART_VOIX-CINEMA.liveproject, sections 36-37) a été
+  calculée avec un gain caisson de +5 dB (et une atténuation logicielle
+  calculée en conséquence de -3,5 dB), PAS encore +8 dB — Steve a
+  obtenu l'information du +8 dB optimal APRÈS avoir fait cette
+  calibration. Voir knowledge_base.py,
+  CURRENT_STEVE_CALIBRATION_USES_SUBOPTIMAL_5DB_NOT_8DB (section 40),
+  pour le détail de cet écart et la piste d'amélioration identifiée
+  mais non encore appliquée (recalibration à +8 dB).
+  ⚠️ **+8 dB n'est PAS une constante universelle** : Steve précise que
+  Gemini a déterminé cette valeur en fonction de SA chaîne électronique
+  précise (type de connexion XLR/RCA Buckeye, gains associés, capacités
+  des pré-amplificateurs du CINEMA 30 — déjà documentés section 27,
+  XLR_VS_RCA_REFERENCE_LEVEL_PRINCIPLE et
+  BUCKEYE_INPUT_SENSITIVITY_VS_HEADROOM_CALCULATION). Voir
+  knowledge_base.py,
+  GEMINI_8DB_VALUE_IS_SYSTEM_SPECIFIC_NOT_A_UNIVERSAL_CONSTANT
+  (section 40) : cette valeur ne doit jamais être réutilisée telle
+  quelle pour un autre client, même avec des caissons identiques.
 """
 
 from __future__ import annotations

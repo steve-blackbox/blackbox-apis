@@ -65,6 +65,61 @@ class Speaker:
             self.is_subwoofer = True
 
 
+class AmplificationTopology(str, Enum):
+    """Distingue 2 architectures électroniques fondamentalement
+    différentes pour le calcul de marge de headroom (remarque explicite
+    de Steve, 03/10) : un ampli INTÉGRÉ au processeur/AVR (sortie
+    haut-parleur directe, le facteur limitant est la puissance en Watts
+    de cet étage) vs un ampli de puissance EXTERNE piloté en préampli
+    (sortie ligne Vrms vers un ampli séparé — cas de Steve, CINEMA 30 en
+    préampli pur + Buckeye externe). Un même processeur peut utiliser
+    les 2 topologies simultanément pour des canaux différents (ex. AVR
+    avec amplis intégrés pour les enceintes principales, mais caisson
+    actif externe sur la sortie LFE dédiée — cas le plus courant même
+    sur un système d'entrée de gamme)."""
+
+    INTEGRATED_AMP = "integrated_amp"
+    EXTERNAL_POWER_AMP = "external_power_amp"
+
+
+@dataclass
+class AmplifierChainSpec:
+    """Caractéristiques électroniques de la chaîne qui alimente une
+    enceinte ou un caisson (préampli/processeur -> câblage -> ampli de
+    puissance, intégré ou externe) — distinctes des caractéristiques
+    ACOUSTIQUES du haut-parleur lui-même (déjà dans Speaker). Capture la
+    "technologie embarquée" nécessaire pour calculer une marge de
+    headroom électrique réelle plutôt que de rapporter une valeur de
+    pré-gain telle quelle (voir knowledge_base.py, section 40-41, et le
+    cas réel de Steve : Gemini a déterminé son +8dB en fonction de sa
+    connectique XLR/RCA Buckeye et des capacités du CINEMA 30).
+
+    Tous les champs sont optionnels : renseignés uniquement quand une
+    vraie fiche constructeur ou une mesure réelle est disponible, jamais
+    devinés (cohérent avec Speaker). Un champ à None signale une donnée
+    manquante à documenter explicitement plutôt qu'à estimer."""
+
+    topology: AmplificationTopology | None = None  # voir AmplificationTopology
+    # ci-dessus — conditionne la pertinence même de preamp_max_output_vrms
+    # (calcul en Vrms seulement significatif pour EXTERNAL_POWER_AMP)
+    connector_type: str = ""            # ex: "XLR", "RCA", "XLR(adaptateur RCA)"
+    preamp_max_output_vrms: float | None = None   # niveau de sortie MAX du
+    # préampli/processeur avant distorsion — le chaînon le plus souvent
+    # manquant (non publié par les fabricants pour les processeurs AV,
+    # voir section 27 pour le cas confirmé du CINEMA 30 de Steve)
+    power_amp_input_sensitivity_vrms: float | None = None  # signal d'entrée
+    # requis pour atteindre la PLEINE puissance nominale de l'ampli de
+    # puissance (fiche constructeur, ex. Buckeye NCx252MP: 1,6-1,8 Vrms)
+    power_amp_voltage_gain_db: float | None = None  # gain de tension de
+    # l'ampli de puissance (fiche constructeur)
+    power_rms_w: float | None = None     # puissance RMS nominale (peut
+    # différer de Speaker.power_rms_w si l'ampli alimente plusieurs HP)
+    power_peak_w: float | None = None    # puissance de crête/dynamique,
+    # si publiée par le fabricant (ex. caissons actifs type SVS) —
+    # permet de calculer un headroom de puissance de sortie indépendant
+    # du headroom de tension côté préampli
+
+
 @dataclass
 class MeasurementPoint:
     freq_hz: float

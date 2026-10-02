@@ -17,6 +17,8 @@ import math
 
 import knowledge_base as kb
 from models import (
+    AmplificationTopology,
+    AmplifierChainSpec,
     Anomaly,
     DiagnosticReport,
     EvidenceLevel,
@@ -590,6 +592,98 @@ def detect_dangerous_gain_anomalies(anomalies: list[Anomaly]) -> list[str]:
                 f"section 33 — cas réel de surchauffe ampli)."
             )
     return warnings
+
+
+def evaluate_subwoofer_pre_gain_headroom_strategy(
+    chain: AmplifierChainSpec,
+    proposed_input_gain_increase_db: float,
+    baseline_required_output_vrms: float | None = None,
+) -> tuple[float | None, str]:
+    """Généralise à N'IMPORTE QUEL client la stratégie de pré-gain caisson
+    rapportée par Steve (knowledge_base.py, section 40-41) : augmenter le
+    gain d'entrée physique du caisson de X dB AVANT la mesure Dirac
+    réduit d'autant le signal que le préampli/processeur doit fournir
+    pour le même niveau SPL de référence, ce qui préserve d'autant sa
+    marge de sortie (headroom de tension) pour les transitoires
+    (explosions) — calcul d'électronique analogique de base
+    (20*log10 d'un ratio de tensions), pas une formule Dirac/SVS
+    officielle ni une valeur inventée.
+
+    Précision importante sur `chain.topology` (remarque explicite de
+    Steve, 03/10) : un caisson reste, dans la quasi-totalité des
+    installations, un appareil ACTIF alimenté par une sortie ligne LFE
+    dédiée du processeur — même sur un système où les ENCEINTES
+    PRINCIPALES utilisent les amplis INTÉGRÉS de l'AVR plutôt qu'un
+    ampli de puissance externe (cas de Steve). Le calcul en Vrms
+    ci-dessous reste donc structurellement applicable au canal caisson
+    dans les 2 topologies. La nuance réelle entre les 2 cas porte sur
+    la FIABILITÉ de `preamp_max_output_vrms` lui-même : un processeur
+    conçu et utilisé comme préampli pur (AmplificationTopology.
+    EXTERNAL_POWER_AMP, toutes sorties en ligne y compris vers les
+    enceintes principales) soigne généralement cette caractéristique de
+    façon plus homogène qu'un AVR tout-intégré où la sortie LFE est une
+    fonction annexe moins mise en avant — d'où l'avertissement
+    supplémentaire ajouté au message quand topology=INTEGRATED_AMP.
+
+    Retourne (marge_apres_pre_gain_db, message) :
+    - Si `chain.preamp_max_output_vrms` ET `baseline_required_output_vrms`
+      sont fournis : calcule la marge RÉELLE en dB avant/après le
+      pré-gain proposé.
+    - Sinon (cas réel de Steve : le niveau de sortie max du CINEMA 30
+      n'a jamais été retrouvé, voir section 27) : retourne None pour la
+      valeur chiffrée plutôt que d'inventer un chiffre, mais confirme
+      littéralement le principe qualitatif dans le message — le gain de
+      marge attendu est, par construction mathématique directe, égal au
+      gain d'entrée ajouté (tant qu'aucun maillon n'est déjà saturé)."""
+    topology_caveat = ""
+    if chain.topology == AmplificationTopology.INTEGRATED_AMP:
+        topology_caveat = (
+            " ⚠️ Topologie INTEGRATED_AMP déclarée pour le reste du "
+            "système : la sortie LFE dédiée au caisson reste une "
+            "sortie ligne distincte (le calcul ci-dessous reste "
+            "applicable), mais sa valeur Vrms max est généralement "
+            "moins documentée/mise en avant par le fabricant que sur "
+            "un appareil conçu comme préampli pur — vérifier la fiche "
+            "constructeur avec une prudence accrue avant d'utiliser ce "
+            "chiffre."
+        )
+
+    if (
+        chain.preamp_max_output_vrms is None
+        or baseline_required_output_vrms is None
+    ):
+        return None, (
+            "Marge non chiffrable : il manque le niveau de sortie "
+            "maximal du préampli/processeur avant distorsion et/ou le "
+            "niveau de signal requis au point de référence (donnée "
+            "manquante chez Steve lui-même — voir section 27, "
+            "BUCKEYE_INPUT_SENSITIVITY_VS_HEADROOM_CALCULATION). Le "
+            "PRINCIPE reste valable sans ce chiffre : augmenter le "
+            f"gain d'entrée du caisson de "
+            f"{proposed_input_gain_increase_db:.1f} dB réduit d'autant "
+            "le signal que le préampli doit fournir pour le même "
+            "niveau de référence, ce qui préserve d'autant sa marge de "
+            "sortie pour les transitoires — à condition qu'aucun "
+            f"maillon de la chaîne ne soit déjà saturé.{topology_caveat}"
+        )
+
+    baseline_margin_db = 20 * math.log10(
+        chain.preamp_max_output_vrms / baseline_required_output_vrms
+    )
+    new_required_output_vrms = baseline_required_output_vrms / (
+        10 ** (proposed_input_gain_increase_db / 20)
+    )
+    new_margin_db = 20 * math.log10(
+        chain.preamp_max_output_vrms / new_required_output_vrms
+    )
+    return new_margin_db, (
+        f"Marge de sortie du préampli avant pré-gain : "
+        f"{baseline_margin_db:.1f} dB. Après un pré-gain caisson de "
+        f"+{proposed_input_gain_increase_db:.1f} dB : "
+        f"{new_margin_db:.1f} dB (gain de marge de "
+        f"{new_margin_db - baseline_margin_db:.1f} dB)."
+        f"{topology_caveat}"
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -33,10 +33,13 @@ from diagnostic_engine import (
     detect_anomalies,
     detect_dangerous_gain_anomalies,
     diagnose_anomaly,
+    evaluate_subwoofer_pre_gain_headroom_strategy,
     recommend_support_groups,
     run_diagnostic,
 )
 from models import (
+    AmplificationTopology,
+    AmplifierChainSpec,
     Anomaly,
     MeasurementPoint,
     Role,
@@ -305,6 +308,89 @@ class TestDetectDangerousGainAnomalies(unittest.TestCase):
         anomalies = [Anomaly("Front Left", 200.0, "creux", 11.0, is_confirmed_room_mode=False)]
         warnings = detect_dangerous_gain_anomalies(anomalies)
         self.assertEqual(len(warnings), 1)
+
+
+class TestEvaluateSubwooferPreGainHeadroomStrategy(unittest.TestCase):
+    """Couvre evaluate_subwoofer_pre_gain_headroom_strategy — généralise
+    à n'importe quel client la stratégie de pré-gain caisson rapportée
+    par Steve (knowledge_base.py, section 40-41 : Gemini a déterminé son
+    +8dB en fonction de sa connectique XLR/RCA Buckeye et des capacités
+    du CINEMA 30)."""
+
+    def test_missing_preamp_data_returns_none_but_explains_principle(self) -> None:
+        """Cas réel actuel de Steve : le niveau de sortie max du CINEMA
+        30 n'a jamais été retrouvé (section 27) — la fonction doit
+        rester honnête plutôt que d'inventer un chiffre."""
+        chain = AmplifierChainSpec(connector_type="XLR(adaptateur RCA)")
+        margin, message = evaluate_subwoofer_pre_gain_headroom_strategy(
+            chain, proposed_input_gain_increase_db=8.0
+        )
+        self.assertIsNone(margin)
+        self.assertIn("8.0", message)
+        self.assertIn("manque", message)
+
+    def test_missing_baseline_required_output_also_returns_none(self) -> None:
+        chain = AmplifierChainSpec(preamp_max_output_vrms=4.0)
+        margin, message = evaluate_subwoofer_pre_gain_headroom_strategy(
+            chain, proposed_input_gain_increase_db=8.0
+        )
+        self.assertIsNone(margin)
+
+    def test_complete_data_computes_exact_margin_gain(self) -> None:
+        """Avec toutes les données, le gain de marge doit être exactement
+        égal au pré-gain appliqué (identité mathématique directe tant
+        qu'aucun maillon n'est déjà saturé)."""
+        chain = AmplifierChainSpec(preamp_max_output_vrms=4.0)
+        margin, message = evaluate_subwoofer_pre_gain_headroom_strategy(
+            chain,
+            proposed_input_gain_increase_db=8.0,
+            baseline_required_output_vrms=1.0,
+        )
+        self.assertIsNotNone(margin)
+        baseline_margin = 20 * math.log10(4.0 / 1.0)
+        self.assertAlmostEqual(margin - baseline_margin, 8.0, places=6)
+        self.assertIn("12.0", message)  # marge de départ
+        self.assertIn("20.0", message)  # marge après pré-gain
+
+    def test_zero_gain_increase_leaves_margin_unchanged(self) -> None:
+        chain = AmplifierChainSpec(preamp_max_output_vrms=4.0)
+        margin, _ = evaluate_subwoofer_pre_gain_headroom_strategy(
+            chain, proposed_input_gain_increase_db=0.0,
+            baseline_required_output_vrms=1.0,
+        )
+        self.assertAlmostEqual(margin, 20 * math.log10(4.0 / 1.0), places=6)
+
+    def test_integrated_amp_topology_adds_extra_caveat_but_still_computes(
+        self,
+    ) -> None:
+        """Remarque explicite de Steve (03/10) : même avec des amplis
+        intégrés pour le reste du système, le caisson reste alimenté par
+        une sortie ligne LFE dédiée — le calcul reste applicable, mais
+        avec un avertissement supplémentaire sur la fiabilité de la
+        donnée Vrms."""
+        chain = AmplifierChainSpec(
+            topology=AmplificationTopology.INTEGRATED_AMP,
+            preamp_max_output_vrms=4.0,
+        )
+        margin, message = evaluate_subwoofer_pre_gain_headroom_strategy(
+            chain,
+            proposed_input_gain_increase_db=8.0,
+            baseline_required_output_vrms=1.0,
+        )
+        self.assertIsNotNone(margin)
+        self.assertIn("INTEGRATED_AMP", message)
+
+    def test_external_power_amp_topology_has_no_extra_caveat(self) -> None:
+        chain = AmplifierChainSpec(
+            topology=AmplificationTopology.EXTERNAL_POWER_AMP,
+            preamp_max_output_vrms=4.0,
+        )
+        _, message = evaluate_subwoofer_pre_gain_headroom_strategy(
+            chain,
+            proposed_input_gain_increase_db=8.0,
+            baseline_required_output_vrms=1.0,
+        )
+        self.assertNotIn("INTEGRATED_AMP", message)
 
 
 class TestRunDiagnosticSupportsCustomGrouping(unittest.TestCase):

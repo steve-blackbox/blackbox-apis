@@ -3888,3 +3888,264 @@ LOW_VS_MID_HIGH_FREQUENCY_DIFFERENT_CORRECTION_STRATEGY_PEER_REVIEWED = (
 expériences objectives ET tests d'écoute subjectifs rapportés dans
 l'étude (réf. 173)."""
 
+# ---------------------------------------------------------------------------
+# 40. Stratégie réelle de Steve pour les niveaux de caisson à la prise de
+#     mesure Dirac (recommandation de Gemini, rapportée et précisée par
+#     Steve le 03/10) : viser +8 dB sur les caissons par rapport aux
+#     autres enceintes, PENDANT l'étape de calibration manuelle des
+#     niveaux par tonalités de test, AVANT de lancer la mesure micro
+#     Dirac elle-même — pas un réglage a posteriori. Objectif explicite
+#     de Steve : "bénéficier au maximum du room gain" et "garder la
+#     réserve maximale de puissance pour ne pas avoir de distorsion lors
+#     de grosses explosions à volume élevé". Relie 3 sections déjà
+#     documentées (27, 33, 39) en une stratégie opérationnelle cohérente.
+# ---------------------------------------------------------------------------
+STEVE_SUBWOOFER_PRE_GAIN_STRATEGY_SEQUENCE = (
+    "Séquence exacte confirmée par Steve, précisée en 3 messages "
+    "successifs (03/10) : (1) PENDANT l'étape de calibration manuelle "
+    "des niveaux par tonalités de test (speaker level calibration), "
+    "qui précède toujours la mesure micro Dirac elle-même, Steve "
+    "utilise LE MICRO comme référence objective pour régler TOUTES "
+    "les enceintes (façades, centrale, surrounds) à un même niveau "
+    "sonore mesuré — pas un réglage à l'oreille ; (2) Steve règle "
+    "ensuite le +8 dB DIRECTEMENT SUR LE GAIN PHYSIQUE DU CAISSON "
+    "lui-même (le réglage de gain d'entrée intégré à l'appareil SVS "
+    "actif, pas un menu logiciel du Marantz) — pour un même signal "
+    "électrique envoyé par le processeur, le caisson produit donc un "
+    "niveau de sortie 8 dB plus fort que si son gain était resté au "
+    "niveau de référence ; (3) le processeur Marantz/Dirac, mesurant "
+    "ce résultat au micro lors de la calibration, détermine et "
+    "applique automatiquement une atténuation de -3,5 dB sur le "
+    "niveau LOGICIEL du canal caisson (grandeur différente du gain "
+    "physique de l'étape 2) pour ramener l'ensemble du système à "
+    "l'équilibre cible voulu. **Deux réglages de nature différente "
+    "sont donc en jeu, sur 2 appareils différents** : un gain physique "
+    "analogique (+8 dB, sur le caisson, réglé par Steve avant la "
+    "mesure) et une atténuation logicielle (-3,5 dB, dans le "
+    "processeur, calculée automatiquement par Dirac après la mesure) "
+    "— cohérent avec ART_LOCKED_SETTINGS_WHEN_ACTIVE déjà documenté : "
+    "'Audio - Subwoofer Level Adjust' est verrouillé UNE FOIS le "
+    "filtre ART actif, précisément parce que cette valeur logicielle "
+    "est calculée et appliquée par Dirac lui-même, pas réglée "
+    "manuellement par Steve après coup."
+)
+"""[Steve, retour d'expérience direct et précisé en 3 messages
+successifs] — étape du processus de calibration confirmée
+explicitement par Steve (03/10), distincte du Channel Level Adjust
+logiciel classique verrouillé après activation du filtre."""
+
+SUBWOOFER_PRE_GAIN_RATIONALE_CROSS_REFERENCED = (
+    "Pourquoi cette stratégie est cohérente avec tout ce qui est déjà "
+    "documenté dans ce fichier, sans qu'aucune étude ne valide "
+    "formellement la valeur précise de +8 dB elle-même (valeur propre "
+    "à la pièce et au matériel de Steve, pas une constante universelle "
+    "— seul le PRINCIPE est généralisable) : "
+    "(a) PROFITER DU ROOM GAIN (objectif explicite de Steve) — la "
+    "pièce de Steve agit, sous une certaine fréquence, comme une "
+    "chambre de pression qui renforce naturellement le niveau perçu "
+    "des graves (section 39, Pedersen & Møller 2013, 'pressure-field "
+    "chamber approach') ; en augmentant le gain physique du caisson "
+    "avant la mesure, Steve exploite ce renforcement naturel plutôt "
+    "que de chercher à le compenser électroniquement après coup. "
+    "(b) ÉVITER TOUT BESOIN DE BOOST LOGICIEL DANS LE PROCESSEUR "
+    "(sécurité déjà documentée section 33) — en partant d'un niveau "
+    "mesuré déjà haut (grâce au gain physique du caisson), Dirac n'a "
+    "besoin que d'ATTÉNUER (-3,5 dB) le canal caisson, jamais de le "
+    "BOOSTER, pour atteindre la cible. Une atténuation logicielle ne "
+    "consomme JAMAIS de puissance électrique supplémentaire "
+    "(contrairement à un boost, qui peut multiplier la puissance "
+    "électrique demandée par un facteur 10^(gain_dB/10) — rappel du "
+    "calcul déjà fait section 33 : un boost de 12 dB, le cas réel de "
+    "surchauffe vécu par Steve avec Gemini, correspond à ×15,85 en "
+    "puissance électrique). Cette stratégie élimine donc "
+    "structurellement, pour le canal caisson, le scénario même qui "
+    "avait causé la surchauffe ampli initiale. "
+    "(c) PRÉSERVER LE HEADROOM DE PUISSANCE DE L'AMPLI INTERNE DU "
+    "CAISSON LUI-MÊME (objectif explicite de Steve : 'pas de "
+    "distorsion lors de grosses explosions à volume élevé') — concept "
+    "de HEADROOM déjà confirmé officiellement par Dirac (section 27) "
+    "mais côté numérique (marge avant 0dBFS, dans le processeur) ; "
+    "ici le même principe de marge de sécurité s'applique "
+    "concrètement côté ÉLECTRIQUE/PUISSANCE, et directement SUR "
+    "L'APPAREIL caisson : en augmentant son gain d'entrée physique, "
+    "le caisson atteint son niveau de calibration cible avec un "
+    "signal électrique d'entrée plus FAIBLE (après l'atténuation "
+    "logicielle -3,5 dB du processeur) qu'il ne l'aurait fait à gain "
+    "normal — son propre ampli de puissance interne travaille donc "
+    "plus loin de sa limite au niveau de référence, ce qui lui laisse "
+    "mécaniquement plus de réserve disponible pour amplifier sans "
+    "distorsion les transitoires courts et intenses (explosions, "
+    "impacts) qui dépassent ponctuellement ce niveau de référence. "
+    "**Cette stratégie est donc la traduction opérationnelle concrète, "
+    "par Steve/Gemini, de 2 principes déjà validés séparément dans ce "
+    "fichier (prudence sur le gain électrique + exploitation du room "
+    "gain), appliqués ensemble de façon préventive dès l'étape de "
+    "calibration des niveaux, en jouant sur 2 appareils distincts "
+    "(gain physique du caisson vs. atténuation logicielle du "
+    "processeur).**"
+)
+"""[Synthèse croisant Steve + sources déjà citées] — section 27
+(DIRAC_OFFICIAL_HEADROOM_EXPLANATION, confirmation officielle Dirac),
+section 33 (seuil DANGEROUS_EQ_GAIN_THRESHOLD_DB et calcul 10^(dB/10)),
+section 39 (PRESSURE_FIELD_CHAMBER_EXPLAINS_STEVE_17HZ_EXTENSION,
+Pedersen & Møller 2013). Aucune valeur numérique nouvelle n'est
+affirmée comme scientifiquement universelle ici : +8 dB et -3,5 dB
+restent des valeurs PROPRES au système et à la pièce de Steve,
+rapportées telles quelles."""
+
+CURRENT_STEVE_CALIBRATION_USES_SUBOPTIMAL_5DB_NOT_8DB = (
+    "Précision factuelle importante et actionnable, communiquée par "
+    "Steve (03/10) : sa calibration ACTUELLEMENT utilisée (le fichier "
+    "déjà analysé 'ART_VOIX-CINEMA.liveproject', sections 36-37) a été "
+    "calculée avec un gain caisson de +5 dB, PAS +8 dB — Steve précise "
+    "explicitement ne pas avoir eu l'information du +8 dB optimal au "
+    "moment où cette calibration a été réalisée. **Écart identifié** : "
+    "+3 dB entre le gain réellement utilisé dans la calibration "
+    "actuelle (+5 dB) et le gain désormais recommandé (+8 dB, section "
+    "40 ci-dessus). Conséquence directe à anticiper si Steve refait sa "
+    "calibration avec +8 dB au lieu de +5 dB : le processeur "
+    "recalculera probablement une atténuation logicielle différente de "
+    "l'actuelle -3,5 dB (valeur elle-même issue du couple gain +5 dB / "
+    "mesure, pas du couple +8 dB / mesure) — la nouvelle valeur "
+    "d'atténuation ne peut pas être déduite par une simple règle de "
+    "3 depuis les chiffres actuels sans une nouvelle mesure réelle, "
+    "car elle dépend de l'acoustique propre de la pièce à cette bande "
+    "de fréquence (room gain non linéaire avec le niveau), pas "
+    "seulement du delta de gain appliqué. **Piste d'amélioration "
+    "identifiée mais non appliquée** : une recalibration complète avec "
+    "+8 dB sur les caissons (au lieu de +5 dB) permettrait de valider "
+    "concrètement le gain de réserve de puissance attendu (section 40, "
+    "point (c)) — à faire si et quand Steve souhaite retester sa "
+    "configuration, pas une urgence en soi."
+)
+"""[Steve, précision factuelle directe sur l'état réel de son système]
+— complète les sections 36-37 (analyse déjà faite du fichier
+ART_VOIX-CINEMA.liveproject) avec une information qui n'était pas
+visible dans les données brutes du fichier (le gain caisson +5 dB vs.
++8 dB ne se lit pas dans les mesures micro, cohérent avec la limite
+déjà documentée section 37 : les réglages de niveaux ne sont pas
+visibles dans les blocs de mesure bruts)."""
+
+GEMINI_8DB_VALUE_IS_SYSTEM_SPECIFIC_NOT_A_UNIVERSAL_CONSTANT = (
+    "Précision capitale apportée par Steve (03/10) sur l'ORIGINE du "
+    "chiffre +8 dB lui-même : Gemini ne l'a pas proposé comme une "
+    "constante universelle valable pour tout système ART, mais l'a "
+    "déterminé EN FONCTION de la chaîne électronique PRÉCISE de "
+    "Steve — explicitement 'en fonction de mon type de connexion et "
+    "des gains associés (XLR/RCA Buckeye et des capacités des "
+    "pré-amplificateurs du Cinema 30)'. Ceci recoupe DIRECTEMENT 2 "
+    "constantes déjà présentes dans ce fichier, section 27 : "
+    "XLR_VS_RCA_REFERENCE_LEVEL_PRINCIPLE (le câble RCA(M)->XLR(M) de "
+    "Steve ne convertit pas électriquement -10dBV en +4dBu — un "
+    "simple adaptateur de connecteur, pas un ampli de ligne) et "
+    "BUCKEYE_INPUT_SENSITIVITY_VS_HEADROOM_CALCULATION (sensibilité "
+    "d'entrée du Buckeye 1,6-1,8 Vrms, gain de tension 26 dB — avec "
+    "la LIMITE déjà signalée à l'époque : 'le niveau de sortie MAXIMAL "
+    "en Vrms du Marantz CINEMA 30... n'a pas été retrouvé'). "
+    "**Conséquence méthodologique majeure, à documenter clairement "
+    "pour toute réutilisation future (base de données clients, "
+    "specs_database.py)** : +8 dB n'est PAS une valeur de référence "
+    "généralisable à transmettre telle quelle à un autre client ART, "
+    "même avec des caissons identiques — elle résulte d'un calcul "
+    "croisant (a) l'acoustique de la pièce (room gain, section 39), "
+    "ET (b) la chaîne électronique complète du client (type de "
+    "connectique, gain de l'ampli de puissance, capacités de sortie "
+    "du pré-ampli/processeur). Un système avec un ampli ou une "
+    "connectique différente nécessiterait très probablement une "
+    "valeur différente de +8 dB pour obtenir le même résultat "
+    "stratégique (éviter le boost, exploiter le room gain). Ceci "
+    "confirme et renforce, depuis un angle supplémentaire inattendu "
+    "(l'électronique, pas seulement l'acoustique), le principe déjà "
+    "énoncé par Steve au tout début de cette recherche : l'algorithme "
+    "'doit s'adapter à n'importe quelle configuration client' plutôt "
+    "que d'appliquer des constantes figées."
+)
+"""[Steve, précision directe sur le raisonnement rapporté de Gemini]
+— cross-référence directe avec 2 constantes déjà sourcées section 27
+(XLR_VS_RCA_REFERENCE_LEVEL_PRINCIPLE et
+BUCKEYE_INPUT_SENSITIVITY_VS_HEADROOM_CALCULATION), confirmant que la
+limite documentée à l'époque (niveau de sortie max du CINEMA 30 non
+retrouvé) reste le chaînon manquant pour recalculer formellement cette
+valeur nous-mêmes plutôt que de la rapporter telle quelle."""
+
+# ---------------------------------------------------------------------------
+# 41. De l'anecdote à l'algorithme généralisable : modélisation formelle
+#     de la chaîne électronique (demande explicite de Steve, 03/10 :
+#     "c'est un ensemble où tout fonctionne en parfaite optimisation" —
+#     "il faut que tu connaisse toute la technologie embarquée dans les
+#     électroniques, pour que tu aies une compréhension globale").
+#     Implémentation réelle : AmplifierChainSpec et
+#     AmplificationTopology (models.py) + evaluate_subwoofer_pre_gain_
+#     headroom_strategy (diagnostic_engine.py), testés (6 nouveaux
+#     tests, 42 au total).
+# ---------------------------------------------------------------------------
+FROM_STEVE_ANECDOTE_TO_GENERALIZED_ALGORITHM = (
+    "Suite à la stratégie de pré-gain caisson rapportée par Steve "
+    "(section 40, +8 dB/-3,5 dB), Steve a explicitement demandé que ce "
+    "type de calcul soit généralisé pour N'IMPORTE QUEL client, pas "
+    "seulement documenté comme un fait isolé le concernant. Nouveau "
+    "modèle de données `AmplifierChainSpec` (models.py) : capture la "
+    "'technologie embarquée' de la chaîne électronique (type de "
+    "connectique, niveau de sortie max du préampli en Vrms, "
+    "sensibilité d'entrée et gain de tension de l'ampli de puissance, "
+    "puissance RMS/crête) — séparé de `Speaker` qui reste purement "
+    "ACOUSTIQUE (fréquences, impédance, sensibilité, puissance "
+    "nominale). Nouvelle fonction "
+    "`evaluate_subwoofer_pre_gain_headroom_strategy` "
+    "(diagnostic_engine.py) : calcule la marge de sortie réelle du "
+    "préampli (headroom de tension, 20*log10 d'un ratio de tensions — "
+    "calcul d'électronique de base, pas une formule Dirac/SVS "
+    "officielle) avant/après un pré-gain caisson proposé, pour "
+    "N'IMPORTE QUEL système, à condition de connaître le niveau de "
+    "sortie max du préampli et le niveau de signal requis au point de "
+    "référence. **Honnêteté méthodologique maintenue** : quand ces "
+    "données manquent (cas réel actuel de Steve lui-même — le niveau "
+    "de sortie max du CINEMA 30 n'a jamais été retrouvé, section 27), "
+    "la fonction retourne None pour la valeur chiffrée plutôt que "
+    "d'inventer un chiffre, tout en confirmant le PRINCIPE qualitatif "
+    "dans son message. La formule EXACTE utilisée par Gemini pour "
+    "arriver précisément à +8 dB chez Steve reste une boîte noire IA "
+    "non reproductible formellement par nous ; ce qui EST reproductible "
+    "et généralisable, c'est le calcul de marge à partir de données "
+    "connues, et la vérification de cohérence (le gain de marge "
+    "attendu est mathématiquement égal au pré-gain appliqué, tant "
+    "qu'aucun maillon n'est déjà saturé)."
+)
+"""[Architecture de calcul généralisable, demande explicite de Steve]
+— implémentation réelle testée dans models.py
+(AmplifierChainSpec, AmplificationTopology) et diagnostic_engine.py
+(evaluate_subwoofer_pre_gain_headroom_strategy), 6 nouveaux tests
+unitaires dans tests/test_diagnostic_engine.py
+(TestEvaluateSubwooferPreGainHeadroomStrategy)."""
+
+INTEGRATED_VS_EXTERNAL_POWER_AMP_TOPOLOGY_DISTINCTION = (
+    "Précision structurante supplémentaire de Steve (03/10) : il existe "
+    "'des différences pour le processeur si on utilise les amplis "
+    "intégrés ou, comme moi, un ampli de puissance externe'. Nouvel "
+    "enum `AmplificationTopology` (INTEGRATED_AMP / EXTERNAL_POWER_AMP) "
+    "ajouté à `AmplifierChainSpec`. Point de nuance important identifié "
+    "en formalisant cette distinction : un caisson reste, dans la "
+    "quasi-totalité des installations, un appareil ACTIF alimenté par "
+    "une sortie ligne LFE dédiée du processeur — MÊME sur un système où "
+    "les enceintes PRINCIPALES utilisent les amplis intégrés de l'AVR "
+    "(topologie la plus répandue, y compris en entrée de gamme). Le "
+    "calcul de marge en Vrms (ci-dessus) reste donc structurellement "
+    "applicable au canal caisson dans les 2 topologies. La vraie nuance "
+    "entre les 2 cas porte sur la FIABILITÉ de la donnée "
+    "`preamp_max_output_vrms` elle-même : un processeur conçu et "
+    "utilisé comme préampli pur (cas de Steve : CINEMA 30 + Buckeye "
+    "externe, TOUTES les sorties en ligne) soigne généralement cette "
+    "caractéristique de façon plus homogène sur TOUTES ses sorties "
+    "(y compris LFE) qu'un AVR tout-intégré où la sortie LFE est une "
+    "fonction annexe moins mise en avant commercialement — d'où "
+    "l'avertissement supplémentaire ajouté automatiquement par "
+    "`evaluate_subwoofer_pre_gain_headroom_strategy` quand "
+    "`topology=INTEGRATED_AMP`, invitant à vérifier la fiche "
+    "constructeur avec une prudence accrue dans ce cas précis."
+)
+"""[Architecture de calcul généralisable, précision structurante de
+Steve] — enum AmplificationTopology (models.py), logique conditionnelle
+testée dans diagnostic_engine.py (test_integrated_amp_topology_adds_
+extra_caveat_but_still_computes et test_external_power_amp_topology_
+has_no_extra_caveat)."""
+

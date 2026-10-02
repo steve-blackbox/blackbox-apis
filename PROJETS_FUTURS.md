@@ -3403,3 +3403,86 @@ articles lus, concurrents repérés, retours clients...)_
 
   36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
   repassés avec succès : aucune régression.
+
+- (03/10, suite 43) **🔊 Stratégie réelle de Steve pour le gain des
+  caissons (+8dB) : room gain, headroom et écart avec sa calibration
+  actuelle (+5dB)**
+
+  Steve a précisé en plusieurs messages une stratégie de calibration
+  recommandée par Gemini : au moment de la calibration des niveaux par
+  tonalités de test (avant la mesure micro Dirac), utiliser le micro
+  comme référence objective pour égaliser toutes les enceintes, PUIS
+  augmenter directement le GAIN PHYSIQUE des 2 caissons (réglage sur
+  l'appareil SVS lui-même, pas un menu logiciel Marantz) de +8dB
+  au-dessus de cette référence. Le processeur Marantz/Dirac calcule
+  ensuite automatiquement une atténuation logicielle (-3,5dB chez
+  Steve) pour revenir à l'équilibre cible.
+
+  2 constantes ajoutées en section 40 de `knowledge_base.py`,
+  croisant 3 sections déjà documentées :
+  - **Objectif (a) Profiter du room gain** — lien direct avec la
+    section 39 (pressure-field chamber, Pedersen & Møller 2013).
+  - **Objectif (b) Éviter tout besoin de boost logiciel** — lien avec
+    la section 33 (un boost peut multiplier la puissance demandée par
+    10^(dB/10), contre un coût nul pour une atténuation).
+  - **Objectif (c) Préserver le headroom de l'ampli interne du
+    caisson** — concept déjà confirmé officiellement par Dirac côté
+    numérique (section 27), ici appliqué côté électrique/puissance
+    directement sur l'appareil.
+
+  **Écart actionnable identifié** : la calibration ACTUELLEMENT
+  utilisée par Steve (`ART_VOIX-CINEMA.liveproject`, déjà analysée
+  sections 36-37) a été calculée avec un gain caisson de +5dB, pas
+  encore +8dB — Steve a obtenu cette information après avoir fait
+  cette calibration. Piste d'amélioration documentée mais non
+  appliquée : une recalibration à +8dB permettrait de valider le gain
+  de réserve de puissance attendu, à faire si/quand Steve le souhaite.
+
+  **Précision essentielle sur l'origine du +8dB** : Steve a précisé que
+  Gemini a déterminé cette valeur spécifiquement en fonction de sa
+  chaîne électronique (connectique XLR/RCA Buckeye, gains associés,
+  capacités des pré-amplificateurs du CINEMA 30 — déjà documentés
+  section 27). 3e constante ajoutée en section 40 : +8dB n'est donc PAS
+  une constante universelle réutilisable telle quelle pour un autre
+  client, même avec des caissons identiques — seul le PRINCIPE est
+  généralisable.
+
+  36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+
+- (03/10, suite 44) **🏗️ De l'anecdote à l'algorithme généralisable :
+  modélisation formelle de la chaîne électronique**
+
+  Steve a explicitement demandé de généraliser le calcul de pré-gain
+  caisson à n'importe quel client ("c'est un ensemble où tout fonctionne
+  en parfaite optimisation... il faut que tu connaisses toute la
+  technologie embarquée dans les électroniques, pour que tu aies une
+  compréhension globale").
+
+  Nouvelle architecture implémentée et testée (section 41 de
+  `knowledge_base.py`) :
+  - **`AmplifierChainSpec`** (models.py) : nouveau modèle de données
+    capturant la chaîne électronique (connectique, niveau de sortie max
+    du préampli en Vrms, sensibilité d'entrée et gain de tension de
+    l'ampli de puissance, puissance RMS/crête) — séparé de `Speaker`
+    qui reste purement acoustique.
+  - **`evaluate_subwoofer_pre_gain_headroom_strategy`**
+    (diagnostic_engine.py) : calcule la marge de sortie réelle du
+    préampli avant/après un pré-gain caisson proposé, pour n'importe
+    quel système — calcul d'électronique de base (20·log10 d'un ratio
+    de tensions), pas une formule Dirac/SVS officielle. Honnêteté
+    maintenue : si les données manquent (cas réel de Steve lui-même),
+    retourne `None` pour la valeur chiffrée plutôt que d'inventer un
+    chiffre, tout en confirmant le principe qualitatif dans le message.
+  - **`AmplificationTopology`** (INTEGRATED_AMP / EXTERNAL_POWER_AMP) :
+    suite à la précision de Steve sur la différence ampli intégré vs
+    externe. Point de nuance identifié : le caisson reste quasi
+    toujours un appareil actif alimenté par une sortie ligne LFE dédiée
+    dans les 2 topologies — la vraie différence porte sur la fiabilité
+    de la donnée `preamp_max_output_vrms` elle-même (avertissement
+    automatique ajouté au message si `topology=INTEGRATED_AMP`).
+
+  6 nouveaux tests unitaires (`TestEvaluateSubwooferPreGainHeadroomStrategy`,
+  42 tests au total) + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
+
