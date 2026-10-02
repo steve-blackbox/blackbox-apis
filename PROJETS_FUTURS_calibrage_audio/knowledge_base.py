@@ -3674,3 +3674,217 @@ version initiale de cette constante a été remplacée par cette étude
 académique, suite à la demande explicite de Steve de privilégier les
 vraies études scientifiques plutôt que Wikipedia."""
 
+# ---------------------------------------------------------------------------
+# 39. Fondements scientifiques peer-reviewed de l'égalisation de pièce en
+#     basse fréquence (20-150 Hz, plage de travail d'ART) — demande
+#     explicite de Steve (03/10) de prioriser cette plage et de s'appuyer
+#     sur de vraies études acoustiques validées plutôt que sur Wikipedia.
+#     Source principale : un article de SYNTHÈSE peer-reviewed couvrant
+#     40 ans de recherche sur le sujet, cross-référençant lui-même des
+#     dizaines d'études originales (AES, IEEE) — Cecchi, S.; Carini, A.;
+#     Spors, S. "Room Response Equalization—A Review." Applied Sciences
+#     (MDPI, revue peer-reviewed en libre accès), 2018, 8(1), 16.
+#     DOI: 10.3390/app8010016. Lu en texte intégral.
+# ---------------------------------------------------------------------------
+SCHROEDER_FREQUENCY_MODAL_VS_DIFFUSE_BOUNDARY = (
+    "Concept acoustique fondamental confirmant pourquoi ART cible "
+    "spécifiquement 20-150 Hz : en dessous d'une fréquence de "
+    "transition (la 'fréquence de Schroeder' de la pièce), 'la "
+    "longueur d'onde est comparable aux dimensions typiques de la "
+    "pièce : des ondes stationnaires peuvent apparaître... la réponse "
+    "de la pièce a un comportement régulier caractérisé par des "
+    "résonances et des creux bien séparés' — chaque mode est "
+    "identifiable individuellement, ce qui permet une correction "
+    "ciblée point par point (exactement ce que fait le Target Curve "
+    "Editor d'ART). Au-dessus de cette fréquence de transition, "
+    "'la réponse en fréquence devient extrêmement irrégulière' (les "
+    "creux et pics se densifient tellement qu'ils ne sont plus "
+    "individuellement corrigeables ni même individuellement "
+    "pertinents à corriger). Ceci justifie scientifiquement, de façon "
+    "indépendante de tout document Dirac, pourquoi une technologie de "
+    "correction MIMO point-par-point comme ART est appliquée "
+    "spécifiquement à la zone modale basse fréquence et pas à tout le "
+    "spectre audible."
+)
+"""[Étude peer-reviewed, synthèse] — Cecchi, Carini & Spors (2018),
+Applied Sciences 8(1):16, DOI 10.3390/app8010016, section 2 'The Room
+Response and Its Perception', citant Schroeder (réf. 13 de l'article)."""
+
+PEAKS_MORE_AUDIBLE_BUT_WIDE_NOTCHES_AUDIBLE_TOO_PEER_REVIEWED = (
+    "Confirmation scientifique peer-reviewed, INDÉPENDANTE de notre "
+    "propre raisonnement, de la correction déjà appliquée dans "
+    "calculate_room_mode_control_points après le signalement de Steve "
+    "sur la surchauffe ampli (section 33) : 'Les pics spectraux sont "
+    "plus audibles que les creux, mais les creux à large bande sont "
+    "aussi audibles.' Autrement dit, un pic de résonance DOIT presque "
+    "toujours être traité (quasi certain d'être audible), tandis "
+    "qu'un creux n'est à traiter activement QUE s'il est large bande "
+    "— un creux étroit et profond peut rester moins prioritaire qu'un "
+    "pic. Ceci affine (sans le contredire) le principe déjà en place "
+    "'abaisser la cible plutôt que combler par un gain dangereux' : la "
+    "largeur de bande du creux, pas seulement sa profondeur, est un "
+    "critère scientifiquement pertinent pour juger de l'urgence de la "
+    "correction."
+)
+"""[Étude peer-reviewed, synthèse] — Cecchi, Carini & Spors (2018),
+section 2, citant deux études distinctes pour chaque affirmation
+(réf. 20 pour l'audibilité supérieure des pics, réf. 26 pour
+l'audibilité des creux à large bande)."""
+
+MODAL_EQUALIZATION_DECAY_TIME_CONTROL_PEER_REVIEWED = (
+    "Étude de référence (version conférence AES 2001 ET version "
+    "revue scientifique à comité de lecture 2003, même équipe) qui "
+    "fonde scientifiquement l'objectif réel de la correction en basse "
+    "fréquence : 'L'égalisation modale vise à contrôler les "
+    "décroissances excessivement longues dans les pièces d'écoute "
+    "causées par les modes basse fréquence, en minimisant "
+    "l'audibilité de ces résonances. L'égalisation modale équilibre "
+    "le taux de décroissance du son des modes basse fréquence pour "
+    "qu'il corresponde au temps de réverbération aux fréquences "
+    "moyennes et hautes.' Point clé : la cible scientifique n'est PAS "
+    "seulement un niveau en dB plat, mais une COHÉRENCE DE DÉCROISSANCE "
+    "TEMPORELLE entre les graves et le reste du spectre — un mode de "
+    "pièce qui 'sonne' plus longtemps que le reste du spectre est "
+    "perçu comme un défaut même si son niveau en dB est correct. Deux "
+    "méthodes de mise en œuvre actives sont documentées : (1) un "
+    "filtre sur le haut-parleur concerné avec des zéros placés aux "
+    "fréquences des pôles de résonance responsables, ou (2) l'usage "
+    "d'un ou plusieurs haut-parleurs secondaires produisant un signal "
+    "de compensation — cette 2e méthode est la base théorique directe "
+    "du mécanisme de 'support' utilisé par ART entre enceintes (voir "
+    "constante suivante pour la confirmation indépendante du terme "
+    "'support' lui-même)."
+)
+"""[Études peer-reviewed] — Mäkivirta, A.; Antsalo, P.; Karjalainen, M.;
+Välimäki, V. 'Low-frequency modal equalization of loudspeaker-room
+responses', 111th AES Convention, 2001 ; et version revue à comité de
+lecture : 'Modal equalization of loudspeaker-room responses at low
+frequencies', Journal of the Audio Engineering Society, 2003, vol. 51,
+pp. 324-343. Citées comme réf. 4 et 157 dans Cecchi et al. (2018),
+section 6.5 'Modal Equalization'."""
+
+MULTI_SPEAKER_LOW_FREQUENCY_FIELD_UNIFORMIZATION_CABS = (
+    "Confirmation scientifique indépendante, par plusieurs équipes de "
+    "recherche distinctes (pas seulement Dirac Research), que "
+    "l'utilisation de PLUSIEURS haut-parleurs/caissons pour la basse "
+    "fréquence (comme les 2 SVS 3000 Micro de Steve) est une approche "
+    "fondée et étudiée scientifiquement pour obtenir un champ sonore "
+    "plus UNIFORME dans toute la pièce, pas seulement en un point "
+    "d'écoute : la solution 'Controlled Acoustic Bass System' (CABS) "
+    "crée une onde plane se propageant d'un mur à l'autre et "
+    "l'annule au mur opposé grâce à des haut-parleurs supplémentaires "
+    "en antiphase retardée, supprimant les réflexions du mur arrière. "
+    "Des mesures réelles en pièces rectangulaires confirment que CABS "
+    "'peut produire un champ acoustique uniforme dans le domaine des "
+    "basses fréquences'. Une extension ultérieure généralise "
+    "l'approche à des pièces de forme arbitraire avec plusieurs "
+    "haut-parleurs 'situés dans des emplacements plus normaux', "
+    "testée sur une configuration 5.0 — ET une approche explicitement "
+    "qualifiée de 'multiple-input/multiple-output (MIMO)' y est "
+    "présentée pour ne prescrire que la magnitude de la réponse aux "
+    "points de contrôle, avec une déviation de magnitude plus faible "
+    "que les approches à onde plane précédentes. **Ceci confirme, de "
+    "façon totalement indépendante de toute documentation Dirac, que "
+    "le terme MIMO appliqué à l'égalisation de pièce est un concept "
+    "scientifique établi et pas seulement un argument marketing.**"
+)
+"""[Études peer-reviewed, plusieurs équipes] — citées comme réf. 159-167
+dans Cecchi et al. (2018), section 6.6 'Plane Wave Approach' (incluant
+notamment les travaux sur CABS et sur l'extension MIMO à une
+configuration 5.0 en pièce de forme arbitraire)."""
+
+PRESSURE_FIELD_CHAMBER_EXPLAINS_STEVE_17HZ_EXTENSION = (
+    "Réponse scientifique à l'observation de Steve ('mon système "
+    "arrive à reproduire une fréquence minimale de 17 Hz') alors que "
+    "la fiche technique officielle de ses 2 caissons SVS 3000 Micro "
+    "R|Evolution indique une extension garantie à 20 Hz (voir "
+    "exemple_systeme_steve.py) : à très basse fréquence, 'au lieu "
+    "d'une onde plane, il est beaucoup plus efficace d'utiliser une "
+    "approche de chambre à champ de pression. Cette approche est "
+    "obtenue en envoyant le même signal à tous les haut-parleurs. "
+    "Cela génère un motif d'onde stationnaire homogène à l'intérieur "
+    "de la pièce, aux longueurs d'onde considérablement plus grandes "
+    "que la pièce' — c'est le mécanisme physique par lequel une pièce "
+    "fermée AGIT ELLE-MÊME comme une extension acoustique du système, "
+    "en dessous d'une certaine fréquence (quand la longueur d'onde "
+    "dépasse largement les dimensions de la pièce — à 17 Hz, la "
+    "longueur d'onde dans l'air est d'environ 20 m, bien supérieure "
+    "aux dimensions d'une pièce domestique). Cette chambre de "
+    "pression peut renforcer/étendre la réponse perçue en dessous de "
+    "la limite théorique publiée du haut-parleur seul (mesurée, elle, "
+    "en conditions normalisées proches du champ libre). **Prudence "
+    "méthodologique** : ceci explique le MÉCANISME PHYSIQUE général "
+    "qui REND PLAUSIBLE une extension observée sous la spec "
+    "constructeur ; ce n'est pas une preuve que les 17 Hz mesurés par "
+    "Steve proviennent spécifiquement et uniquement de cet effet (la "
+    "position exacte d'écoute et de caisson dans la pièce, ainsi que "
+    "d'éventuels modes propres renforçant cette zone précise, jouent "
+    "aussi un rôle — cohérent avec la confirmation de Steve que 'sa "
+    "pièce joue un rôle important dans les basses fréquences')."
+)
+"""[Étude peer-reviewed] — Pedersen, C.S.; Møller, H. 'Sound field
+control for a low-frequency test facility', 52nd AES International
+Conference: Sound Field Control — Engineering and Perception,
+Guildford, UK, 2013. Citée comme réf. 170 dans Cecchi et al. (2018),
+section 6.7 'Other Low-Frequency RRE Approaches'."""
+
+MULTICHANNEL_SUPPORT_TERM_AND_MAXIMUM_GAIN_SAFETY_RULE_CONFIRMED = (
+    "Double confirmation académique majeure, totalement indépendante "
+    "de Dirac Research, trouvée dans une étude dédiée à l'égalisation "
+    "basse fréquence multicanal avec optimisation sous contrainte "
+    "perceptive : (1) le terme technique 'SUPPORT' entre enceintes "
+    "n'est pas un vocabulaire marketing propre à Dirac — l'étude "
+    "traite explicitement 'le problème d'égalisation basse fréquence "
+    "multi-haut-parleurs pour une large zone d'écoute, le haut-parleur "
+    "égalisé étant SUPPORTÉ PAR LES AUTRES', formulé comme un "
+    "problème de minimisation d'erreur en plusieurs points entre la "
+    "réponse désirée et la réponse de magnitude synthétisée ; (2) "
+    "RÈGLE DE SÉCURITÉ confirmée scientifiquement, identique à celle "
+    "ajoutée dans detect_dangerous_gain_anomalies suite au cas réel de "
+    "surchauffe ampli de Steve (section 33) : 'Pour éviter de booster "
+    "les creux, un GAIN MAXIMUM est imposé aux égaliseurs' — les "
+    "auteurs imposent explicitement une limite de gain dans leur "
+    "optimisation sous contrainte, précisément pour la même raison "
+    "que notre seuil DANGEROUS_EQ_GAIN_THRESHOLD_DB = 10.0 dB. "
+    "D'autres contraintes perceptives de la même étude, non encore "
+    "implémentées ici mais documentées comme pistes : une contrainte "
+    "de masquage temporel pour limiter la longueur des filtres, un "
+    "délai minimal de 1 ms sur les haut-parleurs auxiliaires pour "
+    "exploiter l'effet de précédence (Haas) et éviter une perception "
+    "d'écho, et un plafond lié au seuil d'écho pour le gain des "
+    "haut-parleurs auxiliaires relatif au haut-parleur principal."
+)
+"""[Étude peer-reviewed] — Kolundžija, M.; Faller, C.; Vetterli, M.
+'Multi-channel low-frequency room equalization using perceptually
+motivated constrained optimization', IEEE International Conference on
+Acoustics, Speech and Signal Processing (ICASSP), Kyoto, Japan, 2012,
+pp. 533-536. Citée comme réf. 79 dans Cecchi et al. (2018), section 6.7
+'Other Low-Frequency RRE Approaches'. CONFIRMATION INDÉPENDANTE directe
+de deux éléments déjà implémentés dans diagnostic_engine.py AVANT la
+lecture de cette étude : le concept de support_group_assignments et le
+seuil DANGEROUS_EQ_GAIN_THRESHOLD_DB (section 33)."""
+
+LOW_VS_MID_HIGH_FREQUENCY_DIFFERENT_CORRECTION_STRATEGY_PEER_REVIEWED = (
+    "Confirmation scientifique peer-reviewed d'un principe de "
+    "traitement DIFFÉRENCIÉ selon la plage de fréquence, cohérent avec "
+    "la structure en 2 parties de la courbe cible Bass Control déjà "
+    "documentée (section 26) : 'aux fréquences moyennes et hautes, la "
+    "perception du timbre et la localisation sont dominées par le son "
+    "direct' — en conséquence, une approche dite quasi-anéchoïque "
+    "applique 'l'égalisation complète uniquement dans la plage de "
+    "fréquence modale', tandis qu'aux fréquences moyennes et hautes "
+    "elle n'égalise QUE le son direct, car 'les déviations de "
+    "magnitude mesurables mais le plus souvent inaudibles dues aux "
+    "réflexions ne devraient pas être égalisées'. Ceci justifie "
+    "scientifiquement pourquoi une correction MIMO complète et dense "
+    "(comme ART) n'a de sens que dans la zone modale basse fréquence "
+    "(20-150 Hz), alors qu'aux fréquences moyennes/hautes une "
+    "correction trop fine sur des variations mesurées mais inaudibles "
+    "serait contre-productive (risque de dégrader le son pour corriger "
+    "un défaut qui n'est, de toute façon, pas perçu)."
+)
+"""[Étude peer-reviewed] — citée comme réf. 172-174 dans Cecchi et al.
+(2018), section 6.8 'Quasi-Anechoic Approach', avec validation par
+expériences objectives ET tests d'écoute subjectifs rapportés dans
+l'étude (réf. 173)."""
+

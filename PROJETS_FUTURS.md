@@ -3358,3 +3358,48 @@ articles lus, concurrents repérés, retours clients...)_
 
   36 tests unitaires repassés avec succès : aucune régression.
 
+- (03/10, suite 42) **🔬 Fondements scientifiques peer-reviewed de la
+  plage 20-150Hz (ART) : un article de synthèse de 40 ans de recherche**
+
+  Suite à la demande de Steve de prioriser la plage basse fréquence
+  d'ART (20-150Hz) avec des sources peer-reviewed plutôt que Wikipedia,
+  découverte d'un article de SYNTHÈSE open access particulièrement
+  riche : Cecchi, Carini & Spors, "Room Response Equalization—A
+  Review", Applied Sciences (MDPI), 2018, 8(1):16, DOI 10.3390/
+  app8010016 — 47 pages, cross-référençant des dizaines d'études
+  originales AES/IEEE, lu en texte intégral.
+
+  7 constantes ajoutées en section 39 de `knowledge_base.py`, chacune
+  avec sa source précise :
+  - **Fréquence de Schroeder** : frontière scientifique entre
+    comportement modal (résonances séparées, corrigeables point par
+    point — zone ART) et comportement diffus (haute fréquence).
+  - **Pics plus audibles que creux, mais creux large bande aussi
+    audibles** : confirme scientifiquement la correction déjà faite en
+    section 33 (traiter aussi les creux, pas seulement les pics).
+  - **Égalisation modale / contrôle du temps de décroissance**
+    (Mäkivirta et al., J. Audio Eng. Soc. 2003) : la cible n'est pas
+    qu'un niveau en dB, mais une cohérence de décroissance temporelle
+    entre graves et reste du spectre.
+  - **CABS et MIMO confirmés indépendamment** (réf. 159-167) : le
+    terme MIMO appliqué à l'égalisation de pièce est un concept
+    scientifique établi, pas un argument marketing Dirac.
+  - **Pressure-field chamber** (Pedersen & Møller, AES 2013) :
+    explique le mécanisme physique qui permet à la pièce de Steve de
+    "pousser" son système à 17Hz mesurés, sous les 20Hz de la fiche
+    SVS — confirmé par Steve ("ma pièce joue un rôle important dans
+    les basses fréquences").
+  - **Terme "support" et règle de gain maximum CONFIRMÉS
+    académiquement** (Kolundžija, Faller & Vetterli, IEEE ICASSP 2012)
+    : double confirmation indépendante majeure — le mot "support"
+    entre enceintes est un concept académique établi (pas du
+    vocabulaire marketing Dirac), et la règle "gain maximum imposé
+    pour éviter de booster les creux" est scientifiquement identique
+    au seuil `DANGEROUS_EQ_GAIN_THRESHOLD_DB` déjà ajouté en section
+    33 suite au cas réel de surchauffe ampli de Steve.
+  - **Distinction basse vs moyenne/haute fréquence** (approche
+    quasi-anéchoïque) : justifie pourquoi une correction MIMO dense
+    comme ART n'a de sens que dans la zone modale.
+
+  36 tests unitaires + `example_run.py` + `exemple_systeme_steve.py`
+  repassés avec succès : aucune régression.
