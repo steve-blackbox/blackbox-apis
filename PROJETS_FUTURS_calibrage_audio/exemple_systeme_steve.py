@@ -4,14 +4,12 @@ Test de bout en bout du moteur de diagnostic sur le VRAI système de Steve
 d'aller plus loin. Lancer avec : python3 exemple_systeme_steve.py
 
 Important — ce que ce script est, et ce qu'il n'est PAS :
-- Le matériel déclaré ci-dessous (marques, modèles, rôles) est réel.
-- Les `freq_min_hz` des enceintes Elipson sont des ESTIMATIONS PRUDENTES,
-  pas des fiches constructeur vérifiées : malgré plusieurs tentatives de
-  recherche (voir PROJETS_FUTURS.md, suite 15), aucune fiche technique
-  chiffrée n'a pu être trouvée pour les Elipson Legacy 3220 / Facet 2.0
-  14C / Facet 2.0 LCR (site Elipson sans tableau de specs exploitable,
-  moteurs de recherche externes bloqués). Chaque valeur estimée est
-  marquée `# ESTIMATION NON VÉRIFIÉE` ligne par ligne ci-dessous.
+- Le matériel déclaré ci-dessous (marques, modèles, rôles) est réel, et
+  TOUTES les fiches techniques (Elipson, Buckeye) sont désormais de
+  vraies valeurs constructeur officielles (voir knowledge_base.py,
+  section 15, pour la méthode de récupération et les citations
+  complètes) — ce n'est plus le cas des estimations prudentes utilisées
+  avant le 03/10 (suite 22), qui restaient marquées comme telles.
 - Les courbes de mesure sont SYNTHÉTIQUES (générées par `_synthetic_curve`,
   comme dans `example_run.py`) : aucune vraie capture d'écran Dirac ni
   fichier `.liveproject` de Steve n'est disponible dans ce dossier de
@@ -23,10 +21,18 @@ Important — ce que ce script est, et ce qu'il n'est PAS :
   (voir `liveproject_reader.py` et `image_reader.py`).
 
 Config réelle (7.2, pas de hauteurs Atmos actives) :
-  Marantz CINEMA 30 + Buckeye NCx252MP (ampli de puissance 8 canaux)
-  - Façades : 2x Elipson Legacy 3220 (colonne 2.5 voies)
-  - Centrale : 1x Elipson Facet 2.0 14C
-  - Surround + Surround Back : 4x Elipson Facet 2.0 LCR
+  Marantz CINEMA 30 (pré-ampli/processeur)
+    --[câbles RCA(M) à XLR(M) Buckeye, Canare L-4E6S Star Quad, schéma
+       anti-ronflement de masse recommandé par Purifi/Hypex]-->
+  Buckeye NCx252MP 8 canaux (4 modules Hypex NCx252MP, 250W/4Ω par canal,
+  THD 0,0007 % @125W/4Ω, S/N 120dB — un canal du bloc 8 canaux inutilisé
+  en config 7.2, sans souci de performance selon le fabricant)
+  - Façades : 2x Elipson Legacy 3220 (colonne 2.5 voies, 35Hz-30kHz, 6Ω,
+    89dB, 150W RMS)
+  - Centrale : 1x Elipson Prestige Facet II 14C (2 voies, 43Hz-25kHz
+    ±3dB, 6Ω nominal/4,5Ω min @180Hz, 93dB, 150W RMS)
+  - Surround + Surround Back : 4x Elipson Prestige Facet II 14LCR (2
+    voies, 53Hz-25kHz ±3dB, 6Ω nominal/4,6Ω min @202Hz, 93dB, 150W RMS)
   - Caissons : 2x SVS 3000 Micro R|Evolution (specs officielles confirmées :
     extension jusqu'à 20 Hz, dual 9" actifs — voir svsound.com)
 """
@@ -44,37 +50,65 @@ def build_steve_system() -> list[Speaker]:
         Speaker(
             "Façade Gauche (Elipson Legacy 3220)",
             Role.FRONT_LEFT,
-            freq_min_hz=45,  # ESTIMATION NON VÉRIFIÉE (colonne 2.5 voies, 2x 6.5")
+            freq_min_hz=35,  # CONFIRMÉ officiellement (elipson.com)
+            freq_max_hz=30000,
+            impedance_nominal_ohms=6,
+            sensitivity_db_1w1m=89,
+            power_rms_w=150,
         ),
         Speaker(
             "Façade Droite (Elipson Legacy 3220)",
             Role.FRONT_RIGHT,
-            freq_min_hz=45,  # ESTIMATION NON VÉRIFIÉE (idem)
+            freq_min_hz=35,  # CONFIRMÉ officiellement (elipson.com)
+            freq_max_hz=30000,
+            impedance_nominal_ohms=6,
+            sensitivity_db_1w1m=89,
+            power_rms_w=150,
         ),
         Speaker(
-            "Centrale (Elipson Facet 2.0 14C)",
+            "Centrale (Elipson Prestige Facet II 14C)",
             Role.CENTER,
-            freq_min_hz=65,  # ESTIMATION NON VÉRIFIÉE (gamme compacte)
+            freq_min_hz=43,  # CONFIRMÉ officiellement (elipson.com, ±3dB)
+            freq_max_hz=25000,
+            impedance_nominal_ohms=6,
+            sensitivity_db_1w1m=93,
+            power_rms_w=150,
         ),
         Speaker(
-            "Surround Gauche (Elipson Facet 2.0 LCR)",
+            "Surround Gauche (Elipson Prestige Facet II 14LCR)",
             Role.SURROUND_LEFT,
-            freq_min_hz=70,  # ESTIMATION NON VÉRIFIÉE (gamme compacte)
+            freq_min_hz=53,  # CONFIRMÉ officiellement (elipson.com, ±3dB)
+            freq_max_hz=25000,
+            impedance_nominal_ohms=6,
+            sensitivity_db_1w1m=93,
+            power_rms_w=150,
         ),
         Speaker(
-            "Surround Droite (Elipson Facet 2.0 LCR)",
+            "Surround Droite (Elipson Prestige Facet II 14LCR)",
             Role.SURROUND_RIGHT,
-            freq_min_hz=70,  # ESTIMATION NON VÉRIFIÉE (idem)
+            freq_min_hz=53,  # CONFIRMÉ officiellement (idem)
+            freq_max_hz=25000,
+            impedance_nominal_ohms=6,
+            sensitivity_db_1w1m=93,
+            power_rms_w=150,
         ),
         Speaker(
-            "Surround Back Gauche (Elipson Facet 2.0 LCR)",
+            "Surround Back Gauche (Elipson Prestige Facet II 14LCR)",
             Role.SURROUND_BACK_LEFT,
-            freq_min_hz=70,  # ESTIMATION NON VÉRIFIÉE (idem)
+            freq_min_hz=53,  # CONFIRMÉ officiellement (idem)
+            freq_max_hz=25000,
+            impedance_nominal_ohms=6,
+            sensitivity_db_1w1m=93,
+            power_rms_w=150,
         ),
         Speaker(
-            "Surround Back Droite (Elipson Facet 2.0 LCR)",
+            "Surround Back Droite (Elipson Prestige Facet II 14LCR)",
             Role.SURROUND_BACK_RIGHT,
-            freq_min_hz=70,  # ESTIMATION NON VÉRIFIÉE (idem)
+            freq_min_hz=53,  # CONFIRMÉ officiellement (idem)
+            freq_max_hz=25000,
+            impedance_nominal_ohms=6,
+            sensitivity_db_1w1m=93,
+            power_rms_w=150,
         ),
         Speaker(
             "Caisson 1 (SVS 3000 Micro R|Evolution)",

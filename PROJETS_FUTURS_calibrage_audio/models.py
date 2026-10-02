@@ -45,13 +45,20 @@ HEIGHT_ROLES = {
 @dataclass
 class Speaker:
     """Une enceinte ou un caisson déclaré par le client (niveau Essentiel
-    minimum : rôle + plage de fréquence constructeur)."""
+    minimum : rôle + plage de fréquence constructeur). Les trois derniers
+    champs sont optionnels : renseignés quand une vraie fiche technique
+    constructeur a été récupérée (voir knowledge_base.py, section 15, et
+    EvidenceLevel.FICHE_CONSTRUCTEUR_OFFICIELLE), sinon laissés à None
+    plutôt que devinés."""
 
     name: str
     role: Role
     freq_min_hz: float          # fréquence basse garantie par le constructeur
     freq_max_hz: float = 20000.0
     is_subwoofer: bool = False
+    impedance_nominal_ohms: float | None = None
+    sensitivity_db_1w1m: float | None = None
+    power_rms_w: float | None = None
 
     def __post_init__(self) -> None:
         if self.role == Role.LFE:
@@ -102,6 +109,11 @@ class EvidenceLevel(str, Enum):
     MARANTZ_DIRAC_OFFICIEL = (
         "Manuel officiel Marantz / Dirac Live (manuals.marantz.com, lu "
         "directement, pas une reformulation tierce)"
+    )
+    FICHE_CONSTRUCTEUR_OFFICIELLE = (
+        "Fiche technique officielle du site du fabricant (ex: elipson.com, "
+        "buckeyeamp.com), lue directement via navigation réelle, pas une "
+        "reformulation tierce ni une estimation"
     )
     STORMAUDIO_OFFICIEL = "Directive officielle StormAudio (doc ART)"
     BREVET_DIRAC_RESEARCH = (
@@ -180,3 +192,20 @@ class CitedPatent:
     source_url: str
     verification: str             # ce qui a été réellement lu (texte intégral, quelles sections)
     takeaway: str                  # ce qu'on en retient, formulé prudemment
+
+
+@dataclass
+class ManufacturerSpecSheet:
+    """Une fiche technique constructeur réellement lue sur le site
+    officiel du fabricant (navigation réelle, onglet 'Specifications'/
+    'Détails techniques' cliqué), jamais une estimation ni une
+    reformulation tierce — voir knowledge_base.py, section 15, pour la
+    méthode de récupération et le contexte (demande de Steve : être
+    capable de récupérer les manuels constructeurs du matériel réel)."""
+
+    brand: str
+    model: str
+    role_in_system: str           # ex: "Façades 7.2 de Steve", "Ampli de puissance"
+    source_url: str
+    specs: dict[str, str]          # ex: {"Fréquence": "35Hz-30kHz", "Impédance": "6 ohms"}
+    verification: str              # ce qui a été réellement lu (onglet cliqué, méthode)

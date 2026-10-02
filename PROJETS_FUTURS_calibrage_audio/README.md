@@ -29,7 +29,7 @@ Ce n'est **pas** :
 | Fichier | Rôle |
 |---|---|
 | `models.py` | Structures de données (enceintes, mesures, pièce, recommandations, anomalies, rapport, études citées, brevets cités). |
-| `knowledge_base.py` | Toutes les règles et sources (directives StormAudio ART, hiérarchie de support, courbes cibles, diagnostic différentiel, 5 facteurs d'immersion, prérequis techniques, disclaimers obligatoires, études scientifiques citées, fondamentaux home cinéma de fond — section 10, trois brevets Dirac Research lus en texte intégral — sections 11 à 13, limite physique de la correction linéaire face à la distorsion non-linéaire des haut-parleurs — section 14). |
+| `knowledge_base.py` | Toutes les règles et sources (directives StormAudio ART, hiérarchie de support, courbes cibles, diagnostic différentiel, 5 facteurs d'immersion, prérequis techniques, disclaimers obligatoires, études scientifiques citées, fondamentaux home cinéma de fond — section 10, trois brevets Dirac Research lus en texte intégral — sections 11 à 13, limite physique de la correction linéaire face à la distorsion non-linéaire des haut-parleurs — section 14, fiches techniques officielles du matériel réel de Steve — section 15). |
 | `diagnostic_engine.py` | Détection d'anomalies sur les courbes, calcul des modes propres de la pièce, diagnostic différentiel, génération des recommandations. |
 | `report_generator.py` | Transforme un `DiagnosticReport` en rapport texte livrable au client. |
 | `image_reader.py` | Lit automatiquement les courbes depuis une capture d'écran Dirac Live (calibration d'axes + détection de la couleur de la courbe, méthode de digitalisation de graphique) — remplace la saisie manuelle des points fréquence/dB. |

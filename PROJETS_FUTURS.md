@@ -2592,3 +2592,55 @@ articles lus, concurrents repérés, retours clients...)_
   repassés avec succès après ces ajouts à `knowledge_base.py` : aucune
   régression.
 
+- (03/10, suite 22) **🔧 Capacité de récupération des manuels
+  constructeurs acquise — les 3 estimations Elipson non vérifiées de
+  suite 15 sont résolues, plus l'ampli et le câblage**
+
+  Steve a demandé explicitement : "il faut que tu sois en mesure de
+  récupérer les manuels constructeurs des éléments d'un système home
+  cinéma". La recherche Elipson avait échoué en suite 15 parce que
+  `web_fetch` (fetcher texte) ne peut pas exécuter le JavaScript des
+  sites modernes (Elipson tourne sur Wix) — **méthode découverte et
+  généralisable** : le navigateur intégré (`navigatePage` + `readPage` +
+  `clickElement`) exécute réellement le JS et réussit là où `web_fetch`
+  échoue. Étapes qui ont fonctionné : (1) recherche Google via le
+  navigateur pour trouver l'URL produit exacte (le nom commercial réel
+  peut différer de celui utilisé à l'oral — "Facet 2.0" de Steve =
+  "Facet II" officiel), (2) `readPage` pour repérer un onglet
+  "Specifications"/"Détails techniques" dans le snapshot
+  d'accessibilité, (3) `clickElement` dessus pour révéler le tableau de
+  specs (absent du DOM avant le clic sur certains sites), (4) relire le
+  nouveau snapshot retourné par le clic.
+
+  **5 fiches techniques officielles récupérées**, ajoutées à
+  `knowledge_base.py` (nouvelle section 15, nouvelle dataclass
+  `ManufacturerSpecSheet` dans `models.py`, nouveau niveau
+  `EvidenceLevel.FICHE_CONSTRUCTEUR_OFFICIELLE`) :
+  - **Elipson Legacy 3220** (façades) : 35Hz-30kHz (remplace l'estimation
+    45Hz), 89dB, 6Ω, 150W RMS, 32,8kg/pièce.
+  - **Elipson Prestige Facet II 14C** (centrale) : 43Hz-25kHz ±3dB
+    (remplace l'estimation 65Hz), 93dB, 6Ω nominal/4,5Ω min @180Hz,
+    150W RMS, filtre 3000Hz 18dB/octave.
+  - **Elipson Prestige Facet II 14LCR** (surround + surround back x4) :
+    53Hz-25kHz ±3dB (remplace l'estimation 70Hz), 93dB, 6Ω nominal/
+    4,6Ω min @202Hz, 150W RMS, filtre 3200Hz 18dB/18dB.
+  - **Buckeye NCx252MP 8-Channel** (ampli de puissance, jamais recherché
+    jusqu'ici) : 4 modules Hypex NCOREx, 150W@8Ω/250W@4Ω/180W@2Ω par
+    canal, THD 0,0007% (125W/4Ω), S/N 120dB, réponse 10Hz-50kHz —
+    confirmation chiffrée concrète du principe déjà documenté en
+    section 14 (électronique ≪1% THD vs 1-5% pour les haut-parleurs).
+  - **Câbles RCA/XLR Buckeye** (confirmés utilisés par Steve entre le
+    CINEMA 30 et l'ampli) : Canare L-4E6S Star Quad, connecteurs
+    Neutrik, schéma de câblage anti-ronflement de masse recommandé par
+    Purifi et Hypex eux-mêmes.
+
+  `models.py` enrichi : `Speaker` accepte maintenant des champs
+  optionnels `impedance_nominal_ohms`/`sensitivity_db_1w1m`/
+  `power_rms_w` (None par défaut, aucune rupture de compatibilité).
+  `exemple_systeme_steve.py` mis à jour avec les vraies valeurs (les
+  commentaires `# ESTIMATION NON VÉRIFIÉE` ont disparu, remplacés par
+  `# CONFIRMÉ officiellement`). Les caissons SVS restent sourcés comme
+  avant (suite 15, non dupliqués). 10 tests unitaires +
+  `example_run.py` + `exemple_systeme_steve.py` repassés avec succès :
+  aucune régression.
+
