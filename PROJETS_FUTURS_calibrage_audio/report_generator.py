@@ -16,6 +16,56 @@ def _section(title: str) -> str:
     return f"\n{title}\n{bar}\n"
 
 
+def _build_support_map_lines(report: DiagnosticReport) -> list[str]:
+    """Consolide, enceinte par enceinte, QUI aide QUI (quel support,
+    quelle valeur en dB) en une seule table lisible — réponse directe à
+    la demande de Steve (03/10) : 'il faut établir aussi dans le rapport
+    quelle enceinte aide qui', plutôt que de laisser cette information
+    éclatée entre plusieurs catégories de recommandations que le client
+    devrait recouper lui-même."""
+    precise_by_main: dict[str, list[tuple[str, float]]] = {}
+    for rec in report.recommendations:
+        if rec.category == "Niveau de support (précis)" and rec.precise_value_db is not None:
+            if " -> " not in rec.target:
+                continue
+            support_name, main_name = rec.target.split(" -> ", 1)
+            precise_by_main.setdefault(main_name, []).append(
+                (support_name, rec.precise_value_db)
+            )
+
+    retained_by_main: dict[str, str] = {}
+    for rec in report.recommendations:
+        if rec.category == "Groupage de support recommandé":
+            retained_by_main.setdefault(rec.target, rec.action)
+
+    excluded_by_main: dict[str, list[str]] = {}
+    for rec in report.recommendations:
+        if rec.category == "Groupage de support — option écartée (non pertinente)":
+            excluded_by_main.setdefault(rec.target, []).append(rec.action)
+
+    all_mains = list(dict.fromkeys(
+        list(retained_by_main.keys()) + list(precise_by_main.keys())
+    ))
+    if not all_mains:
+        return []
+
+    lines: list[str] = []
+    for main_name in all_mains:
+        lines.append(f"  • {main_name}")
+        supports = precise_by_main.get(main_name)
+        if supports:
+            for support_name, value_db in supports:
+                lines.append(
+                    f"      ← aidée par : {support_name} "
+                    f"(Support Level : {value_db:+.1f} dB)"
+                )
+        elif main_name in retained_by_main:
+            lines.append(f"      ← {retained_by_main[main_name]}")
+        for note in excluded_by_main.get(main_name, []):
+            lines.append(f"      (écarté) {note}")
+    return lines
+
+
 def generate_report(
     report: DiagnosticReport,
     client_name: str = "Client",
@@ -49,6 +99,11 @@ def generate_report(
                 lines.append(f"      Causes probables : {', '.join(a.probable_causes)}")
             if a.suggested_action:
                 lines.append(f"      Action suggérée : {a.suggested_action}")
+
+    support_map_lines = _build_support_map_lines(report)
+    if support_map_lines:
+        lines.append(_section("Qui aide qui : tableau de synthèse du groupage de support"))
+        lines.extend(support_map_lines)
 
     if report.recommendations:
         lines.append(_section("Recommandations de réglage"))

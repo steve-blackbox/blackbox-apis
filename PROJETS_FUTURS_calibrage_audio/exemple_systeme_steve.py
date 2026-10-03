@@ -164,15 +164,21 @@ def build_steve_system() -> list[Speaker]:
             "Caisson 1 (SVS 3000 Micro R|Evolution)",
             Role.LFE,
             freq_min_hz=20,  # CONFIRMÉ officiellement (svsound.com)
-            freq_max_hz=120,
+            freq_max_hz=230,  # CONFIRMÉ (03/10) : bande passante ±3dB
+            # officielle "20 Hz – 230 Hz" (homecinesolutions.fr, fiche
+            # technique citant la mesure constructeur quasi-anéchoïque à
+            # 2m ; confirme aussi par comparaison la génération précédente
+            # 23-240Hz, modèle distinct). Corrige une valeur précédente de
+            # 120 Hz qui n'était pas sourcée (estimation non confirmée).
         ),
         Speaker(
             "Caisson 2 (SVS 3000 Micro R|Evolution)",
             Role.LFE,
             freq_min_hz=20,  # CONFIRMÉ officiellement (svsound.com)
-            freq_max_hz=120,
+            freq_max_hz=230,  # CONFIRMÉ par Steve (03/10) — voir Caisson 1.
         ),
     ]
+
 
 
 def main() -> None:

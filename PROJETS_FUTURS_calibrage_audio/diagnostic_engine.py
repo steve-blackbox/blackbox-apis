@@ -283,6 +283,20 @@ def recommend_support_groups(speakers: list[Speaker]) -> list[Recommendation]:
     return recs
 
 
+def _is_valid_support_donor(speaker: Speaker) -> bool:
+    """Définition OFFICIELLE Dirac d'une enceinte de support valide (page
+    'Why can't I select all support speakers?', voir
+    knowledge_base.ART_CROSS_TERMS_COMPUTATIONAL_LIMIT) : 'any speaker
+    capable of playing below 150 Hz [...] can be a support speaker.' Un
+    caisson est toujours éligible par construction. Une enceinte
+    satellite dont le plancher constructeur dépasse ce seuil ne peut
+    PHYSIQUEMENT pas servir de support — la proposer serait une
+    recommandation non pertinente (remarque explicite de Steve, 03/10 :
+    'toutes les enceintes ne peuvent pas aider tout le monde, il faut
+    que ça soit pertinent')."""
+    return speaker.is_subwoofer or speaker.freq_min_hz <= kb.ART_UPPER_BOUND_HZ
+
+
 def recommend_support_pairings(speakers: list[Speaker]) -> list[Recommendation]:
     """Déduit le groupage de support DÉCISIF pour CHAQUE enceinte
     non-caisson, à partir du SEUL système réel déclaré par le client
@@ -349,28 +363,86 @@ def recommend_support_pairings(speakers: list[Speaker]) -> list[Recommendation]:
         alt_role = kb.SUPPORT_PAIRING_ROLE_MAP.get(speaker.role)
         alt_speaker = next((s for s in speakers if s.role == alt_role), None) if alt_role else None
         if alt_speaker is not None:
-            recs.append(
-                Recommendation(
-                    category="Groupage de support — configuration alternative existante",
-                    target=speaker.name,
-                    action=(
-                        f"Configuration croisée avec {alt_speaker.name} "
-                        f"(enceinte à hauteur d'oreille) : pratiquée par "
-                        f"certains clients, acceptée par la hiérarchie "
-                        f"officielle, mais PAS la recommandation retenue "
-                        f"ici — le support par caisson reste le réglage "
-                        f"décisif par défaut."
-                    ),
-                    evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
-                    detail=(
-                        "Mentionné à titre informatif seulement : si cette "
-                        "configuration alternative est effectivement en "
-                        "place, son niveau de support précis peut être "
-                        "calculé sur demande à partir des mesures réelles "
-                        "(voir support_group_assignments de run_diagnostic)."
-                    ),
+            if _is_valid_support_donor(alt_speaker):
+                recs.append(
+                    Recommendation(
+                        category="Groupage de support — configuration alternative existante",
+                        target=speaker.name,
+                        action=(
+                            f"Configuration croisée avec {alt_speaker.name} "
+                            f"(enceinte à hauteur d'oreille) : pratiquée par "
+                            f"certains clients, acceptée par la hiérarchie "
+                            f"officielle, mais PAS la recommandation retenue "
+                            f"ici — le support par caisson reste le réglage "
+                            f"décisif par défaut."
+                        ),
+                        evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+                        detail=(
+                            "Mentionné à titre informatif seulement : si cette "
+                            "configuration alternative est effectivement en "
+                            "place, son niveau de support précis peut être "
+                            "calculé sur demande à partir des mesures réelles "
+                            "(voir support_group_assignments de run_diagnostic)."
+                        ),
+                    )
                 )
-            )
+            else:
+                # Pas une simple absence d'information : exclusion
+                # explicite et justifiée, pour que le client comprenne
+                # QUE cette enceinte-là ne peut pas rendre service à une
+                # autre (pertinence réelle, pas un choix arbitraire).
+                recs.append(
+                    Recommendation(
+                        category="Groupage de support — option écartée (non pertinente)",
+                        target=speaker.name,
+                        action=(
+                            f"{alt_speaker.name} n'est PAS une option de "
+                            f"support valide pour cette enceinte : son "
+                            f"plancher déclaré ({alt_speaker.freq_min_hz:.0f} Hz) "
+                            f"dépasse les {kb.ART_UPPER_BOUND_HZ:.0f} Hz au-"
+                            f"dessus desquels Dirac n'autorise plus une "
+                            f"enceinte comme support."
+                        ),
+                        evidence=EvidenceLevel.MARANTZ_DIRAC_OFFICIEL,
+                        detail=(
+                            "Définition officielle Dirac : 'any speaker "
+                            "capable of playing below 150 Hz can be a "
+                            "support speaker' — une enceinte dont le "
+                            "constructeur ne garantit pas de descendre sous "
+                            "ce seuil est écartée d'office, quel que soit "
+                            "son rôle dans le système."
+                        ),
+                    )
+                )
+
+    recs.append(
+        Recommendation(
+            category="Limite de calcul du processeur (cross terms)",
+            target="ensemble du système",
+            action=(
+                "Ne PAS cumuler plusieurs sources de support simultanées "
+                "pour une même enceinte (ex. caisson(s) ET une enceinte "
+                "satellite en même temps) : un seul groupage décisif par "
+                "enceinte, celui retenu ci-dessus."
+            ),
+            evidence=EvidenceLevel.MARANTZ_DIRAC_OFFICIEL,
+            detail=(
+                "Contrainte matérielle réelle, pas un choix esthétique : "
+                "'One cross term is allocated every time a speaker is "
+                "selected to support another speaker [...] The maximum "
+                "number of available cross terms is DSP DEPENDENT' "
+                "(knowledge_base.ART_CROSS_TERMS_COMPUTATIONAL_LIMIT). "
+                "Chaque relation de support (y compris une configuration "
+                "alternative, voir ci-dessus) consomme ce budget partagé et "
+                "limité du processeur — au-delà d'un certain nombre de "
+                "relations activées, Dirac affiche une erreur et oblige à "
+                "désélectionner des enceintes de support. Le groupage "
+                "retenu ici reste volontairement minimal (le(s) caisson(s) "
+                "seulement) pour rester dans ce budget sur n'importe quel "
+                "système, même les plus chargés (9.1.6, etc.)."
+            ),
+        )
+    )
     return recs
 
 
@@ -654,19 +726,39 @@ def calculate_support_frequency_range(
     17). F-support High = Fsiso par défaut (point de départ officiel : la
     doc Dirac indique de partir haut puis de redescendre SEULEMENT si une
     enceinte de support devient localisable — processus itératif, pas un
-    calcul unique)."""
+    calcul unique), MAIS jamais au-delà de ce que l'enceinte peut
+    physiquement reproduire (fiche constructeur, `freq_max_hz`) — remarque
+    explicite de Steve (03/10) : 'il faut respecter les caractéristiques
+    des hauts-parleurs'. Note de vérification (03/10) : les caissons de
+    Steve (SVS 3000 Micro R|Evolution) ont en réalité une bande passante
+    officielle 20-230 Hz (±3dB, homecinesolutions.fr) — AU-DESSUS de
+    Fsiso (150 Hz), donc ce clamp matériel ne s'y déclenche PAS pour son
+    système précis ; il reste nécessaire pour toute enceinte (caisson ou
+    satellite) dont la fiche constructeur indique un plafond sous Fsiso,
+    cas générique couvert par cette fonction pour n'importe quel client."""
     floor_hz = 20.0 if speaker.is_subwoofer else kb.DIRAC_DEFAULT_LOW_FLOOR_HZ
     f_support_low = max(speaker.freq_min_hz, floor_hz)
-    f_support_high = fsiso_hz
+    f_support_high = min(fsiso_hz, speaker.freq_max_hz)
+    clamped_by_hardware = f_support_high < fsiso_hz
+    # Garde-fou : une fiche constructeur mal renseignée ne doit jamais
+    # produire une plage inversée (High < Low).
+    f_support_high = max(f_support_high, f_support_low)
 
     return Recommendation(
         category="Plage de fréquence de support",
         target=speaker.name,
         action=(
             f"F-support Low = {f_support_low:.0f} Hz, F-support High = "
-            f"{f_support_high:.0f} Hz (point de départ ; à redescendre "
-            f"progressivement seulement si {speaker.name} devient "
-            f"localisable individuellement dans le résultat)."
+            f"{f_support_high:.0f} Hz"
+            + (
+                f" (plafonné : {speaker.name} ne reproduit pas au-delà de "
+                f"{speaker.freq_max_hz:.0f} Hz selon sa fiche constructeur)"
+                if clamped_by_hardware
+                else " (point de départ ; à redescendre progressivement "
+                f"seulement si {speaker.name} devient localisable "
+                "individuellement dans le résultat)"
+            )
+            + "."
         ),
         evidence=EvidenceLevel.MARANTZ_DIRAC_OFFICIEL,
         freq_range_hz=(round(f_support_low, 1), round(f_support_high, 1)),
@@ -676,10 +768,15 @@ def calculate_support_frequency_range(
             f"({floor_hz:.0f} Hz pour "
             f"{'un caisson' if speaker.is_subwoofer else 'une enceinte non-caisson'}"
             f"). F-support High part de Fsiso ({fsiso_hz:.0f} Hz, valeur par "
-            f"défaut officielle ou personnalisée si réglée) — plage légale "
-            f"F-support Low à Fsiso."
+            f"défaut officielle ou personnalisée si réglée) mais ne dépasse "
+            f"jamais la limite haute déclarée par le constructeur "
+            f"({speaker.freq_max_hz:.0f} Hz) — demander à Dirac d'appliquer "
+            f"une correction de support au-delà de ce que l'enceinte peut "
+            f"reproduire n'aurait aucun sens acoustique. Plage légale "
+            f"F-support Low à Fsiso, ici réduite par la fiche constructeur."
         ),
     )
+
 
 
 def calculate_room_mode_control_points(
@@ -955,6 +1052,20 @@ def run_diagnostic(
             report.warnings.append(
                 f"Groupage déclaré '{support_name}' -> '{main_name}' ignoré : "
                 f"mesure introuvable pour l'un des deux noms."
+            )
+            continue
+        if not _is_valid_support_donor(support_m.speaker):
+            # Pertinence réelle, pas seulement un indice qualitatif :
+            # calculer un niveau précis pour un donneur physiquement
+            # incapable de descendre sous 150 Hz serait une valeur sans
+            # sens acoustique (définition officielle Dirac, voir
+            # _is_valid_support_donor). On avertit au lieu de calculer.
+            report.warnings.append(
+                f"Groupage déclaré '{support_name}' -> '{main_name}' ignoré "
+                f"pour le calcul précis : {support_name} n'est pas une "
+                f"enceinte de support valide (plancher déclaré "
+                f"{support_m.speaker.freq_min_hz:.0f} Hz > "
+                f"{kb.ART_UPPER_BOUND_HZ:.0f} Hz, seuil officiel Dirac)."
             )
             continue
         report.recommendations.append(

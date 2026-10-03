@@ -233,6 +233,66 @@ class TestRecommendSupportPairings(unittest.TestCase):
         self.assertNotIn("essayez", decisive[0].action.lower())
         self.assertNotIn("si besoin", decisive[0].action.lower())
 
+    def test_cross_terms_budget_warning_present_when_subwoofer_exists(self) -> None:
+        """Contrainte matérielle réelle (budget de calcul DSP limité,
+        knowledge_base.ART_CROSS_TERMS_COMPUTATIONAL_LIMIT) : le rapport
+        doit toujours rappeler explicitement de ne pas cumuler plusieurs
+        sources de support par enceinte, remarque explicite de Steve
+        (03/10) : 'il ne faut pas faire saturer le processeur'."""
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=45),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        recs = recommend_support_pairings(speakers)
+        budget_recs = [
+            r for r in recs
+            if r.category == "Limite de calcul du processeur (cross terms)"
+        ]
+        self.assertEqual(len(budget_recs), 1)
+
+    def test_narrow_band_alternative_donor_is_excluded_not_recommended(self) -> None:
+        """Une enceinte à bande passante trop étroite (plancher déclaré
+        > 150 Hz) ne peut PHYSIQUEMENT pas servir de support, même en
+        'configuration alternative' — définition officielle Dirac citée
+        dans ART_CROSS_TERMS_COMPUTATIONAL_LIMIT. Remarque explicite de
+        Steve (03/10) : 'toutes les enceintes ne peuvent pas aider tout
+        le monde, il faut que ça soit pertinent'."""
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=200),
+            Speaker("Façade Droite", Role.FRONT_RIGHT, freq_min_hz=200),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        recs = recommend_support_pairings(speakers)
+        alternatives = [
+            r for r in recs
+            if r.category == "Groupage de support — configuration alternative existante"
+        ]
+        excluded = [
+            r for r in recs
+            if r.category == "Groupage de support — option écartée (non pertinente)"
+        ]
+        self.assertEqual(alternatives, [])
+        self.assertEqual(len(excluded), 2)
+        self.assertIn("150", excluded[0].action)
+
+    def test_wide_band_alternative_donor_still_recommended(self) -> None:
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=45),
+            Speaker("Façade Droite", Role.FRONT_RIGHT, freq_min_hz=45),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        recs = recommend_support_pairings(speakers)
+        alternatives = [
+            r for r in recs
+            if r.category == "Groupage de support — configuration alternative existante"
+        ]
+        excluded = [
+            r for r in recs
+            if r.category == "Groupage de support — option écartée (non pertinente)"
+        ]
+        self.assertEqual(len(alternatives), 2)
+        self.assertEqual(excluded, [])
+
 
 class TestRecommendTargetCurves(unittest.TestCase):
     """Le choix entre les options de courbe cible façade/caisson relève
@@ -358,6 +418,22 @@ class TestCalculateSupportFrequencyRange(unittest.TestCase):
         speaker = Speaker("Surround", Role.SURROUND_LEFT, freq_min_hz=53.0)
         rec = calculate_support_frequency_range(speaker, fsiso_hz=100.0)
         self.assertEqual(rec.freq_range_hz, (53.0, 100.0))
+
+    def test_subwoofer_high_bound_clamped_by_manufacturer_freq_max(self) -> None:
+        """Cas réel qui a motivé ce correctif (03/10) : les caissons SVS
+        3000 Micro R|Evolution de Steve ont freq_max_hz=120 Hz — F-support
+        High ne doit JAMAIS dépasser cette limite constructeur, même si
+        Fsiso par défaut est 150 Hz. Remarque explicite de Steve : 'il
+        faut respecter les caractéristiques des hauts-parleurs'."""
+        speaker = Speaker("Caisson", Role.LFE, freq_min_hz=20.0, freq_max_hz=120.0)
+        rec = calculate_support_frequency_range(speaker)
+        self.assertEqual(rec.freq_range_hz, (20.0, 120.0))
+        self.assertIn("120", rec.action)
+
+    def test_non_subwoofer_high_bound_unaffected_by_default_wide_freq_max(self) -> None:
+        speaker = Speaker("Surround", Role.SURROUND_LEFT, freq_min_hz=53.0)
+        rec = calculate_support_frequency_range(speaker)
+        self.assertEqual(rec.freq_range_hz, (53.0, 150.0))
 
 
 class TestCalculateRoomModeControlPoints(unittest.TestCase):
@@ -558,6 +634,33 @@ class TestRunDiagnosticSupportsCustomGrouping(unittest.TestCase):
             support_group_assignments=[("Nom Inexistant", "Surround Right", 80.0)],
         )
         self.assertTrue(any("introuvable" in w for w in report.warnings))
+
+    def test_declared_donor_with_insufficient_bandwidth_is_rejected_with_warning(
+        self,
+    ) -> None:
+        """Un groupage déclaré par le client n'est pas automatiquement
+        valide : si l'enceinte support ne descend pas sous 150 Hz
+        (définition officielle Dirac), le calcul précis doit être
+        refusé explicitement plutôt que de produire une valeur sans
+        sens acoustique — remarque de Steve (03/10) : 'toutes les
+        enceintes ne peuvent pas aider tout le monde'."""
+        speakers = [
+            Speaker("Surround Right", Role.SURROUND_RIGHT, freq_min_hz=53),
+            Speaker("Height Front Right", Role.HEIGHT_FRONT_RIGHT, freq_min_hz=200),
+        ]
+        measurements = [
+            SpeakerMeasurement(speakers[0], [MeasurementPoint(80, 0.0)]),
+            SpeakerMeasurement(speakers[1], [MeasurementPoint(80, -7.0)]),
+        ]
+        report = run_diagnostic(
+            speakers=speakers,
+            measurements=measurements,
+            service_level=ServiceLevel.ESSENTIEL,
+            support_group_assignments=[("Height Front Right", "Surround Right", 80.0)],
+        )
+        precise_recs = [r for r in report.recommendations if r.precise_value_db is not None]
+        self.assertEqual(precise_recs, [])
+        self.assertTrue(any("enceinte de support valide" in w for w in report.warnings))
 
 
 class TestRunDiagnosticAutoDeducesSupportLevel(unittest.TestCase):
