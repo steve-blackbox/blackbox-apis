@@ -143,7 +143,17 @@ def main() -> None:
         service_level=ServiceLevel.APPROFONDI,
         room=STEVE_ROOM,
         support_level_triggers=[],
-        support_group_assignments=[],
+        # Groupage croisé RÉEL pratiqué par Steve (section 18/22 de la
+        # base de connaissance) : la Surround Back Droite supporte la
+        # Surround Droite, pas la hiérarchie standard. Fréquence de
+        # croisement 80 Hz = valeur d'usine Marantz CINEMA 30 pour toutes
+        # les enceintes hors Front (MANUAL_CROSSOVER_DEFAULT_OTHERS_HZ) ;
+        # à confirmer/ajuster si Steve l'a modifiée manuellement.
+        support_group_assignments=[
+            ("Surround Back Droite (Elipson Prestige Facet II 14LCR)",
+             "Surround Droite (Elipson Prestige Facet II 14LCR)",
+             80.0),
+        ],
     )
     report.warnings.insert(
         0,
