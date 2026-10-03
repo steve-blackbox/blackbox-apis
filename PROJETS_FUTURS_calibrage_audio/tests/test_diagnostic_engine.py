@@ -220,6 +220,17 @@ class TestRecommendTargetCurves(unittest.TestCase):
         sub = self._sub_rec(recs)
         self.assertIn("Options :", sub.action)
 
+    def test_surround_curve_is_a_firm_recommendation_not_a_menu(self) -> None:
+        # Une seule option documentée ici : pas d'ambiguïté de goût à
+        # résoudre, donc pas de "menu" d'un seul élément.
+        speakers = self.speakers + [
+            Speaker("Surround Gauche", Role.SURROUND_LEFT, freq_min_hz=55),
+        ]
+        recs = recommend_target_curves(speakers)
+        surround = next(r for r in recs if r.target == "surround / hauteur")
+        self.assertNotIn("Options :", surround.action)
+        self.assertIn("Surround Cinema Target StormAudio", surround.action)
+
 
 class TestCalculatePreciseSupportLevel(unittest.TestCase):
     """Couvre calculate_precise_support_level_db : le calcul chiffré

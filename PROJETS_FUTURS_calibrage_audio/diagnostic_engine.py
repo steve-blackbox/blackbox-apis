@@ -407,11 +407,16 @@ def recommend_target_curves(
                 )
             )
     if any(s.role in kb.STORM_AUDIO_SUPPORT_HIERARCHY and s.role not in {Role.FRONT_LEFT, Role.FRONT_RIGHT, Role.CENTER, Role.LFE} for s in speakers):
+        # Une seule option documentée ici (pas d'ambiguïté de goût comme
+        # pour la façade/le caisson) : recommandation ferme directement.
         recs.append(
             Recommendation(
                 category="Courbe cible",
                 target="surround / hauteur",
-                action="Options : " + " ; ".join(kb.TARGET_CURVES_BY_ROLE["surround / hauteur"]),
+                action=(
+                    "Appliquer la courbe cible : "
+                    f"{kb.TARGET_CURVES_BY_ROLE['surround / hauteur'][0]}."
+                ),
                 evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
             )
         )
