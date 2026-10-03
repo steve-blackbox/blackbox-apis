@@ -5235,5 +5235,115 @@ Does-dirac-support-bi-amping, et la question sur la phase du
 caisson — toutes lues en texte intégral via agent de recherche dédié
 (03/10, relancé après limite de budget initiale)."""
 
+# ---------------------------------------------------------------------------
+# 48. Fondements techniques approfondis de Bass Control, trouvés dans
+#     le manuel PDF officiel "Bass Control in Dirac Live" (17 pages),
+#     signé directement par Lars-Johan Brännmark (Chief Scientist
+#     Dirac Research, déjà cité comme source dans l'article Audioholics
+#     section antérieure) et Frans Rosencrantz, édité par Mikael Ueno
+#     Andersson — LA source la plus académiquement rigoureuse trouvée
+#     dans toute cette collecte, avec des mesures réelles chiffrées à
+#     l'appui (pas seulement des règles qualitatives).
+# ---------------------------------------------------------------------------
+BASS_CONTROL_THREE_OBJECTIVES_AND_METHOD_BRANNMARK = (
+    "Définition technique précise des 3 objectifs de Bass Control, "
+    "écrite par le Chief Scientist de Dirac Research : 'The fine-"
+    "tuning of the loudspeaker channels... strives to solve three "
+    "different but related problems: 1. Reducing the SPATIAL "
+    "VARIABILITY of the frequency responses in the bass region, in "
+    "cases where the system contains multiple sub-woofers. 2. Reducing "
+    "OUT-OF-PHASE behavior between the channels of left/right "
+    "loudspeaker pairs, in a frequency band around the crossover "
+    "frequency. 3. Reducing OUT-OF-PHASE behavior between the "
+    "sub-woofers and the high-range channels, in a frequency band "
+    "around the crossover frequency.' Méthode employée, explicitement "
+    "nommée : 'The design objectives are addressed primarily by "
+    "ADJUSTING PHASE RELATIONSHIPS between the loudspeakers, using "
+    "LOW-ORDER ALL-PASS FILTERS and a GENETIC OPTIMIZATION ALGORITHM' "
+    "(confirme et source précisément la découverte déjà documentée "
+    "section 45-46, ART_MAGNITUDE_ONLY_MIC_CALIBRATION_AND_GENETIC_"
+    "ALGORITHM). **Limite explicite reconnue** : 'What is NOT tuned "
+    "automatically in this solution is the CROSSOVER FREQUENCY "
+    "ITSELF, which is assumed to be either fixed or selected among a "
+    "set of fixed values by the user' — Bass Control optimise la "
+    "phase/gain/délai à un crossover DONNÉ, mais ne choisit jamais ce "
+    "crossover lui-même, toujours laissé à l'utilisateur."
+)
+"""[Document technique officiel Dirac Research, signé Chief Scientist]
+— 'Bass Control in Dirac Live', PDF 17 pages, section 2 'Technical
+Background to Dirac Bass Control', 'The Bass Management Problem'.
+Lars-Johan Brännmark, Frans Rosencrantz, édité par Mikael Ueno
+Andersson, révision du 7 avril 2020."""
+
+BASS_CONTROL_OFFICIAL_20_80HZ_RANGE_AND_SPEAKER_CLASSIFICATION_RULES = (
+    "Plage de fréquence OFFICIELLE de Bass Control (classique, PAS "
+    "ART) — différente et plus étroite que les 20-150Hz d'ART déjà "
+    "documentés : 'The frequencies referred to here are typically in "
+    "a range from **20 Hz up to about 80 Hz**.' Justification "
+    "scientifique donnée, cohérente avec nos propres recherches "
+    "peer-reviewed (section 42) : 'sound in this frequency range "
+    "provides very little or no directional information to human "
+    "listeners, especially in spaces where the ROOM MODES DOMINATE "
+    "OVER THE DIRECT SOUND.' **3 règles de classification officielles "
+    "des haut-parleurs** pour Bass Control : (1) **'Large'** — "
+    "capable de reproduire jusqu'à 20Hz, EXCLU de tout traitement Bass "
+    "Control, reçoit uniquement son propre signal plein spectre ('This "
+    "can be done... by selecting a crossover frequency of 20 Hz for "
+    "that specific speaker') ; (2) **'Small'** — incapable de graves, "
+    "signal scindé par une paire de filtres crossover HP/LP, "
+    "branches HF→enceinte et LF→caisson(s) ; (3) **canal LFE** — "
+    "'should be routed DIRECTLY to the sub-woofers WITHOUT ANY "
+    "CROSSOVER PROCESSING' (aucun filtrage crossover appliqué, "
+    "contrairement aux canaux 'Small'). **Type de filtre crossover "
+    "précis** : 'digital FOURTH-ORDER LINKWITZ-RILEY filters with "
+    "selectable cutoff frequency' (pente de 24 dB/octave), le choix "
+    "Linkwitz-Riley n'étant 'pas obligatoire pour que le système "
+    "fonctionne comme prévu' — ce qui compte est la complémentarité en "
+    "magnitude des filtres HP/LP, atteignable aussi avec des "
+    "crossovers FIR à phase linéaire."
+)
+"""[Document technique officiel Dirac Research] — même manuel PDF,
+sections 'Why Dirac Live Bass Control?', 'Limitations', 'Crossover
+filters'. Précise/complète la plage 20-150Hz d'ART déjà documentée
+(section 47) avec la plage plus étroite 20-80Hz spécifique à Bass
+Control classique (sans la couche ART/MIMO)."""
+
+BASS_CONTROL_REAL_MEASURED_SPATIAL_VARIANCE_20_TO_30DB = (
+    "DONNÉE EXPÉRIMENTALE RÉELLE la plus précieuse de toute cette "
+    "collecte — pas une règle théorique mais une MESURE CHIFFRÉE "
+    "publiée par Dirac Research sur un vrai caisson, à 21 positions "
+    "dans une pièce réelle : 'It is clear from the figure that "
+    "although the average frequency response... is smooth and well "
+    "behaved, the response at EACH MEASUREMENT POSITION is very "
+    "irregular, and the VARIATIONS IN LEVEL ACROSS POSITIONS are on "
+    "the order of **20–30 dB** at some frequencies.' Avec 3 caissons "
+    "ajoutés au même signal (sans fine-tuning Bass Control) : 'the "
+    "spatial variations are substantially reduced for most "
+    "frequencies, but SOME VARIABILITY STILL REMAINS around **25 Hz "
+    "and 60 Hz**... the end result may not be fully predictable' — "
+    "confirme qu'ajouter des caissons AIDE mais ne résout PAS "
+    "entièrement le problème sans traitement actif. Méthode de "
+    "fine-tuning Bass Control appliquée ENSUITE : 'a GAIN FACTOR and "
+    "TWO ALL-PASS BI-QUAD FILTERS have been applied to EACH "
+    "sub-woofer', optimisés selon 'a criterion that MINIMIZES THE "
+    "SPATIAL VARIATION of the frequency response BETWEEN 30 AND "
+    "100 Hz.' Résultat illustré avec un exemple concret : un 'null "
+    "around 40 Hz... result of destructive interference between the "
+    "speakers' a été 'suppressed' après application des filtres "
+    "all-pass adaptés à chaque caisson, améliorant l'accord de phase "
+    "entre haut-parleurs. **Portée pour notre algorithme** : ce "
+    "chiffre (20-30dB de variance spatiale avec UN SEUL caisson) "
+    "donne un ORDRE DE GRANDEUR scientifiquement sourcé pour "
+    "comprendre l'ampleur réelle du problème que Bass Control/ART "
+    "résout, utile pour contextualiser toute mesure de Steve montrant "
+    "une forte variance entre positions."
+)
+"""[Document technique officiel Dirac Research, mesures réelles] —
+même manuel PDF, section 'Handling of multiple sub-woofers', Figures
+3-7 (mesures à 21 positions dans une pièce réelle). Donnée
+expérimentale, pas théorique — la plus rigoureuse trouvée sur
+l'ampleur quantifiée du problème de variance spatiale en basse
+fréquence."""
+
 
 
