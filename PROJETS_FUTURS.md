@@ -3589,3 +3589,44 @@ articles lus, concurrents repérés, retours clients...)_
   source libre d'accès est trouvée, Toole & Olive 1988 (JAES, probable
   paywall), "Optimal modal spacing and density for critical listening".
 
+- (03/10, suite 48) **📸 Premières VRAIES valeurs de courbe cible par
+  groupe, lues sur 8 captures d'écran Dirac Live réelles de Steve**
+
+  Steve a partagé 8 captures de l'éditeur de cible Dirac Live (fichier
+  "TOP CALIB BASE", mesures BRUTES non corrigées confirmées), une pour
+  chaque groupe de son système, avec l'option "Propagation" activée en
+  plus du spectre classique. Première fois que des valeurs réelles de
+  courbe cible (pas une mesure brute ni un fichier binaire) sont
+  directement lisibles pour chaque groupe.
+
+  **Tableau des valeurs lues** (boost bas-fréquence / atténuation haute
+  fréquence, croisement) : Façades +8,8dB/-3,0dB (150Hz) ; Centre
+  +6,8dB/-2,0dB (150Hz) ; Surround +2,0dB/0,0dB (150Hz) ; Surround Back
+  +2,8dB/-2,8dB (150Hz) ; Caissons +2,3dB/-3,0dB mais croisement à
+  **267Hz** (pas 150Hz).
+
+  **Découverte importante** : le boost nécessaire ne dépend PAS
+  seulement du modèle de haut-parleur — Surround et Surround Back
+  utilisent le MÊME modèle (Elipson 14LCR) mais ont des boosts
+  différents (+2,0 vs +2,8dB), et les Façades (meilleure extension
+  native, 35Hz) nécessitent PLUS de boost que le Centre (43Hz,
+  extension moins bonne). Preuve concrète que le room gain dépend de
+  la POSITION dans la pièce, pas seulement du haut-parleur (cohérent
+  avec section 39-40).
+
+  **Confirmation visuelle** de la structure en 2 parties de la courbe
+  cible Bass Control (section 26) : croisement commun à 150Hz pour les
+  7 groupes satellites, mais repoussé à 267Hz pour les caissons, avec
+  une "Plage détectée" visible uniquement sur ce groupe entre 150 et
+  267Hz.
+
+  **Hypothèse formulée** (niveau de confiance modéré, pas confirmée
+  officiellement) sur l'option "Propagation" : pourrait visualiser la
+  variance du niveau mesuré à travers les différentes positions de
+  micro plutôt qu'une évolution temporelle — cohérent avec le concept
+  de fréquence de Schroeder (section 39).
+
+  3 constantes ajoutées en section 43 de `knowledge_base.py`. 42 tests
+  unitaires + `example_run.py` + `exemple_systeme_steve.py` repassés
+  avec succès : aucune régression (documentation pure).
+

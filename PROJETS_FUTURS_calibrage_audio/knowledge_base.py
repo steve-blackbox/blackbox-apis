@@ -4351,3 +4351,136 @@ eprint/17980/) — texte intégral du PDF non disponible en libre accès
 sur ce dépôt (contrairement aux 2 études précédentes du même auteur),
 seul l'abstract a été vérifié directement, pas le corps de l'article."""
 
+# ---------------------------------------------------------------------------
+# 43. Premières VRAIES valeurs de courbe cible par groupe du système de
+#     Steve, lues directement sur 8 captures d'écran de l'éditeur de
+#     cible Dirac Live (TOP CALIB BASE, étape "Conception du filtre >
+#     Définir la cible", 03/10 — Steve a ajouté l'option "Propagation"
+#     en plus du spectre, et confirme explicitement : mesures BRUTES,
+#     case "Corrigé" PAS cochée). Première fois que des valeurs réelles
+#     de courbe cible (pas une capture de courbe mesurée brute comme
+#     les sections 18/20, ni un fichier .liveproject binaire comme les
+#     sections 36-37) sont visibles et lisibles directement pour CHAQUE
+#     groupe du système de Steve.
+# ---------------------------------------------------------------------------
+STEVE_REAL_TARGET_CURVE_VALUES_PER_GROUP = (
+    "Valeurs lues directement sur les captures d'écran (axe dB affiché "
+    "par Dirac aux 2 extrémités de la ligne de cible, poignée basse "
+    "fréquence à gauche vers 20 Hz, poignée haute fréquence à droite "
+    "vers le point de croisement du groupe) — [Capture d'écran "
+    "directe, lecture certaine] : "
+    "Groupe 1 Front Left : +8,8 dB / -3,0 dB (croisement 150 Hz). "
+    "Groupe 2 Center : +6,8 dB / -2,0 dB (croisement 150 Hz). "
+    "Groupe 3 Front Right : +8,8 dB / -3,0 dB (croisement 150 Hz, "
+    "IDENTIQUE à Front Left — cohérent, façades symétriques). "
+    "Groupe 4 Surround Right : +2,0 dB / 0,0 dB (croisement 150 Hz). "
+    "Groupe 5 Surround Back Right : +2,8 dB / -2,8 dB (croisement "
+    "150 Hz). Groupe 6 Surround Back Left : +2,8 dB / -2,8 dB "
+    "(IDENTIQUE à Surround Back Right). Groupe 7 Surround Left : "
+    "+2,0 dB / 0,0 dB (IDENTIQUE à Surround Right). Groupe 8 "
+    "Subwoofer 1/LFE + Subwoofer 2 (sélectionnés ensemble) : +2,3 dB "
+    "/ -3,0 dB, mais avec un croisement DIFFÉRENT et plus élevé : "
+    "**267 Hz**, pas 150 Hz. **Observation de cohérence interne "
+    "importante** : chaque paire gauche/droite du même rôle affiche "
+    "des valeurs PARFAITEMENT IDENTIQUES (Front L/R, Surround L/R, "
+    "Surround Back L/R) — confirme que Dirac applique bien une cible "
+    "symétrique par défaut pour les paires lorsque rien ne la force à "
+    "diverger, cohérent avec l'absence de groupage croisé déclaré par "
+    "Steve pour ces paires (contrairement à son groupage croisé réel "
+    "Surround Back Droite -> Surround Droite documenté section 18/22, "
+    "qui ne modifie PAS ici la valeur de cible elle-même mais "
+    "uniquement le niveau de support — 2 mécanismes distincts)."
+)
+"""[Capture d'écran directe de l'éditeur de cible Dirac Live, lecture
+numérique certaine] — 8 captures fournies par Steve (03/10), fichier
+TOP CALIB BASE, mesures brutes non corrigées (case 'Corrigé' non
+cochée, confirmé explicitement par Steve)."""
+
+TARGET_BOOST_VARIES_BY_POSITION_NOT_JUST_BY_SPEAKER_MODEL = (
+    "Analyse croisant les valeurs ci-dessus avec les fiches "
+    "constructeur déjà sourcées (section 15) : le boost bas-fréquence "
+    "nécessaire au groupe NE DÉPEND PAS uniquement du modèle de "
+    "haut-parleur, contrairement à une intuition simple. Preuve "
+    "directe : Surround Right/Left et Surround Back Right/Left "
+    "utilisent EXACTEMENT le même modèle (Elipson Prestige Facet II "
+    "14LCR, freq_min=53 Hz confirmé officiellement) — pourtant leur "
+    "boost cible diffère nettement : +2,0 dB pour les Surround, "
+    "+2,8 dB pour les Surround Back. De même, les Façades (Elipson "
+    "Legacy 3220, freq_min=35 Hz — la MEILLEURE extension native du "
+    "système) nécessitent le PLUS GROS boost observé (+8,8 dB), "
+    "largement supérieur à celui du Centre (+6,8 dB, Elipson Prestige "
+    "Facet II 14C, freq_min=43 Hz, moins bonne extension native que "
+    "les façades). **Ceci est cohérent avec, et constitue une preuve "
+    "concrète supplémentaire de**, le concept de room gain "
+    "dépendant de la position déjà documenté section 39-40 "
+    "(pressure-field chamber, Pedersen & Møller 2013) : le boost "
+    "nécessaire reflète la combinaison du manque natif du "
+    "haut-parleur ET du renforcement/affaiblissement local de la "
+    "pièce à CET endroit précis — pas le haut-parleur seul. Une "
+    "façade mieux placée relativement aux murs/coins mais avec moins "
+    "de renfort de pièce à sa position nécessitera plus de boost "
+    "électronique qu'une enceinte moins capable nativement mais mieux "
+    "placée pour bénéficier du renforcement naturel."
+)
+"""[Analyse croisant capture d'écran directe + fiches constructeur déjà
+sourcées section 15] — Elipson Legacy 3220, Prestige Facet II 14C et
+14LCR, toutes déjà confirmées officiellement (elipson.com)."""
+
+SUBWOOFER_GROUP_HAS_HIGHER_CROSSOVER_AND_DETECTED_PROBLEM_RANGE = (
+    "Confirmation VISUELLE DIRECTE de la structure en 2 parties de la "
+    "courbe cible Bass Control déjà théorisée section 26 (partie basse "
+    "fréquence commune à tout le système, partie haute propre à "
+    "chaque groupe) : sur les 7 groupes d'enceintes satellites, la "
+    "poignée haute fréquence de la cible se situe au Fsiso commun de "
+    "150 Hz (ligne pointillée blanche verticale visible sur TOUTES "
+    "les captures) — SAUF pour le Groupe 8 (caissons), dont la "
+    "poignée haute fréquence est repoussée à **267 Hz**, "
+    "visuellement marqué par une 2e ligne verticale verte distincte. "
+    "Une bande verte hachurée ('Plage détectée', case cochée dans la "
+    "légende des captures) couvre exactement l'intervalle 150-267 Hz "
+    "UNIQUEMENT sur le groupe caissons — absente sur les 7 autres "
+    "groupes observés. **Interprétation prudente** (pas une "
+    "confirmation officielle Dirac trouvée dans la documentation "
+    "accessible) : cette plage détectée correspond probablement à une "
+    "zone de transition/recouvrement automatiquement identifiée par "
+    "Dirac entre la gestion des caissons et celle des satellites, "
+    "justifiant un croisement spécifique plus élevé pour ce groupe. "
+    "À vérifier en priorité : survoler l'icône d'aide ou l'option "
+    "elle-même dans Dirac Live pour une confirmation textuelle "
+    "officielle si Steve souhaite lever cette incertitude."
+)
+"""[Capture d'écran directe, interprétation partiellement prudente sur
+le sens exact de 'Plage détectée' — fonctionnalité non documentée dans
+les sources Dirac déjà consultées (helpdesk.dirac.com)] — à confirmer
+si possible par Steve directement dans l'interface (tooltip)."""
+
+PROPAGATION_DISPLAY_OPTION_HYPOTHESIS = (
+    "Hypothèse sur la nouvelle option d'affichage 'Propagation' "
+    "activée par Steve (en plus du 'Spectre' habituel) sur ces 8 "
+    "captures : la zone épaisse et très dense/chaotique visible sous "
+    "la courbe lissée, en dessous de 150-200 Hz, qui devient ensuite "
+    "beaucoup plus RÉGULIÈRE et dense-mais-uniforme au-dessus de "
+    "1 kHz, est VISUELLEMENT cohérente avec une visualisation de la "
+    "VARIANCE DU NIVEAU MESURÉ À TRAVERS LES DIFFÉRENTES POSITIONS DE "
+    "MICRO (9 à 13 positions, cohérent avec la structure déjà "
+    "documentée dans liveproject_reader.py) plutôt qu'une évolution "
+    "dans le temps à une position fixe. Cette lecture est cohérente "
+    "avec le concept de FRÉQUENCE DE SCHROEDER déjà documenté section "
+    "39 (Cecchi et al. 2018) : en dessous de cette fréquence de "
+    "transition, les modes créent une forte irrégularité spatiale "
+    "(positions très différentes = niveaux très différents), tandis "
+    "qu'au-dessus, le champ devient statistiquement diffus et plus "
+    "homogène d'une position à l'autre. ⚠️ **Niveau de confiance "
+    "modéré, PAS une certitude** : aucune confirmation officielle "
+    "trouvée dans la documentation Dirac accessible (helpdesk.dirac."
+    "com) pour le terme exact 'Propagation' tel qu'affiché dans "
+    "l'éditeur de cible. Reste une hypothèse plausible et cohérente "
+    "avec le reste de nos connaissances, pas un fait confirmé."
+)
+"""[Interprétation visuelle prudente de captures d'écran directes,
+NON confirmée par une source Dirac officielle trouvée] — cohérente
+avec SCHROEDER_FREQUENCY_MODAL_VS_DIFFUSE_BOUNDARY (section 39) et la
+structure 13 positions × 9 canaux déjà documentée dans
+liveproject_reader.py. À traiter comme hypothèse, pas un fait établi,
+tant qu'aucune confirmation officielle n'a été trouvée."""
+
