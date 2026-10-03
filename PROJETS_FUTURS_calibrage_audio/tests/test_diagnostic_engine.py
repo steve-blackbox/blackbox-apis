@@ -35,6 +35,7 @@ from diagnostic_engine import (
     diagnose_anomaly,
     evaluate_subwoofer_pre_gain_headroom_strategy,
     recommend_support_groups,
+    recommend_target_curves,
     run_diagnostic,
 )
 from models import (
@@ -165,6 +166,59 @@ class TestRecommendSupportGroups(unittest.TestCase):
         ]
         recs = recommend_support_groups(speakers)
         self.assertTrue(len(recs) >= 1)
+
+
+class TestRecommendTargetCurves(unittest.TestCase):
+    """Le choix entre les options de courbe cible façade/caisson relève
+    du goût du client, pas d'un calcul physique (voir docstring de
+    recommend_target_curves) : sans préférence déclarée, le moteur doit
+    rester honnête et lister les options plutôt que d'en inventer une ;
+    avec une préférence déclarée, il doit trancher fermement."""
+
+    def setUp(self) -> None:
+        self.speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=45),
+            Speaker("Façade Droite", Role.FRONT_RIGHT, freq_min_hz=45),
+            Speaker("Centrale", Role.CENTER, freq_min_hz=60),
+            Speaker("Caisson 1", Role.LFE, freq_min_hz=18, freq_max_hz=120),
+        ]
+
+    def _facade_rec(self, recs):
+        return next(r for r in recs if r.target == "façade (gauche/droite/centre)")
+
+    def _sub_rec(self, recs):
+        return next(r for r in recs if r.target == "caisson(s) / LFE")
+
+    def test_no_preference_lists_options_for_facade(self) -> None:
+        recs = recommend_target_curves(self.speakers)
+        facade = self._facade_rec(recs)
+        self.assertIn("Options :", facade.action)
+        self.assertIn("préférence", facade.detail.lower())
+
+    def test_harman_preference_resolves_facade_to_a_single_choice(self) -> None:
+        recs = recommend_target_curves(self.speakers, target_curve_preference="harman")
+        facade = self._facade_rec(recs)
+        self.assertNotIn("Options :", facade.action)
+        self.assertIn("Harman", facade.action)
+
+    def test_cinema_dedie_preference_resolves_facade_to_a_single_choice(self) -> None:
+        recs = recommend_target_curves(self.speakers, target_curve_preference="cinema_dedie")
+        facade = self._facade_rec(recs)
+        self.assertNotIn("Options :", facade.action)
+        self.assertIn("Cinema Target", facade.action)
+
+    def test_cinema_dedie_preference_also_resolves_subwoofer_curve(self) -> None:
+        recs = recommend_target_curves(self.speakers, target_curve_preference="cinema_dedie")
+        sub = self._sub_rec(recs)
+        self.assertNotIn("Options :", sub.action)
+        self.assertIn("Cinema Target", sub.action)
+
+    def test_harman_preference_leaves_subwoofer_impact_choice_open(self) -> None:
+        # Le caisson garde 2 options (6 ou 8 dB) : aucune règle sourcée
+        # ne permet de trancher ce dernier point à la place du client.
+        recs = recommend_target_curves(self.speakers, target_curve_preference="harman")
+        sub = self._sub_rec(recs)
+        self.assertIn("Options :", sub.action)
 
 
 class TestCalculatePreciseSupportLevel(unittest.TestCase):

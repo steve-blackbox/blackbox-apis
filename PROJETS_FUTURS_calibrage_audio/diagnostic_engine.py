@@ -311,28 +311,101 @@ def recommend_frequency_ranges(speakers: list[Speaker]) -> list[Recommendation]:
     return recs
 
 
-def recommend_target_curves(speakers: list[Speaker]) -> list[Recommendation]:
+def recommend_target_curves(
+    speakers: list[Speaker],
+    target_curve_preference: str | None = None,
+) -> list[Recommendation]:
+    """`target_curve_preference` : préférence du CLIENT recueillie en
+    amont ('harman' pour un usage mixte musique/cinéma, 'cinema_dedie'
+    pour une salle dédiée au cinéma) — jamais déduite ni inventée par le
+    moteur. Le choix entre les options de façade/caisson déjà
+    documentées (kb.TARGET_CURVES_BY_ROLE) relève du GOÛT du client, pas
+    d'un calcul physique : confirmé par le cas réel de la 'courbe
+    maison.targetcurve' de Steve (voir
+    kb.UMIK1_CALIBRATION_VS_CUSTOM_TARGET_CURVE_COMPARISON) — un choix
+    de design volontaire, pas un artefact de mesure. Sans préférence
+    connue, le moteur reste honnête et liste les options plutôt que d'en
+    choisir une arbitrairement."""
     recs: list[Recommendation] = []
     has_front = any(s.role in {Role.FRONT_LEFT, Role.FRONT_RIGHT, Role.CENTER} for s in speakers)
     if has_front:
-        recs.append(
-            Recommendation(
-                category="Courbe cible",
-                target="façade (gauche/droite/centre)",
-                action="Options : " + " ; ".join(kb.TARGET_CURVES_BY_ROLE["façade (G/D/centre)"]),
-                evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
-                detail=kb.TARGET_CURVE_COHERENCE_RULE,
+        facade_options = kb.TARGET_CURVES_BY_ROLE["façade (G/D/centre)"]
+        if target_curve_preference == "harman":
+            chosen = next(o for o in facade_options if "Harman" in o)
+            recs.append(
+                Recommendation(
+                    category="Courbe cible",
+                    target="façade (gauche/droite/centre)",
+                    action=f"Appliquer la courbe cible : {chosen}.",
+                    evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+                    detail=(
+                        "Préférence client déclarée : usage mixte musique/cinéma. "
+                        + kb.TARGET_CURVE_COHERENCE_RULE
+                    ),
+                )
             )
-        )
+        elif target_curve_preference == "cinema_dedie":
+            chosen = next(o for o in facade_options if "Cinema Target" in o)
+            recs.append(
+                Recommendation(
+                    category="Courbe cible",
+                    target="façade (gauche/droite/centre)",
+                    action=f"Appliquer la courbe cible : {chosen}.",
+                    evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+                    detail=(
+                        "Préférence client déclarée : salle dédiée au cinéma. "
+                        + kb.TARGET_CURVE_COHERENCE_RULE
+                    ),
+                )
+            )
+        else:
+            recs.append(
+                Recommendation(
+                    category="Courbe cible",
+                    target="façade (gauche/droite/centre)",
+                    action="Options : " + " ; ".join(facade_options),
+                    evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+                    detail=(
+                        kb.TARGET_CURVE_COHERENCE_RULE
+                        + " Ce choix dépend du goût du client, pas d'un calcul "
+                        "physique (cas réel déjà documenté : une courbe cible "
+                        "personnalisée peut être un choix de design volontaire) "
+                        "— demander explicitement sa préférence (cinéma dédié "
+                        "ou usage mixte musique/cinéma) avant de trancher."
+                    ),
+                )
+            )
     if any(s.is_subwoofer for s in speakers):
-        recs.append(
-            Recommendation(
-                category="Courbe cible",
-                target="caisson(s) / LFE",
-                action="Options : " + " ; ".join(kb.TARGET_CURVES_BY_ROLE["caisson(s) / LFE"]),
-                evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+        sub_options = kb.TARGET_CURVES_BY_ROLE["caisson(s) / LFE"]
+        if target_curve_preference == "cinema_dedie":
+            chosen = next(o for o in sub_options if "Cinema Target" in o)
+            recs.append(
+                Recommendation(
+                    category="Courbe cible",
+                    target="caisson(s) / LFE",
+                    action=f"Appliquer la courbe cible : {chosen}.",
+                    evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+                    detail="Préférence client déclarée : salle dédiée au cinéma.",
+                )
             )
-        )
+        else:
+            detail = ""
+            if target_curve_preference == "harman":
+                detail = (
+                    "Préférence client déclarée : usage mixte musique/cinéma — "
+                    "reste à préciser 6 ou 8 dB selon l'impact recherché, "
+                    "aucune règle sourcée ne permet de trancher ce dernier "
+                    "point à la place du client."
+                )
+            recs.append(
+                Recommendation(
+                    category="Courbe cible",
+                    target="caisson(s) / LFE",
+                    action="Options : " + " ; ".join(sub_options),
+                    evidence=EvidenceLevel.PRINCIPE_ACOUSTIQUE,
+                    detail=detail,
+                )
+            )
     if any(s.role in kb.STORM_AUDIO_SUPPORT_HIERARCHY and s.role not in {Role.FRONT_LEFT, Role.FRONT_RIGHT, Role.CENTER, Role.LFE} for s in speakers):
         recs.append(
             Recommendation(
@@ -697,6 +770,7 @@ def run_diagnostic(
     support_level_triggers: list[str] | None = None,
     support_group_assignments: list[tuple[str, str, float]] | None = None,
     fsiso_hz: float = kb.DEFAULT_FSISO_HZ,
+    target_curve_preference: str | None = None,
 ) -> DiagnosticReport:
     """`support_group_assignments` est volontairement une liste libre de
     triplets (nom enceinte support, nom enceinte principale, fréquence de
@@ -705,7 +779,10 @@ def run_diagnostic(
     par le client, standard OU personnalisé/croisé (ex. Surround Back
     Right supportant Surround Right, comme pratiqué par Steve), condition
     nécessaire pour que l'algorithme s'adapte à n'importe quelle
-    configuration cliente plutôt qu'à un seul cas particulier."""
+    configuration cliente plutôt qu'à un seul cas particulier.
+    `target_curve_preference` : voir recommend_target_curves — préférence
+    du client ('harman' ou 'cinema_dedie'), à recueillir explicitement
+    pour que le rapport tranche au lieu de lister un menu d'options."""
     report = DiagnosticReport(service_level=service_level)
 
     if service_level == ServiceLevel.ESSENTIEL and room is not None:
@@ -728,7 +805,9 @@ def run_diagnostic(
 
     report.recommendations.extend(recommend_support_groups(speakers))
     report.recommendations.extend(recommend_frequency_ranges(speakers))
-    report.recommendations.extend(recommend_target_curves(speakers))
+    report.recommendations.extend(
+        recommend_target_curves(speakers, target_curve_preference)
+    )
     report.recommendations.append(
         recommend_support_level(support_level_triggers or [])
     )
@@ -774,7 +853,8 @@ def run_diagnostic(
                     "actif, la partie basse fréquence de la courbe cible est "
                     "COMMUNE à tout le système — un point sous le crossover "
                     "du groupe affecte tous les groupes, pas seulement "
-                    "l'enceinte visée ici. " + " | ".join(p.reason for p in control_points)
+                    "l'enceinte visée ici. Justification de chaque point : "
+                    "voir 'Pourquoi' ci-dessous."
                 ),
             )
         )

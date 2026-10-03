@@ -104,6 +104,25 @@ def main() -> None:
     )
     print(generate_report(report_approfondi, client_name="Cas de démonstration"))
 
+    print("\n" + "=" * 78)
+    print(
+        "CAS 3 — Niveau APPROFONDI + préférence client déclarée "
+        "(salle dédiée cinéma) : la courbe cible est tranchée, pas listée "
+        "en options"
+    )
+    print("=" * 78)
+    report_preference = run_diagnostic(
+        speakers=speakers,
+        measurements=measurements,
+        service_level=ServiceLevel.APPROFONDI,
+        room=room,
+        support_level_triggers=[
+            "réponses très différentes entre Surround Gauche et Surround Droite"
+        ],
+        target_curve_preference="cinema_dedie",
+    )
+    print(generate_report(report_preference, client_name="Cas de démonstration"))
+
 
 if __name__ == "__main__":
     main()

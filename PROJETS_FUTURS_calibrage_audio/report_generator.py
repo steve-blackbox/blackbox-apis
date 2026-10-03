@@ -67,11 +67,20 @@ def generate_report(
                         f"{rec.freq_range_hz[0]:.0f} Hz – {rec.freq_range_hz[1]:.0f} Hz"
                     )
                 if rec.control_points:
+                    by_speaker: dict[str, list] = {}
                     for cp in rec.control_points:
+                        by_speaker.setdefault(cp.speaker_name or rec.target, []).append(cp)
+                    for sp_name, points in by_speaker.items():
                         lines.append(
-                            f"      ➜ Point de contrôle : {cp.freq_hz:.0f} Hz / "
-                            f"{cp.gain_db:+.1f} dB ({cp.speaker_name})"
+                            f"      ➜ Points de contrôle de courbe cible — {sp_name} :"
                         )
+                        for i, cp in enumerate(points, start=1):
+                            lines.append(
+                                f"          Point {i} : {cp.freq_hz:.0f} Hz / "
+                                f"{cp.gain_db:+.1f} dB"
+                            )
+                            if cp.reason:
+                                lines.append(f"            Pourquoi : {cp.reason}")
                 lines.append(f"      Source : {rec.evidence.value}")
                 if rec.detail:
                     lines.append(f"      Détail : {rec.detail}")

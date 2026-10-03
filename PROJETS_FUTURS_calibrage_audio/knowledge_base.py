@@ -359,7 +359,7 @@ réglages, mais chaque enceinte garde ses propres filtres. [StormAudio]"""
 TARGET_CURVES_BY_ROLE: dict[str, list[str]] = {
     "façade (G/D/centre)": [
         "Harman +4 dB bass gain (référence neutre très documentée)",
-        "LCR Cinema Target StormAudio (si profil cinéma assumé)",
+        "LCR Cinema Target StormAudio (cible officielle StormAudio pour un usage cinéma dédié)",
     ],
     "caisson(s) / LFE": [
         "Subwoofer Cinema Target StormAudio",
