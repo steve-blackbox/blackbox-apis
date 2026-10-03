@@ -68,6 +68,34 @@ enceinte, interface Dirac Live en français, résolution 2794x1538) :
     superposée visuellement à la cible, peut-être non affichée) — ne
     pas présenter la courbe pâle comme "ce qu'ART obtient en pratique".
 
+DEUX BUGS RÉELS TROUVÉS ET CORRIGÉS EN EXTRAYANT LES 8 VRAIES COURBES DE
+STEVE (dossier "CAPTURE ECRAN COURBES", 29/09) :
+  1. Un label de texte épais (ex. "+2,8 dB", valeur de la courbe cible
+     affichée en haut à gauche du graphique) peut avoir une couleur assez
+     proche de `target_rgb` pour être confondu avec tolérance par défaut.
+     L'ancienne version de `extract_curve_points` prenait le centre
+     min/max de TOUS les pixels matchés par colonne, donc un label épais
+     faussait complètement le résultat pour les colonnes qu'il recouvre
+     (vu sur "Surround Back Left" : premier point à +2,7 dB au lieu de
+     -30/-36 dB comme les 7 autres canaux). Corrigé en séparant les
+     pixels matchés par colonne en groupes contigus et en parcourant les
+     colonnes de DROITE à GAUCHE (la zone haute fréquence, à droite, est
+     toujours loin des labels) pour établir une continuité fiable avant
+     d'atteindre une éventuelle zone de label ; un saut trop brutal par
+     rapport au dernier point valide est rejeté plutôt qu'accepté à tort.
+  2. La ligne de grille horizontale (graduation "ronde" de l'axe dB, ex.
+     +20 dB, couleur stable `UI_GRIDLINE_RGB=(62,68,83)` sur les 8
+     captures) peut, par coïncidence, être à une distance de couleur
+     limite d'un `target_rgb` donné (vu sur "Surround Right" : couleur de
+     courbe (41,54,137), distance ≈59,6 de la grille — juste sous une
+     tolérance de 60), menant à une extraction plate fausse sur toute la
+     largeur. Corrigée en excluant explicitement `UI_GRIDLINE_RGB` (comme
+     `UI_RANGE_INDICATOR_RGB` déjà exclu) et, pour les cas où même la
+     couleur de légende reste proche d'un élément d'interface en dégradé
+     (bandeau "plage détectée"), en filtrant aussi par saturation minimale
+     (`min_saturation`) — la grille et les dégradés d'interface sont
+     nettement moins saturés qu'un vrai trait de courbe.
+
 Ce qui n'a PAS encore été revalidé : une résolution de capture différente
 de 2794x1538, une interface Dirac dans une autre langue, ou une version
 différente du logiciel. `DIRAC_SCREENSHOT_2794x1538` ci-dessous documente
@@ -93,6 +121,19 @@ except ImportError as exc:  # pragma: no cover - dépendance déclarée dans REA
 # affiche "+X dB" / "-X dB" (plage détectée). Ce n'est pas la courbe —
 # à exclure explicitement lors de la détection automatique de couleur.
 UI_RANGE_INDICATOR_RGB: tuple[int, int, int] = (10, 110, 160)
+
+# Couleur stable des lignes de grille horizontales (graduations "rondes"
+# de l'axe dB, ex. +20 dB) — confirmée identique sur les 8 captures de
+# Steve à (62, 68, 83). Non filtrée par `detect_curve_color` (saturation
+# trop basse, ~0.25, sous le seuil `min_saturation` par défaut), mais
+# PEUT entrer en collision avec `extract_curve_points` pour une couleur
+# de courbe qui lui est, par coïncidence, assez proche (bug réel trouvé
+# sur la capture "Surround Right" : couleur de courbe (41,54,137), à une
+# distance euclidienne de seulement ≈59.6 de cette grille — juste sous
+# une tolérance de 60, provoquant une extraction plate fausse à +20 dB
+# sur toute la largeur). À exclure explicitement comme pour le bandeau
+# ci-dessus.
+UI_GRIDLINE_RGB: tuple[int, int, int] = (62, 68, 83)
 
 
 @dataclass
@@ -163,6 +204,11 @@ def extract_curve_points(
     plot_right_px: float | None = None,
     plot_top_px: float | None = None,
     plot_bottom_px: float | None = None,
+    max_line_thickness_px: int = 12,
+    max_continuity_jump_px: int = 250,
+    exclude_rgbs: tuple[tuple[int, int, int], ...] = (UI_RANGE_INDICATOR_RGB, UI_GRIDLINE_RGB),
+    exclude_tolerance: float = 20.0,
+    min_saturation: float = 0.0,
 ) -> list[MeasurementPoint]:
     """Digitalise une courbe de couleur `target_rgb` depuis une image de
     capture d'écran Dirac déjà calibrée (voir `AxisCalibration`).
@@ -171,6 +217,30 @@ def extract_curve_points(
     le balayage à la zone du graphique (recommandé : sans ça, le balayage
     inclut légendes/axes où une couleur proche de `target_rgb` pourrait
     exister par coïncidence). Si non fournis, toute l'image est balayée.
+
+    MÉTHODE (corrigée suite à un bug réel trouvé sur les captures de
+    Steve) : les colonnes sont parcourues de DROITE à GAUCHE — la zone de
+    droite (haute fréquence) est toujours sans ambiguïté (loin des labels
+    de texte qui n'apparaissent qu'en haut à gauche du graphique), ce qui
+    permet d'établir une continuité fiable avant d'atteindre une
+    éventuelle zone de label. À chaque colonne, les pixels qui
+    correspondent à `target_rgb` sont séparés en groupes contigus
+    (`max_line_thickness_px` distingue un trait fin d'un bloc de texte
+    épais) ; le groupe retenu est celui le plus proche en position du
+    dernier point valide, et un saut trop brutal (`max_continuity_jump_px`,
+    250px par défaut — valeur validée sur les 8 vraies captures de Steve :
+    certaines courbes ont des flancs quasi verticaux entre un creux et un
+    pic voisins, qu'une valeur plus basse comme 150px rejette à tort)
+    est rejeté plutôt qu'accepté à tort — mieux vaut un petit trou qu'un
+    point faux. `exclude_rgbs`/`exclude_tolerance` ignorent les éléments
+    d'interface de couleur stable (bandeau "+X dB", grille) qui pourraient
+    sinon être confondus avec `target_rgb` ; `min_saturation` filtre en
+    plus les pixels trop désaturés (fond, dégradés d'interface) quand la
+    couleur de courbe est elle-même proche d'un de ces éléments (cas
+    rencontré : bug initial pris pour un centre min/max global biaisé par
+    un label "+X,X dB" de teinte proche de la courbe mesurée — un label
+    épais fausse alors complètement le centre calculé pour les colonnes
+    qu'il recouvre).
 
     Retourne une liste de `MeasurementPoint` triée par fréquence
     croissante. Une colonne de pixels sans correspondance de couleur est
@@ -186,20 +256,54 @@ def extract_curve_points(
     bottom = int(plot_bottom_px) if plot_bottom_px is not None else height - 1
 
     points: list[MeasurementPoint] = []
-    for px in range(left, right + 1, max(1, column_step_px)):
-        matches_y = [
-            py
-            for py in range(top, bottom + 1)
-            if _color_distance(pixels[px, py], target_rgb) <= color_tolerance
-        ]
+    last_py: float | None = None
+    for px in range(right, left - 1, -max(1, column_step_px)):
+        matches_y = []
+        for py in range(top, bottom + 1):
+            rgb = pixels[px, py]
+            if _color_distance(rgb, target_rgb) > color_tolerance:
+                continue
+            if any(_color_distance(rgb, excl) <= exclude_tolerance for excl in exclude_rgbs):
+                continue
+            if min_saturation > 0.0:
+                mx, mn = max(rgb), min(rgb)
+                saturation = 0.0 if mx == 0 else (mx - mn) / mx
+                if saturation < min_saturation:
+                    continue
+            matches_y.append(py)
         if not matches_y:
             continue
-        # Plusieurs pixels peuvent matcher (épaisseur du trait) : on prend
-        # le centre du groupe, pas la moyenne de tous (une grille éloignée
-        # de la même teinte fausserait sinon le résultat).
-        py_center = (min(matches_y) + max(matches_y)) / 2
+
+        # Séparer en groupes de pixels contigus (gap > 2px = nouveau groupe) :
+        # une grille ou un label éloigné de la même teinte ne doit jamais
+        # être mélangé avec le vrai trait de mesure dans un même centre.
+        groups = []
+        group = [matches_y[0]]
+        for y in matches_y[1:]:
+            if y - group[-1] <= 2:
+                group.append(y)
+            else:
+                groups.append(group)
+                group = [y]
+        groups.append(group)
+
+        # Ne garder que les groupes fins (ligne de mesure), pas les blocs
+        # épais (label de texte) — sauf si aucun groupe fin n'existe.
+        thin_groups = [g for g in groups if (max(g) - min(g)) <= max_line_thickness_px]
+        candidates = thin_groups if thin_groups else groups
+
+        if last_py is not None:
+            best = min(candidates, key=lambda g: abs((min(g) + max(g)) / 2 - last_py))
+            best_center = (min(best) + max(best)) / 2
+            if abs(best_center - last_py) > max_continuity_jump_px:
+                continue  # saut aberrant (probable label) : on ignore cette colonne
+        else:
+            best = min(candidates, key=lambda g: (max(g) - min(g)))  # le plus fin
+            best_center = (min(best) + max(best)) / 2
+
+        last_py = best_center
         freq = calibration.pixel_to_freq(px)
-        spl = calibration.pixel_to_db(py_center)
+        spl = calibration.pixel_to_db(best_center)
         points.append(MeasurementPoint(freq_hz=round(freq, 1), spl_db=round(spl, 1)))
 
     return sorted(points, key=lambda p: p.freq_hz)
@@ -244,7 +348,7 @@ def detect_curve_color(
     plot_right_px: float,
     plot_top_px: float,
     plot_bottom_px: float,
-    exclude_rgbs: tuple[tuple[int, int, int], ...] = (UI_RANGE_INDICATOR_RGB,),
+    exclude_rgbs: tuple[tuple[int, int, int], ...] = (UI_RANGE_INDICATOR_RGB, UI_GRIDLINE_RGB),
     exclude_tolerance: float = 20.0,
     min_saturation: float = 0.5,
     min_value: int = 120,

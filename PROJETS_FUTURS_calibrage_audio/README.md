@@ -147,12 +147,16 @@ python3 liveproject_reader.py "/chemin/vers/fichier.liveproject"
   fixe `MODAL_REGION_UPPER_BOUND_HZ = 300.0`) si `RoomInfo` collecte un
   jour le RT60 ou une estimation de celui-ci — voir
   `knowledge_base.SCHROEDER_TRANSITION_CONCEPT`.
-- Relier `image_reader.py` au moteur de diagnostic (`diagnostic_engine.py`)
+- ~~Relier `image_reader.py` au moteur de diagnostic (`diagnostic_engine.py`)
   pour passer directement d'une capture d'écran à un rapport, sans étape
-  manuelle entre les deux. **Piste retenue** : le nom de l'enceinte est
-  déjà lisible sans ambiguïté sur chaque capture (légende de couleur
-  Dirac), donc il suffit de demander au client des captures incluant
-  cette légende — pas besoin du fichier `.liveproject` brut pour ça.
+  manuelle entre les deux~~ — **FAIT** (03/10) : voir
+  `rapport_steve_captures_reelles.py`, qui extrait automatiquement les 8
+  courbes (une par enceinte) depuis les captures Dirac de Steve, les
+  ré-échantillonne (`curve_resampling.py`) et lance `run_diagnostic`.
+  Deux bugs réels d'extraction trouvés et corrigés au passage (grille
+  d'interface et bande de dégradé proches en couleur d'une courbe
+  mesurée) — voir la docstring d'en-tête de `image_reader.py`. Testé par
+  `tests/test_image_reader.py` et `tests/test_curve_resampling.py`.
   ~~Relier `liveproject_reader.py` au moteur de diagnostic~~ — **piste
   abandonnée** (03/10, décision de Steve) : le fichier brut n'associe
   aucun nom de canal à 6 des 8 blocs de mesure (voir docstring d'en-tête
