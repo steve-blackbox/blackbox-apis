@@ -3669,3 +3669,73 @@ articles lus, concurrents repérés, retours clients...)_
   en sections 43-44. 42 tests unitaires + scripts d'exemple repassés
   avec succès : aucune régression (documentation pure).
 
+- (03/10, suite 50) **📚 COLLECTE EXHAUSTIVE du site officiel Dirac
+  (helpdesk.dirac.com) — demande explicite de Steve : "récupère toute
+  la totalité des notes, informations disponibles sur le site de dirac
+  et met à jour notre documentation"**
+
+  Travail le plus ambitieux de cette session : cartographie complète du
+  helpdesk Dirac via son sitemap (1036 URLs brutes, 302 pages uniques
+  après déduplication). Filtrage du support générique (crashs, réseau,
+  licences, USB) pour isoler 142 pages FAQ + 99 changelogs
+  techniquement pertinents.
+
+  **Méthode** : 8 agents de recherche lancés en parallèle (4 lots FAQ,
+  3 lots changelogs, 1 relancé après une limite de budget que Steve a
+  augmentée en cours de route), chacun avec instruction stricte de
+  citer exactement le texte source, jamais d'inventer. En parallèle,
+  téléchargement et lecture intégrale de 4 PDF officiels découverts en
+  chemin : "Dirac Live User Manual" (42p), "Bass Control in Dirac
+  Live" (17p, signé Lars-Johan Brännmark — Chief Scientist Dirac — et
+  Frans Rosencrantz), "Bass Control where did my bass go" (5p), et
+  surtout **"Technical Guide: ART channel group and support settings"**
+  (5p) — LE document le plus directement actionnable trouvé sur le
+  sujet central de ce projet.
+
+  **Découvertes majeures (sections 45 à 48 de `knowledge_base.py`)** :
+  - **Tableau OFFICIEL complet des paramètres ART** enfin trouvé :
+    Fsiso (défaut 150Hz, plage 50-150Hz), Support Level (défaut
+    **-18dB** — nouvelle constante `SUPPORT_LEVEL_NOMINAL_DB`,
+    confirme exactement nos bornes déjà codées -24/-1dB), F-support
+    Low/High (20Hz à Fsiso). Confirmation à 4 reprises indépendantes.
+  - **Mécanisme des "cross terms"** : limite de calcul DSP-dépendante
+    du nombre d'enceintes pouvant se supporter mutuellement, jamais
+    documentée avant.
+  - **FAQ officielle ART** : confirme la technologie MIMO brevetée, la
+    plage 20-150Hz, la surface de pièce optimale (12-100m², inédit),
+    et surtout la différence RC vs ART : RC vise la moyenne sur la
+    zone mesurée, ART réduit la variation spatiale à chaque position.
+  - **Validation croisée de notre propre code** : un exemple réel de
+    calcul de modes de pièce publié par Dirac (35/70/105Hz pour 5m)
+    correspond presque exactement à ce que calcule déjà
+    `axial_room_modes` (34.3/68.6/102.9Hz).
+  - **Donnée expérimentale la plus précieuse** : une mesure réelle
+    publiée par Dirac sur un vrai caisson à 21 positions montre une
+    variance spatiale de **20-30dB** à certaines fréquences — l'ampleur
+    scientifiquement sourcée du problème que Bass Control/ART résout.
+  - **Validation officielle a posteriori de nos propres règles de
+    sécurité** : le guide technique ART confirme la même règle de
+    prévention de distorsion/casse que notre
+    `detect_dangerous_gain_anomalies` (section 33), développée AVANT
+    la découverte de cette confirmation.
+  - Guide complet de groupage de caissons (par capacité ET par soutien
+    mural, confirmant le concept de room gain déjà documenté),
+    procédure complète de "directional bass", historique du filtre LFE
+    120Hz (délai de 5ms confirmé, rendu optionnel en 3.15.1), filtre
+    implicite 20Hz d'ART (infra-bass bypass), seuil de rupture de
+    phase à 20ms, procédures de calibration chiffrées précises
+    (arrangements 9/13/17 points, tolérances ±0,2dB).
+
+  **Correction de notre propre documentation en cours de route** :
+  l'hypothèse initiale sur l'option "Propagation" (variance spatiale)
+  a été remplacée par la citation officielle exacte (propagation
+  TEMPORELLE du front d'onde) après vérification à la source primaire
+  — cohérent avec notre règle de toujours privilégier le fait vérifié
+  à l'hypothèse plausible.
+
+  8 commits locaux pour cette collecte (sections 43 à 48), environ
+  1100 lignes de documentation nouvelle. 42 tests unitaires +
+  `example_run.py` + `exemple_systeme_steve.py` repassés avec succès à
+  chaque étape : aucune régression (travail de documentation pure,
+  aucun changement de code fonctionnel).
+
