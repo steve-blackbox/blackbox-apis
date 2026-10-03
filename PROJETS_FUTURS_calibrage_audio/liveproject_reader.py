@@ -227,6 +227,21 @@ CARTE DU FICHIER (validée sur les 10 fichiers, offsets en % de la taille totale
    voir si l'une d'elles a une taille de donnée nulle/différente — non
    tenté ici, pourrait être une prochaine étape concrète.
 
+   🛑 **PISTE OFFICIELLEMENT FERMÉE (03/10, décision de Steve)** : après
+   plusieurs suites de tentatives (corrélation spatiale, corrélation de
+   forme spectrale, ordre d'apparition des noms, badges "+X,X dB"...),
+   Steve a clarifié que cette investigation partait d'un faux problème :
+   sur les CAPTURES D'ÉCRAN, le nom de chaque enceinte est déjà écrit
+   explicitement (légende Dirac, couleur + nom), donc aucune déduction
+   n'est nécessaire pour elles — c'est déjà exploité avec succès (voir
+   image_reader.py, extraction de légende). Le seul problème réel était
+   propre au FICHIER BRUT (cette section) : lui seul manque de nom
+   textuel par bloc. Conclusion pratique du projet : le pipeline retenu
+   est capture d'écran nommée → extraction de courbe par couleur de
+   légende, PAS lecture du fichier binaire brut. Ne plus relancer cette
+   investigation sans une raison nouvelle et explicite de Steve (ex. un
+   besoin d'automatisation qui se passerait de captures manuelles).
+
 6. **Fin de fichier (derniers ~600 octets)** : journal de navigation de
    l'interface utilisateur (noms d'écrans visités : `Navigation`,
    `RecordingDevice`, `SelectArrangement`, `VolumeCalibration`,
