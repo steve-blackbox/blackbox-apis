@@ -4944,5 +4944,296 @@ manuel PDF 'Bass Control in Dirac Live' (Brännmark et al.) section
 technique : 'a genetic optimization algorithm' pour ajuster les
 relations de phase entre haut-parleurs."""
 
+# ---------------------------------------------------------------------------
+# 46. Historique officiel des versions Dirac Live et procédures de
+#     calibration chiffrées précises (suite de la collecte exhaustive,
+#     section 45) — reconstruit à partir des changelogs officiels de
+#     99 versions (2.1.1 à 3.15.1, plus Dirac Live Processor 1.3.4 à
+#     1.8.2) et des pages FAQ de procédure.
+# ---------------------------------------------------------------------------
+ART_OFFICIAL_TIMELINE_AND_RC_BM_BC_ART_ACRONYMS = (
+    "Chronologie officielle reconstituée à partir des changelogs : ART "
+    "'Active Room Treatment' a été **officiellement inclus pour "
+    "disponibilité avec les appareils supportés** dans la version "
+    "**Dirac Live 3.6.5 (07/06/2023)** — citation exacte : 'Active Room "
+    "Treatment is now officially included for availability with "
+    "supported devices.' La même version introduit la définition "
+    "OFFICIELLE des 4 sigles utilisés dans l'interface : 'Technology "
+    "labels have been added in the left side panel filter slots: "
+    "RC = Dirac Live (Room Correction) ; BM = Dirac Live with standard "
+    "bass management crossovers ; BC = Bass Control ; ART = Active "
+    "Room Treatment.' Renommage de labels la même version : "
+    "'BC: Upmix only' devient 'Bass management', 'BC: Full "
+    "optimisation' devient 'Bass Control'. **Règle algorithmique "
+    "introduite simultanément** : 'Measurements identified as "
+    "imprecise will be highlighted... With imprecise measurements "
+    "present the output will be limited to only use MINIMUM-PHASE "
+    "FILTERS' — une mesure de mauvaise qualité dégrade automatiquement "
+    "la sophistication du filtre calculé (pas seulement un "
+    "avertissement cosmétique). Plage basse de correction élargie en "
+    "**3.2.2 (28/01/2022)** : 'Allow compensation down to 10 Hz again "
+    "(was limited to 20 Hz in the last update)' — montre que la "
+    "limite basse de correction a fluctué dans l'historique du "
+    "logiciel (10Hz à une époque, avant l'introduction du filtre "
+    "implicite 20Hz propre à ART documenté ci-dessus)."
+)
+"""[Confirmation officielle Dirac, changelogs croisés] — Dirac Live
+3.2.2, 3.6.5 ; collecte via 3 agents de recherche changelogs distincts
+couvrant les versions 2.1.1 à 3.15.1."""
+
+ART_KNOWN_BUG_MINIMUM_PHASE_MARANTZ_STORMAUDIO_DENON_FIXED_382 = (
+    "Bug historique CORRIGÉ, mais directement pertinent pour Steve "
+    "(Marantz CINEMA 30) à titre de vigilance si jamais sa version "
+    "logicielle était très ancienne : 'Fixed an error where Dirac Live "
+    "filters with minimum-phase properties could lose part of their "
+    "coefficients during conversion to certain filter DSP topologies. "
+    "This error MAY HAVE AFFECTED USERS WITH DEVICES FROM STORMAUDIO, "
+    "DENON, AND MARANTZ, particularly if they were having problems "
+    "with imprecise measurements.' Corrigé en version **3.8.2 "
+    "(15/12/2023)** — largement antérieure aux versions 3.13.x dont on "
+    "sait déjà que Steve en bénéficie (section 40, le changelog 3.13.2 "
+    "ayant déjà été lu en détail), donc CE BUG SPÉCIFIQUE NE CONCERNE "
+    "PAS son système actuel. Documenté ici uniquement pour traçabilité "
+    "et vigilance si un futur client déclare une version antérieure à "
+    "3.8.2."
+)
+"""[Confirmation officielle Dirac, changelog] — Dirac Live 3.8.2,
+section Fixes. Bug historique résolu, sans impact sur le système
+actuel de Steve (déjà en 3.13.2 ou plus récent)."""
+
+PHASE_BREAK_DELAY_THRESHOLD_20MS_CONFIRMED_TWICE = (
+    "Seuil technique précis confirmé de façon INDÉPENDANTE sur 2 "
+    "sources officielles distinctes (page FAQ + changelog firmware "
+    "tiers) : un délai de haut-parleur (typiquement un caisson, pour "
+    "cause de DSP ou de distance physique) supérieur à **20 "
+    "millisecondes** peut empêcher certains appareils compatibles "
+    "Dirac d'ajuster correctement les autres enceintes pour "
+    "correspondre, cassant l'alignement de phase du système : "
+    "'If a certain speaker... has a great delay (>20ms), some "
+    "Dirac-enabled devices cannot adjust the other speakers to match "
+    "this delay.' Confirmation indépendante sur un cas constructeur "
+    "précis (Onkyo) : 'In the firmware on Onkyo devices there was a "
+    "set limit on 20ms... Through the new firmware this limit is set "
+    "to 50ms and the problem was solved' — le plafond de délai "
+    "ajustable est donc une LIMITE MATÉRIELLE/FIRMWARE PROPRE À CHAQUE "
+    "CONSTRUCTEUR (pas une limite de l'algorithme Dirac lui-même), "
+    "vérifiable 'in the Filter Design stage... check impulse response "
+    "(timing) data.' Solutions officielles recommandées en cas de "
+    "dépassement : désactiver tout traitement DSP/ajustement de phase "
+    "en amont, ou rapprocher physiquement les enceintes pour réduire "
+    "le délai dû à la distance."
+)
+"""[Confirmation officielle Dirac, 2 sources croisées] — page
+'Out-of-phase sound/Broken phase' (helpdesk.dirac.com/en/dirac-live/
+Out-of-phase-sound-Broken-phase-8487) et changelog firmware Onkyo cité
+dans la page 'Why are the delay values not matching...' (ticket interne
+DLS-5754 : 'Onkyo TX-RZ50 caps max channel delays at 20.0 ms')."""
+
+MEASUREMENT_LEVELS_CALIBRATION_PRECISE_PROCEDURE = (
+    "Procédure OFFICIELLE complète et chiffrée de calibration des "
+    "niveaux ('Measurement Levels', anciennement 'Volume Calibration') "
+    "— trouvée de façon cohérente sur 3 pages FAQ distinctes ET dans "
+    "le manuel PDF officiel (confirmation croisée à 4 reprises) : "
+    "(1) 'Keep the mic level at 100% with zero gain increase, OR set "
+    "it to **+18 dB** if you're using Dirac Live **3.13.2** and "
+    "onwards' — changement de convention confirmé séparément : 'From "
+    "Dirac Live version **3.11** and onwards, a Mic Gain setting of "
+    "+18 dB is equal to the 0 dB Mic Gain setting of earlier Dirac "
+    "Live versions' (donc la convention a changé dès la 3.11, pas "
+    "seulement 3.13.2 comme une page le suggère — léger écart entre "
+    "sources, rapporté tel quel) ; (2) 'With all speaker levels at "
+    "max, play all speakers and increase the master output gain... "
+    "Somewhere around **20 dB** should be fine' ; (3) 'Find the "
+    "quietest speaker and match this speaker to the other louder "
+    "speakers... Try to keep the values between **+/-0.2 dB** to the "
+    "quietest speaker level value' — tolérance d'appariement très "
+    "fine entre enceintes ; (4) 'Increase the master output gain a "
+    "little more to make all speaker's levels a bit louder' avant de "
+    "lancer la mesure. Garde-fou de sécurité logiciel confirmé : "
+    "'This safety measure ensures that your speakers won't be damaged "
+    "if the volume is set too high... The software automatically "
+    "reduces the volume every time you return to the Measurement "
+    "Levels step.'"
+)
+"""[Confirmation officielle Dirac, 4 sources croisées] — pages
+'stereo-image-is-shifting', 'Off-Center-or-Biased-Imaging', 'What
+microphone is required/recommended', et le manuel PDF 'Dirac Live User
+Manual' section 6.5 'Volume Calibration', tous lus en texte intégral."""
+
+MEASUREMENT_ARRANGEMENTS_9_13_17_POINTS_OFFICIAL = (
+    "Confirmation officielle complète des 3 arrangements de mesure "
+    "disponibles, avec leur nombre EXACT de points, trouvée dans le "
+    "manuel PDF officiel (confirme et précise la structure '13 "
+    "positions' déjà déduite empiriquement en analysant les fichiers "
+    ".liveproject réels de Steve, voir liveproject_reader.py) : "
+    "**'Tightly focused imaging'** = **9 points** ('represents a "
+    "well-defined listening area from which the listener rarely "
+    "moves' — avertissement officiel : 'The tighter the measurements "
+    "are placed, the more extreme the correction') ; **'Focused "
+    "imaging'** = **13 points** ('represents a listening area with one "
+    "well-defined listening position that should still accommodate a "
+    "degree of flexibility. Select this arrangement if the listening "
+    "area is a two or three-seat sofa' — Steve, avec son canapé, "
+    "utilise très probablement cet arrangement, cohérent avec les 13 "
+    "positions déjà identifiées dans ses fichiers réels) ; **'Wide "
+    "imaging'** = **17 points** ('represents a larger listening area "
+    "for multiple listeners... corner sofas... or listening areas "
+    "distributed across two or more sofas'). Règles de placement du "
+    "microphone, chiffrées : distance minimale **30 cm (12 in)** entre "
+    "points de mesure ; sphère minimale **1 mètre de diamètre** même "
+    "pour l'arrangement le plus serré ('Too small a space will result "
+    "in over-compensation, which sounds very dry and dull') ; mesures "
+    "recommandées **20-30 cm en dehors** de la zone d'assise (ex. "
+    "hors du canapé) ; au moins **5 mesures minimum**, jamais moins "
+    "('we strongly recommend you to never do less than five "
+    "measurements') ; orientation du micro **vers le plafond (90°)**, "
+    "nécessitant un fichier de calibration '90-degree' spécifique — "
+    "EXACTEMENT la méthode déjà utilisée par Steve (fichier "
+    "'7199598_90deg.txt', section 36) ; mesurer aussi en profondeur et "
+    "en hauteur, pas seulement sur un plan horizontal unique (mesure "
+    "d'un VOLUME 3D, pas d'une surface 2D)."
+)
+"""[Confirmation officielle Dirac, manuel PDF] — 'Dirac Live User
+Manual', sections 4.4.3 'Microphone placement' et 6.6 'Select
+Arrangement', lues en texte intégral (42 pages). Cross-référence avec
+le fichier réel de calibration de Steve déjà analysé (section 36) et
+la structure 13 positions déjà déduite empiriquement (liveproject_
+reader.py) — maintenant confirmée comme correspondant très probablement
+à l'arrangement officiel 'Focused imaging'."""
+
+# ---------------------------------------------------------------------------
+# 47. FAQ officielle ART complète (la page de référence marketing/
+#     technique la plus synthétique trouvée) + dernières découvertes du
+#     dernier lot de collecte (03/10) — confirmations MAJEURES qui
+#     clôturent plusieurs questions ouvertes depuis le début du projet.
+# ---------------------------------------------------------------------------
+ART_OFFICIAL_FAQ_MIMO_RANGE_ROOM_SIZE_RC_VS_ART = (
+    "Page FAQ officielle de référence 'Dirac Live Active Room "
+    "Treatment (ART) FAQ' — synthèse marketing/technique la plus "
+    "complète trouvée, confirmant OFFICIELLEMENT plusieurs points "
+    "qu'on avait déjà déduits par recoupement (brevet, articles tiers) "
+    "mais jamais vus formulés aussi explicitement par Dirac eux-mêmes : "
+    "**Technologie** — 'ART utilises patented MIMO technology to "
+    "coordinate all speakers, optimising their interaction to manage "
+    "room-induced resonances, particularly in the critical **20-150 "
+    "Hz** bass frequency range.' Définition MIMO officielle : "
+    "'coordinates all speakers and the room as a unified acoustic "
+    "system, sharing optimisation and playback data among speakers.' "
+    "**Bénéfices officiels listés** : 'reduced room resonance and "
+    "reverberation, tighter and cleaner bass response with REDUCED "
+    "DECAY TIME, a larger bass response sweet spot, and enhanced "
+    "seat-to-seat consistency' — confirme OFFICIELLEMENT que la "
+    "réduction du TEMPS DE DÉCROISSANCE est un objectif explicite "
+    "d'ART, pas seulement une hypothèse (répond enfin, avec certitude "
+    "cette fois, à la question laissée ouverte section 42 sur le "
+    "contrôle du decay). **Surface de pièce recommandée, jamais vue "
+    "avant** : 'ART performs optimally in rooms ranging from "
+    "approximately **12 m² to 100 m²** (130 ft² to 1100 ft²).' "
+    "**Configuration minimale** : 'a stereo system with two speakers' "
+    "suffit pour voir des bénéfices. **Différence fondamentale RC vs "
+    "ART, enfin formulée clairement** : 'RC improves performance "
+    "within the measured area with a goal to meet the target response "
+    "ON AVERAGE... ART, owing to its control of the sound field using "
+    "all speakers, has SIGNIFICANTLY STRONGER PERFORMANCE IN REDUCING "
+    "SPATIAL VARIATION and accurately reproducing the target curve AT "
+    "ANY GIVEN MEASURED POSITION.' RC (seul) sur les caissons : 'RC "
+    "corrects subwoofers' responses individually... applies delays to "
+    "align them with mains. However, it does no dedicated calculations "
+    "for bass management and control (as with BC) or active control "
+    "of the subwoofers' contribution to the target sound field (as "
+    "with ART).' Condition de re-mesure : seulement nécessaire 'if the "
+    "system configuration has changed by adding or removing speakers.'"
+)
+"""[Source officielle Dirac] — page 'Dirac Live Active Room Treatment
+(ART) FAQ', helpdesk.dirac.com/en/dirac-art/Dirac-Live-Active-Room-
+Treatment-ART-FAQ-9be7. LA page de référence la plus synthétique et
+officielle trouvée sur ART dans toute cette collecte."""
+
+ART_PRACTICAL_CUTOFF_THRESHOLD_AND_ROOM_MODE_EXAMPLE = (
+    "Donnée EXTRÊMEMENT utile — un exemple de calcul RÉEL de modes de "
+    "pièce, publié officiellement par Dirac eux-mêmes, qui VALIDE "
+    "directement la logique déjà codée dans notre fonction "
+    "axial_room_modes (diagnostic_engine.py) : 'In a typical room "
+    "with a 5-meter dimension, the fundamental mode sits around "
+    "**35 Hz**, the 2nd-order mode around **70 Hz**, and the 3rd "
+    "around **105 Hz**.' (cohérent avec la formule f=n×c/(2L), "
+    "c=343m/s : 343/(2×5)=34,3Hz, doublé/triplé pour les harmoniques "
+    "— très proche des valeurs officielles 35/70/105Hz, léger écart "
+    "dû à l'arrondi/la vitesse du son exacte utilisée). **Seuil "
+    "pratique de coupure basse pour bénéficier réellement de ART, "
+    "jamais documenté avant cette collecte** : 'speakers need to be "
+    "genuinely bass-capable to benefit, with a low-frequency cutoff "
+    "of **70 Hz or lower**, as a practical minimum... a speaker must "
+    "reach well below 100 Hz for the processing to have any audible "
+    "effect.' Critère de décision ART vs Room Correction simple "
+    "(SIMO), formulé explicitement : 'Room modes also need to fall "
+    "within the speakers' active range... If a speaker CANNOT "
+    "reproduce those low frequencies, it will NOT EXCITE room modes "
+    "within the ART range — and there is LITTLE POINT APPLYING ART. "
+    "In that case, the SIMO (Single-Input Multiple-Output) correction "
+    "of Dirac Live Room Correction alone may be equally effective.' "
+    "**Application directe à Steve** : ses façades (Elipson Legacy "
+    "3220, freq_min=35Hz confirmé) et son centre/surrounds (43-53Hz) "
+    "sont TOUS largement sous le seuil pratique de 70Hz — son système "
+    "est donc un candidat pleinement justifié pour ART, pas un cas "
+    "limite où le SIMO classique suffirait."
+)
+"""[Source officielle Dirac] — page 'Is ART any good with 2.0 (stereo)
+speaker setups?', helpdesk.dirac.com/en/dirac-art/Dirac-Live-Processor-
+ART-Stereo. Validation croisée directe de axial_room_modes déjà
+implémentée (diagnostic_engine.py, section 2 du fichier)."""
+
+ART_UI_MECHANICS_AND_MISC_CONFIRMED_DETAILS = (
+    "Collection de détails mécaniques/UI confirmés officiellement, "
+    "utiles pour toute documentation utilisateur future : (1) "
+    "'As soon as you make a change to any of the set values in the "
+    "Support Group parameters window, you need to press the ENTER "
+    "key. If not, the value will revert back to its origin' — piège "
+    "UI classique à mentionner à tout client. (2) Les 'cross terms' "
+    "(déjà documentés section 45) s'affichent visuellement sous forme "
+    "de ratio exact, ex. 'a blue \"53 of 96 used\" and a red \"72 of 96 "
+    "used\"' quand l'appareil a plusieurs DSP physiques distincts "
+    "(pools séparés) ; les enceintes explicitement exclues du support "
+    "apparaissent avec une couleur sans ratio correspondant car "
+    "'considered to belong to a virtual DSP that has 0 available cross "
+    "terms.' (3) Mécanisme matériel CONCRET derrière l'exclusion "
+    "forcée de certaines enceintes du support ART : 'Some devices "
+    "have MORE SPEAKER TERMINALS THAN POWER AMPLIFIERS... The "
+    "amplifiers are dynamically assigned to output terminals, by "
+    "means of internal switches during runtime, based on what "
+    "surround decoder is in use' — donc l'exclusion peut être une "
+    "CONTRAINTE MATÉRIELLE de l'AVR (amplis physiquement partagés "
+    "entre bornes), pas toujours un choix de configuration logiciel. "
+    "(4) 'Directional Bass' activé au niveau AVR (pas Dirac) peut "
+    "bloquer l'édition du Support Level du groupe Subwoofer dans ART "
+    "— désactiver cette option AVR en cas de blocage inattendu. (5) "
+    "Troubleshooting centre/dialogue : bande **2-5 kHz identifiée "
+    "comme responsable de la clarté du dialogue**, suggestion "
+    "officielle de légèrement booster cette zone sur un filtre dédié "
+    "'enhanced dialogue preset', en veillant à ce que le Centre 'is "
+    "not supporting any other Groups.' (6) Versions exactes "
+    "confirmées : Auto Target Curve disponible depuis la version "
+    "**3.3.0** ; raccourci SHIFT pour lier les réglages de plage de "
+    "support entre groupes depuis la version **3.14.1** (note : un "
+    "changelog différent situait cette fonctionnalité en 3.13.9, écart "
+    "mineur entre sources rapporté tel quel sans trancher). (7) "
+    "Formats de fichier target curve supportés : **'.targetcurve' et "
+    "'.txt'**. (8) Bi-amping supporté, mais l'AVR doit le 'cacher' à "
+    "Dirac Live et traiter les canaux bi-amplifiés comme des canaux "
+    "'normaux' séparés. (9) Phase du caisson : laisser à 0°, 'Dirac "
+    "Live will correct the phase where necessary' — aucun réglage "
+    "manuel de phase nécessaire avant calibration."
+)
+"""[Source officielle Dirac, 7 pages FAQ croisées] —
+helpdesk.dirac.com/en/dirac-art/ : ART-support-level-settings-not-
+saving, ART-support-range-dots, Excluded-speakers-ART,
+ART-why-cant-i-edit-support-levels-subwoofer-group, Center-channel-
+low-ART, F-support-low-and-f-support-high-cannot-be-changed,
+From-which-version-of-the-software-can-I-use-the-Auto-Target-Curve,
+Can-I-load-a-target-curve-created-with-previous-versions,
+Does-dirac-support-bi-amping, et la question sur la phase du
+caisson — toutes lues en texte intégral via agent de recherche dédié
+(03/10, relancé après limite de budget initiale)."""
+
 
 
