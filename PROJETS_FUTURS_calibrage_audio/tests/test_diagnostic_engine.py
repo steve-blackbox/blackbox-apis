@@ -402,22 +402,27 @@ class TestCalculateSupportFrequencyRange(unittest.TestCase):
     def test_non_subwoofer_floor_is_50hz(self) -> None:
         speaker = Speaker("Petite surround", Role.SURROUND_LEFT, freq_min_hz=35.0)
         rec = calculate_support_frequency_range(speaker)
-        self.assertEqual(rec.freq_range_hz, (50.0, 150.0))
+        # 35 + 20 Hz de marge de sécurité (03/10) = 55 Hz, au-dessus du
+        # plancher 50 Hz : la marge l'emporte ici.
+        self.assertEqual(rec.freq_range_hz, (55.0, 150.0))
 
     def test_non_subwoofer_uses_manufacturer_value_above_floor(self) -> None:
         speaker = Speaker("Surround", Role.SURROUND_LEFT, freq_min_hz=53.0)
         rec = calculate_support_frequency_range(speaker)
-        self.assertEqual(rec.freq_range_hz, (53.0, 150.0))
+        # 53 + 20 Hz de marge de sécurité (03/10) = 73 Hz.
+        self.assertEqual(rec.freq_range_hz, (73.0, 150.0))
 
     def test_subwoofer_floor_is_20hz(self) -> None:
         speaker = Speaker("Caisson", Role.LFE, freq_min_hz=20.0)
         rec = calculate_support_frequency_range(speaker)
-        self.assertEqual(rec.freq_range_hz, (20.0, 150.0))
+        # 20 + 20 Hz de marge de sécurité (03/10) = 40 Hz, au-dessus du
+        # plancher caisson (20 Hz).
+        self.assertEqual(rec.freq_range_hz, (40.0, 150.0))
 
     def test_custom_fsiso_changes_high_bound(self) -> None:
         speaker = Speaker("Surround", Role.SURROUND_LEFT, freq_min_hz=53.0)
         rec = calculate_support_frequency_range(speaker, fsiso_hz=100.0)
-        self.assertEqual(rec.freq_range_hz, (53.0, 100.0))
+        self.assertEqual(rec.freq_range_hz, (73.0, 100.0))
 
     def test_subwoofer_high_bound_clamped_by_manufacturer_freq_max(self) -> None:
         """Cas réel qui a motivé ce correctif (03/10) : les caissons SVS
@@ -427,13 +432,25 @@ class TestCalculateSupportFrequencyRange(unittest.TestCase):
         faut respecter les caractéristiques des hauts-parleurs'."""
         speaker = Speaker("Caisson", Role.LFE, freq_min_hz=20.0, freq_max_hz=120.0)
         rec = calculate_support_frequency_range(speaker)
-        self.assertEqual(rec.freq_range_hz, (20.0, 120.0))
+        self.assertEqual(rec.freq_range_hz, (40.0, 120.0))
         self.assertIn("120", rec.action)
+
+    def test_floor_still_wins_when_manufacturer_value_plus_margin_is_below_floor(
+        self,
+    ) -> None:
+        """La marge de sécurité (03/10) s'ajoute à freq_min_hz AVANT la
+        comparaison au plancher officiel — mais si le résultat reste
+        sous ce plancher (ex: enceinte non-caisson très basse), c'est le
+        plancher officiel Dirac qui l'emporte, pas la marge."""
+        speaker = Speaker("Surround très basse", Role.SURROUND_LEFT, freq_min_hz=10.0)
+        rec = calculate_support_frequency_range(speaker)
+        # 10 + 20 = 30 Hz, sous le plancher 50 Hz -> le plancher gagne.
+        self.assertEqual(rec.freq_range_hz, (50.0, 150.0))
 
     def test_non_subwoofer_high_bound_unaffected_by_default_wide_freq_max(self) -> None:
         speaker = Speaker("Surround", Role.SURROUND_LEFT, freq_min_hz=53.0)
         rec = calculate_support_frequency_range(speaker)
-        self.assertEqual(rec.freq_range_hz, (53.0, 150.0))
+        self.assertEqual(rec.freq_range_hz, (73.0, 150.0))
 
 
 class TestCalculateRoomModeControlPoints(unittest.TestCase):

@@ -448,18 +448,20 @@ def recommend_support_pairings(speakers: list[Speaker]) -> list[Recommendation]:
 
 def recommend_frequency_ranges(speakers: list[Speaker]) -> list[Recommendation]:
     recs: list[Recommendation] = []
+    margin = kb.SPEAKER_LOW_FREQUENCY_SAFETY_MARGIN_HZ
     for speaker in speakers:
         if speaker.is_subwoofer:
             continue
-        low = max(speaker.freq_min_hz, kb.DIRAC_DEFAULT_LOW_FLOOR_HZ)
+        low = max(speaker.freq_min_hz + margin, kb.DIRAC_DEFAULT_LOW_FLOOR_HZ)
         recs.append(
             Recommendation(
                 category="Plage de fréquence",
                 target=speaker.name,
                 action=(
                     f"Régler la fréquence basse de support à {low:.0f} Hz "
-                    f"(fiche technique du constructeur), avec chevauchement "
-                    f"d'environ {kb.RECOMMENDED_OVERLAP_HZ:.0f} Hz avec le(s) "
+                    f"(fiche technique du constructeur + {margin:.0f} Hz de "
+                    f"marge de sécurité), avec chevauchement d'environ "
+                    f"{kb.RECOMMENDED_OVERLAP_HZ:.0f} Hz avec le(s) "
                     f"caisson(s)."
                 ),
                 evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
@@ -467,7 +469,15 @@ def recommend_frequency_ranges(speakers: list[Speaker]) -> list[Recommendation]:
                     "Toujours se baser sur la fiche technique, jamais sur le "
                     "seul balayage mesuré en pièce (les modes de la pièce "
                     "faussent la mesure). Une plage trop basse mal choisie "
-                    "peut endommager l'enceinte."
+                    "peut endommager l'enceinte. "
+                    f"Marge de {margin:.0f} Hz ajoutée par-dessus la "
+                    f"fréquence basse constructeur ({speaker.freq_min_hz:.0f} "
+                    "Hz) avant comparaison au plancher Dirac : règle de "
+                    "sécurité demandée par Steve (retour d'expérience, pas "
+                    "une valeur officiellement documentée par Dirac/"
+                    "StormAudio), cohérente avec le risque officiel "
+                    "de casse par excursion excessive documenté par Dirac "
+                    "pour les petites enceintes poussées trop bas."
                 ),
             )
         )
@@ -720,24 +730,34 @@ def calculate_precise_support_level_db(
 def calculate_support_frequency_range(
     speaker: Speaker, fsiso_hz: float = kb.DEFAULT_FSISO_HZ
 ) -> Recommendation:
-    """F-support Low = la plus haute entre la limite basse constructeur
-    et le plancher officiel (50 Hz pour une enceinte non-caisson, 20 Hz
-    pour un caisson — ART_PARAMETER_F_SUPPORT_LOW_HIGH_OFFICIAL, section
-    17). F-support High = Fsiso par défaut (point de départ officiel : la
-    doc Dirac indique de partir haut puis de redescendre SEULEMENT si une
-    enceinte de support devient localisable — processus itératif, pas un
-    calcul unique), MAIS jamais au-delà de ce que l'enceinte peut
-    physiquement reproduire (fiche constructeur, `freq_max_hz`) — remarque
-    explicite de Steve (03/10) : 'il faut respecter les caractéristiques
-    des hauts-parleurs'. Note de vérification (03/10) : les caissons de
-    Steve (SVS 3000 Micro R|Evolution) ont en réalité une bande passante
-    officielle 20-230 Hz (±3dB, homecinesolutions.fr) — AU-DESSUS de
-    Fsiso (150 Hz), donc ce clamp matériel ne s'y déclenche PAS pour son
-    système précis ; il reste nécessaire pour toute enceinte (caisson ou
-    satellite) dont la fiche constructeur indique un plafond sous Fsiso,
-    cas générique couvert par cette fonction pour n'importe quel client."""
+    """F-support Low = la plus haute entre (limite basse constructeur +
+    marge de sécurité de 20 Hz) et le plancher officiel (50 Hz pour une
+    enceinte non-caisson, 20 Hz pour un caisson —
+    ART_PARAMETER_F_SUPPORT_LOW_HIGH_OFFICIAL, section 17). La marge de
+    20 Hz (kb.SPEAKER_LOW_FREQUENCY_SAFETY_MARGIN_HZ) est une règle de
+    sécurité demandée explicitement par Steve (03/10) : 'il ne faut pas
+    demander à une enceinte de descendre plus bas qu'elle ne peut au
+    risque de la détruire' — PAS une valeur officiellement documentée par
+    Dirac/StormAudio (vérifié, absente de knowledge_base.py malgré
+    recherche exhaustive), mais cohérente avec leur principe DOCUMENTÉ de
+    prévention de casse par excursion excessive (voir
+    ART_DISTORTION_PREVENTION_RULE_SMALL_SPEAKERS_LFE). F-support High =
+    Fsiso par défaut (point de départ officiel : la doc Dirac indique de
+    partir haut puis de redescendre SEULEMENT si une enceinte de support
+    devient localisable — processus itératif, pas un calcul unique), MAIS
+    jamais au-delà de ce que l'enceinte peut physiquement reproduire
+    (fiche constructeur, `freq_max_hz`) — remarque explicite de Steve
+    (03/10) : 'il faut respecter les caractéristiques des hauts-parleurs'.
+    Note de vérification (03/10) : les caissons de Steve (SVS 3000 Micro
+    R|Evolution) ont en réalité une bande passante officielle 20-230 Hz
+    (±3dB, homecinesolutions.fr) — AU-DESSUS de Fsiso (150 Hz), donc ce
+    clamp matériel ne s'y déclenche PAS pour son système précis ; il
+    reste nécessaire pour toute enceinte (caisson ou satellite) dont la
+    fiche constructeur indique un plafond sous Fsiso, cas générique
+    couvert par cette fonction pour n'importe quel client."""
     floor_hz = 20.0 if speaker.is_subwoofer else kb.DIRAC_DEFAULT_LOW_FLOOR_HZ
-    f_support_low = max(speaker.freq_min_hz, floor_hz)
+    margin = kb.SPEAKER_LOW_FREQUENCY_SAFETY_MARGIN_HZ
+    f_support_low = max(speaker.freq_min_hz + margin, floor_hz)
     f_support_high = min(fsiso_hz, speaker.freq_max_hz)
     clamped_by_hardware = f_support_high < fsiso_hz
     # Garde-fou : une fiche constructeur mal renseignée ne doit jamais
@@ -764,8 +784,11 @@ def calculate_support_frequency_range(
         freq_range_hz=(round(f_support_low, 1), round(f_support_high, 1)),
         detail=(
             f"F-support Low basé sur la fiche constructeur "
-            f"({speaker.freq_min_hz:.0f} Hz) plafonné au plancher officiel "
-            f"({floor_hz:.0f} Hz pour "
+            f"({speaker.freq_min_hz:.0f} Hz) + {margin:.0f} Hz de marge de "
+            "sécurité (règle demandée par Steve, non officiellement "
+            "documentée par Dirac/StormAudio mais cohérente avec leur "
+            "principe de prévention de casse par excursion excessive), "
+            f"le tout plafonné au plancher officiel ({floor_hz:.0f} Hz pour "
             f"{'un caisson' if speaker.is_subwoofer else 'une enceinte non-caisson'}"
             f"). F-support High part de Fsiso ({fsiso_hz:.0f} Hz, valeur par "
             f"défaut officielle ou personnalisée si réglée) mais ne dépasse "

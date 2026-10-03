@@ -136,6 +136,22 @@ MAX_FULL_RANGE_SUPPORT_HZ = 150.0
 """Une enceinte capable de descendre suffisamment peut servir de support
 jusqu'à cette fréquence. [StormAudio]"""
 
+SPEAKER_LOW_FREQUENCY_SAFETY_MARGIN_HZ = 20.0
+"""Marge de sécurité demandée explicitement par Steve (03/10) : 'il ne faut
+pas demander à une enceinte de descendre plus bas qu'elle ne peut au risque
+de la détruire ; on applique une marge de 20Hz.' [Retour d'expérience
+Steve — PAS une valeur chiffrée trouvée dans la documentation officielle
+Dirac ou StormAudio malgré recherche exhaustive dans ce fichier ; à ne
+jamais présenter comme une règle éditeur]. Reste cohérent avec le principe
+officiel DOCUMENTÉ par Dirac (voir ART_DISTORTION_PREVENTION_RULE_SMALL_
+SPEAKERS_LFE) : pousser une enceinte jusqu'à sa limite basse EXACTE
+annoncée par le constructeur (souvent un point -3dB, pas une coupure nette)
+l'expose à un risque de distorsion voire de casse par excursion excessive
+si ART applique un gain de correction dans cette zone. Appliquée en ajout
+à `freq_min_hz` AVANT de comparer au plancher officiel Dirac
+(DIRAC_DEFAULT_LOW_FLOOR_HZ / 20 Hz caisson), jamais en remplacement de
+celui-ci."""
+
 ART_REPLACES_MANUAL_CROSSOVER = True
 """Fait confirmé par lecture directe du manuel Dirac Live (FAQ) : une fois
 qu'un filtre ART est actif, il n'est plus possible de régler une fréquence
