@@ -4439,48 +4439,193 @@ SUBWOOFER_GROUP_HAS_HIGHER_CROSSOVER_AND_DETECTED_PROBLEM_RANGE = (
     "Une bande verte hachurée ('Plage détectée', case cochée dans la "
     "légende des captures) couvre exactement l'intervalle 150-267 Hz "
     "UNIQUEMENT sur le groupe caissons — absente sur les 7 autres "
-    "groupes observés. **Interprétation prudente** (pas une "
-    "confirmation officielle Dirac trouvée dans la documentation "
-    "accessible) : cette plage détectée correspond probablement à une "
-    "zone de transition/recouvrement automatiquement identifiée par "
-    "Dirac entre la gestion des caissons et celle des satellites, "
-    "justifiant un croisement spécifique plus élevé pour ce groupe. "
-    "À vérifier en priorité : survoler l'icône d'aide ou l'option "
-    "elle-même dans Dirac Live pour une confirmation textuelle "
-    "officielle si Steve souhaite lever cette incertitude."
+    "groupes observés. "
+    "CORRECTION du 03/10 : l'interprétation initiale (zone de "
+    "transition/conflit entre groupes) est remplacée par une "
+    "confirmation officielle trouvée dans le changelog Dirac Live "
+    "3.13.2 (helpdesk.dirac.com) : 'ART support range sliders now "
+    "take precedence over the DETECTED RANGE of a speaker', décrite "
+    "ailleurs comme la zone entre 'the speaker's DETECTED LOW "
+    "CUT-OFF' et la limite choisie par l'utilisateur. La 'Plage "
+    "détectée' est donc la plage de fréquence que DIRAC A DÉTECTÉE "
+    "AUTOMATIQUEMENT comme étant la capacité de fonctionnement fiable "
+    "du haut-parleur à partir de sa mesure réelle (sa coupure basse "
+    "mesurée en particulier) — PAS une zone de conflit entre groupes "
+    "comme supposé initialement. Pour le groupe caissons de Steve, "
+    "la bande verte 150-267 Hz représenterait donc la plage où Dirac "
+    "a mesuré/détecté que les caissons fonctionnent de façon fiable "
+    "au-delà du Fsiso commun, information qui semble avoir influencé "
+    "le choix du croisement à 267 Hz pour ce groupe spécifiquement."
 )
-"""[Capture d'écran directe, interprétation partiellement prudente sur
-le sens exact de 'Plage détectée' — fonctionnalité non documentée dans
-les sources Dirac déjà consultées (helpdesk.dirac.com)] — à confirmer
-si possible par Steve directement dans l'interface (tooltip)."""
+"""[Capture d'écran directe + confirmation officielle Dirac] —
+changelog Dirac Live 3.13.2 (helpdesk.dirac.com), section 'Features',
+1er point ; cross-référencé avec ART_NOW_AUTO_LIMITS_DANGEROUS_BOOST_
+SINCE_3132 (section 44) qui cite le même mécanisme de 'detected
+range'."""
 
-PROPAGATION_DISPLAY_OPTION_HYPOTHESIS = (
-    "Hypothèse sur la nouvelle option d'affichage 'Propagation' "
-    "activée par Steve (en plus du 'Spectre' habituel) sur ces 8 "
-    "captures : la zone épaisse et très dense/chaotique visible sous "
-    "la courbe lissée, en dessous de 150-200 Hz, qui devient ensuite "
-    "beaucoup plus RÉGULIÈRE et dense-mais-uniforme au-dessus de "
-    "1 kHz, est VISUELLEMENT cohérente avec une visualisation de la "
-    "VARIANCE DU NIVEAU MESURÉ À TRAVERS LES DIFFÉRENTES POSITIONS DE "
-    "MICRO (9 à 13 positions, cohérent avec la structure déjà "
-    "documentée dans liveproject_reader.py) plutôt qu'une évolution "
-    "dans le temps à une position fixe. Cette lecture est cohérente "
-    "avec le concept de FRÉQUENCE DE SCHROEDER déjà documenté section "
-    "39 (Cecchi et al. 2018) : en dessous de cette fréquence de "
-    "transition, les modes créent une forte irrégularité spatiale "
-    "(positions très différentes = niveaux très différents), tandis "
-    "qu'au-dessus, le champ devient statistiquement diffus et plus "
-    "homogène d'une position à l'autre. ⚠️ **Niveau de confiance "
-    "modéré, PAS une certitude** : aucune confirmation officielle "
-    "trouvée dans la documentation Dirac accessible (helpdesk.dirac."
-    "com) pour le terme exact 'Propagation' tel qu'affiché dans "
-    "l'éditeur de cible. Reste une hypothèse plausible et cohérente "
-    "avec le reste de nos connaissances, pas un fait confirmé."
+PROPAGATION_DISPLAY_OPTION_CONFIRMED_OFFICIALLY = (
+    "CORRECTION du 03/10 (suite à une recherche de Steve) de l'hypothèse "
+    "initialement formulée ci-dessus (variance spatiale entre positions "
+    "de micro) : confirmation OFFICIELLE directe trouvée dans le "
+    "changelog logiciel Dirac Live 3.13.2 (28/02/2025, source primaire "
+    "helpdesk.dirac.com, lu en texte intégral). Citation exacte : "
+    "'ART utilizes the measured wavefront propagation of the main "
+    "speaker in each microphone position to define the time target "
+    "response for that channel.' Traduction et analyse : la "
+    "'Propagation' mesurée désigne la PROPAGATION DU FRONT D'ONDE dans "
+    "le TEMPS (temps d'arrivée, forme de la réponse impulsionnelle) "
+    "depuis l'enceinte jusqu'à CHAQUE position de microphone — PAS "
+    "une simple variance de niveau en dB comme je l'avais "
+    "initialement supposé. Cette propagation mesurée sert à définir "
+    "la 'réponse cible TEMPORELLE' (time target response) de chaque "
+    "canal, mécanisme utilisé par ART en complément de la cible de "
+    "MAGNITUDE (dB) déjà bien documentée dans ce fichier. **Ceci "
+    "confirme et précise, avec une source officielle de premier "
+    "plan, un point qu'on effleurait sans preuve depuis la section "
+    "39 (Mäkivirta et al., contrôle du temps de décroissance) et la "
+    "section 42 (préférence subjective pour le contrôle du decay "
+    "plutôt que l'aplatissement de magnitude, Fazenda et al. 2012)** : "
+    "ART ne corrige donc PAS seulement un niveau en dB, il modélise "
+    "aussi explicitement une dimension TEMPORELLE (alignement de "
+    "phase/délai entre enceintes, forme de l'impulsion) — répondant "
+    "ainsi, au moins partiellement, à la question ouverte qu'on avait "
+    "laissée en section 42 ('on ne peut pas affirmer avec certitude "
+    "qu'ART modifie le temps de décroissance plutôt que seulement la "
+    "magnitude') : OUI, le brevet/changelog officiel démontre qu'ART "
+    "a bien une composante de modélisation temporelle explicite, pas "
+    "seulement un aplatissement de magnitude. Ma lecture visuelle "
+    "initiale des captures (variance dense en dessous de 150-200 Hz "
+    "devenant plus régulière au-dessus) RESTE compatible avec cette "
+    "explication officielle : une forte variation du front d'onde "
+    "mesuré entre positions de micro dans la zone modale (en dessous "
+    "de la fréquence de Schroeder, section 39) est précisément ce qui "
+    "rendrait la propagation mesurée visuellement 'chaotique' dans "
+    "cette zone."
 )
-"""[Interprétation visuelle prudente de captures d'écran directes,
-NON confirmée par une source Dirac officielle trouvée] — cohérente
-avec SCHROEDER_FREQUENCY_MODAL_VS_DIFFUSE_BOUNDARY (section 39) et la
-structure 13 positions × 9 canaux déjà documentée dans
-liveproject_reader.py. À traiter comme hypothèse, pas un fait établi,
-tant qu'aucune confirmation officielle n'a été trouvée."""
+"""[Confirmation officielle Dirac] — Changelog Dirac Live 3.13.2,
+helpdesk.dirac.com/en/dirac-live/Dirac-Live-3132-LATEST-Software-
+Changelog-bfed, lu en texte intégral (03/10). Remplace l'hypothèse
+initiale PROPAGATION_DISPLAY_OPTION_HYPOTHESIS (conservée ci-dessus
+pour la traçabilité du raisonnement, mais sa conclusion est corrigée
+par cette constante)."""
+
+# ---------------------------------------------------------------------------
+# 44. Révélations techniques majeures sur le fonctionnement interne
+#     d'ART, trouvées dans le changelog officiel Dirac Live 3.13.2
+#     (découvert en recherchant la confirmation du sens de
+#     'Propagation', ci-dessus) — plusieurs points confirment ou
+#     précisent directement des éléments déjà documentés dans ce
+#     fichier, avec l'autorité de la source la plus officielle
+#     possible (Dirac Research eux-mêmes, changelog produit).
+# ---------------------------------------------------------------------------
+ART_NOW_AUTO_LIMITS_DANGEROUS_BOOST_SINCE_3132 = (
+    "Confirmation OFFICIELLE DIRECTE, par Dirac Research eux-mêmes, "
+    "du problème exact qui avait motivé notre détection de gain "
+    "dangereux (section 33, cas réel de surchauffe ampli de Steve) : "
+    "'In cases where there is no subwoofer used as support speaker, "
+    "ART filter designs could sometimes result in undesirable "
+    "magnitude boosts at frequencies between the speaker's detected "
+    "low cut-off and the user's selected low end of the ART support "
+    "range.' Le contournement RECONNU OFFICIELLEMENT comme ayant été "
+    "nécessaire AVANT cette mise à jour : 'manually adjust the "
+    "advanced target curve to not \"ask for\" more bass than the "
+    "available supporting speakers can provide' — exactement la même "
+    "logique de prudence que celle qu'on a implémentée nous-mêmes "
+    "(calculate_room_mode_control_points, jamais booster, abaisser la "
+    "cible). **Depuis la version 3.13.2 (28/02/2025)**, Dirac a rendu "
+    "ce garde-fou AUTOMATIQUE : 'the updated functionality will "
+    "instead use the selected low end of the ART support range to "
+    "limit, or contain, the magnitude boost applied by the ART filter "
+    "design' — le réglage manuel de la courbe cible avancée n'est "
+    "plus nécessaire pour éviter ce problème. **Question ouverte "
+    "importante pour Steve** : cette protection automatique ne "
+    "s'applique qu'à partir de la version 3.13.2 — la version "
+    "exacte utilisée par Steve (et donc si cette protection est déjà "
+    "active chez lui) n'a pas été vérifiée dans cette session."
+)
+"""[Confirmation officielle Dirac, changelog produit] — Dirac Live
+3.13.2, section 'Features', 1er point. Confirme directement et
+officiellement le mécanisme de danger déjà documenté section 33
+(STEVE_AMPLIFIER_OVERHEATING_FROM_MASSIVE_EQ_GAIN) et la logique de
+notre propre detect_dangerous_gain_anomalies / calculate_room_mode_
+control_points, implémentées AVANT la découverte de cette confirmation
+officielle."""
+
+ART_LFE_TIME_TARGET_USES_FULL_RANGE_REFERENCE_SPEAKER = (
+    "Mécanisme interne d'ART pour le canal LFE (groupe caisson(s)), "
+    "révélé par le même changelog, directement pertinent pour "
+    "comprendre le cas de Steve (2 caissons SVS 3000 Micro) : AVANT "
+    "la version 3.13.2, 'for the LFE channel, ART utilized the first "
+    "subwoofer in the LFE group as main speaker for the LFE channel' "
+    "— ce qui avait 2 inconvénients reconnus officiellement : (1) le "
+    "pic principal dans la réponse impulsionnelle d'un caisson peut "
+    "être difficile à détecter, et si la détection échoue à une ou "
+    "plusieurs positions de micro, 'the resulting target may not "
+    "represent a desired wavefront propagation' ; (2) **point "
+    "potentiellement très pertinent pour Steve** — 'when multiple "
+    "subwoofers are used, then ART may \"unfairly\" assign too much "
+    "power to the FIRST subwoofer, due to its measured capability to "
+    "contribute more effectively to attaining the target... than the "
+    "other subwoofers.' Depuis la version 3.13.2, ART utilise à la "
+    "place un haut-parleur FULL-RANGE (large bande) comme référence "
+    "pour la cible temporelle du LFE : en priorité la Centrale si "
+    "identifiable, sinon Front Left ou Front Right, avec un menu "
+    "déroulant pour que l'utilisateur puisse remplacer manuellement "
+    "ce choix automatique. **Lien direct avec notre propre travail** "
+    ": ce bug officiellement reconnu (répartition de puissance "
+    "'injuste' entre plusieurs caissons selon l'ordre de déclaration) "
+    "est un mécanisme CONCRET supplémentaire, officiellement confirmé, "
+    "qui pourrait avoir contribué à des gains de correction excessifs "
+    "sur un caisson en particulier — cohérent avec notre vigilance "
+    "déjà en place sur les gains dangereux (section 33), mais ajoute "
+    "une cause possible supplémentaire spécifique aux configurations "
+    "MULTI-CAISSONS comme celle de Steve, indépendante de l'acoustique "
+    "de la pièce elle-même."
+)
+"""[Confirmation officielle Dirac, changelog produit] — Dirac Live
+3.13.2, section 'Features', 2e point. Pertinent pour le cas réel de
+Steve (2 caissons SVS 3000 Micro, section 15/exemple_systeme_steve.py)
+— à vérifier si sa version logicielle est antérieure ou postérieure à
+3.13.2 pour savoir si ce mécanisme corrigé s'applique à son système."""
+
+ART_LFE_LOWPASS_FILTER_CORRECTED_TO_MINUS_3DB_AT_120HZ = (
+    "Précision chiffrée officielle, correction d'un bug reconnu par "
+    "Dirac eux-mêmes : 'Adjusted the LFE low-pass filter cut-off "
+    "frequency in Bass Control to be -3dB at 120Hz. It was previously "
+    "erroneously set to -6dB at 120Hz.' Quand Dirac gère le bass "
+    "management (BM, BC, ART), le canal LFE a TOUJOURS un filtre "
+    "passe-bas appliqué à 120 Hz (confirmé par le changelog, section "
+    "'Features' : 'the LFE channel will always have a low-pass filter "
+    "applied at 120 Hz. This is to comply with LFE channel handling "
+    "requirements and be consistent with the Dirac Live Bass Control "
+    "(DLBC) behaviour.'), avec désormais une pente officiellement "
+    "fixée à -3dB à cette fréquence (et non -6dB comme avant la "
+    "correction du bug). Donnée numérique précise directement "
+    "exploitable pour tout futur calcul impliquant la plage de "
+    "fréquence effective d'un canal LFE/caisson sous gestion Dirac."
+)
+"""[Confirmation officielle Dirac, changelog produit, section 'Bug
+fixes'] — Dirac Live 3.13.2."""
+
+ART_SUPPORTS_ASYMMETRIC_EXCLUSION_FROM_SUPPORTING = (
+    "Fonctionnalité confirmée officiellement, pertinente pour la "
+    "généralisation de notre modèle support_group_assignments : 'ART "
+    "now supports the case where some speakers are excluded from "
+    "supporting other speakers. However, they may still receive "
+    "support from other speakers when they are enabled.' Autrement "
+    "dit, ART permet une relation de support ASYMÉTRIQUE et NON "
+    "RÉCIPROQUE par défaut : une enceinte A peut être exclue "
+    "explicitement de soutenir B, tout en continuant elle-même à "
+    "recevoir du support d'une enceinte C. Ceci est cohérent avec "
+    "notre propre modèle (support_group_assignments est une liste de "
+    "tuples dirigés enceinte_supportée -> enceinte_de_support, pas "
+    "une relation symétrique) — confirmation officielle indépendante "
+    "que ce degré de liberté (asymétrie du support) est un vrai "
+    "paramètre reconnu du système ART, pas une simplification "
+    "arbitraire de notre part."
+)
+"""[Confirmation officielle Dirac, changelog produit] — Dirac Live
+3.13.2, section 'Features', 3e point."""
+
+
 

@@ -3630,3 +3630,42 @@ articles lus, concurrents repérés, retours clients...)_
   unitaires + `example_run.py` + `exemple_systeme_steve.py` repassés
   avec succès : aucune régression (documentation pure).
 
+- (03/10, suite 49) **🔧 Correction + révélations majeures sur le
+  fonctionnement interne d'ART (changelog officiel Dirac Live 3.13.2)**
+
+  Steve a trouvé via une recherche IA une explication du terme
+  "Propagation" avec plusieurs sources de fiabilité inégale. Vérifié
+  directement à la source officielle (helpdesk.dirac.com, changelog
+  Dirac Live 3.13.2, 28/02/2025) plutôt que d'accepter telle quelle une
+  synthèse tierce — confirmation trouvée, mais surtout une mine
+  d'informations inédites sur le fonctionnement interne d'ART.
+
+  **Corrections apportées** : l'hypothèse précédente sur "Propagation"
+  (variance spatiale) est remplacée par la citation officielle : "ART
+  utilizes the measured wavefront propagation of the main speaker in
+  each microphone position to define the TIME target response for
+  that channel" — confirme qu'ART modélise une dimension TEMPORELLE
+  explicite, pas seulement la magnitude (répond à une question ouverte
+  laissée en section 42). La "Plage détectée" est aussi corrigée : ce
+  n'est pas une zone de conflit entre groupes mais la plage de
+  fréquence que Dirac détecte automatiquement comme fiable pour un
+  haut-parleur donné.
+
+  **Découvertes majeures** (section 44, 4 nouvelles constantes) :
+  - Dirac confirme OFFICIELLEMENT le problème qu'on avait identifié
+    nous-mêmes (section 33, surchauffe ampli de Steve) : sans caisson
+    comme support, ART pouvait demander des boosts indésirables. Depuis
+    la 3.13.2, c'est désormais limité automatiquement.
+  - Bug corrigé pertinent pour Steve (2 caissons) : avant 3.13.2, ART
+    pouvait assigner "injustement" trop de puissance au premier
+    caisson déclaré. Utilise maintenant un haut-parleur full-range
+    (Centre en priorité) comme référence temporelle pour le LFE.
+  - Filtre passe-bas LFE corrigé à -3dB/120Hz (était -6dB par erreur).
+  - ART supporte le support asymétrique (A exclu de supporter B, mais
+    A peut quand même recevoir du support de C) — confirme notre
+    propre modèle support_group_assignments.
+
+  5 constantes au total (2 corrections + 4 nouvelles, dont 1 fusionnée)
+  en sections 43-44. 42 tests unitaires + scripts d'exemple repassés
+  avec succès : aucune régression (documentation pure).
+
