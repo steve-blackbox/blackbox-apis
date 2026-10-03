@@ -283,6 +283,97 @@ def recommend_support_groups(speakers: list[Speaker]) -> list[Recommendation]:
     return recs
 
 
+def recommend_support_pairings(speakers: list[Speaker]) -> list[Recommendation]:
+    """Déduit le groupage de support DÉCISIF pour CHAQUE enceinte
+    non-caisson, à partir du SEUL système réel déclaré par le client
+    (rôles présents) — jamais d'un groupage renseigné manuellement par
+    l'opérateur. Répond explicitement à la demande de Steve (03/10) :
+    l'algorithme doit conseiller n'importe quel client à partir de SON
+    système, pas reproduire un choix fait pour un autre système.
+
+    Choix volontairement tranché, PAS une liste d'options à tester : le
+    groupage avec le(s) caisson(s) est toujours la recommandation
+    retenue quand des caissons existent (hiérarchie officielle
+    STORM_AUDIO_SUPPORT_HIERARCHY, "caissons d'abord"/"caissons (LFE)"
+    pour tous les rôles concernés) — jamais une instruction du type
+    "essayez, et changez si l'enceinte se localise", jugée inexploitable
+    par un client (remarque explicite de Steve, 03/10 : "il faut donner
+    le réglage optimal tout de suite [...] ça c'est pas possible").
+    Le niveau de support PRÉCIS correspondant (en dB, à partir des
+    mesures réelles) est calculé séparément par run_diagnostic via
+    calculate_precise_support_level_db, en utilisant ce même groupage
+    par défaut (voir section "déduction automatique" dans run_diagnostic)."""
+    subs = [s for s in speakers if s.is_subwoofer]
+    recs: list[Recommendation] = []
+
+    if not subs:
+        return recs
+
+    sub_names = ", ".join(s.name for s in subs)
+    for speaker in speakers:
+        if speaker.is_subwoofer:
+            continue
+        if speaker.role == Role.CENTER:
+            recs.append(
+                Recommendation(
+                    category="Groupage de support recommandé",
+                    target=speaker.name,
+                    action=f"Support retenu : {sub_names}.",
+                    evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+                    detail=(
+                        "La Centrale ne doit JAMAIS servir de support à "
+                        "une autre enceinte (porte déjà l'essentiel des "
+                        "dialogues), mais elle peut et doit recevoir le "
+                        "support des caissons comme les autres canaux."
+                    ),
+                )
+            )
+            continue
+
+        recs.append(
+            Recommendation(
+                category="Groupage de support recommandé",
+                target=speaker.name,
+                action=f"Support retenu : {sub_names}.",
+                evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+                detail=(
+                    "Déduit automatiquement du système déclaré (présence "
+                    "de caisson(s), rôle de l'enceinte), pas d'un choix "
+                    "renseigné manuellement — conforme à la hiérarchie "
+                    "officielle StormAudio qui place toujours le(s) "
+                    "caisson(s) en premier pour ce rôle."
+                ),
+            )
+        )
+
+        alt_role = kb.SUPPORT_PAIRING_ROLE_MAP.get(speaker.role)
+        alt_speaker = next((s for s in speakers if s.role == alt_role), None) if alt_role else None
+        if alt_speaker is not None:
+            recs.append(
+                Recommendation(
+                    category="Groupage de support — configuration alternative existante",
+                    target=speaker.name,
+                    action=(
+                        f"Configuration croisée avec {alt_speaker.name} "
+                        f"(enceinte à hauteur d'oreille) : pratiquée par "
+                        f"certains clients, acceptée par la hiérarchie "
+                        f"officielle, mais PAS la recommandation retenue "
+                        f"ici — le support par caisson reste le réglage "
+                        f"décisif par défaut."
+                    ),
+                    evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+                    detail=(
+                        "Mentionné à titre informatif seulement : si cette "
+                        "configuration alternative est effectivement en "
+                        "place, son niveau de support précis peut être "
+                        "calculé sur demande à partir des mesures réelles "
+                        "(voir support_group_assignments de run_diagnostic)."
+                    ),
+                )
+            )
+    return recs
+
+
 def recommend_frequency_ranges(speakers: list[Speaker]) -> list[Recommendation]:
     recs: list[Recommendation] = []
     for speaker in speakers:
@@ -809,6 +900,7 @@ def run_diagnostic(
     report.warnings.extend(detect_dangerous_gain_anomalies(report.anomalies))
 
     report.recommendations.extend(recommend_support_groups(speakers))
+    report.recommendations.extend(recommend_support_pairings(speakers))
     report.recommendations.extend(recommend_frequency_ranges(speakers))
     report.recommendations.extend(
         recommend_target_curves(speakers, target_curve_preference)
@@ -824,10 +916,39 @@ def run_diagnostic(
         )
 
     # Calculs précis génériques : niveau de support à 0,5 dB près, pour
-    # CHAQUE relation support->principal déclarée par le client (quelle
-    # qu'elle soit, standard ou personnalisée).
+    # CHAQUE relation support->principal — DÉDUITE automatiquement par
+    # défaut (caisson(s) supportant chaque enceinte non-caisson/non
+    # déjà couverte par une déclaration explicite du client), complétée
+    # par les relations personnalisées/croisées explicitement déclarées
+    # (support_group_assignments). Répond à la demande de Steve (03/10) :
+    # l'algorithme doit conseiller n'importe quel client à partir de SON
+    # système, pas seulement calculer ce qu'on lui a dit de calculer, et
+    # produire une valeur décisive, pas une hypothèse à tester en salle.
     measurements_by_name = {m.speaker.name: m for m in measurements}
-    for support_name, main_name, crossover_hz in (support_group_assignments or []):
+    declared_assignments = list(support_group_assignments or [])
+    declared_main_names = {main_name for _, main_name, _ in declared_assignments}
+
+    auto_assignments: list[tuple[str, str, float]] = []
+    subs = [s for s in speakers if s.is_subwoofer]
+    if subs:
+        sub_name = subs[0].name
+        for speaker in speakers:
+            if speaker.is_subwoofer or speaker.name in declared_main_names:
+                continue
+            auto_assignments.append(
+                (sub_name, speaker.name, kb.MANUAL_CROSSOVER_DEFAULT_OTHERS_HZ)
+            )
+        if auto_assignments:
+            report.warnings.append(
+                f"Niveau de support calculé automatiquement pour "
+                f"{len(auto_assignments)} enceinte(s) en supposant un "
+                f"groupage par défaut avec {sub_name} à "
+                f"{kb.MANUAL_CROSSOVER_DEFAULT_OTHERS_HZ:.0f} Hz (crossover "
+                f"d'usine Marantz pour les canaux hors Front) — à ajuster "
+                f"uniquement si le crossover réellement configuré diffère."
+            )
+
+    for support_name, main_name, crossover_hz in declared_assignments + auto_assignments:
         support_m = measurements_by_name.get(support_name)
         main_m = measurements_by_name.get(main_name)
         if support_m is None or main_m is None:

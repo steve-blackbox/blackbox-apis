@@ -35,6 +35,7 @@ from diagnostic_engine import (
     diagnose_anomaly,
     evaluate_subwoofer_pre_gain_headroom_strategy,
     recommend_support_groups,
+    recommend_support_pairings,
     recommend_target_curves,
     run_diagnostic,
 )
@@ -166,6 +167,71 @@ class TestRecommendSupportGroups(unittest.TestCase):
         ]
         recs = recommend_support_groups(speakers)
         self.assertTrue(len(recs) >= 1)
+
+
+class TestRecommendSupportPairings(unittest.TestCase):
+    """Vérifie que le groupage de support est DÉDUIT du système réel du
+    client (rôles présents), de façon générique pour N'IMPORTE QUELLE
+    configuration (pas seulement celle de Steve) — exigence explicite de
+    Steve (03/10) : 'il y aura des configurations totalement différentes
+    à la mienne [...] il y a tout un tas d'autres possibilités'."""
+
+    def test_decisive_subwoofer_support_for_every_non_sub_speaker(self) -> None:
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=45),
+            Speaker("Façade Droite", Role.FRONT_RIGHT, freq_min_hz=45),
+            Speaker("Centrale", Role.CENTER, freq_min_hz=60),
+            Speaker("Surround Gauche", Role.SURROUND_LEFT, freq_min_hz=80),
+            Speaker("Surround Droite", Role.SURROUND_RIGHT, freq_min_hz=80),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        recs = recommend_support_pairings(speakers)
+        decisive = [r for r in recs if r.category == "Groupage de support recommandé"]
+        # Une recommandation décisive par enceinte non-caisson, jamais pour
+        # le caisson lui-même.
+        self.assertEqual(len(decisive), 5)
+        for rec in decisive:
+            self.assertEqual(rec.action, "Support retenu : Caisson.")
+
+    def test_no_subwoofer_in_system_yields_no_recommendation(self) -> None:
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=45),
+            Speaker("Façade Droite", Role.FRONT_RIGHT, freq_min_hz=45),
+        ]
+        self.assertEqual(recommend_support_pairings(speakers), [])
+
+    def test_center_never_offered_as_an_alternative_support_donor(self) -> None:
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=45),
+            Speaker("Façade Droite", Role.FRONT_RIGHT, freq_min_hz=45),
+            Speaker("Centrale", Role.CENTER, freq_min_hz=60),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        recs = recommend_support_pairings(speakers)
+        alternatives = [
+            r for r in recs
+            if r.category == "Groupage de support — configuration alternative existante"
+        ]
+        self.assertTrue(all("Centrale" not in r.action for r in alternatives))
+
+    def test_alternative_mentioned_only_decisive_recommendation_stays_subwoofer(self) -> None:
+        """Même quand une configuration croisée alternative existe (ex.
+        Surround Back disponible), la recommandation DÉCISIVE reste le
+        caisson — jamais une instruction 'testez et changez si besoin'."""
+        speakers = [
+            Speaker("Surround Gauche", Role.SURROUND_LEFT, freq_min_hz=80),
+            Speaker("Surround Back Gauche", Role.SURROUND_BACK_LEFT, freq_min_hz=80),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        recs = recommend_support_pairings(speakers)
+        decisive = [
+            r for r in recs
+            if r.category == "Groupage de support recommandé" and r.target == "Surround Gauche"
+        ]
+        self.assertEqual(len(decisive), 1)
+        self.assertEqual(decisive[0].action, "Support retenu : Caisson.")
+        self.assertNotIn("essayez", decisive[0].action.lower())
+        self.assertNotIn("si besoin", decisive[0].action.lower())
 
 
 class TestRecommendTargetCurves(unittest.TestCase):
@@ -492,6 +558,67 @@ class TestRunDiagnosticSupportsCustomGrouping(unittest.TestCase):
             support_group_assignments=[("Nom Inexistant", "Surround Right", 80.0)],
         )
         self.assertTrue(any("introuvable" in w for w in report.warnings))
+
+
+class TestRunDiagnosticAutoDeducesSupportLevel(unittest.TestCase):
+    """Le niveau de support précis doit être calculé AUTOMATIQUEMENT (pas
+    seulement pour un groupage déclaré manuellement) dès qu'un caisson
+    existe dans le système — exigence explicite de Steve (03/10) :
+    'l'algorithme doit être en mesure de conseiller le client [...] en
+    fonction de son système et pas du mien'."""
+
+    def test_every_non_sub_speaker_gets_a_precise_level_without_any_declaration(self) -> None:
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=45),
+            Speaker("Surround Gauche", Role.SURROUND_LEFT, freq_min_hz=80),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        measurements = [
+            SpeakerMeasurement(speakers[0], [MeasurementPoint(80, 0.0)]),
+            SpeakerMeasurement(speakers[1], [MeasurementPoint(80, -3.0)]),
+            SpeakerMeasurement(speakers[2], [MeasurementPoint(80, -5.0)]),
+        ]
+        report = run_diagnostic(
+            speakers=speakers,
+            measurements=measurements,
+            service_level=ServiceLevel.ESSENTIEL,
+            # Aucun support_group_assignments fourni : doit être déduit.
+        )
+        precise_recs = {
+            r.target: r.precise_value_db
+            for r in report.recommendations
+            if r.precise_value_db is not None
+        }
+        self.assertEqual(len(precise_recs), 2)
+        self.assertEqual(precise_recs["Caisson -> Façade Gauche"], -5.0)
+        self.assertEqual(precise_recs["Caisson -> Surround Gauche"], -2.0)
+
+    def test_declared_custom_grouping_is_not_duplicated_by_auto_deduction(self) -> None:
+        speakers = [
+            Speaker("Surround Right", Role.SURROUND_RIGHT, freq_min_hz=53),
+            Speaker("Surround Back Right", Role.SURROUND_BACK_RIGHT, freq_min_hz=53),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        measurements = [
+            SpeakerMeasurement(speakers[0], [MeasurementPoint(80, 0.0)]),
+            SpeakerMeasurement(speakers[1], [MeasurementPoint(80, -7.0)]),
+            SpeakerMeasurement(speakers[2], [MeasurementPoint(80, -2.0)]),
+        ]
+        report = run_diagnostic(
+            speakers=speakers,
+            measurements=measurements,
+            service_level=ServiceLevel.ESSENTIEL,
+            support_group_assignments=[("Surround Back Right", "Surround Right", 80.0)],
+        )
+        precise_recs = [r for r in report.recommendations if r.precise_value_db is not None]
+        main_names = [r.target.split(" -> ")[1] for r in precise_recs]
+        # "Surround Right" ne doit apparaître qu'UNE fois comme cible
+        # principale (le groupage déclaré), pas une seconde fois via la
+        # déduction automatique caisson -> Surround Right.
+        self.assertEqual(main_names.count("Surround Right"), 1)
+        # Le caisson doit quand même supporter automatiquement l'autre
+        # enceinte non couverte par la déclaration (Surround Back Right).
+        self.assertIn("Surround Back Right", main_names)
 
 
 if __name__ == "__main__":

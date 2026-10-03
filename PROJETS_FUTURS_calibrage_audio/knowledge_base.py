@@ -343,6 +343,33 @@ STORM_AUDIO_SUPPORT_HIERARCHY: dict[Role, list[str]] = {
     Role.HEIGHT_REAR_RIGHT: ["surrounds (support de l'arrière)"],
 }
 
+SUPPORT_PAIRING_ROLE_MAP: dict[Role, Role] = {
+    Role.FRONT_LEFT: Role.FRONT_RIGHT,
+    Role.FRONT_RIGHT: Role.FRONT_LEFT,
+    Role.SURROUND_LEFT: Role.SURROUND_BACK_LEFT,
+    Role.SURROUND_RIGHT: Role.SURROUND_BACK_RIGHT,
+    Role.SURROUND_BACK_LEFT: Role.SURROUND_LEFT,
+    Role.SURROUND_BACK_RIGHT: Role.SURROUND_RIGHT,
+    Role.HEIGHT_FRONT_LEFT: Role.FRONT_LEFT,
+    Role.HEIGHT_FRONT_RIGHT: Role.FRONT_RIGHT,
+    Role.HEIGHT_REAR_LEFT: Role.SURROUND_LEFT,
+    Role.HEIGHT_REAR_RIGHT: Role.SURROUND_RIGHT,
+}
+"""Rôle d'enceinte à hauteur d'oreille associé à chaque rôle, dérivé
+directement de STORM_AUDIO_SUPPORT_HIERARCHY ci-dessus — rendu
+exploitable par le moteur de diagnostic pour nommer la VRAIE enceinte
+du système client (pas une description générique de rôle). Sert
+UNIQUEMENT à documenter qu'une configuration croisée alternative existe
+(groupage personnalisé déjà pratiqué par certains clients, ex. Steve) :
+la recommandation PAR DÉFAUT, décisive et calculée à partir des mesures
+réelles, reste toujours le groupage avec le(s) caisson(s) (voir
+recommend_support_pairings) — jamais une instruction du type "testez et
+changez si besoin", qui n'est pas un livrable exploitable pour un
+client (remarque explicite de Steve, 03/10). CENTER est volontairement
+absent (jamais utilisable comme support, voir l'entrée CENTER
+ci-dessus) et LFE n'a pas besoin d'un tel rôle de secours (déjà son
+propre groupe de support entre caissons)."""
+
 SEPARATE_GROUPS_FOR_DIFFERENT_CAPABILITIES = True
 """StormAudio recommande de séparer les enceintes de capacités différentes
 (surtout les caissons) en groupes individuels, au prix d'une configuration
