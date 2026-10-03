@@ -4627,5 +4627,322 @@ ART_SUPPORTS_ASYMMETRIC_EXCLUSION_FROM_SUPPORTING = (
 """[Confirmation officielle Dirac, changelog produit] — Dirac Live
 3.13.2, section 'Features', 3e point."""
 
+# ---------------------------------------------------------------------------
+# 45. COLLECTE EXHAUSTIVE du site officiel Dirac (helpdesk.dirac.com),
+#     demandée explicitement par Steve (03/10) : "récupère toute la
+#     totalité des notes, informations disponibles sur le site de dirac
+#     et met à jour notre documentation." Travail réalisé via 8 agents
+#     de recherche en parallèle (4 lots FAQ ART/Bass Control/Room
+#     Correction après filtrage du support générique, 3 lots de
+#     changelogs couvrant 99 versions uniques, dont un relancé après
+#     limite de budget) + téléchargement et lecture intégrale de 4 PDF
+#     officiels (Dirac Live User Manual 42p, Bass Control in Dirac Live
+#     manual 17p signé Lars-Johan Brännmark/Frans Rosencrantz/Mikael
+#     Ueno Andersson, "Bass Control where did my bass go" 5p signé Frans
+#     Rosencrantz, et surtout "Technical Guide: ART channel group and
+#     support settings" 5p — LE document technique le plus complet
+#     trouvé sur le sujet central de ce projet).
+#
+#     Cette section 45 documente les VALEURS OFFICIELLES EXACTES de
+#     TOUS les paramètres ART (enfin trouvées après plusieurs sessions
+#     de recherche infructueuse) et le guide de bonnes pratiques
+#     complet pour le groupage/support des enceintes.
+# ---------------------------------------------------------------------------
+ART_OFFICIAL_PARAMETERS_COMPLETE_TABLE = (
+    "TABLEAU OFFICIEL COMPLET des paramètres ART, trouvé sur la page "
+    "'Dirac Live Active Room Treatment Setup Guide' (helpdesk.dirac.com) "
+    "— les valeurs par défaut et plages légales cherchées depuis le "
+    "début de ce projet, ENFIN confirmées mot pour mot par la source "
+    "officielle : "
+    "**Fsiso** — 'The maximum frequency where speakers can support each "
+    "other', 'acts like a crossover frequency in a bass-managed "
+    "system' — défaut **150 Hz**, plage légale **50 à 150 Hz**. "
+    "**Group n is supported by** — 'Turns on or off the channels of "
+    "the group supporting the input channels of the ART group' — "
+    "défaut **On**, valeurs **On ou Off**. "
+    "**Support level** — 'Controls the amount of support the speakers "
+    "in this groups gives to the main speaker. -1 dB will contribute a "
+    "minimal amount, -24 dB will contribute a maximal amount' — défaut "
+    "**-18 dB** (valeur NOMINALE jusqu'ici absente de notre code, "
+    "seules les bornes -24/-1 y étaient déjà présentes et "
+    "CONFIRMÉES EXACTEMENT par cette source), plage légale **-24 à "
+    "-1 dB**. "
+    "**F-support Low** — 'Controls the lowest frequency of the Support "
+    "Range, where the support speakers in this group will contribute "
+    "to the selected main speaker group' — défaut **'Detected range'** "
+    "(valeur détectée automatiquement par Dirac, pas une constante "
+    "fixe), plage légale **20 Hz à Fsiso**. "
+    "**F-support High** — 'Controls the highest frequency of the "
+    "Support Range... For subwoofers, this value acts like a lowpass "
+    "filter applied to the input signal' — défaut **'Detected range'**, "
+    "plage légale **F-support Low à Fsiso**. "
+    "Condition d'activation d'ART : 'If you have less than 3 valid "
+    "measurements, including the sweetspot, you will not be able to "
+    "select the ART option' — minimum 3 mesures valides requis. "
+    "Licence : 'in order to use ART with one or more subwoofers, you "
+    "will also need to hold a Bass Control license' — ART seul "
+    "(sans caisson) ne nécessite pas forcément la licence Bass Control."
+)
+"""[Source officielle Dirac, page 'Dirac Live Active Room Treatment
+Setup Guide', helpdesk.dirac.com/en/dirac-art/Setup-Guide-c3cb] —
+lecture intégrale confirmée via agent de recherche dédié (03/10).
+CONFIRME EXACTEMENT nos constantes déjà codées avant cette découverte :
+SUPPORT_LEVEL_MIN_DB=-24.0, SUPPORT_LEVEL_MAX_DB=-1.0,
+ART_UPPER_BOUND_HZ=150.0, ART_LOWER_BOUND_HZ=20.0,
+DIRAC_DEFAULT_LOW_FLOOR_HZ=50.0 (diagnostic_engine.py/knowledge_base.py)
+— la valeur NOMINALE -18dB était la seule pièce manquante, maintenant
+ajoutée (SUPPORT_LEVEL_NOMINAL_DB)."""
+
+SUPPORT_LEVEL_NOMINAL_DB = -18.0
+"""Valeur NOMINALE/par défaut officielle du Support Level, confirmée à
+2 reprises indépendantes par la documentation Dirac (Setup Guide ET
+'Technical Guide: ART channel group and support settings') — voir
+ART_OFFICIAL_PARAMETERS_COMPLETE_TABLE ci-dessus. Vient compléter
+SUPPORT_LEVEL_MIN_DB/MAX_DB déjà présentes dans ce fichier."""
+
+ART_CROSS_TERMS_COMPUTATIONAL_LIMIT = (
+    "Découverte majeure du mécanisme technique EXACT qui limite le "
+    "nombre d'enceintes pouvant se supporter mutuellement — jamais "
+    "documenté avant cette collecte : 'There is a maximum allowed "
+    "number of CROSS TERMS which can be used. If this number is "
+    "breached you would see a warning... and have to de-select "
+    "supporting speakers.' Définition officielle : 'Cross terms in "
+    "Dirac ART refers to the specific calculations that coordinate how "
+    "different speakers in a system interact to cancel out unwanted "
+    "room resonances. They allow support speakers (any speaker capable "
+    "of playing below 150 Hz) to actively neutralize unwanted "
+    "resonances and reflection caused by a main speaker.' Coût de "
+    "calcul : 'One cross term is allocated every time a speaker is "
+    "selected to support another speaker. For example, if a speaker "
+    "group... consist of four speakers, it will cost four cross "
+    "terms.' Plafond : 'The maximum number of available cross terms is "
+    "DSP DEPENDENT... Dirac can not influence these numbers.' "
+    "Comportement par défaut : 'When an ART filter is calculated, "
+    "Dirac Live will automatically choose the most appropriate "
+    "speakers for support.' **Définition confirmée d'une 'enceinte de "
+    "support'** : toute enceinte capable de jouer en dessous de "
+    "150 Hz (= Fsiso par défaut) peut potentiellement être une "
+    "enceinte de support."
+)
+"""[Source officielle Dirac] — page 'Why can't I select all support
+speakers?' (Too much Support error), helpdesk.dirac.com/en/dirac-art/
+Why-cant-i-select-all-support-speakers. Confirme que la capacité de
+calcul du DSP de l'appareil (pas Dirac lui-même) limite la complexité
+du groupage ART possible — pertinent pour AmplifierChainSpec si on
+veut un jour modéliser cette contrainte."""
+
+ART_TECHNICAL_GUIDE_SUBWOOFER_GROUPING_BY_WALL_SUPPORT = (
+    "Document technique officiel COMPLET 'Technical Guide: ART channel "
+    "group and support settings' (PDF Dirac Research, 5 pages, lu en "
+    "texte intégral) — LA ressource la plus directement actionnable "
+    "trouvée sur le groupage de caissons. Règle de groupage par "
+    "CAPACITÉ : 'We recommend separating subwoofers with different "
+    "capabilities into separate channel groups.' **Règle de groupage "
+    "par SOUTIEN MURAL — nouvelle et jamais documentée avant cette "
+    "collecte** : 'We also recommend that if a subwoofer is positioned "
+    "with LESS support from near walls (i.e. standing near an opening "
+    "to a neighbouring room), then it should be grouped separately "
+    "from similar subwoofers that have MORE wall support (i.e. "
+    "standing in a corner of the listening room). The reason behind "
+    "this recommendation is that supporting walls significantly affect "
+    "the performance of a subwoofer in a room.' — confirmation "
+    "officielle supplémentaire du concept de room gain/renforcement "
+    "mural déjà documenté (section 39, Pedersen & Møller), appliqué "
+    "ici concrètement à une RECOMMANDATION DE GROUPAGE ART. Ajustement "
+    "du Support Range selon la bande passante réelle du caisson : "
+    "'If the subwoofer is relatively small, it may have a bandwidth "
+    "limitation in the low end, calling for a higher frequency value "
+    "than 20 Hz at the low end... If the subwoofer... is specifically "
+    "designed for very low frequencies, it may call for a frequency "
+    "value lower than 150 Hz in the high end.' **Méthode de travail "
+    "recommandée officiellement** : 'Consider only changing these "
+    "settings on ONE support group AT A TIME before pressing the "
+    "Calculate button, to see how the change impacts the overall "
+    "speaker co-optimization' — approche itérative, un paramètre à la "
+    "fois, jamais un changement global en une fois."
+)
+"""[Document technique officiel Dirac Research, PDF complet] —
+'Technical Guide: ART channel group and support settings', trouvé via
+lien sur la page helpdesk.dirac.com/en/dirac-art/How-to-ART-Channel-
+Group-and-Support-Settings-8382, hébergé sur mavenoidfiles.com, lu
+intégralement (5 pages, 10945 caractères extraits)."""
+
+ART_LFE_MAIN_CHANNEL_RULES_AND_DIRECTION_OF_ARRIVAL = (
+    "Même document officiel, règles précises sur le canal LFE "
+    "principal : 'Dirac Live requires that a device... declares one of "
+    "the speakers as the main speaker for the LFE channel. That main "
+    "speaker will serve as reference for the ART impulse response "
+    "correction at all the measured microphone positions.' Règle "
+    "empirique centrale : 'it should be taken as a main rule of thumb "
+    "to ONLY let subwoofers and large full-range speakers support the "
+    "LFE channel' — en pratique, désactiver le support des petites "
+    "enceintes vers le groupe LFE. **Confirmation scientifique "
+    "officielle de la non-directivité en basse fréquence, avec un "
+    "seuil chiffré** : 'There is a quite high consensus around the "
+    "non-audibility of direction-of-arrival of sounds below 80 Hz' — "
+    "cohérent avec nos recherches peer-reviewed indépendantes (section "
+    "42, Nastasa et al. 2023 : localisation possible mais faible et "
+    "dégradée par les modes même à 31,5/50/80 Hz). Cas où la règle de "
+    "non-directivité à 80Hz NE S'APPLIQUE PAS automatiquement : "
+    "'when the listening position is much closer to one of the "
+    "support speakers than to the main speaker it is supporting' — "
+    "solution proposée : sortir cette enceinte de support dans son "
+    "PROPRE groupe et réduire sa plage haute de support, avec un "
+    "exemple symétrique concret donné (séparer Front Left de Front "
+    "Right, et Left Surround de Right Surround, pour qu'un auditeur "
+    "assis près d'un surround reçoive moins de 'fuite' de l'autre "
+    "canal)."
+)
+"""[Document technique officiel Dirac Research] — même source que
+ART_TECHNICAL_GUIDE_SUBWOOFER_GROUPING_BY_WALL_SUPPORT ci-dessus,
+section 'LFE main channel'. Cross-référence avec section 42
+(LOW_FREQUENCY_LOCALIZATION_DEGRADED_BY_ROOM_MODES, Nastasa et al.
+2023) pour la cohérence scientifique de la non-directivité <80Hz."""
+
+ART_DIRECTIONAL_BASS_SETUP_PROCEDURE = (
+    "Procédure officielle COMPLÈTE pour configurer des 'basses "
+    "directionnelles' via ART (cas d'usage avancé jamais documenté "
+    "avant cette collecte) : 'Dirac Live ART will have this behaviour "
+    "as a natural consequence of the concept of main and support "
+    "speakers.' Procédure en 4 étapes : (1) séparer les caissons "
+    "destinés à un canal spécifique du groupe LFE en groupes distincts "
+    "; (2) séparer les enceintes principales associées à des caissons "
+    "spécifiques en groupes distincts (ex. sortir Front Right de son "
+    "groupe pour former un groupe Front Right seul et un groupe Front "
+    "Left seul) ; (3) pour chaque canal principal, activer les "
+    "caissons correspondants et ajuster leur Support Range/Level — "
+    "'This is not a binary on/off setup, but can be adjusted to make "
+    "more or less use of ART control' ; (4) ajuster optionnellement "
+    "les autres enceintes pour augmenter/réduire leur contribution à "
+    "la directivité. Valeurs suggérées identiques aux règles "
+    "générales : Support Level -24dB pour maximiser la contribution "
+    "d'un caisson directionnel, -6dB et Support Range réduite "
+    "au-dessus de 80Hz pour les autres caissons à minimiser."
+)
+"""[Document technique officiel Dirac Research] — même source, section
+'Directional bass'. Répond directement à la question FAQ 'How should
+one think in the case of wanting to set up directional bass?' déjà
+repérée dans la liste de pages à visiter mais non encore lue avant la
+découverte de ce PDF plus complet."""
+
+ART_DISTORTION_PREVENTION_RULE_SMALL_SPEAKERS_LFE = (
+    "Règle officielle de PRÉVENTION DE DISTORSION/CASSE matérielle, "
+    "directement en écho au cas réel de surchauffe ampli de Steve "
+    "(section 33), mais ici formulée PRÉVENTIVEMENT par Dirac "
+    "eux-mêmes plutôt que découverte après coup : 'Care needs to be "
+    "taken not to drive small speakers with too much low-frequency "
+    "power, as they may be forced into non-linear behaviour that "
+    "causes distortion, or even worse, OVER-EXCURSION THAT MAY "
+    "EVENTUALLY BREAK THE SPEAKER.' 3 actions correctives officielles, "
+    "par ordre de préférence : (1) 'Reduce the Support Range of the "
+    "smaller speakers to the LFE channel... drag the low end of the "
+    "support range upwards to avoid feeding low frequencies into the "
+    "small speakers' ; (2) 'Reduce the Support Level... A good rough "
+    "number for less support is -6dB' ; (3) en dernier recours, "
+    "'resort to the main rule of thumb of disabling support from the "
+    "smaller distorting speakers' entièrement. **Validation croisée "
+    "majeure** : cette règle officielle vise la PROTECTION DU "
+    "HAUT-PARLEUR/AMPLI contre un excès de puissance basse fréquence — "
+    "exactement l'objectif de notre detect_dangerous_gain_anomalies "
+    "(section 33) et de la prudence sur les creux dans "
+    "calculate_room_mode_control_points, développés AVANT la "
+    "découverte de cette confirmation officielle."
+)
+"""[Document technique officiel Dirac Research] — même source, section
+'Distortion'. Validation officielle indépendante, a posteriori, de
+notre règle de sécurité déjà implémentée (section 33)."""
+
+LFE_LOWPASS_FILTER_HISTORY_AND_5MS_DELAY = (
+    "Historique complet du filtre passe-bas LFE, reconstruit à partir "
+    "de plusieurs changelogs officiels : introduit en version **3.2.0 "
+    "(19/01/2022)** — 'Dirac Live Bass Control adds a 120 Hz lowpass "
+    "filter on the LFE channel' — initialement codé EN DUR (non "
+    "configurable). Origine métier : 'introduced upon request from "
+    "device OEMs... to ensure that occasional high-frequency (above "
+    "the... 120 Hz LFE low-pass limit) noise, present on some Dolby "
+    "TrueHD and DTS HD encoded LFE source material, doesn't propagate "
+    "to the speakers.' Pente corrigée en 3.13.x : 'Adjusted the LFE "
+    "low-pass filter cut-off frequency in Bass Control to be **-3dB at "
+    "120Hz**. It was previously erroneously set to -6dB at 120Hz.' "
+    "**Effet de bord chiffré, confirmé par 2 changelogs distincts "
+    "(3.13.4 et 3.14.3)** : 'The 120 Hz low-pass filter... introduces "
+    "a delay of about **5 milliseconds** compared to the other "
+    "channels.' Rendu OPTIONNEL en version **3.15.1 (23/09/2026)** : "
+    "'Users are now able to opt-out of the previously hard-coded 120 "
+    "Hz low-pass filter in the LFE channel... Find the new option in "
+    "Menu → Enable/Disable LFE low pass filter when in Filter Design "
+    "for BC or ART designs.' En mode Bass Control strict (avant "
+    "3.15.1), le filtre ne pouvait pas être totalement désactivé : "
+    "'Opting out will only raise the cutoff frequency from 120 Hz to "
+    "**250 Hz**, the maximum allowed cutoff in the BC algorithm.' "
+    "**Question à vérifier pour Steve** : sa version logicielle "
+    "détermine si ce filtre est encore figé à 120Hz, réglable jusqu'à "
+    "250Hz, ou totalement désactivable (3.15.1+)."
+)
+"""[Confirmation officielle Dirac, croisement de 4 changelogs
+distincts] — Dirac Live 3.2.0 (introduction), 3.13.x (correction pente
+-6dB→-3dB et découverte délai 5ms), 3.14.3 (confirmation délai 5ms),
+3.15.1 (rendu optionnel). Collecte via 2 agents de recherche
+changelogs distincts, recoupement confirmé."""
+
+INFRA_BASS_BYPASS_IMPLICIT_20HZ_HIGHPASS_FILTER = (
+    "Révélation majeure sur une limite implicite d'ART jamais "
+    "documentée avant cette collecte : 'Dirac Live ART implicitly "
+    "enforces a steep high-pass filter at 20 Hz, with the consequence "
+    "that any content below 20 Hz present in a recording would not "
+    "make its way out to any of the speakers, INCLUDING infra "
+    "bass-capable subwoofers.' Précision importante : 'neither Dirac "
+    "Live Room Correction nor Bass Control would limit the amount of "
+    "infra bass in the way that ART does' — cette coupure stricte à "
+    "20Hz est SPÉCIFIQUE à ART, absente des 2 autres modes. Fonction "
+    "de contournement 'infra bass bypass' : disponible uniquement "
+    "quand F-support Low d'un groupe est réglé en dessous de 21Hz, "
+    "nécessite une licence spécifique ('U4h infrabass' feature), et "
+    "répartit le contenu infra-bass à parts égales entre toutes les "
+    "enceintes ayant opté pour le bypass, calées sur le niveau de la "
+    "courbe cible. **Limite reconnue officiellement** : 'There is a "
+    "chance that the crossover band between the infra bass and the "
+    "ART region does not add up perfectly, since the infra bass part "
+    "is NOT PHASE CORRECTED. This may show as a small bump or dip "
+    "around 20 Hz' — mitigation suggérée via un point de contrôle "
+    "ajouté manuellement dans l'éditeur de courbe cible avancé."
+)
+"""[Source officielle Dirac] — page 'How-to: Infra-bass bypass in
+ART', helpdesk.dirac.com/en/dirac-art/How-to-Infra-bass-bypass-in-
+ART-ff94. Donnée importante pour comprendre toute mesure réelle
+montrant une anomalie autour de 20Hz chez un client utilisant ART
+avec un caisson infra-bass capable."""
+
+ART_MAGNITUDE_ONLY_MIC_CALIBRATION_AND_GENETIC_ALGORITHM = (
+    "Deux confirmations techniques fondamentales sur le MÉCANISME DE "
+    "CALCUL interne, trouvées indépendamment sur 2 pages différentes : "
+    "(1) la calibration de phase du fichier micro n'est PAS utilisée "
+    "par l'algorithme : réponse officielle intégrale à la question "
+    "'Is Dirac Live able to use the phase calibration data of the "
+    "microphone in addition to the magnitude calibration?' — "
+    "**'Only magnitude calibration data is used.'** (2) confirmation "
+    "OFFICIELLE, à 2 reprises indépendantes (une page FAQ + le "
+    "changelog), que l'algorithme Bass Control repose sur une "
+    "**optimisation génétique** : 'Dirac Live Bass Control computes "
+    "the best possible solution taking advantage of a GENETIC "
+    "ALGORITHM to manage independent channels used for the subs in "
+    "order to correct the inevitable interactions among the subs and "
+    "the main speakers.' Conséquence pratique documentée (non "
+    "déterminisme) : un utilisateur rapportant un son 'smeared out, "
+    "lacking punch' se voit conseiller de 'add some extra measurements "
+    "... and/or re-run the Bass Control filter calculation as many "
+    "times as you need to end up in a DIFFERENT GENETIC OPTIMIZATION "
+    "RESULT' — le résultat du calcul peut varier d'une exécution à "
+    "l'autre sur les MÊMES mesures, propriété typique des algorithmes "
+    "génétiques/méta-heuristiques (pas de solution unique garantie)."
+)
+"""[Source officielle Dirac, 3 sources croisées] — pages 'Magnitude-
+calibration-phase-calibration', 'Wherewhat-should-the-crossover-
+settings-be-when-using-Bass-Control' et 'Subwoofers-Bass-Control-
+muddy-decay-delay' (helpdesk.dirac.com), plus confirmation dans le
+manuel PDF 'Bass Control in Dirac Live' (Brännmark et al.) section
+technique : 'a genetic optimization algorithm' pour ajuster les
+relations de phase entre haut-parleurs."""
+
 
 
