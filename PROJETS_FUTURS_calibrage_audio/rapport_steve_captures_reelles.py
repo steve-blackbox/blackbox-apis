@@ -52,8 +52,14 @@ from image_reader import (
     detect_curve_color,
     extract_curve_points,
 )
-from models import MeasurementPoint, ServiceLevel, Speaker, SpeakerMeasurement
+from models import MeasurementPoint, RoomInfo, ServiceLevel, Speaker, SpeakerMeasurement
 from report_generator import generate_report
+
+# Dimensions réelles de la pièce de Steve (confirmées par Steve le 03/10) :
+# 5,50 m de long x 3,60 m de large x 2,50 m de haut. Permet au niveau
+# Approfondi de confirmer formellement les modes axiaux (calcul physique),
+# au lieu du seul clustering inter-canal (indice fort mais pas une preuve).
+STEVE_ROOM = RoomInfo(length_m=5.50, width_m=3.60, height_m=2.50)
 
 DEFAULT_CAPTURES_DIR = os.path.expanduser("~/Desktop/CAPTURE ECRAN COURBES")
 
@@ -134,7 +140,8 @@ def main() -> None:
     report = run_diagnostic(
         speakers=speakers,
         measurements=measurements,
-        service_level=ServiceLevel.ESSENTIEL,
+        service_level=ServiceLevel.APPROFONDI,
+        room=STEVE_ROOM,
         support_level_triggers=[],
         support_group_assignments=[],
     )
