@@ -34,6 +34,7 @@ from diagnostic_engine import (
     detect_dangerous_gain_anomalies,
     diagnose_anomaly,
     evaluate_subwoofer_pre_gain_headroom_strategy,
+    recommend_lfe_support_eligibility,
     recommend_support_groups,
     recommend_support_pairings,
     recommend_target_curves,
@@ -292,6 +293,95 @@ class TestRecommendSupportPairings(unittest.TestCase):
         ]
         self.assertEqual(len(alternatives), 2)
         self.assertEqual(excluded, [])
+
+    def test_filter_budget_priority_order_absent_without_height_speakers(self) -> None:
+        """Pas d'enceintes de hauteur dans le système déclaré : la
+        recommandation d'ordre de priorité du budget de filtres (podcast
+        HCFR, directeur produit StormAudio) ne doit PAS apparaître —
+        elle ne concerne que les systèmes avec une couche de hauteur."""
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=45),
+            Speaker("Façade Droite", Role.FRONT_RIGHT, freq_min_hz=45),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        recs = recommend_support_pairings(speakers)
+        priority_recs = [
+            r for r in recs
+            if r.category == "Ordre de priorité du budget de filtres (grosses configurations)"
+        ]
+        self.assertEqual(priority_recs, [])
+
+    def test_filter_budget_priority_order_present_with_height_speakers(self) -> None:
+        """Présence d'enceintes de hauteur : la recommandation doit
+        apparaître et citer explicitement ces enceintes comme premières
+        sacrifiées en cas de dépassement du budget de filtres ART
+        (>500 filtres, limitant au-delà d'environ 20 canaux)."""
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=45),
+            Speaker("Façade Droite", Role.FRONT_RIGHT, freq_min_hz=45),
+            Speaker("Height Avant Gauche", Role.HEIGHT_FRONT_LEFT, freq_min_hz=80),
+            Speaker("Height Avant Droite", Role.HEIGHT_FRONT_RIGHT, freq_min_hz=80),
+            Speaker("Caisson", Role.LFE, freq_min_hz=20),
+        ]
+        recs = recommend_support_pairings(speakers)
+        priority_recs = [
+            r for r in recs
+            if r.category == "Ordre de priorité du budget de filtres (grosses configurations)"
+        ]
+        self.assertEqual(len(priority_recs), 1)
+        self.assertIn("Height Avant Gauche", priority_recs[0].action)
+        self.assertIn("Height Avant Droite", priority_recs[0].action)
+        self.assertIn("jamais les caissons", priority_recs[0].action)
+
+
+class TestRecommendLfeSupportEligibility(unittest.TestCase):
+    """Vérifie le repère chiffré de 40 Hz (expert StormAudio, podcast
+    HCFR) utilisé pour conseiller le client sur quelle(s) enceinte(s)
+    peuvent raisonnablement aider à supporter le canal LFE — exigence
+    explicite de Steve (03/10) : l'algorithme doit conseiller 'en fonction
+    de son système et pas du mien'."""
+
+    def test_subwoofers_are_never_evaluated(self) -> None:
+        speakers = [
+            Speaker("Caisson", Role.LFE, freq_min_hz=16),
+        ]
+        self.assertEqual(recommend_lfe_support_eligibility(speakers), [])
+
+    def test_speaker_below_benchmark_is_eligible(self) -> None:
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=35),
+        ]
+        recs = recommend_lfe_support_eligibility(speakers)
+        self.assertEqual(len(recs), 1)
+        self.assertIn("peut raisonnablement aider", recs[0].action)
+
+    def test_speaker_above_benchmark_is_not_eligible(self) -> None:
+        speakers = [
+            Speaker("Surround Gauche", Role.SURROUND_LEFT, freq_min_hz=53),
+        ]
+        recs = recommend_lfe_support_eligibility(speakers)
+        self.assertEqual(len(recs), 1)
+        self.assertIn("Ne PAS faire supporter", recs[0].action)
+
+    def test_speaker_exactly_at_benchmark_is_eligible(self) -> None:
+        """Limite inclusive : exactement 40 Hz doit être éligible (<=),
+        cohérent avec le code de recommend_lfe_support_eligibility."""
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=40),
+        ]
+        recs = recommend_lfe_support_eligibility(speakers)
+        self.assertEqual(len(recs), 1)
+        self.assertIn("peut raisonnablement aider", recs[0].action)
+
+    def test_one_recommendation_per_non_subwoofer_speaker(self) -> None:
+        speakers = [
+            Speaker("Façade Gauche", Role.FRONT_LEFT, freq_min_hz=35),
+            Speaker("Centrale", Role.CENTER, freq_min_hz=43),
+            Speaker("Caisson", Role.LFE, freq_min_hz=16),
+        ]
+        recs = recommend_lfe_support_eligibility(speakers)
+        self.assertEqual(len(recs), 2)
+        self.assertEqual({r.target for r in recs}, {"Façade Gauche", "Centrale"})
 
 
 class TestRecommendTargetCurves(unittest.TestCase):

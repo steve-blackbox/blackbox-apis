@@ -17,6 +17,7 @@ import math
 
 import knowledge_base as kb
 from models import (
+    HEIGHT_ROLES,
     AmplificationTopology,
     AmplifierChainSpec,
     Anomaly,
@@ -443,6 +444,91 @@ def recommend_support_pairings(speakers: list[Speaker]) -> list[Recommendation]:
             ),
         )
     )
+
+    height_speakers = [s for s in speakers if s.role in HEIGHT_ROLES]
+    if height_speakers:
+        height_names = ", ".join(s.name for s in height_speakers)
+        recs.append(
+            Recommendation(
+                category="Ordre de priorité du budget de filtres (grosses configurations)",
+                target="ensemble du système",
+                action=(
+                    "Si Dirac affiche une erreur de budget de filtres "
+                    "dépassé (plus probable sur les systèmes chargés, "
+                    "voir détail), simplifier/désactiver le groupage de "
+                    f"support sur les enceintes de hauteur ({height_names}) "
+                    "EN PREMIER — jamais les caissons, jamais la couche de "
+                    "base (façades, centrale, surrounds)."
+                ),
+                evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+                detail=(
+                    "Ordre de priorité professionnel communiqué par le "
+                    "directeur produit StormAudio (podcast HCFR, 03/10, "
+                    "voir kb.ART_FILTER_BUDGET_PRIORITY_ORDER_LARGE_"
+                    "SYSTEMS) : un filtre ART complet mobilise plus de 500 "
+                    "filtres, budget qui devient limitant au-delà d'environ "
+                    "20 canaux. Ordre à respecter si une réduction devient "
+                    "nécessaire : (1) caissons en premier [jamais réduits], "
+                    "(2) couche de base [réduite en dernier recours], (3) "
+                    "enceintes de hauteur [premières sacrifiées]."
+                ),
+            )
+        )
+    return recs
+
+
+def recommend_lfe_support_eligibility(speakers: list[Speaker]) -> list[Recommendation]:
+    """Détermine, pour CHAQUE enceinte non-caisson du système, si elle est
+    une bonne candidate pour aider à supporter le canal LFE — question
+    explicite de Steve (03/10) : 'le groupage croisé [...] l'algorithme
+    doit être en mesure de conseiller le client à ce sujet, en fonction de
+    son système et pas du mien.' Règle officielle de base (Dirac,
+    kb.ART_LFE_MAIN_CHANNEL_OFFICIAL_RULE) : 'ne laisser QUE les caissons
+    et les grandes enceintes large-bande supporter le canal LFE.' Benchmark
+    chiffré ajouté (expert StormAudio, PAS une spec Dirac officielle écrite
+    — voir kb.ART_LFE_SUPPORT_40HZ_EXPERT_BENCHMARK) : une enceinte
+    descendant proprement jusqu'à environ 40 Hz est une bonne candidate ;
+    en dessous de cette capacité, le risque de saturation/directivité
+    excessive du grave l'emporte sur le bénéfice."""
+    recs: list[Recommendation] = []
+    threshold_hz = kb.ART_LFE_SUPPORT_LOW_FREQUENCY_BENCHMARK_HZ
+    for speaker in speakers:
+        if speaker.is_subwoofer:
+            continue
+        eligible = speaker.freq_min_hz <= threshold_hz
+        recs.append(
+            Recommendation(
+                category="Éligibilité au support du canal LFE",
+                target=speaker.name,
+                action=(
+                    (
+                        f"{speaker.name} peut raisonnablement aider à "
+                        "supporter le canal LFE si besoin (descend à "
+                        f"{speaker.freq_min_hz:.0f} Hz, sous le repère "
+                        f"d'environ {threshold_hz:.0f} Hz)."
+                    )
+                    if eligible
+                    else (
+                        f"Ne PAS faire supporter le canal LFE par "
+                        f"{speaker.name} (descend seulement à "
+                        f"{speaker.freq_min_hz:.0f} Hz, au-dessus du repère "
+                        f"d'environ {threshold_hz:.0f} Hz) : risque de "
+                        "saturation ou de directivité excessive du grave."
+                    )
+                ),
+                evidence=EvidenceLevel.STORMAUDIO_OFFICIEL,
+                detail=(
+                    "Règle officielle de base : seuls les caissons et les "
+                    "grandes enceintes large-bande devraient supporter le "
+                    "canal LFE (kb.ART_LFE_MAIN_CHANNEL_OFFICIAL_RULE). Le "
+                    f"repère chiffré de {threshold_hz:.0f} Hz est une "
+                    "recommandation d'expert (directeur produit StormAudio, "
+                    "podcast HCFR 03/10), pas une spécification Dirac "
+                    "écrite noir sur blanc — à pondérer par un test "
+                    "d'écoute réel si le résultat est à la limite."
+                ),
+            )
+        )
     return recs
 
 
@@ -1021,12 +1107,30 @@ def run_diagnostic(
 
     report.recommendations.extend(recommend_support_groups(speakers))
     report.recommendations.extend(recommend_support_pairings(speakers))
+    report.recommendations.extend(recommend_lfe_support_eligibility(speakers))
     report.recommendations.extend(recommend_frequency_ranges(speakers))
     report.recommendations.extend(
         recommend_target_curves(speakers, target_curve_preference)
     )
     report.recommendations.append(
         recommend_support_level(support_level_triggers or [])
+    )
+    report.warnings.append(
+        "Ne JAMAIS appliquer une correction d'égalisation (EQ) manuelle "
+        "fréquence-par-fréquence après le passage d'un filtre ART : cela "
+        "détruit l'optimisation de phase entre enceintes réalisée par "
+        "l'algorithme (podcast HCFR, directeur produit StormAudio, voir "
+        "kb.ART_NO_MANUAL_EQ_AFTER_CALIBRATION_RULE). Room EQ Wizard (REW) "
+        "reste utile UNIQUEMENT avant la calibration (état des lieux de la "
+        "pièce) ou après coup pour simplement mesurer le gain réel obtenu, "
+        "jamais pour ajouter une correction par-dessus celle d'ART. "
+        "Nuance : un simple TRIM DE NIVEAU GLOBAL par canal (gain "
+        "large-bande identique à toutes les fréquences, ex. +2,5 à +3 dB "
+        "sur les surrounds arrière pour compenser l'ombre acoustique des "
+        "dossiers de sièges) reste acceptable, car il ne modifie ni la "
+        "forme de la réponse en fréquence ni l'alignement de phase calculé "
+        "par ART — voir "
+        "kb.ART_POST_CALIBRATION_BROADBAND_TRIM_VS_MANUAL_EQ_NUANCE."
     )
 
     # Calculs précis génériques : plage de fréquence par enceinte.

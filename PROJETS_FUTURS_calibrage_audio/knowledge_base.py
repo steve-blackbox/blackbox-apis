@@ -42,6 +42,16 @@ constante cite sa source réelle :
   - [Hypothèse] = indice trouvé sur un forum par Claude, présenté comme
     "un indice, pas une preuve" — jamais utilisé seul pour une
     recommandation ferme, seulement en complément.
+  - [HCFR/StormAudio, interview publique] = reformulation avec nos propres
+    mots (jamais de citation verbatim longue) de propos tenus PUBLIQUEMENT
+    par Sébastien Gailleton, directeur produit chez StormAudio, lors d'un
+    podcast vidéo avec les superviseurs du forum HCFR (YouTube, transcrit/
+    résumé puis fourni par Steve le 03/10). Mêmes garanties que
+    [StormAudio] : ce sont les propos directs d'un responsable produit de
+    l'éditeur sur le fonctionnement et les bonnes pratiques d'ART/
+    StormAudio, pas une rumeur de forum — mais certains chiffres cités
+    restent des recommandations d'EXPERT plutôt que des specs documentées
+    noir sur blanc (nuance précisée à chaque fois où c'est le cas).
 
 ⚠️ RÈGLE MÉTHODOLOGIQUE PERMANENTE (ajoutée 03/10, demande explicite de
 Steve) : privilégier systématiquement une VRAIE étude acoustique
@@ -5390,3 +5400,294 @@ fréquence."""
 
 
 
+
+# ---------------------------------------------------------------------------
+# 49. Podcast HCFR avec Sébastien Gailleton (directeur produit StormAudio) —
+#     bonnes pratiques de calibration ART, budget de filtres sur grosses
+#     configs, et interdictions de calibration à respecter. Fourni par
+#     Steve le 03/10 (résumé avec timestamps YouTube,
+#     watch?v=EQ2CZ_D3Jh8). Vérifié contre toute la base existante avant
+#     ajout : confirme et PRÉCISE plusieurs règles déjà présentes, ajoute
+#     des éléments réellement nouveaux (ordre de priorité du budget de
+#     filtres, interdiction d'EQ manuelle post-ART, seuil chiffré de 40Hz
+#     pour le support LFE par une enceinte non-caisson).
+# ---------------------------------------------------------------------------
+ART_FILTER_BUDGET_PRIORITY_ORDER_LARGE_SYSTEMS = (
+    "Précision concrète sur le budget de calcul ART déjà documenté de "
+    "façon plus abstraite (voir ART_CROSS_TERMS_COMPUTATIONAL_LIMIT, "
+    "section 44) : un filtre ART complet mobilise plus de 500 filtres "
+    "au total sur le système. Sur les configurations à plus de 20 "
+    "canaux, ce budget devient le facteur limitant (certaines relations "
+    "de support doivent être sacrifiées). Ordre de priorité professionnel "
+    "communiqué pour ces cas, à respecter STRICTEMENT dans cet ordre : "
+    "(1) les caissons de graves en premier, (2) la couche de base "
+    "'bed layer' (façades, centrale, surrounds, surrounds arrière — tout "
+    "sauf les canaux de hauteur), (3) les enceintes de hauteur en "
+    "dernier. Autrement dit, si le budget de filtres doit être réduit "
+    "sur un très gros système (9.x.6, 11.x.8...), ce sont les canaux de "
+    "hauteur qui doivent être les premiers à voir leur groupage de "
+    "support simplifié ou désactivé, jamais les caissons ni la couche "
+    "de base."
+)
+"""[HCFR/StormAudio, interview publique] — podcast HCFR avec Sébastien
+Gailleton (directeur produit StormAudio), vers 19:21 (budget >500
+filtres) et 56:28-56:41 (seuil 20 canaux + ordre de priorité
+caissons > bed layer > hauteur)."""
+
+ART_LFE_SUPPORT_LOW_FREQUENCY_BENCHMARK_HZ = 40.0
+"""Valeur numérique exploitée par recommend_lfe_support_eligibility()
+(diagnostic_engine.py) — voir ART_LFE_SUPPORT_40HZ_EXPERT_BENCHMARK
+ci-dessous pour la nuance (repère d'expert, pas une spec Dirac écrite)."""
+
+ART_LFE_SUPPORT_40HZ_EXPERT_BENCHMARK = (
+    "Précision chiffrée apportée à la règle déjà documentée "
+    "(ART_LFE_MAIN_CHANNEL_OFFICIAL_RULE, section 44 : 'ne laisser QUE "
+    "les caissons et les grandes enceintes large-bande supporter le "
+    "canal LFE') : recommandation professionnelle de commencer par "
+    "configurer les caissons pour qu'ils se soutiennent uniquement "
+    "entre eux sur le canal LFE, et de n'envisager qu'une enceinte "
+    "satellite (LCR) comme support LFE que si elle descend PROPREMENT "
+    "jusqu'à environ 40 Hz (benchmark d'expert pour une 'enceinte très "
+    "haut de gamme', pas un seuil officiel écrit noir sur blanc comme "
+    "ART_UPPER_BOUND_HZ) — en dessous de ce niveau de capacité, envoyer "
+    "du signal LFE dans une enceinte traditionnelle risque de la "
+    "saturer ou de créer une sensation de directivité excessive du "
+    "grave. Application au système de Steve : ses façades Elipson "
+    "Legacy 3220 descendent à 35 Hz (fiche constructeur confirmée) — "
+    "AU-DELÀ de ce benchmark de 40 Hz (35 < 40, donc plus exigeant), "
+    "elles restent donc de bonnes candidates pour un rôle de support "
+    "LFE si besoin, cohérent avec la conclusion déjà déduite "
+    "indépendamment dans ART_LFE_MAIN_CHANNEL_OFFICIAL_RULE."
+)
+"""[HCFR/StormAudio, interview publique] — même podcast, vers 51:32-52:00
+(recommandation sur la gestion du LFE et des enceintes de support)."""
+
+DIRAC_50HZ_FLOOR_IS_EXPLICIT_SPEAKER_PROTECTION_CONFIRMED = (
+    "Confirmation indépendante, par le directeur produit StormAudio "
+    "lui-même, de la raison d'être de DIRAC_DEFAULT_LOW_FLOOR_HZ (déjà "
+    "documenté côté StormAudio, section 1) : la coupure basse par "
+    "défaut à 50 Hz pour les enceintes normales (non-caisson) est "
+    "explicitement présentée comme une mesure de PROTECTION pour éviter "
+    "d'endommager l'enceinte, pas seulement un choix de qualité sonore. "
+    "Recommandation associée : toujours se baser scrupuleusement sur la "
+    "fiche technique constructeur de l'enceinte plutôt que d'improviser "
+    "une valeur, cohérent avec la pratique déjà appliquée dans "
+    "recommend_frequency_ranges (diagnostic_engine.py)."
+)
+"""[HCFR/StormAudio, interview publique] — même podcast, vers 37:54-41:36."""
+
+ART_NO_MANUAL_EQ_AFTER_CALIBRATION_RULE = (
+    "Règle professionnelle explicite, jamais documentée avant cette "
+    "collecte : appliquer une correction manuelle d'égalisation (EQ) "
+    "APRÈS le passage d'un filtre Dirac ART est vivement déconseillé, "
+    "car cela détruit le travail d'optimisation de PHASE réalisé par "
+    "l'algorithme (ART traite conjointement amplitude ET phase entre "
+    "enceintes, voir le principe déjà documenté de résolution jointe "
+    "égalisation/crossover/délai/niveau — une correction EQ manuelle "
+    "ultérieure ne touche que l'amplitude et peut recasser l'alignement "
+    "de phase inter-enceintes). Usage recommandé de Room EQ Wizard "
+    "(REW) : UNIQUEMENT en vérification AVANT la calibration Dirac (État "
+    "des lieux de la pièce), ou pour mesurer le gain acoustique réel "
+    "APRÈS coup à titre de contrôle qualité — jamais pour appliquer une "
+    "correction qui s'ajouterait par-dessus celle d'ART."
+)
+"""[HCFR/StormAudio, interview publique] — même podcast, vers 1:35:06-
+1:35:25 (mise en garde explicite contre l'EQ manuelle post-ART et usage
+recommandé de REW)."""
+
+STORMAUDIO_SUBWOOFER_MULTI_GROUP_SPL_CAPACITY_RULE = (
+    "Fonctionnalité StormAudio 4.6r0 (NON applicable au Marantz CINEMA "
+    "30 de Steve — propre au processeur StormAudio, documentée ici pour "
+    "la généricité du moteur avec un futur client StormAudio) : "
+    "possibilité de créer plusieurs groupes de caissons spécialisés par "
+    "bande de fréquence (ex. un groupe dédié à l'infragrave, un autre "
+    "dédié à l'impact entre 40 et 100 Hz), plutôt qu'un seul groupe "
+    "générique. Objectif explicite : éviter de surcharger un caisson "
+    "principal qui manquerait de capacité de pression acoustique (SPL) "
+    "sur toute la bande — complète la règle déjà documentée sur le "
+    "regroupement par soutien des murs (ART_SUBWOOFER_GROUPING_WALL_"
+    "POSITION_RULE, section 44), ici le critère de séparation est la "
+    "capacité SPL par bande, pas la position géométrique."
+)
+"""[HCFR/StormAudio, interview publique] — même podcast, vers 30:18-35:41
+(nouveauté StormAudio 4.6r0, subwoofer multi-voies)."""
+
+DIRAC_3_10_BETA_PHASE_MEASUREMENT_QUALITY_IMPROVEMENTS = (
+    "Contexte technique utile pour comprendre pourquoi une mesure ART "
+    "peut échouer silencieusement (pas un fait à recommander à Steve "
+    "directement, plutôt un élément de diagnostic si une mesure semble "
+    "aberrante) : les calculs matriciels d'ART nécessitent une lecture "
+    "de PHASE quasi parfaite au moment de la mesure. De minuscules "
+    "perturbations liées au PC/Mac ou aux pilotes USB peuvent fausser "
+    "des mesures sans erreur visible. Dirac Live 3.10 (bêta au moment du "
+    "podcast) introduit un meilleur contrôle qualité de la mesure et un "
+    "'mode exclusif' donnant la priorité absolue à Dirac sur la carte "
+    "son de la machine de mesure — à vérifier/recommander à Steve s'il "
+    "obtient un jour des résultats de mesure incohérents sans cause "
+    "identifiée."
+)
+"""[HCFR/StormAudio, interview publique] — même podcast, vers 15:11-18:35
+(améliorations de la phase de mesure, Dirac Live 3.10 bêta)."""
+
+# ---------------------------------------------------------------------------
+# 50. Deuxième podcast/tutoriel pratique (YouTube, "David_davrous", système
+#     StormAudio ISR Fusion 9.4.4 réel documenté en vidéo complète) — fourni
+#     par Steve le 03/10 (watch?v=ajcLuwpYLJk). Vérifié contre toute la base
+#     existante (y compris la section 49 ajoutée juste avant dans la même
+#     session) avant ajout : plusieurs points CONFIRMENT INDÉPENDAMMENT des
+#     règles déjà déduites par notre propre moteur (validation croisée
+#     précieuse par 2 praticiens différents), d'autres sont réellement
+#     nouveaux.
+# ---------------------------------------------------------------------------
+DAVROUS_PRE_CALIBRATION_PHYSICAL_CAPABILITY_CHECK = (
+    "Confirmation indépendante (2e source), par la pratique concrète "
+    "d'un intégrateur, du principe déjà documenté (section 49, "
+    "DIRAC_50HZ_FLOOR_IS_EXPLICIT_SPEAKER_PROTECTION_CONFIRMED) : avant "
+    "de lancer la calibration ART, vérifier PHYSIQUEMENT (ex. mesure en "
+    "champ proche à 1 mètre avec REW) que chaque enceinte envisagée "
+    "comme support peut réellement descendre dans le grave sans risque, "
+    "plutôt que de se fier uniquement à la fiche technique ou de laisser "
+    "Dirac le découvrir pendant le calcul. Confirme la logique déjà "
+    "implémentée (marge de sécurité de 20Hz, plancher 50Hz) : la "
+    "prudence sur la limite basse réelle d'une enceinte de support est "
+    "une pratique terrain partagée par plusieurs praticiens, pas une "
+    "lubie isolée."
+)
+"""[HCFR/StormAudio, interview publique] — tutoriel vidéo YouTube
+"David_davrous" (système StormAudio ISR Fusion 9.4.4 réel), vers
+0:47-1:00."""
+
+DAVROUS_PASSIVE_SUBWOOFER_PROTECTIVE_CROSSOVER_PRE_ART = (
+    "Cas spécifique NON applicable au système de Steve (ses 2 caissons "
+    "SVS 3000 Micro R|Evolution sont ACTIFS, avec DSP et ampli intégrés "
+    "— voir exemple_systeme_steve.py), mais utile pour la généricité du "
+    "moteur avec un futur client ayant des caissons PASSIFS alimentés "
+    "par un ampli externe sans DSP propre : appliquer manuellement une "
+    "coupure (pente descendante dès 150-180 Hz) AVANT la mesure ART, "
+    "pour empêcher le caisson de jouer trop haut et fausser l'alignement "
+    "impulsionnel que Dirac calcule. Distinct du F-support High/Fsiso "
+    "(qui s'applique après coup, dans le filtre ART lui-même) : ici il "
+    "s'agit d'une protection matérielle en amont, nécessaire seulement "
+    "si le caisson n'a pas son propre DSP pour s'autolimiter."
+)
+"""[HCFR/StormAudio, interview publique] — même tutoriel, vers 2:35-3:42."""
+
+DAVROUS_MEASUREMENT_PHASE_LEVEL_SETUP = (
+    "Détails chiffrés NOUVEAUX sur le réglage des niveaux PENDANT LA "
+    "PHASE DE MESURE (distinct de MEASUREMENT_LEVELS_CALIBRATION_"
+    "PRECISE_PROCEDURE, section 46, qui couvre le gain micro et le "
+    "pré-gain de volume global) : (1) viser un niveau d'enceinte "
+    "individuelle environ 30 dB AU-DESSUS du bruit ambiant de la pièce "
+    "(exemple donné : viser -14 dB si le bruit de fond mesure -44 dB) "
+    "pour un rapport signal/bruit propre ; (2) régler le niveau des "
+    "caissons de grave 5 à 10 dB PLUS HAUT que les enceintes "
+    "principales pendant la mesure (pas le niveau final d'écoute), pour "
+    "préserver une dynamique et des informations exploitables par "
+    "l'algorithme dans le grave, zone où le bruit de fond est "
+    "généralement le plus présent."
+)
+"""[HCFR/StormAudio, interview publique] — même tutoriel, vers 17:47
+(rapport signal/bruit) et 19:38 (niveau des caissons pendant la mesure)."""
+
+DAVROUS_MEASUREMENT_POINT_COUNT_AND_GEOMETRY_RECOMMENDATIONS = (
+    "Précisions pratiques NOUVELLES sur le protocole de prise de mesure "
+    "spatiale, en complément de MEASUREMENT_ARRANGEMENTS_9_13_17_POINTS_"
+    "OFFICIAL (section 45, qui documente les 3 arrangements OFFICIELS 9/"
+    "13/17 points) : (1) recommandation d'un praticien d'aller au-delà "
+    "du minimum officiel (9 points) et de viser plutôt 13, 17, voire 20 "
+    "points pour un meilleur résultat, cohérent avec la remarque de "
+    "Steve (03/10) que le nombre de points 'peut aller de 1 à 19' ; (2) "
+    "les points après le point de référence doivent être répartis de "
+    "façon semi-aléatoire à l'intérieur d'un cube imaginaire d'environ "
+    "60 cm de côté (30 cm max autour du centre de la tête à hauteur "
+    "d'oreille) ; (3) règle anti-croisement : éviter que 2 mesures "
+    "partagent exactement les mêmes coordonnées de hauteur OU de "
+    "profondeur, pour maximiser la précision de la modélisation "
+    "spatiale ; (4) le micro ne doit JAMAIS être masqué par le dossier "
+    "d'un siège (notamment pour les mesures basses), sous peine de mal "
+    "capter les enceintes surround et arrière."
+)
+"""[HCFR/StormAudio, interview publique] — même tutoriel, vers
+20:55-27:59 (volume de points, géométrie du cube, règle anti-croisement,
+ligne de visée du micro)."""
+
+DAVROUS_CENTER_NEVER_SUPPORT_DONOR_CROSS_VALIDATED = (
+    "Confirmation indépendante (2e source/praticien) de la règle déjà "
+    "implémentée dans recommend_support_pairings() (diagnostic_engine.py "
+    ": la Centrale ne doit JAMAIS servir de support à une autre enceinte, "
+    "seulement en recevoir) : 'l'enceinte centrale est délibérément "
+    "isolée et exclue du support des autres canaux pour préserver la "
+    "clarté absolue des dialogues.' Validation croisée précieuse — cette "
+    "règle n'est donc pas une déduction isolée de notre moteur mais une "
+    "pratique professionnelle reconnue par au moins 2 intégrateurs "
+    "indépendants."
+)
+"""[HCFR/StormAudio, interview publique] — même tutoriel, vers
+43:10-43:15."""
+
+DAVROUS_SUPPORT_LEVEL_RANGE_CROSS_VALIDATED = (
+    "Confirmation indépendante (2e source), citant elle-même un webcast "
+    "StormAudio distinct, des valeurs de Support Level déjà documentées "
+    "dans ART_DIRECTIONAL_BASS (section 44) : '-6 dB représente moins de "
+    "support, -24 dB un support très élevé.' Mêmes bornes exactes "
+    "retrouvées par 2 sources indépendantes — renforce la confiance dans "
+    "ces valeurs au-delà de leur source primaire initiale."
+)
+"""[HCFR/StormAudio, interview publique] — même tutoriel, vers 49:41."""
+
+ART_CORRECTION_FREQUENCY_WINDOW_FULL_VS_RESTRICTED = (
+    "Paramètre ART réellement ajustable, jamais documenté avant cette "
+    "collecte (répond directement à la demande de Steve, 03/10 : "
+    "'il faut que l'algorithme connaisse la totalité des réglages que "
+    "le client peut ajuster manuellement dans l'application Dirac') : "
+    "la fenêtre de correction ART peut être laissée sur tout le spectre "
+    "(jusqu'à 20 kHz) OU restreinte uniquement aux basses fréquences "
+    "(exemple donné : sous 300-400 Hz), pour conserver la signature "
+    "et le timbre naturel des enceintes dans le médium/aigu plutôt que "
+    "de les faire corriger entièrement par Dirac. Compromis explicite : "
+    "plus de correction = plus neutre/précis mais risque de masquer le "
+    "caractère propre des enceintes ; fenêtre restreinte = préserve le "
+    "timbre mais laisse les défauts de la pièce non corrigés au-dessus "
+    "de la fréquence de coupure choisie."
+)
+"""[HCFR/StormAudio, interview publique] — même tutoriel, vers
+57:43-58:xx (fenêtre de correction ART, choix plein spectre vs grave
+seul)."""
+
+DAVROUS_INFRA_BASS_BOOST_UI_OPTION_CONFIRMED = (
+    "Confirmation et précision d'interface utilisateur pour "
+    "INFRA_BASS_BYPASS_IMPLICIT_20HZ_HIGHPASS_FILTER (section 44, qui "
+    "documentait la limite de 20 Hz elle-même) : si les caissons du "
+    "client coupent PROPREMENT sous les 20 Hz à la mesure (vérifié "
+    "empiriquement), Dirac ART affiche une option cochable de 'boost "
+    "d'infra-basses', pour éviter une coupure trop douce/progressive et "
+    "conserver un maximum d'impact dans l'extrême grave. À vérifier sur "
+    "le système de Steve si l'option apparaît (ses caissons SVS "
+    "descendent à 20 Hz confirmé constructeur, donc potentiellement "
+    "éligibles)."
+)
+"""[HCFR/StormAudio, interview publique] — même tutoriel, vers
+55:46."""
+
+ART_POST_CALIBRATION_BROADBAND_TRIM_VS_MANUAL_EQ_NUANCE = (
+    "Nuance IMPORTANTE à apporter à ART_NO_MANUAL_EQ_AFTER_CALIBRATION_"
+    "RULE (section 49, 'ne jamais appliquer d'EQ manuelle après ART') "
+    "pour éviter une fausse contradiction avec la pratique documentée "
+    "ici par un second praticien : celui-ci applique, À L'OREILLE, un "
+    "ajustement manuel de NIVEAU GLOBAL (pas une courbe d'égalisation "
+    "fréquentielle) de +2,5 à +3 dB sur les surrounds arrière après "
+    "calibration, pour compenser l'effet d'ombre acoustique des dossiers "
+    "de sièges (le micro mesure au 1er rang, les sièges absorbent une "
+    "partie du son arrière pour l'auditeur réel). DISTINCTION À RETENIR "
+    ": un simple TRIM DE NIVEAU GLOBAL (gain large-bande, identique à "
+    "toutes les fréquences d'un canal) ne modifie PAS la forme de la "
+    "réponse en fréquence ni l'alignement de phase qu'ART a calculé — "
+    "seule une correction fréquence-par-fréquence (EQ paramétrique, "
+    "graphique) romprait cet alignement. Donc : trim de niveau global "
+    "post-calibration = pratique acceptée pour corriger un ressenti "
+    "subjectif de position d'écoute ; EQ manuelle multi-bandes "
+    "post-calibration = toujours déconseillée."
+)
+"""[HCFR/StormAudio, interview publique] — même tutoriel, vers
+1:31:10-1:31:34 (boost manuel post-calibration sur les surrounds
+arrière, et sa justification)."""
