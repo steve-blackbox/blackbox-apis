@@ -4,20 +4,20 @@
    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta name="description" content="12 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, crypto address validation, and more.">
-    <title>BlackBox Labs — 12 Developer APIs</title>
+     <meta name="description" content="11 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, phone number normalization, and more.">
+    <title>BlackBox Labs — 11 Developer APIs</title>
     <link rel="canonical" href="https://blackbox-apis.com/">
     <!-- 🔗 OPEN GRAPH / TWITTER CARD — apercu propre quand le lien est partage sur
          LinkedIn, X, Slack, Discord, etc. -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BlackBox Labs">
-    <meta property="og:title" content="BlackBox Labs — 12 Developer APIs">
-    <meta property="og:description" content="12 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, crypto address validation, and more.">
+    <meta property="og:title" content="BlackBox Labs — 11 Developer APIs">
+    <meta property="og:description" content="11 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, phone number normalization, and more.">
     <meta property="og:url" content="https://blackbox-apis.com/">
     <meta property="og:image" content="https://blackbox-apis.com/favicon.svg">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="BlackBox Labs — 12 Developer APIs">
-    <meta name="twitter:description" content="12 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, crypto address validation, and more.">
+    <meta name="twitter:title" content="BlackBox Labs — 11 Developer APIs">
+    <meta name="twitter:description" content="11 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, phone number normalization, and more.">
     <meta name="twitter:image" content="https://blackbox-apis.com/favicon.svg">
     <!-- 🔎 DONNÉES STRUCTURÉES SCHEMA.ORG — aide Google à comprendre le produit
          et à afficher des résultats enrichis (prix, type d'appli) dans les SERP. -->
@@ -29,21 +29,21 @@
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
         "url": "https://blackbox-apis.com/",
-        "description": "12 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, crypto address validation, and more.",
+        "description": "11 real, working developer APIs for privacy, security, and data utility tasks: PII masking, signed URLs, EXIF stripping, CSV deduplication, phone number normalization, and more.",
         "offers": [
             {
                 "@type": "Offer",
                 "name": "Solo Core",
                 "price": "12",
                 "priceCurrency": "USD",
-                "description": "1 category (4 robots), unlimited requests, direct API access."
+                "description": "1 category of your choice, unlimited requests, direct API access."
             },
             {
                 "@type": "Offer",
                 "name": "Labs All-Access",
                 "price": "29",
                 "priceCurrency": "USD",
-                "description": "All 3 categories and all 12 robots with a single license key."
+                "description": "All 3 categories and all 11 robots with a single license key."
             }
         ]
     }
@@ -168,11 +168,11 @@
                                     <div class="bb-horizontal-slide-copy">
                                         <span class="bb-horizontal-slide-kicker">» ROBOT CATEGORY // 02</span>
                                         <h2>SECURITY &amp; LINK INTEGRITY</h2>
-                                        <span class="bb-horizontal-slide-subtitle">Real Cryptographic Checks — HMAC Signatures, Checksums, Bot Signals</span>
-                                        <p>Four endpoints built on real cryptography, not string matching: HMAC-SHA256 signed URLs with expiration and constant-time signature verification, and multi-chain crypto address validation with genuine checksum math across 9+ chains — BTC/LTC/DOGE (Base58Check/Bech32), TRX, XRP, BCH (CashAddr), ADA (Bech32), ETH + every EVM chain (EIP-55/Keccak-256), and SOL (Ed25519 on-curve) — not just format regex. Includes a lightweight bot-signal detector for headless browser traffic.</p>
+                                        <span class="bb-horizontal-slide-subtitle">Real Cryptographic Checks — HMAC Signatures &amp; Bot Signals</span>
+                                        <p>Three endpoints built on real cryptography, not string matching: HMAC-SHA256 signed URLs with expiration and constant-time signature verification, plus a lightweight bot-signal detector for headless browser traffic that scores real request signals instead of a naive user-agent check.</p>
                                         <div class="bb-slide-specs" aria-hidden="true">
                                             <div class="bb-slide-spec-item">
-                                                <span class="bb-slide-spec-value">04</span>
+                                                <span class="bb-slide-spec-value">03</span>
                                                 <span class="bb-slide-spec-label">Live Endpoints</span>
                                             </div>
                                             <div class="bb-slide-spec-item">
@@ -180,18 +180,17 @@
                                                 <span class="bb-slide-spec-label">Signature Algo</span>
                                             </div>
                                             <div class="bb-slide-spec-item">
-                                                <span class="bb-slide-spec-value">9+ Chains</span>
-                                                <span class="bb-slide-spec-label">Crypto Coverage</span>
+                                                <span class="bb-slide-spec-value">Real-Time</span>
+                                                <span class="bb-slide-spec-label">Bot Scoring</span>
                                             </div>
                                         </div>
                                         <div class="bb-code-snippet">
-<span class="keyword">curl</span> -X POST https://blackbox-apis.com/<span class="string">v1/crypto_verify</span> \
+<span class="keyword">curl</span> -X POST https://blackbox-apis.com/<span class="string">v1/link_signer</span> \
   -H <span class="string">"Authorization: Bearer YOUR_KEY"</span> \
-  -d <span class="string">'{"address":"1A1z7agoat...","chain":"BTC"}'</span>
+  -d <span class="string">'{"base_url":"https://example.com/file.pdf","expiration_minutes":30}'</span>
                                         </div>
                                         <ul class="bb-horizontal-slide-targets" aria-label="Included robots">
                                             <li data-detail-name="BOT DETECTOR" data-detail-copy="Flags headless-browser &amp; scripted traffic from real request signals, not a simple user-agent check.">BOT DETECTOR</li>
-                                            <li data-detail-name="CRYPTO VERIFY" data-detail-copy="Validates 9+ chains (BTC, LTC, DOGE, TRX, XRP, BCH, ADA, SOL, ETH + every EVM chain) via real checksum math — Base58Check/Bech32, CashAddr, EIP-55/Keccak-256, Ed25519 on-curve — not just format regex.">CRYPTO VERIFY</li>
                                             <li data-detail-name="LINK SIGNER" data-detail-copy="Generates HMAC-SHA256 signed URLs with a real, enforced expiration window.">LINK SIGNER</li>
                                             <li data-detail-name="LINK VALIDATOR" data-detail-copy="Verifies a signed URL's signature in constant time before granting access.">LINK VALIDATOR</li>
                                         </ul>
@@ -276,7 +275,7 @@
                 <div class="bb-faq-grid">
                     <div class="bb-faq-item">
                         <span class="bb-faq-q">What do I actually get for $12 vs $29/month?</span>
-                        <p class="bb-faq-a">SOLO CORE ($12/mo) unlocks 1 category of your choice (4 robots) with unlimited requests. LABS ALL-ACCESS ($29/mo) unlocks all 3 categories (12 robots) under a single license key — no per-category restriction.</p>
+                        <p class="bb-faq-a">SOLO CORE ($12/mo) unlocks 1 category of your choice (3 or 4 robots depending on the category) with unlimited requests. LABS ALL-ACCESS ($29/mo) unlocks all 3 categories (11 robots total) under a single license key — no per-category restriction.</p>
                     </div>
                     <div class="bb-faq-item">
                         <span class="bb-faq-q">Is there really no request limit?</span>
@@ -375,7 +374,7 @@
                             <h1 class="bb-manifesto-hero">WE BUILD REAL, WORKING DEVELOPER APIS.</h1>
                             <div class="bb-manifesto-before">
                                 <span class="bb-manifesto-label">YOUR PROJECT WITHOUT US //</span>
-                                <p>You end up writing and maintaining one-off scripts for recurring chores — masking PII before logging, validating a crypto address format, stripping EXIF data from an upload, deduplicating a CSV export — each one a small maintenance burden that never quite gets prioritized.</p>
+                                <p>You end up writing and maintaining one-off scripts for recurring chores — masking PII before logging, normalizing a phone number format, stripping EXIF data from an upload, deduplicating a CSV export — each one a small maintenance burden that never quite gets prioritized.</p>
                             </div>
                             <div class="bb-manifesto-after">
                                 <span class="bb-manifesto-label">YOUR PROJECT WITH US //</span>
@@ -401,9 +400,9 @@
                                 <h3 class="bb-pricing-name">SOLO CORE</h3>
                                 <span class="bb-pricing-audience">// Perfect for independent developers, consultants &amp; micro-projects</span>
                             </div>
-                            <p class="bb-pricing-desc">Pick the one category that matches your project and get unlimited access to its 4 robots through a personal API key — ideal if you don't need the other two categories yet.</p>
+                            <p class="bb-pricing-desc">Pick the one category that matches your project and get unlimited access to its robots through a personal API key — ideal if you don't need the other two categories yet.</p>
                             <ul class="bb-pricing-features">
-                                <li>» Access to 1 category of your choice (4 robots)</li>
+                                <li>» Access to 1 category of your choice</li>
                                 <li>» Full API documentation &amp; curl examples</li>
                                 <li>» No request limit while your subscription is active</li>
                             </ul>
@@ -427,9 +426,9 @@
                                 <h3 class="bb-pricing-name">LABS ALL-ACCESS</h3>
                                 <span class="bb-pricing-audience">// Perfect for web agencies, growth hackers &amp; multi-client setups</span>
                             </div>
-                            <p class="bb-pricing-desc">Unlock all 3 categories and all 12 robots with a single license key, no per-category restriction.</p>
+                            <p class="bb-pricing-desc">Unlock all 3 categories and all 11 robots with a single license key, no per-category restriction.</p>
                             <ul class="bb-pricing-features bb-pricing-features--highlight">
-                                <li>» Access to all 3 categories (12 robots total)</li>
+                                <li>» Access to all 3 categories (11 robots total)</li>
                                 <li>» Full API documentation &amp; curl examples</li>
                                 <li>» No request limit while your subscription is active</li>
                             </ul>
@@ -438,7 +437,7 @@
                                     <span class="bb-pricing-price" id="price-agency-tag">$29</span>
                                     <span class="bb-pricing-term">Per month • Cancel anytime</span>
                                 </div>
-                                <button onclick="triggerCheckout('labs')" class="buy-btn laser-btn bb-pricing-btn">Unlock All 12 APIs</button>
+                                <button onclick="triggerCheckout('labs')" class="buy-btn laser-btn bb-pricing-btn">Unlock All 11 APIs</button>
                                 <span class="bb-pricing-savings-badge">[ Save $7/mo vs. buying 3 category licenses separately ]</span>
                             </div>
                         </div>
@@ -523,19 +522,6 @@
                 cards: [
                     { title: "WHAT IT DOES", body: "Detects headless browsers (Puppeteer, Playwright, Selenium), CLI HTTP clients (curl, wget, python-requests, axios, okhttp), and crawler/scraper signatures, then layers in header-completeness checks (missing Accept-Language, missing Accept) and optional browser fingerprint anomalies (webdriver flag, zero plugins, empty languages, zero hardwareConcurrency).", benefits: ["Independent-probability scoring: several weak signals can combine into a strong verdict, avoiding brittle single-rule false positives.", "Confidence score is capped below 100% — always honest about uncertainty, never overclaims certainty.", "Lightweight enough to run on every incoming request."] },
                     { title: "HOW TO INTEGRATE", body: "Forward the request's headers as 'headers_payload'; optionally add client-collected 'fingerprint_meta' for a sharper score. Receive a numeric bot-probability score plus the exact list of triggered signals.", benefits: ["Use as a pre-filter before heavier bot-mitigation services or CAPTCHA challenges.", "No third-party bot database dependency — fully self-contained scoring.", "Transparent diagnostic flags so you can tune your own threshold."] }
-                ]
-            },
-            {
-                id: "crypto_verify",
-                name: "Crypto Address Verifier",
-                category: "Security & Link Integrity",
-                heading: "Validates crypto addresses across 9+ chains — BTC, LTC, DOGE, TRX, XRP, BCH, ADA, SOL and every EVM chain — with real checksum verification.",
-                description: "Verifies Bitcoin, Litecoin and Dogecoin addresses via genuine Base58Check (legacy) and Bech32/BIP-173 (SegWit) checksum algorithms with per-chain version-byte validation; Tron and Ripple/XRP via their own Base58Check variants (Ripple's dedicated alphabet included); Bitcoin Cash via a dedicated CashAddr polymod checksum; Cardano via long-form Bech32; Ethereum and every EVM-compatible chain (BSC, Polygon, Avalanche, Arbitrum, Optimism, Base, Fantom, Celo, Cronos...) via the EIP-55 mixed-case checksum (Keccak-256); and Solana via Ed25519 on-curve point verification — full cryptographic coverage on every chain, not just format regex.",
-                endpoint: "/v1/crypto_verify",
-                curl: "curl -X POST https://blackbox-apis.com/v1/crypto_verify -H 'Authorization: Bearer YOUR_KEY' -d '{\"address\":\"1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2\",\"network\":\"btc\"}'",
-                cards: [
-                    { title: "WHAT IT DOES", body: "Every chain gets its own real cryptographic check, never a lookalike regex:<br><br><b>• BTC / LTC / DOGE</b> — Base58Check (legacy P2PKH/P2SH) or Bech32/BIP-173 (SegWit), with per-chain version-byte validation so a Litecoin address can't slip through as a Bitcoin one.<br><b>• TRX (Tron)</b> — Base58Check with Tron's dedicated version byte.<br><b>• XRP (Ripple)</b> — Base58Check using Ripple's own reassigned alphabet, not Bitcoin's.<br><b>• BCH (Bitcoin Cash)</b> — a dedicated CashAddr checksum (a distinct 40-bit polymod construction from Bitcoin's Bech32), with or without the 'bitcoincash:' prefix.<br><b>• ADA (Cardano)</b> — long-form Bech32/BIP-173 Shelley addresses.<br><b>• ETH + every EVM chain</b> (BSC, Polygon/MATIC, Avalanche, Arbitrum, Optimism, Base, Fantom, Celo, Cronos) — the EIP-55 mixed-case checksum via Keccak-256.<br><b>• SOL (Solana)</b> — real Ed25519 on-curve point decompression, confirming the address is an actual valid public key, not just a Base58 string of the right length.<br><br>A single altered character will fail validation on every one of these chains — and submitting a valid address under the wrong network (e.g. a Bitcoin address tagged as Litecoin) is caught and rejected too.", benefits: ["Catches typos and corrupted addresses before you send funds, on any of the 9+ supported chains.", "Full checksum coverage — no chain is validated on format alone, including the ones competitors skip (LTC, DOGE, TRX, XRP, BCH, ADA).", "Cross-chain confusion protection — rejects addresses submitted under the wrong network label.", "No blockchain node calls — pure cryptographic validation, fast response."] },
-                    { title: "HOW TO INTEGRATE", body: "Send the address string and target network (accepted values: btc, ltc, doge, trx/tron, xrp/ripple, bch, ada/cardano, sol, eth, plus any EVM alias — bsc/bnb, matic/polygon, avax/avalanche, arb/arbitrum, op/optimism, base, ftm/fantom, celo, cro/cronos); receive a valid/invalid result plus the exact verification method used.", benefits: ["Use before accepting a withdrawal or payout address from a user, on any of the 9+ supported chains.", "Response tells you exactly which cryptographic check was applied (Base58Check, Bech32, CashAddr, EIP-55, or Ed25519).", "One single endpoint for the whole multi-chain surface — no need to integrate a different library per chain.", "Works offline, no external RPC dependency."] }
                 ]
             },
             {
@@ -890,15 +876,6 @@ function initializeApp() {
                         languages: navigator.languages || [navigator.language],
                     },
                 }),
-            },
-            'CRYPTO VERIFY': {
-                endpoint: '/v1/crypto_verify',
-                fields: [
-                    { name: 'address', label: 'Wallet address', type: 'text', default: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' },
-                    { name: 'network', label: 'Chain', type: 'select', default: 'btc',
-                      options: ['btc', 'eth', 'ltc', 'doge', 'trx', 'xrp', 'bch', 'ada', 'sol'] },
-                ],
-                buildBody: (v) => ({ address: v.address, network: v.network }),
             },
             'LINK SIGNER': {
                 endpoint: '/v1/link_signer',

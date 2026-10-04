@@ -4,7 +4,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BlackBox Labs API documentation — authentication, endpoints and response format for the 12 developer APIs.">
+    <meta name="description" content="BlackBox Labs API documentation — authentication, endpoints and response format for the 11 developer APIs.">
     <title>API Documentation — BlackBox Labs</title>
     <link rel="canonical" href="https://blackbox-apis.com/docs.html">
     <link rel="stylesheet" href="style.css">
@@ -33,7 +33,6 @@
                 <p><strong>Security &amp; Link Integrity</strong></p>
                 <ul>
                     <li><code>POST /v1/bot_detector</code> — flags likely automated traffic from User-Agent/headers.</li>
-                    <li><code>POST /v1/crypto_verify</code> — verifies BTC addresses via real Base58Check/Bech32 checksums (format-only for ETH/SOL).</li>
                     <li><code>POST /v1/link_signer</code> — issues an HMAC-signed URL with an expiration timestamp.</li>
                     <li><code>POST /v1/link_validator</code> — verifies a signed URL's signature and expiration.</li>
                 </ul>
@@ -60,7 +59,7 @@
                 <p>Errors follow the same JSON envelope with <code>success: false</code> and a <code>message</code> describing the failure (invalid input, invalid/missing license key, etc.).</p>
 
                 <h4>5. ACCESS SCOPE</h4>
-                <p>A SOLO CORE license unlocks the 4 endpoints of a single category you choose at checkout. A LABS ALL-ACCESS license unlocks all 12 endpoints across all 3 categories. Calling an endpoint outside your plan's scope returns a <code>401</code>.</p>
+                <p>A SOLO CORE license unlocks the endpoints of a single category you choose at checkout (3 or 4, depending on the category). A LABS ALL-ACCESS license unlocks all 11 endpoints across all 3 categories. Calling an endpoint outside your plan's scope returns a <code>401</code>.</p>
 
                 <h4>6. GOOD PRACTICES</h4>
                 <ul>

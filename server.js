@@ -18,10 +18,16 @@ const { recordSale, hasProcessedTransaction, getStats, saveLicense, isValidLicen
 
 // 🗂️ CATALOGUE DES 3 CATÉGORIES DE ROBOTS (doit rester synchronisé avec `robotsCatalog`
 // dans public/index.html). Sert à restreindre l'accès des licences SOLO CORE à une
-// seule catégorie (4 robots), contrairement à LABS ALL-ACCESS qui couvre les 12.
+// seule catégorie, contrairement à LABS ALL-ACCESS qui couvre tous les robots.
+// ⚠️ "crypto_verify" a été retiré du catalogue public et de ce mapping (2026-10-04) :
+// Paddle (Merchant of Record) interdit explicitement tout produit lié aux
+// cryptomonnaies dans son Acceptable Use Policy (catégorie "Trading and financial
+// services"), ce qui bloquait l'approbation du domaine. La route reste désactivée
+// ci-dessous (non montée dans realRobotRoutes) pour qu'elle ne soit plus accessible,
+// même avec une clé de licence valide.
 const ROBOT_CATEGORIES = {
     'Privacy & PII Protection': ['log_sanitizer', 'pii_masker', 'phone_sanitizer', 'ip_anonymizer'],
-    'Security & Link Integrity': ['bot_detector', 'crypto_verify', 'link_signer', 'link_validator'],
+    'Security & Link Integrity': ['bot_detector', 'link_signer', 'link_validator'],
     'Data & Media Utilities': ['csv_dedupe', 'exif_cloak', 'timezone_converter', 'uptime_check'],
 };
 
@@ -99,8 +105,8 @@ async function sendLicenseActivationEmail({ email, name, licenseKey, category })
         return;
     }
     const accessLine = category
-        ? `<p>Your <strong>SOLO CORE</strong> license gives you access to the category: <strong>${category}</strong> (4 robots).</p>`
-        : `<p>Your <strong>LABS ALL-ACCESS</strong> license gives you access to all 3 categories (12 robots).</p>`;
+        ? `<p>Your <strong>SOLO CORE</strong> license gives you access to the category: <strong>${category}</strong> (${ROBOT_CATEGORIES[category]?.length ?? '?'} robots).</p>`
+        : `<p>Your <strong>LABS ALL-ACCESS</strong> license gives you access to all 3 categories (11 robots).</p>`;
     await resend.emails.send({
         from: 'BlackBox Audio Labs <activation@blackbox-apis.com>',
         to: [email],
@@ -479,16 +485,20 @@ function requireLicense(robotName) {
     };
 }
 
-// 🤖 CATALOGUE DES 12 ROBOTS RÉELS : chaque endpoint est monté sous /v1/<nom_du_robot>
+// 🤖 CATALOGUE DES 11 ROBOTS RÉELS : chaque endpoint est monté sous /v1/<nom_du_robot>
 // et protégé par la clé de licence active. Les fichiers correspondants contiennent
-// la vraie logique métier (parsing CSV réel, checksum crypto réel, retrait EXIF binaire réel, etc.).
+// la vraie logique métier (parsing CSV réel, retrait EXIF binaire réel, etc.).
+// ⚠️ "crypto_verify" n'est volontairement PAS monté ici (route désactivée, renvoie 404) :
+// retiré du catalogue vendu suite au refus de Paddle d'approuver le domaine à cause de
+// son Acceptable Use Policy (interdiction de tout produit lié aux cryptomonnaies). Le
+// fichier crypto_verify.js reste présent sur disque mais n'est plus jamais require()'d
+// en route active.
 const realRobotRoutes = [
     'log_sanitizer',
     'pii_masker',
     'phone_sanitizer',
     'ip_anonymizer',
     'bot_detector',
-    'crypto_verify',
     'link_signer',
     'link_validator',
     'csv_dedupe',
@@ -506,7 +516,7 @@ const realRobotRoutes = [
 // pour le reste de la fenêtre (comportement standard d'anti-brute-force, comme fail2ban) :
 // si cette IP est partagée (NAT, proxy d'entreprise) un vrai client pourrait alors être
 // bloqué quelques minutes en même temps qu'un attaquant — compromis volontaire et classique.
-// Partagé entre les 12 robots (même store), pour bloquer un balayage qui changerait
+// Partagé entre les 11 robots (même store), pour bloquer un balayage qui changerait
 // d'endpoint pour contourner la limite.
 const robotAuthBruteForceLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,

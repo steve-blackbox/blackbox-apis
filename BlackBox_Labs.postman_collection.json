@@ -1,19 +1,31 @@
 {
   "info": {
-    "name": "BlackBox Labs — 12 Developer APIs",
-    "description": "12 focused, single-purpose developer APIs: privacy & PII protection, security & link integrity, and data & media utilities. Every endpoint requires a Bearer API key. This collection ships pre-filled with a shared PUBLIC DEMO key (capped at 50 requests/day total, for evaluation only) — get your own unlimited key at https://blackbox-apis.com/. All request/response fields below match the live production contract exactly — copy/paste ready.",
+    "name": "BlackBox Labs — 11 Developer APIs",
+    "description": "11 focused, single-purpose developer APIs: privacy & PII protection, security & link integrity, and data & media utilities. Every endpoint requires a Bearer API key. This collection ships pre-filled with a shared PUBLIC DEMO key (capped at 50 requests/day total, for evaluation only) — get your own unlimited key at https://blackbox-apis.com/. All request/response fields below match the live production contract exactly — copy/paste ready.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_postman_id": "b1a2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
   },
   "auth": {
     "type": "bearer",
     "bearer": [
-      { "key": "token", "value": "{{api_key}}", "type": "string" }
+      {
+        "key": "token",
+        "value": "{{api_key}}",
+        "type": "string"
+      }
     ]
   },
   "variable": [
-    { "key": "base_url", "value": "https://blackbox-apis.com", "type": "string" },
-    { "key": "api_key", "value": "BB-DEMO-POSTMAN-PUBLIC01", "type": "string" }
+    {
+      "key": "base_url",
+      "value": "https://blackbox-apis.com",
+      "type": "string"
+    },
+    {
+      "key": "api_key",
+      "value": "BB-DEMO-POSTMAN-PUBLIC01",
+      "type": "string"
+    }
   ],
   "item": [
     {
@@ -23,8 +35,22 @@
           "name": "PII Masker",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/pii_masker", "host": ["{{base_url}}"], "path": ["v1", "pii_masker"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/pii_masker",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "pii_masker"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"raw_payload_text\": \"Contact John at john.doe@example.com or card 4111111111111111\"\n}"
@@ -36,8 +62,22 @@
           "name": "Phone Sanitizer",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/phone_sanitizer", "host": ["{{base_url}}"], "path": ["v1", "phone_sanitizer"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/phone_sanitizer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "phone_sanitizer"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"raw_phone_string\": \"+33 6 12 34 56 78\",\n  \"default_country_code\": \"FR\"\n}"
@@ -49,8 +89,22 @@
           "name": "IP Anonymizer",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/ip_anonymizer", "host": ["{{base_url}}"], "path": ["v1", "ip_anonymizer"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/ip_anonymizer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "ip_anonymizer"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"raw_ip_address\": \"2001:db8:85a3::8a2e:370:7334\"\n}"
@@ -62,8 +116,22 @@
           "name": "Log Sanitizer",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/log_sanitizer", "host": ["{{base_url}}"], "path": ["v1", "log_sanitizer"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/log_sanitizer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "log_sanitizer"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"log_data\": \"user=4111111111111111 auth=Bearer eyJhbGciOiJIUzI1NiJ9... key=sk_live_51H8x from 203.0.113.42\"\n}"
@@ -77,24 +145,25 @@
       "name": "Security & Link Integrity",
       "item": [
         {
-          "name": "Crypto Verify",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/crypto_verify", "host": ["{{base_url}}"], "path": ["v1", "crypto_verify"] },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"address\": \"1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\",\n  \"network\": \"btc\"\n}"
-            },
-            "description": "Validates a crypto wallet address format/checksum for a given network (btc, ltc, doge, trx, xrp, bch, ada, sol, eth + EVM-compatible chains) before you send funds to it."
-          }
-        },
-        {
           "name": "Bot Detector",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/bot_detector", "host": ["{{base_url}}"], "path": ["v1", "bot_detector"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/bot_detector",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "bot_detector"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"headers_payload\": { \"user-agent\": \"Mozilla/5.0 ...\", \"accept-language\": \"en-US,en;q=0.9\" },\n  \"fingerprint_meta\": { \"webdriver\": false, \"plugins_length\": 3 }\n}"
@@ -106,8 +175,22 @@
           "name": "Link Signer",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/link_signer", "host": ["{{base_url}}"], "path": ["v1", "link_signer"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/link_signer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "link_signer"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"base_url\": \"https://example.com/download/report.pdf\",\n  \"expiration_minutes\": 30,\n  \"secret_salt\": \"a-secret-you-control-min-8-chars\"\n}"
@@ -119,8 +202,22 @@
           "name": "Link Validator",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/link_validator", "host": ["{{base_url}}"], "path": ["v1", "link_validator"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/link_validator",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "link_validator"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"signed_url\": \"https://example.com/download/report.pdf?exp=...&sig=...\",\n  \"secret_salt\": \"a-secret-you-control-min-8-chars\"\n}"
@@ -137,8 +234,23 @@
           "name": "CSV Dedupe",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/csv_dedupe/process", "host": ["{{base_url}}"], "path": ["v1", "csv_dedupe", "process"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/csv_dedupe/process",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "csv_dedupe",
+                "process"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"csvRaw\": \"email,name\\njohn@x.com,John\\njohn@x.com,John Duplicate\",\n  \"hasHeader\": true,\n  \"dedupeColumns\": [\"email\"]\n}"
@@ -150,8 +262,22 @@
           "name": "Exif Cloak",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/exif_cloak", "host": ["{{base_url}}"], "path": ["v1", "exif_cloak"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/exif_cloak",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "exif_cloak"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"image_base64\": \"<base64-encoded JPEG/PNG bytes>\"\n}"
@@ -163,8 +289,22 @@
           "name": "Timezone Converter",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/timezone_converter", "host": ["{{base_url}}"], "path": ["v1", "timezone_converter"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/timezone_converter",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "timezone_converter"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"input_date_string\": \"2026-09-24T09:30:00\",\n  \"source_tz\": \"Europe/Paris\",\n  \"target_tz\": \"America/New_York\"\n}"
@@ -176,8 +316,22 @@
           "name": "Uptime Check",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/v1/uptime_check", "host": ["{{base_url}}"], "path": ["v1", "uptime_check"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/uptime_check",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "uptime_check"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"target_url\": \"https://example.com\",\n  \"timeout_ms\": 5000\n}"
