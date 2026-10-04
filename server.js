@@ -238,7 +238,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 // - licenseMeta : Map clé -> { plan, category } (restriction par catégorie pour SOLO CORE)
 function rebuildLicenseCaches() {
     const rows = getAllActiveLicenseMeta();
-    global.activeLicenseKeys = new Set(['BB-ADMIN-CORE-99', ...rows.map((r) => r.license_key)]);
+    const keys = rows.map((r) => r.license_key);
+    // 🔐 Clé de test interne optionnelle (jamais codée en dur, jamais commitée) : à définir
+    // via INTERNAL_TEST_LICENSE_KEY dans .env uniquement si Steve a besoin de tester les
+    // robots sans passer par Paddle. Remplace l'ancienne clé fixe "BB-ADMIN-CORE-99", qui
+    // était codée en dur dans le code source ET documentée en clair dans documentation.md
+    // — donc publiquement visible sur le dépôt GitHub (public), offrant un accès illimité
+    // et gratuit à tout le monde sans qu'aucune vente Paddle ne soit nécessaire.
+    if (process.env.INTERNAL_TEST_LICENSE_KEY) {
+        keys.push(process.env.INTERNAL_TEST_LICENSE_KEY);
+    }
+    global.activeLicenseKeys = new Set(keys);
     global.licenseMeta = new Map(rows.map((r) => [r.license_key, { plan: r.plan, category: r.category }]));
 }
 seedDemoLicense(); // ré-insère la clé démo publique (Postman) à chaque démarrage, quel que soit l'état du disque
