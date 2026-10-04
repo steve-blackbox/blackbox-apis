@@ -37,8 +37,57 @@ const paddleClient = process.env.PADDLE_API_KEY
 
 const app = express();
 
+// 🔎 Fait confiance au 1er proxy en amont (Render) pour lire la vraie IP cliente depuis
+// "X-Forwarded-For" dans req.ip — nécessaire pour l'allowlist IP du webhook ci-dessous.
+// Sans ce réglage, req.ip renverrait l'IP interne du proxy Render, jamais celle de Paddle.
+app.set('trust proxy', 1);
+
 // 🛡️ MIDDLEWARES STRUCTURAUX DE SOUTE
 app.use(cors({ origin: '*' }));
+
+// 🌐 ALLOWLIST IP DU WEBHOOK PADDLE (défense en profondeur, en complément de la
+// vérification de signature cryptographique qui reste la protection principale).
+// Liste récupérée dynamiquement (jamais codée en dur : Paddle peut la faire évoluer),
+// rafraîchie périodiquement, avec repli silencieux sur l'ancienne liste si l'appel échoue.
+let paddleWebhookIpCidrs = [];
+async function refreshPaddleWebhookIps() {
+    try {
+        const res = await fetch('https://api.paddle.com/ips');
+        const json = await res.json();
+        if (Array.isArray(json?.data?.ipv4_cidrs) && json.data.ipv4_cidrs.length > 0) {
+            paddleWebhookIpCidrs = json.data.ipv4_cidrs;
+            console.log(`🌐 ${paddleWebhookIpCidrs.length} IP(s) Paddle rechargée(s) pour l'allowlist webhook.`);
+        }
+    } catch (err) {
+        console.error(`⚠️ Échec du rechargement des IPs Paddle (on garde l'ancienne liste) : ${err.message}`);
+    }
+}
+refreshPaddleWebhookIps();
+setInterval(refreshPaddleWebhookIps, 6 * 60 * 60 * 1000); // rafraîchi toutes les 6h
+
+function isIpInCidr(ip, cidr) {
+    const [range, bits] = cidr.split('/');
+    const mask = ~(2 ** (32 - Number(bits)) - 1);
+    const ipToLong = (addr) => addr.split('.').reduce((acc, octet) => (acc << 8) + Number(octet), 0) >>> 0;
+    return (ipToLong(ip) & mask) === (ipToLong(range) & mask);
+}
+
+// ⚠️ MODE SURVEILLANCE UNIQUEMENT PAR DÉFAUT : ne bloque jamais une requête, se contente
+// de journaliser une IP inattendue. À activer (PADDLE_WEBHOOK_IP_ENFORCE=true) seulement
+// après avoir confirmé, via les logs Render, que de vrais webhooks Paddle sont bien
+// reconnus (risque sinon de bloquer silencieusement TOUS les paiements si req.ip ne
+// reflète pas la vraie IP cliente derrière le proxy Render).
+function logSuspiciousWebhookIp(req, res, next) {
+    const clientIp = (req.ip || '').replace('::ffff:', ''); // normalise les IPv4 mappées en IPv6
+    const isKnownPaddleIp = paddleWebhookIpCidrs.length === 0 || paddleWebhookIpCidrs.some((cidr) => isIpInCidr(clientIp, cidr));
+    if (!isKnownPaddleIp) {
+        console.warn(`⚠️ [WEBHOOK PADDLE] Requête reçue d'une IP hors allowlist connue : ${clientIp}`);
+        if (process.env.PADDLE_WEBHOOK_IP_ENFORCE === 'true') {
+            return res.status(403).send('Forbidden: source IP not recognized as Paddle.');
+        }
+    }
+    next();
+}
 
 // 📨 Envoie l'e-mail d'activation de licence
 async function sendLicenseActivationEmail({ email, name, licenseKey, category }) {
@@ -74,7 +123,7 @@ async function sendLicenseActivationEmail({ email, name, licenseKey, category })
 // 📡 1. ROUTE DU WEBHOOK PADDLE (PLINDÉE AVANT EXPRESS.JSON)
 // Le corps doit rester "brut" (non parsé par express.json) pour que la vérification de
 // signature Paddle (en-tête "paddle-signature") soit valide.
-app.post('/v1/webhook/paddle', express.raw({ type: 'application/json' }), async (req, res) => {
+app.post('/v1/webhook/paddle', express.raw({ type: 'application/json' }), logSuspiciousWebhookIp, async (req, res) => {
     if (!paddleClient) {
         console.error('❌ Webhook Paddle reçu mais PADDLE_API_KEY absente côté serveur.');
         return res.status(503).send('Paddle non configuré côté serveur.');
