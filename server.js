@@ -1,6 +1,7 @@
 // 🌌 BLACKBOX MICROSERVICES CORE ENGINE — PRODUCTION NODE V6
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const path = require('path');
 const crypto = require('crypto');
 const { Paddle, Environment, EventName } = require('@paddle/paddle-node-sdk');
@@ -270,8 +271,21 @@ function checkDemoRateLimit() {
     return demoUsage.count <= DEMO_DAILY_LIMIT;
 }
 
+// 🚨 ANTI-BRUTE-FORCE : les clés de licence (format BB-XXXX-XXXX) ont 32 bits d'entropie
+// (crypto.randomBytes(4)) — sans limite de débit, un attaquant pourrait en deviner une
+// valide par essais répétés et piocher gratuitement dans l'accès d'un vrai client payant.
+// 30 tentatives / 15 min / IP laisse largement de quoi se tromper en recopiant sa propre
+// clé, tout en rendant un brute-force impraticable.
+const verifyLicenseLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 30,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, message: '» RATE LIMIT EXCEEDED: Too many verification attempts, try again later.' },
+});
+
 // 🔎 Route de vérification de licence appelée par le bouton "VERIFY" du site (public/index.html)
-app.post('/api/verify-license', (req, res) => {
+app.post('/api/verify-license', verifyLicenseLimiter, (req, res) => {
     const key = (req.body?.key || '').trim().toUpperCase();
     if (!key) {
         return res.status(400).json({ success: false, message: 'Missing key' });
@@ -434,8 +448,32 @@ const realRobotRoutes = [
     'uptime_check'
 ];
 
+// 🚨 ANTI-BRUTE-FORCE (clés de licence invalides uniquement) : un attaquant pourrait
+// essayer de deviner une clé valide directement sur un endpoint robot plutôt que via
+// /api/verify-license. Seule une réponse 401 ("clé invalide/absente") compte dans le
+// quota de 50/15min/IP — un usage 100% légitime (clé valide, y compris une 403 de
+// catégorie SOLO CORE mal ciblée) ne fait donc jamais, à lui seul, grimper ce compteur.
+// Une fois 50 vraies tentatives invalides atteintes depuis une IP, celle-ci est bloquée
+// pour le reste de la fenêtre (comportement standard d'anti-brute-force, comme fail2ban) :
+// si cette IP est partagée (NAT, proxy d'entreprise) un vrai client pourrait alors être
+// bloqué quelques minutes en même temps qu'un attaquant — compromis volontaire et classique.
+// Partagé entre les 12 robots (même store), pour bloquer un balayage qui changerait
+// d'endpoint pour contourner la limite.
+const robotAuthBruteForceLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 50,
+    standardHeaders: true,
+    legacyHeaders: false,
+    skipSuccessfulRequests: true,
+    // Ne compte comme "échec" (donc vers le quota) qu'une 401 — une 403 (clé VALIDE
+    // mais catégorie non couverte) reste un usage légitime mal ciblé, pas une tentative
+    // de devinette de clé.
+    requestWasSuccessful: (req, res) => res.statusCode !== 401,
+    message: { success: false, message: '» RATE LIMIT EXCEEDED: Too many invalid license attempts, try again later.' },
+});
+
 realRobotRoutes.forEach((robotName) => {
-    app.use(`/v1/${robotName}`, requireLicense(robotName), require(`./${robotName}`));
+    app.use(`/v1/${robotName}`, robotAuthBruteForceLimiter, requireLicense(robotName), require(`./${robotName}`));
 });
 
 // 🎛️ IGNITION DES RÉACTEURS SUR LE PORT CLOUD REGLÉ PAR RENDER
