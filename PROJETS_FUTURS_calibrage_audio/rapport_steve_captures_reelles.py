@@ -51,6 +51,7 @@ from image_reader import (
     DIRAC_SCREENSHOT_2794x1538_PLOT_AREA as PLOT_AREA,
     detect_curve_color,
     extract_curve_points,
+    validate_calibration_against_gridlines,
 )
 from models import MeasurementPoint, RoomInfo, ServiceLevel, Speaker, SpeakerMeasurement
 from report_generator import generate_report
@@ -99,6 +100,21 @@ def _extract_measurement(captures_dir: str, filename: str) -> list[MeasurementPo
             f"'{captures_dir}'."
         )
     tolerance, min_saturation = EXTRACTION_OVERRIDES.get(filename, DEFAULT_TOLERANCE_AND_SATURATION)
+    # Garde-fou (04/10) : CALIBRATION est figée pour une résolution/zoom
+    # précis (voir note "GARDE-FOU AJOUTÉ" dans image_reader.py). Si ce
+    # script sert un jour à un autre client, cette vérification empêche
+    # une extraction silencieusement fausse sur une capture différente.
+    calibration_warnings = validate_calibration_against_gridlines(CALIBRATION, path, **PLOT_AREA)
+    if calibration_warnings:
+        raise RuntimeError(
+            f"Calibration des axes incohérente pour '{path}' :\n- "
+            + "\n- ".join(calibration_warnings)
+            + "\nCette capture ne correspond probablement pas à la "
+            "résolution/zoom validés pour DIRAC_SCREENSHOT_2794x1538 : "
+            "ne pas extraire tant qu'une nouvelle calibration n'a pas été "
+            "établie pour ce format, sous peine de recommander des "
+            "réglages faux (ex. fréquence de coupure dangereuse)."
+        )
     color = detect_curve_color(path, **PLOT_AREA)
     raw_points = extract_curve_points(
         path, CALIBRATION, color,

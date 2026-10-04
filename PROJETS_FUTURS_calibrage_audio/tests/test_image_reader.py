@@ -30,7 +30,9 @@ from image_reader import (
     UI_GRIDLINE_RGB,
     UI_RANGE_INDICATOR_RGB,
     detect_curve_color,
+    detect_horizontal_gridlines,
     extract_curve_points,
+    validate_calibration_against_gridlines,
 )
 
 BACKGROUND_RGB = (20, 24, 34)
@@ -184,6 +186,94 @@ class DetectCurveColorTests(unittest.TestCase):
         color = detect_curve_color(path, 0, 199, 0, 149)
 
         self.assertEqual(color, CURVE_RGB)
+        os.remove(path)
+
+
+# Positions pixel des 6 graduations dB (+20 à -30, pas de 10 dB) selon
+# SIMPLE_CALIBRATION, arrondies à l'entier le plus proche (149px / 50dB).
+SIMPLE_GRIDLINE_ROWS_PX = [0, 30, 60, 89, 119, 149]
+
+
+def _draw_horizontal_gridlines(img: Image.Image, rows_px: list[int], rgb) -> None:
+    width, height = img.size
+    px = img.load()
+    for y in rows_px:
+        if 0 <= y < height:
+            for x in range(width):
+                px[x, y] = rgb
+
+
+class GridlineValidationTests(unittest.TestCase):
+    """Garde-fou de sécurité (04/10) : une `AxisCalibration` figée pour une
+    résolution/zoom donnés ne doit jamais être appliquée silencieusement à
+    une capture différente (risque de Hz/dB faux -> recommandation de
+    réglage dangereuse). Ces tests couvrent `detect_horizontal_gridlines`
+    et `validate_calibration_against_gridlines` sur des images
+    synthétiques avec des lignes de grille à des positions connues."""
+
+    def test_detect_horizontal_gridlines_finds_known_rows(self):
+        img = _blank_image()
+        _draw_horizontal_gridlines(img, SIMPLE_GRIDLINE_ROWS_PX, UI_GRIDLINE_RGB)
+        path = "/tmp/test_image_reader_gridlines_detect.png"
+        img.save(path)
+
+        rows = detect_horizontal_gridlines(path, 0, 199, 0, 149)
+
+        self.assertEqual(len(rows), len(SIMPLE_GRIDLINE_ROWS_PX))
+        for expected, found in zip(SIMPLE_GRIDLINE_ROWS_PX, rows):
+            self.assertAlmostEqual(expected, found, delta=1.0)
+        os.remove(path)
+
+    def test_matching_calibration_raises_no_warning(self):
+        """Cas nominal : la calibration correspond réellement à l'image
+        (comme sur les vraies captures de Steve) -> aucune alerte."""
+        img = _blank_image()
+        _draw_horizontal_gridlines(img, SIMPLE_GRIDLINE_ROWS_PX, UI_GRIDLINE_RGB)
+        path = "/tmp/test_image_reader_gridlines_ok.png"
+        img.save(path)
+
+        warnings = validate_calibration_against_gridlines(SIMPLE_CALIBRATION, path, 0, 199, 0, 149)
+
+        self.assertEqual(warnings, [])
+        os.remove(path)
+
+    def test_mismatched_calibration_raises_warning(self):
+        """Cas dangereux à détecter : une capture d'une autre résolution/
+        zoom utilisée avec une calibration figée pour une AUTRE capture —
+        les lignes de grille réelles ne tombent alors plus sur des
+        multiples de 10 dB une fois converties, et une alerte doit être
+        levée plutôt que de laisser un diagnostic silencieusement faux."""
+        img = _blank_image()
+        _draw_horizontal_gridlines(img, SIMPLE_GRIDLINE_ROWS_PX, UI_GRIDLINE_RGB)
+        path = "/tmp/test_image_reader_gridlines_mismatch.png"
+        img.save(path)
+
+        # Calibration incompatible : mêmes pixels de référence, mais une
+        # plage dB différente (+20 à -20 au lieu de +20 à -30) — simule
+        # une capture avec un zoom/plage différents de ceux calibrés.
+        wrong_calibration = AxisCalibration(
+            x_pixel_a=0.0, x_freq_hz_a=10.0,
+            x_pixel_b=199.0, x_freq_hz_b=1000.0,
+            y_pixel_a=0.0, y_db_a=20.0,
+            y_pixel_b=149.0, y_db_b=-20.0,
+        )
+
+        warnings = validate_calibration_against_gridlines(wrong_calibration, path, 0, 199, 0, 149)
+
+        self.assertTrue(warnings, "une calibration incompatible aurait dû lever au moins une alerte")
+        os.remove(path)
+
+    def test_no_gridlines_detected_raises_explicit_warning(self):
+        """Zone de tracé ou couleur de grille mal renseignées : le message
+        doit être explicite plutôt qu'un résultat vide silencieux."""
+        img = _blank_image()  # aucune ligne de grille tracée
+        path = "/tmp/test_image_reader_gridlines_none.png"
+        img.save(path)
+
+        warnings = validate_calibration_against_gridlines(SIMPLE_CALIBRATION, path, 0, 199, 0, 149)
+
+        self.assertEqual(len(warnings), 1)
+        self.assertIn("Aucune ligne de grille", warnings[0])
         os.remove(path)
 
 

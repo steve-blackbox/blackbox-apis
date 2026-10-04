@@ -100,6 +100,27 @@ Ce qui n'a PAS encore été revalidé : une résolution de capture différente
 de 2794x1538, une interface Dirac dans une autre langue, ou une version
 différente du logiciel. `DIRAC_SCREENSHOT_2794x1538` ci-dessous documente
 explicitement le contexte où cette calibration est valable.
+
+GARDE-FOU AJOUTÉ (04/10, suite au bilan demandé par Steve pour identifier
+ce qui bloque un vrai client autre que lui-même) : `AxisCalibration` reste
+un jeu de 4 repères pixel figés à la main pour UNE résolution/zoom donnés
+— rien ne généralise encore automatiquement cette calibration à la
+capture d'un futur client (résolution d'écran, zoom de fenêtre ou version
+Dirac différents). Le risque n'est pas un simple bug visuel : une
+calibration fausse produit des couples (Hz, dB) silencieusement faux, ce
+qui peut mener `diagnostic_engine.py` à recommander une fréquence de
+coupure dangereuse pour une enceinte (voir la règle de marge de 20 Hz
+déjà actée dans ce projet). Plutôt que de résoudre la généralisation
+complète (lecture OCR des étiquettes d'axe, non commencée), ce module
+ajoute `detect_horizontal_gridlines`/`validate_calibration_against_gridlines`
+: un garde-fou qui détecte les vraies lignes de grille dB dans l'image et
+vérifie qu'elles tombent bien sur des multiples de 10 dB une fois
+converties par la calibration donnée — si ce n'est pas le cas (nouvelle
+résolution, calibration pas encore refaite), l'alerte est explicite au
+lieu d'un diagnostic silencieusement faux. Recalibrer pour une nouvelle
+résolution reste un travail manuel (relever 2 repères pixel par axe à
+l'œil) : ce garde-fou ne le remplace pas, il empêche seulement d'oublier
+de le refaire.
 """
 
 from __future__ import annotations
@@ -390,3 +411,129 @@ def detect_curve_color(
             "les coordonnées de la zone de graphique ou abaisser min_saturation."
         )
     return max(counts, key=counts.get)
+
+
+def detect_horizontal_gridlines(
+    image_path: str,
+    plot_left_px: float,
+    plot_right_px: float,
+    plot_top_px: float,
+    plot_bottom_px: float,
+    gridline_rgb: tuple[int, int, int] = UI_GRIDLINE_RGB,
+    color_tolerance: float = 12.0,
+    min_row_coverage: float = 0.4,
+) -> list[float]:
+    """Détecte les lignes de grille HORIZONTALES (graduations de l'axe dB)
+    réellement présentes dans la zone de tracé donnée, en repérant les
+    lignes de pixels dont une part suffisante (`min_row_coverage`, 40% par
+    défaut — volontairement pas plus haut : vérifié sur les 8 vraies
+    captures de Steve, une courbe mesurée qui traverse la grille, une
+    légende flottante ou 2 courbes superposées comme sur "SUBWOOFERS.png"
+    peuvent occulter jusqu'à ~50% d'une ligne de grille réelle, ce qui
+    ferait manquer la détection avec un seuil à 60%) correspond à
+    `gridline_rgb` (couleur de grille stable, voir `UI_GRIDLINE_RGB`). Les
+    lignes voisines (épaisseur de trait > 1px) sont fusionnées en un seul
+    centre.
+
+    Ne détecte QUE les lignes horizontales : la ligne verticale pointillée
+    de crossover présente sur les captures de Steve n'est jamais une
+    rangée presque entièrement de `gridline_rgb` sur toute la largeur de
+    tracé, donc elle n'est pas confondue avec une graduation d'axe (voir
+    la mise en garde dans la docstring d'en-tête du module).
+
+    Retourne les positions en pixel (coordonnée Y), triées de haut en bas.
+    Une liste vide signale qu'aucune grille n'a été trouvée (zone de tracé
+    ou couleur de grille probablement incorrectes pour cette image)."""
+    img = Image.open(image_path).convert("RGB")
+    pixels = img.load()
+    left, right = int(plot_left_px), int(plot_right_px)
+    top, bottom = int(plot_top_px), int(plot_bottom_px)
+    row_width = right - left + 1
+
+    matching_rows: list[int] = []
+    for py in range(top, bottom + 1):
+        count = sum(
+            1
+            for px in range(left, right + 1)
+            if _color_distance(pixels[px, py], gridline_rgb) <= color_tolerance
+        )
+        if count / row_width >= min_row_coverage:
+            matching_rows.append(py)
+
+    if not matching_rows:
+        return []
+
+    groups = [[matching_rows[0]]]
+    for y in matching_rows[1:]:
+        if y - groups[-1][-1] <= 2:
+            groups[-1].append(y)
+        else:
+            groups.append([y])
+    return [sum(g) / len(g) for g in groups]
+
+
+def validate_calibration_against_gridlines(
+    calibration: AxisCalibration,
+    image_path: str,
+    plot_left_px: float,
+    plot_right_px: float,
+    plot_top_px: float,
+    plot_bottom_px: float,
+    gridline_rgb: tuple[int, int, int] = UI_GRIDLINE_RGB,
+    color_tolerance: float = 12.0,
+    min_row_coverage: float = 0.4,
+    expected_db_step: float = 10.0,
+    max_deviation_db: float = 1.5,
+) -> list[str]:
+    """GARDE-FOU DE SÉCURITÉ à appeler avant de faire confiance à une
+    `AxisCalibration` sur une capture donnée (voir la note "GARDE-FOU
+    AJOUTÉ" dans la docstring d'en-tête du module pour le contexte complet
+    : une calibration figée pour une résolution/zoom différents de ceux
+    de la capture passée produit des Hz/dB silencieusement faux, ce qui
+    peut mener à une recommandation de réglage dangereuse pour une
+    enceinte).
+
+    Détecte les lignes de grille dB réellement visibles dans l'image
+    (`detect_horizontal_gridlines`) et vérifie qu'une fois converties par
+    `calibration`, elles tombent bien sur des valeurs rondes (multiples de
+    `expected_db_step`, 10 dB par défaut — confirmé sur les 6 graduations
+    +20/+10/0/-10/-20/-30 dB des captures de Steve, toutes espacées de
+    180.5 px). Si la calibration est fausse pour cette image, les lignes
+    détectées tombent ailleurs qu'aux multiples de 10, nettement plus que
+    `max_deviation_db`.
+
+    Retourne une liste vide si tout est cohérent (aucune alerte), ou la
+    liste des messages d'alerte sinon. Ne lève pas d'exception et
+    n'interrompt pas l'extraction : c'est à l'appelant de décider quoi
+    faire du résultat (ex. refuser de produire un rapport tant que les
+    alertes ne sont pas résolues, ou simplement les afficher si un
+    opérateur humain est déjà dans la boucle)."""
+    gridline_pixels_y = detect_horizontal_gridlines(
+        image_path, plot_left_px, plot_right_px, plot_top_px, plot_bottom_px,
+        gridline_rgb=gridline_rgb, color_tolerance=color_tolerance,
+        min_row_coverage=min_row_coverage,
+    )
+    if not gridline_pixels_y:
+        return [
+            "Aucune ligne de grille horizontale détectée dans la zone de "
+            "tracé donnée : vérifier plot_left_px/plot_right_px/"
+            "plot_top_px/plot_bottom_px, ou que gridline_rgb correspond "
+            "bien à la couleur de grille réelle de cette capture."
+        ]
+
+    warnings: list[str] = []
+    for py in gridline_pixels_y:
+        db = calibration.pixel_to_db(py)
+        nearest_round = round(db / expected_db_step) * expected_db_step
+        deviation = abs(db - nearest_round)
+        if deviation > max_deviation_db:
+            warnings.append(
+                f"Ligne de grille détectée à y={py:.1f}px correspond à "
+                f"{db:.1f} dB avec cette calibration, loin de tout "
+                f"multiple de {expected_db_step:g} dB (écart "
+                f"{deviation:.1f} dB) : la calibration des axes "
+                "(AxisCalibration) est probablement fausse pour cette "
+                "capture (résolution, zoom ou fenêtre différents de ceux "
+                "utilisés pour établir cette calibration)."
+            )
+    return warnings

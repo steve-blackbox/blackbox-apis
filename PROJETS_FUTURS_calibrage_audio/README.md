@@ -183,4 +183,24 @@ python3 liveproject_reader.py "/chemin/vers/fichier.liveproject"
   alimentation électrique (bruit de fond, mise à la terre), chaîne
   numérique en amont (codecs, HDMI eARC, gigue/jitter). À reprendre si
   Steve en fait la demande, avec la même méthode de recherche sourcée.
+- **Blocage identifié pour accepter un client autre que Steve (04/10,
+  bilan demandé par Steve pour savoir "ce qu'il faut modifier")** :
+  `image_reader.py` ne lit QUE des captures d'une résolution/zoom précis
+  (`DIRAC_SCREENSHOT_2794x1538`) — une capture d'un futur client avec une
+  autre résolution d'écran, un autre zoom de fenêtre ou une autre langue
+  produirait des Hz/dB silencieusement faux, avec un risque réel de
+  recommandation dangereuse (fréquence de coupure trop basse). Pas encore
+  résolu : généraliser la calibration elle-même (lecture automatique des
+  étiquettes d'axe, probablement par OCR) pour s'adapter à n'importe
+  quelle capture sans intervention manuelle. **Mitigé partiellement**
+  (04/10) par `detect_horizontal_gridlines`/
+  `validate_calibration_against_gridlines` dans `image_reader.py`,
+  utilisées désormais dans `rapport_steve_captures_reelles.py` avant
+  toute extraction : la calibration figée n'est plus appliquée à
+  l'aveugle, une capture incompatible lève une erreur explicite au lieu
+  d'un diagnostic silencieusement faux. Ça ne remplace pas une vraie
+  généralisation (il faudra quand même recalibrer à la main pour une
+  nouvelle résolution avant de pouvoir traiter un client qui ne serait
+  pas sur cette même résolution), mais ça empêche l'erreur silencieuse
+  la plus dangereuse en attendant.
 
