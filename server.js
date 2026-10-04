@@ -5,12 +5,15 @@ const path = require('path');
 const crypto = require('crypto');
 const { Paddle, Environment, EventName } = require('@paddle/paddle-node-sdk');
 
-// 📨 EXPÉDITEUR D'E-MAILS RESEND INITIALISÉ
+// 📨 EXPÉDITEUR D'E-MAILS RESEND (optionnel) : comme pour Paddle ci-dessous, le client
+// n'est construit que si la clé est présente — sinon le SDK Resend lève une exception
+// à l'import et fait planter TOUT le serveur (y compris les routes qui n'ont rien à voir
+// avec l'e-mail), même en environnement de test/démo sans RESEND_API_KEY configurée.
 const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // 📊 SUIVI DE TRACTION (ventes persistantes + checkpoints J+30/60/90)
-const { recordSale, getStats, saveLicense, isValidLicense, getLicenseByKey, getAllActiveLicenseMeta, deactivateLicensesByPaddleSubscription, DEMO_LICENSE_KEY, seedDemoLicense } = require('./lib/db');
+const { recordSale, hasProcessedTransaction, getStats, saveLicense, isValidLicense, getLicenseByKey, getLicenseBySubscriptionId, getAllActiveLicenseMeta, deactivateLicensesByPaddleSubscription, DEMO_LICENSE_KEY, seedDemoLicense } = require('./lib/db');
 
 // 🗂️ CATALOGUE DES 3 CATÉGORIES DE ROBOTS (doit rester synchronisé avec `robotsCatalog`
 // dans public/index.html). Sert à restreindre l'accès des licences SOLO CORE à une
@@ -38,6 +41,13 @@ app.use(cors({ origin: '*' }));
 
 // 📨 Envoie l'e-mail d'activation de licence
 async function sendLicenseActivationEmail({ email, name, licenseKey, category }) {
+    if (!resend) {
+        console.error(
+            `❌ RESEND_API_KEY absente côté serveur : e-mail d'activation NON envoyé à ${email} ` +
+            `(licence ${licenseKey} tout de même active — le client peut la récupérer manuellement si besoin).`
+        );
+        return;
+    }
     const accessLine = category
         ? `<p>Your <strong>SOLO CORE</strong> license gives you access to the category: <strong>${category}</strong> (4 robots).</p>`
         : `<p>Your <strong>LABS ALL-ACCESS</strong> license gives you access to all 3 categories (12 robots).</p>`;
@@ -84,7 +94,18 @@ app.post('/v1/webhook/paddle', express.raw({ type: 'application/json' }), async 
     // 🟢 CASH SÉCURISÉ : la transaction est validée par Paddle (abonnement mensuel récurrent)
     if (paddleEvent.eventType === EventName.TransactionCompleted) {
         const transaction = paddleEvent.data;
+
+        // 🔁 GARDE-FOU D'IDEMPOTENCE : Paddle peut renvoyer le même webhook plusieurs fois
+        // (retry réseau si l'accusé de réception tarde). Sans ceci, un simple retry
+        // générerait une deuxième licence + un deuxième e-mail + une vente en double.
+        if (hasProcessedTransaction(transaction.id)) {
+            console.log(`↩️ [PADDLE] Transaction ${transaction.id} déjà traitée — webhook ignoré (retry).`);
+            return res.json({ received: true });
+        }
+
         const purchasedPlan = transaction.customData?.plan || 'labs';
+        const amountCents = parseInt(transaction.details?.totals?.total || '0', 10);
+        const currency = (transaction.currencyCode || 'usd').toLowerCase();
 
         // 🗂️ Catégorie choisie par le client au moment du checkout (uniquement pour le
         // plan SOLO CORE — LABS ALL-ACCESS n'a pas besoin de restriction, il couvre tout).
@@ -94,6 +115,30 @@ app.post('/v1/webhook/paddle', express.raw({ type: 'application/json' }), async 
         const purchasedCategory = purchasedPlan === 'core' && ROBOT_CATEGORIES[transaction.customData?.category]
             ? transaction.customData.category
             : null;
+
+        // 🔄 RENOUVELLEMENT VS PREMIER PAIEMENT : Paddle envoie "transaction.completed"
+        // pour CHAQUE paiement d'un abonnement récurrent, pas seulement le premier
+        // (origin "subscription_recurring" dans la doc Paddle). Si une licence active
+        // existe déjà pour cet abonnement, ce paiement est un renouvellement : on
+        // enregistre bien la vente (revenu réel, utile pour les stats/MRR) mais on NE
+        // génère PAS de nouvelle licence et on N'ENVOIE PAS un deuxième e-mail
+        // d'activation au client.
+        const existingLicense = getLicenseBySubscriptionId(transaction.subscriptionId);
+        if (existingLicense) {
+            try {
+                recordSale({
+                    plan: purchasedPlan,
+                    amountCents,
+                    currency,
+                    licenseKey: existingLicense.license_key,
+                    paddleTransactionId: transaction.id,
+                });
+            } catch (dbError) {
+                console.error('❌ Échec enregistrement vente de renouvellement (Paddle):', dbError);
+            }
+            console.log(`🔁 [PADDLE] Renouvellement d'abonnement ${transaction.subscriptionId} (licence existante ${existingLicense.license_key}) — pas de nouvelle licence.`);
+            return res.json({ received: true });
+        }
 
         // Le nom/e-mail du client n'est pas inclus directement dans la notification de
         // transaction : on va le chercher via l'API Customers avec le customerId fourni.
@@ -142,9 +187,10 @@ app.post('/v1/webhook/paddle', express.raw({ type: 'application/json' }), async 
             recordSale({
                 email: customerEmail,
                 plan: purchasedPlan,
-                amountCents: parseInt(transaction.details?.totals?.total || '0', 10),
-                currency: (transaction.currencyCode || 'usd').toLowerCase(),
+                amountCents,
+                currency,
                 licenseKey,
+                paddleTransactionId: transaction.id,
             });
         } catch (dbError) {
             console.error('❌ Échec enregistrement vente en base de traction (Paddle):', dbError);
