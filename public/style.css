@@ -234,6 +234,49 @@
             -webkit-backdrop-filter: none !important;
         }
 
+        /* 🖼️ Même traitement "photo nette + voile sombre" que page 1, appliqué aux
+           2 autres pages pour que le site entier ait une image de fond cohérente :
+           page 2 (robot category matrix) = rack serveur sombre, page 3 (paiement)
+           = circuit imprimé macro. Même logique : background-image posée sur le
+           conteneur partagé des colonnes de contenu, voile plat superposé dans la
+           même déclaration, puis les cartes imbriquées sont démunies de leur flou
+           et assombries pour rester lisibles par-dessus. */
+        #screen-playground .bb-horizontal-slide-inner {
+            background:
+                linear-gradient(rgba(6, 9, 15, 0.74), rgba(6, 9, 15, 0.74)),
+                url('https://images.unsplash.com/photo-1639066648921-82d4500abf1a?auto=format&fit=crop&w=1400&q=70') center center / cover no-repeat !important;
+            border-radius: 14px !important;
+        }
+
+        #screen-playground .bb-endpoint-reference {
+            background: rgba(8, 9, 12, 0.8) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        #screen-playground .bb-live-test,
+        #screen-playground .bb-slide-tag-detail {
+            background: rgba(8, 9, 12, 0.68) !important;
+        }
+
+        #screen-playground .bb-horizontal-slide-targets li {
+            background: rgba(8, 9, 12, 0.6) !important;
+        }
+
+        #screen-payment .bb-pricing-grid {
+            background:
+                linear-gradient(rgba(6, 9, 15, 0.74), rgba(6, 9, 15, 0.74)),
+                url('https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=1400&q=70') center center / cover no-repeat !important;
+            border-radius: 14px !important;
+            padding: 24px !important;
+        }
+
+        #screen-payment .bb-pricing-card {
+            background: rgba(8, 9, 12, 0.82) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
         .simulation-lab-summary { display: flex !important; flex-direction: column !important; justify-content: flex-start !important; }
 
         .bb-manifesto-block {
