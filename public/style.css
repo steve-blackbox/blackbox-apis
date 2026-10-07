@@ -888,40 +888,46 @@
             font-weight: 500 !important;
         }
 
-        /* Code snippet styling — charte "métal / robot / industriel" : fond façon
-           panneau en métal brossé, liseré haut couleur ambre sécurité (style bande
-           de signalisation industrielle), texte gris acier au lieu du vert/rose. */
+        /* Code snippet styling — charte "robot humanoïde" : carrosserie glacée noir
+           profond / blanc, à très haut contraste (comme les panneaux noirs/blancs
+           brillants d'un robot), avec un unique accent cyan/teal lumineux pour le
+           mot-clé (écho du logo "T" qui brille sur le visage des robots), plutôt
+           qu'un dégradé de gris terne. */
         .bb-code-snippet {
-            background: linear-gradient(165deg, #22262b 0%, #1a1d21 55%, #24282d 100%) !important;
-            border: 1px solid rgba(148, 163, 184, 0.28) !important;
-            border-top: 3px solid #f59e0b !important;
-            border-radius: 6px !important;
+            position: relative !important;
+            background:
+                radial-gradient(ellipse 70% 50% at 15% -10%, rgba(255, 255, 255, 0.14), transparent 60%),
+                linear-gradient(150deg, #000000 0%, #0a0b0d 55%, #000000 100%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            border-top-color: rgba(255, 255, 255, 0.4) !important;
+            border-radius: 8px !important;
             padding: 20px !important;
             margin: 24px 0 0 0 !important;
             font-family: 'JetBrains Mono', monospace !important;
             font-size: 13.5px !important;
             line-height: 1.7 !important;
             overflow-x: auto !important;
-            color: #aeb6bf !important;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 rgba(0, 0, 0, 0.4) !important;
+            color: #e5e7eb !important;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.5) !important;
         }
 
         .bb-code-snippet code {
-            color: #c7ccd1 !important;
+            color: #f1f2f4 !important;
             font-weight: 500 !important;
         }
 
         .bb-code-snippet .keyword {
-            color: #f59e0b !important;
+            color: #2dd4da !important;
             font-weight: 700 !important;
+            text-shadow: 0 0 8px rgba(45, 212, 218, 0.55) !important;
         }
 
         .bb-code-snippet .string {
-            color: #8fa6b8 !important;
+            color: #c4c8cc !important;
         }
 
         .bb-code-snippet .comment {
-            color: #5b6470 !important;
+            color: #6b7076 !important;
         }
 
         .bb-horizontal-slide-targets {
