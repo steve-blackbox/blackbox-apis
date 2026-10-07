@@ -198,18 +198,40 @@
             gap: 18px !important;
             width: 100% !important;
             margin: 8px 0 24px !important;
+            /* 🖼️ Photo commune derrière le bloc manifeste ET les bento cards : posée en
+               background-image pur (aucun nouvel élément, aucun z-index/stacking touché)
+               sur le conteneur grid partagé des deux colonnes. Le voile sombre est fait
+               via un gradient "plat" superposé dans la même déclaration background, au-dessus
+               de l'image — volontairement net (pas de blur), mais assez sombre pour que le
+               texte réel des deux colonnes reste parfaitement lisible par-dessus. */
+            background:
+                linear-gradient(rgba(6, 9, 15, 0.72), rgba(6, 9, 15, 0.72)),
+                url('https://images.unsplash.com/photo-1720962158789-9389a4f399da?auto=format&fit=crop&w=1400&q=70') center center / cover no-repeat !important;
+            border-radius: 14px !important;
         }
 
         .simulation-lab-summary,
         .live-blueprint-viewport {
             min-width: 0 !important;
             box-sizing: border-box !important;
-            background: rgba(10, 10, 12, 0.45) !important;
+            background: rgba(8, 9, 12, 0.72) !important;
             border: 1px solid rgba(255, 255, 255, 0.04) !important;
             border-radius: 12px !important;
             padding: 22px !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
+            /* Pas de flou ici : Steve veut la photo nette derrière les blocs, pas "givrée".
+               Le fond est plus opaque (0.72) qu'avant pour garder le texte bien lisible
+               par-dessus une photo nette (le flou servait aussi à estomper le détail).
+               Les bento-cards imbriquées dans .live-blueprint-viewport ont leur propre
+               backdrop-filter + background (règle globale .bento-card plus haut) qu'on
+               neutralise/assombrit aussi juste en dessous, pour rester cohérent. */
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        #screen-command .live-blueprint-viewport .bento-card {
+            background: rgba(7, 8, 11, 0.86) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
         }
 
         .simulation-lab-summary { display: flex !important; flex-direction: column !important; justify-content: flex-start !important; }
